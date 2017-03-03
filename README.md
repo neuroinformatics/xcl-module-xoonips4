@@ -1,2 +1,2 @@
-# xcl-module-xoonips4
+# XooNIps 4
 Base Platform System XooNIps 4
