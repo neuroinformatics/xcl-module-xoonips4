@@ -1,0 +1,20 @@
+<div style="text-align:right; margin-left: 10px; margin-bottom: 15px;">
+</div>
+<table cellspacing="1">
+	<tr>
+		<td class=<{if $select_tab==1}>"head"<{else}>"even"<{/if}> style="width: 25%; text-align: center;">
+		<{if $select_tab==1}>
+		<{$smarty.const._MD_XOONIPS_ITEM_IMPORT_TITLE}>
+		<{else}>
+		<a href="itemimport.php"><{$smarty.const._MD_XOONIPS_ITEM_IMPORT_TITLE}></a>
+		<{/if}>
+		</td>
+		<td class=<{if $select_tab==2}>"head"<{else}>"even"<{/if}> style="width: 25%; text-align: center;">
+		<{if $select_tab==2}>
+		<{$smarty.const._MD_XOONIPS_ITEM_IMPORT_LOG_TITLE}>
+		<{else}>
+		<a href="itemimport.php?op=log"><{$smarty.const._MD_XOONIPS_ITEM_IMPORT_LOG_TITLE}></a>
+		<{/if}>
+		</td>
+	</tr>
+</table>

@@ -1,0 +1,15 @@
+<{include file="db:`$dirname`_header.html"}>
+<{include file="db:`$dirname`_search_tab.inc.html"}>
+<h3><{$smarty.const._MD_XOONIPS_QUICK_SEARCH_TITLE}></h3>
+<form style="margin-top: 0px;" action="search.php" method="get">
+	<input type="hidden" name="op" value="quick" />
+	<input type="text" name="keyword" size="16" value="<{$keyword|xoops_escape}>" />
+	&nbsp;&nbsp;
+	<br /><br />
+	<select name="search_condition">
+		<{html_options options=$search_conditions|xoops_escape selected=$search_conditions_selected|xoops_escape}>
+	</select>
+	<br /><br />
+	<input class="formButton" type="submit" value="<{$lang_search}>" />
+</form>
+<{include file="db:`$dirname`_footer.html"}>

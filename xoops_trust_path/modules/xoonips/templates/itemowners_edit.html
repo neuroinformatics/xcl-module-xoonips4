@@ -1,0 +1,38 @@
+<{include file="db:`$dirname`_header.html"}>
+<script type="text/javascript" charset="utf-8">
+
+var <{$dirname}>Edit = new XoonipsLibrary.edit('<{$xoops_url}>', '<{$dirname}>', 'itemownerseditform', 'edit');
+
+(function($) {
+$(function() {
+
+$('#<{$dirname}>_itemownerseditform :button[rel^="<{$mytrustdirname}>Popin"]').<{$mytrustdirname}>Popin({
+  width : 400,
+  height: 400,
+  callback: function(id, value) {
+    return <{$dirname}>Edit.userCallback(null, value, 'searchOwners');
+  }
+});
+
+});
+})(jQuery);
+</script>
+<h3><{$smarty.const._MD_XOONIPS_ITEM_ITEMUSERS_EDIT_TITLE}></h3>
+<{$errors}>
+<form id="<{$dirname}>_itemownerseditform" action="edit.php" name="<{$dirname}>_itemownerseditform" method="post">
+<{$token_ticket}>
+<input type="hidden" name="item_id" value="<{$item_id}>" />
+<{$item_html}>
+<table>
+<tr>
+<td class="head" width="25%"><{$detail_name}></td>
+<td class="odd">
+<{$users_html}>
+</td>
+</tr>
+</table>
+<div style="text-align: center; margin-top: 20px;">
+	<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_UPDATE_BUTTON_LABEL}>" onclick="document.<{$dirname}>_itemownerseditform.action='edit.php?op=saveOwners'; submit();return false;" />
+</div>
+</form>
+<{include file="db:`$dirname`_footer.html"}>

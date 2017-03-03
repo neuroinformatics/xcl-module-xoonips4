@@ -1,0 +1,33 @@
+<div id="<{$dirname}>_admin">
+
+<{if !empty($breadcrumbs) }>
+<div class="adminnavi">
+<{foreach name=breadcrumbs from=$breadcrumbs item="item"}>
+<{if $item.url}>
+  <a href="<{$item.url}>"><{$item.name}></a>
+<{else}>
+  <span class="adminnaviTitle"><{$item.name}></span>
+<{/if}>
+<{if !$smarty.foreach.breadcrumbs.last}>
+  &raquo;&raquo;
+<{/if}>
+<{/foreach}>
+</div>
+<{/if}>
+
+<h3 class="admintitle"><{$title}></h3>
+
+<{if $description}>
+<div class="tips">
+  <div class="admininfo">
+    <{$description}>
+  </div>
+</div>
+<{/if}>
+
+<{if !empty($errors) }>
+<div class="error">
+<{$errors}>
+</div>
+<{/if}>
+

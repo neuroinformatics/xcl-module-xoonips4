@@ -1,0 +1,179 @@
+<{include file="file:admin_header.inc.html"}>
+
+<script type="text/javascript">
+(function($){
+
+<{$xoops_dirname}>_AdminFileSearchJS = function() {
+  var obj = this;
+  this.prefix = '#<{$xoops_dirname}>_admin_file_';
+  this.postfix = '_rescan_';
+  $(document).ready(function (){obj.onDocumentReady()});
+}
+<{$xoops_dirname}>_AdminFileSearchJS.prototype = {
+  /**
+   * do file rescaen
+   */
+  do_file_rescan: function(mode, num) {
+    var obj = this;
+    $.ajax({
+      type: 'POST',
+      url: '<{$smarty.const.XOOPS_MODULE_URL}>/<{$xoops_dirname}>/index.php',
+      data: 'action=Ajax&method=FileSearchRescan&mode=' + mode + '&num=' + num,
+      dataType: 'json',
+      success: function(json) {
+        obj.update_file_count(json.mode, json.num);
+      },
+      error: function(xhr, textStatus, errorThrown) {
+        alert('unexpected error occured.');
+        obj.stop_file_rescan(mode);
+      }
+    });
+  },
+  /**
+   * start file rescan
+   *
+   * @param string mode, 'info' or 'index'
+   */
+  start_file_rescan: function (mode) {
+    var bt = $(this.prefix + mode + this.postfix + 'button');
+    var work = $(this.prefix + mode + this.postfix + 'working');
+    var field = $(this.prefix + mode + this.postfix + 'field');
+    work.show();
+    bt.hide();
+    field.text('');
+  },
+  /**
+   * stop file rescan
+   *
+   * @param string mode, 'info' or 'index'
+   */
+  stop_file_rescan: function (mode) {
+    var bt = $(this.prefix + mode + this.postfix + 'button');
+    var work = $(this.prefix + mode + this.postfix + 'working');
+    work.hide();
+    bt.show();
+  },
+  /**
+   * update file count
+   *
+   * @param string mode, 'info' or 'index'
+   * @param int num
+   */
+  update_file_count: function (mode, num) {
+    var field = $(this.prefix + mode + this.postfix + 'field');
+    num = parseInt(num);
+    if (num == 1) {
+      field.append(' 1 ');
+    } else if (num % 10 == 0) {
+      field.append(' ' + num + ' ');
+    } else {
+      field.append(' . ');
+    }
+    num++;
+    if (num <= <{$fileCount}>) {
+      this.do_file_rescan(mode, num);
+    } else {
+      this.stop_file_rescan(mode);    	
+    }
+  },
+  /**
+   * callback handler for on click rescan buttons
+   *
+   * @param string mode, 'info' or 'index'
+   */
+  onclick_file_rescan: function (mode) {
+    if (<{$fileCount}> > 0) {
+      this.start_file_rescan(mode);
+      this.do_file_rescan(mode, 1);
+    }
+  },
+  /**
+   * callback handler for on document ready
+   */
+  onDocumentReady: function() {
+    var obj = this;
+    var info = $(this.prefix + 'info' + this.postfix + 'button');
+    var index = $(this.prefix + 'index' + this.postfix + 'button');
+    info.click(function () {obj.onclick_file_rescan('info');});
+    index.click(function () {obj.onclick_file_rescan('index');});
+  }
+}
+new <{$xoops_dirname}>_AdminFileSearchJS();
+
+})(jQuery);
+</script>
+
+<h4 style="margin: 30px 0 10px 5px;">&raquo;&nbsp;<{"`$constpref`_MAINTENANCE_FILESEARCH_PLUGINS_TITLE"|constant}></h4>
+<table width="100%" cellspacing="1" class="outer">
+  <tbody>
+  <tr>
+    <th style="width: 20%;"><{"`$constpref`_LANG_FILE_SEARCH_PLUGIN"|constant}></th>
+    <th style="width: 40%;"><{"`$constpref`_LANG_FILE_MIMETYPE"|constant}></th>
+    <th style="width: 30%;"><{"`$constpref`_LANG_FILE_EXTENSION"|constant}></th>
+    <th style="width: 10%;"><{"`$constpref`_LANG_FILE_SEARCH_VERSION"|constant}></th>
+  </tr>
+<{if !empty($plugins) }>
+ <{foreach item=plugin from=$plugins}>
+   <tr class="<{cycle values='odd,even'}>">
+    <td>
+      <{$plugin.display_name|xoops_escape}>
+    </td>
+    <td>
+ <{foreach name=mime_type item=mime_type from=$plugin.mime_type}>
+      <{$mime_type|xoops_escape}><{if !$smarty.foreach.mime_type.last }>, <{/if}>
+<{/foreach}>
+    </td>
+    <td>
+ <{foreach name=extension item=extension from=$plugin.extensions}>
+      .<{$extension|xoops_escape}><{if !$smarty.foreach.extension.last }>, <{/if}>
+<{/foreach}>
+    </td>
+    <td>
+      <{$plugin.version|xoops_escape}>
+    </td>
+  </tr>
+<{/foreach}>
+<{else}>
+  <tr>
+    <td class="even" colspan="4" style="text-align: center;">
+      <span class="notice"><{"`$constpref`_MESSAGE_EMPTY"|constant}></span>
+    </td>
+  </tr>
+<{/if}>
+  </tbody>
+</table>
+
+<h4 style="margin: 30px 0 10px 5px;">&raquo;&nbsp;<{"`$constpref`_MAINTENANCE_FILESEARCH_RESCAN_TITLE"|constant}></h4>
+<table width="100%" cellspacing="1" class="outer">
+  <tbody>
+  <tr>
+    <th colspan="2"><{"`$constpref`_MAINTENANCE_FILESEARCH_LANG_FILECOUNT"|constant}> : <{$fileCount}></th>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%;">
+    <span style="font-weight: bold;"><{"`$constpref`_MAINTENANCE_FILESEARCH_RESCAN_INFO_TITLE"|constant}></span>
+    <br /><br />
+    <{"`$constpref`_MAINTENANCE_FILESEARCH_RESCAN_INFO_DESC"|constant}>
+    </td>
+    <td class="even" style="width: 60%;">
+    <div id="<{$xoops_dirname}>_admin_file_info_rescan_field"></div>
+    <div id="<{$xoops_dirname}>_admin_file_info_rescan_working" style="font-weight: bold; color: red; text-decoration: blink; display: none;"><{"`$constpref`_MAINTENANCE_FILESEARCH_LANG_RESCANNING"|constant}></div>
+    <button id="<{$xoops_dirname}>_admin_file_info_rescan_button"><{"`$constpref`_MAINTENANCE_FILESEARCH_LANG_RESCAN"|constant}></button>
+    </td>
+  </tr>
+  <tr>
+    <td class="head">
+    <span style="font-weight: bold;"><{"`$constpref`_MAINTENANCE_FILESEARCH_RESCAN_INDEX_TITLE"|constant}></span>
+    <br /><br />
+    <{"`$constpref`_MAINTENANCE_FILESEARCH_RESCAN_INDEX_DESC"|constant}>
+    </td>
+    <td class="even">
+    <div id="<{$xoops_dirname}>_admin_file_index_rescan_field"></div>
+    <div id="<{$xoops_dirname}>_admin_file_index_rescan_working" style="font-weight: bold; color: red; text-decoration: blink; display: none;"><{"`$constpref`_MAINTENANCE_FILESEARCH_LANG_RESCANNING"|constant}></div>
+    <button id="<{$xoops_dirname}>_admin_file_index_rescan_button"><{"`$constpref`_MAINTENANCE_FILESEARCH_LANG_RESCAN"|constant}></button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<{include file="file:admin_footer.inc.html"}>

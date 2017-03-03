@@ -1,0 +1,37 @@
+<script type="text/javascript" charset="utf-8">
+jQuery.noConflict();
+var <{$dirname}>Edit = new XoonipsLibrary.edit('<{$xoops_url}>', '<{$dirname}>', 'registerconfirmform', 'register');
+jQuery(function(){
+	<{$dirname}>Edit.setMsgCss();
+});
+</script>
+<h4><{$smarty.const._MD_XOONIPS_ITEM_REGISTER_ITEM_CONFIRM}></h4>
+<table cellspacing="1">
+  <tr>
+	  <td class="even" style="width: 25%; text-align: center;"><{$smarty.const._MD_XOONIPS_ITEM_SELECT_ITEM_TYPE_LABEL}></td>
+	  <td class="even" style="width: 5%; text-align: center;">-></td>
+	  <td class="even" style="width: 25%; text-align: center;"><{$smarty.const._MD_XOONIPS_ITEM_REGISTER_ITEM_TITLE}></td>
+	  <td class="even" style="width: 5%; text-align: center;">-></td>
+	  <td class="head" style="width: 25%; text-align: center;"><{$smarty.const._MD_XOONIPS_ITEM_REGISTER_ITEM_CONFIRM}></td>
+	  <td style="width: 15%; text-align: center;"></td>
+  </tr>
+</table>
+<form id="<{$dirname}>_registerconfirmform" name="<{$dirname}>_registerconfirmform" action="register.php?op=save" method="post">
+<input type="hidden" name="itemtype_id" value="<{$itemtype_id}>" />
+<div style="text-align: left; margin: 1px;">
+<span id="<{$dirname}>_message_label_top">
+	<{$smarty.const._MD_XOONIPS_ITEM_SELECT_PRIVATE_INDEX_AUTO}>
+</span>
+</div>
+<{$token_titcket}>
+<{if !empty($confirmView)}>
+	<table class="outer">
+	<tr><td class="head" width="25%"><{$smarty.const._MD_XOONIPS_ITEM_ITEM_TYPE_LABEL}></td><td class="even"><{$itemtype_name|xoops_escape}></td></tr>
+	<{$confirmView}>
+	</table>
+<{/if}>
+<div style="text-align: center; margin-top: 20px;">
+ <input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_BACK_BUTTON_LABEL}>" onclick="jQuery('#<{$dirname}>_registerconfirmform').attr('action', 'register.php?op=back');jQuery('#<{$dirname}>_registerconfirmform').submit()" />
+ <input class="formButton" type="submit" value="<{$smarty.const._MD_XOONIPS_ITEM_REGISTER_BUTTON_LABEL}>" />
+</div>
+</form>

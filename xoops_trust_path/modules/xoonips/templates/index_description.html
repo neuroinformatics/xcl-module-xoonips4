@@ -1,0 +1,93 @@
+<{include file="db:`$dirname`_header.html"}>
+<script type="text/javascript" charset="utf-8">
+jQuery.noConflict();
+jQuery(function() {
+    var grouphidden = jQuery('#<{$dirname}>_grouphidden').val();
+    var warning = jQuery('#<{$dirname}>_warning').val();
+    if(warning=='' && grouphidden==1){
+        hiddenClick(1);
+    }
+});
+function update() {
+   <{if !$root_dir }>
+    title = jQuery('#<{$dirname}>_title').val();
+    if (!title) {
+        alert('<{$smarty.const._MD_XOONIPS_MESSAGE_INDEX_DESCRIPTION_TITLE_ERROR}>');
+        return false;
+    }
+   <{/if}>
+    jQuery('#<{$dirname}>_indexDescriptionForm').attr('action', 'indexdescription.php?op=update');
+    jQuery('#<{$dirname}>_indexDescriptionForm').submit();
+}
+function deleteIcon() {
+    jQuery('#<{$dirname}>_icon').attr('style','display:none');
+    jQuery('#<{$dirname}>_show_thumbnail').attr('value',2);
+}
+function deleteConfirm() {
+    if (!confirm('<{$smarty.const._MD_XOONIPS_DELETE_INDEX_DETAILED_DESCRIPTION}>')) {
+        return false;
+    } else {
+        jQuery('#<{$dirname}>_indexDescriptionForm').attr('action', 'indexdescription.php?op=delete');
+        jQuery('#<{$dirname}>_indexDescriptionForm').submit();
+    }
+}
+function back(back) {
+    jQuery('#<{$dirname}>_indexDescriptionForm').attr('action', back);
+    jQuery('#<{$dirname}>_indexDescriptionForm').submit();
+}
+
+</script>
+<h3><{$smarty.const._MD_XOONIPS_INDEX_DETAILED_DESCRIPTION}></h3>
+<{foreach item=index from=$index_path}>
+ / <a href="list.php?index_id=<{$index.index_id}>"><{$index.html_title|xoops_escape}></a>
+<{/foreach}>&nbsp;&nbsp;
+<br />
+<{$errors}>
+<form id="<{$dirname}>_indexDescriptionForm" name="<{$dirname}>_indexDescriptionForm" action="indexdescription.php?op=update" method="post" enctype="multipart/form-data">
+<{$token_ticket}>
+<input type="hidden" id="<{$dirname}>_action" name="action" value="" />
+<input type="hidden" id="<{$dirname}>_index_id" name="index_id" value="<{$index_id}>" />
+<input type="hidden" id="<{$dirname}>_show_thumbnail" name="show_thumbnail" value="<{$show_thumbnail}>" />
+<table class="outer" cellspacing="1" cellpadding="4">
+ <tr>
+  <td width="40%" class="head"><{$smarty.const._MD_XOONIPS_INDEX_NAME}><span style="color: red;">*</span></td>
+  <td width="60%" class="<{cycle name="oddeven" values="odd,even"}>">
+   <{if $root_dir }>
+    <{$title|xoops_escape}>
+   <{else}>
+    <input type="text" id="<{$dirname}>_title" name="title" size="50" value="<{$title|xoops_escape}>" />
+   <{/if}>
+  </td>
+ </tr>
+ <tr>
+  <td width="40%" class="head"><{$smarty.const._MD_XOONIPS_INDEX_TITLE}></td>
+  <td width="60%" class="<{cycle name="oddeven" values="odd,even"}>">
+    <input type="text" id="<{$dirname}>_detailed_title" name="detailed_title" size="50" value="<{$detailed_title|xoops_escape}>" />
+  </td>
+ </tr>
+ <tr>
+  <td class="head"><{$smarty.const._MD_XOONIPS_INDEX_DETAILED_DESCRIPTION_ICON}><br /></td>
+  <td class="<{cycle name="oddeven"}>">
+   <input type="file" name="filepath" size="40" /><br />
+   <div id="<{$dirname}>_icon">
+   <{if $show_thumbnail eq 1}>
+      <img src="<{$thumbnail|xoops_escape}>" alt="<{$icon|xoops_escape}>" width="150px" />
+      <input type="button" value="<{$smarty.const._DELETE}>" onclick="deleteIcon()" />
+   <{/if}>
+   </div>
+  </td>
+ </tr>
+ <tr>
+  <td class="head"><{$smarty.const._MD_XOONIPS_INDEX_DETAILED_DESCRIPTION_DESCRIPTION}></td>
+  <td class="<{cycle name="oddeven"}>">
+    <textarea id="<{$dirname}>_detailed_description" name="detailed_description" rows="5" cols="50" style="width:400px;"><{$detailed_description|xoops_escape}></textarea>
+  </td>
+ </tr>
+</table>
+<div style="text-align: center">
+ <input type="button" value="<{$smarty.const._MD_XOONIPS_LANG_UPDATE}>" onclick="update()" />
+ <input type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_DELETE_BUTTON_LABEL}>" onclick="deleteConfirm()" />
+ <input type="button" value="<{$smarty.const._MD_XOONIPS_LANG_BACK}>" onclick="back('<{$back}>')" />
+</div>
+</form>
+<{include file="db:`$dirname`_footer.html"}>

@@ -1,0 +1,81 @@
+<{include file="file:admin_header.html"}>
+<script type="text/javascript" charset="utf-8">
+var xoonipsEdit = new XoonipsLibrary.edit('<{$xoops_url}>', '<{$dirname}>', '<{$dirname}>_policy_itemtype_detail_registerform', 'policy_itemtype', null);
+jQuery.noConflict();
+// change rights radio box
+function changeRightsRadioBox(flg, radio, targetName) {
+	var target = document.getElementById(targetName);
+	if (radio.checked == true) {
+		if (flg == 1) {
+			target.value = radio.value + (target.value).substr(1);
+		} else if (flg == 2) {
+			target.value = (target.value).substr(0, 1) + radio.value
+					+ (target.value).substr(2);
+		} else if (flg == 3) {
+			target.value = (target.value).substr(0, 2) + radio.value
+					+ (target.value).substr(3);
+		}
+	}
+}
+
+// change rights jurisdiction
+function changeRightsJurisdiction(select, targetName) {
+  var target = document.getElementById(targetName);
+  var temp = (target.value).split(',');
+  target.value = (target.value).substr(0, 3) + select.value + ',' + (target.value).substr(temp[0].length+1);
+}
+
+function listChange() {
+  var form=jQuery('#<{$dirname}>_policy_itemtype_detail_registerform');
+  jQuery('#<{$dirname}>_op').attr('value','detailregister');
+  jQuery('#<{$dirname}>_changeop').attr('value','listchange');
+  form.submit();
+}
+</script>
+<{$errors}>
+<div style="text-align:right; margin-left: 10px; margin-bottom: 15px;">
+</div>
+<form name="<{$dirname}>_policy_itemtype_detail_registerform" id="<{$dirname}>_policy_itemtype_detail_registerform" action="policy_itemgroup.php" method="post">
+<input type="hidden" name="op" id="<{$dirname}>_op" value="">
+<input type="hidden" name="changeop" id="<{$dirname}>_changeop" value="">
+<input type="hidden" name="groupid" value="<{$groupid}>">
+<{$token_ticket}>
+
+<table width="100%" cellspacing="1" class="outer">
+  <{$smarty.const._AM_XOONIPS_POLICY_ITEMFIELDGROUP_TITLE}>&nbsp;&nbsp;<b><{$group_name}></b>
+  <tbody>
+  <tr>
+    <th style="text-align: center;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_SELECT}></th>
+    <th style="text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DETAIL_NAME}></th>
+    <th style="text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_POLICY_ITEMFIELD_ID}></th>
+  </tr>
+  <{foreach item=itemfield from=$itemfields}>
+  <tr class= "<{cycle values='odd,even'}>">
+    <td style="text-align: center;">
+    	<{if $itemfield.select=='1'}>
+    	<input type="checkbox" name="checkbox_<{$itemfield.itemfieldid}>" value="1" checked/>
+    	<{else}>
+    	<input type="checkbox" name="checkbox_<{$itemfield.itemfieldid}>" value="1" />
+    	<{/if}>
+    </td>
+    <td style="text-align: left;"><{$itemfield.name|xoops_escape}>&nbsp;&nbsp;<{if $itemfield.editing ne ''}><span class="<{$dirname}>_diff"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_EDITING}></span><{/if}></td>
+    <td style="text-align: left;"><{$itemfield.xml|xoops_escape}></td>
+  </tr>
+  <{/foreach}>
+  <{if count($itemfields)==0}>
+  <tr>
+    <td class="odd" colspan="3" style="text-align: center;">
+      <span style="color: red; font-weight: bold;"><{$smarty.const._AM_XOONIPS_POLICY_ITEMTYPE_DETAIL_EMPTY}></span>
+    </td>
+  </tr>
+  <{/if}>
+  </tbody>
+</table>
+
+<div style="text-align: left">
+	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_BACK}>"
+	onclick="window.location='policy_itemgroup.php?op=edit&groupid=<{$groupid}>'" />&nbsp;&nbsp;
+ 	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_OK}>" onclick="op.value='detailregistersave'; submit();" />
+</div>
+</form>
+<{include file="file:admin_footer.inc.html"}>

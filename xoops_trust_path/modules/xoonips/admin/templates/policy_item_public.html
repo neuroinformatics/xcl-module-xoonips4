@@ -1,0 +1,49 @@
+<{include file="file:admin_header.inc.html"}>
+
+<form name="<{$xoops_dirname}>_policy_item_publicform" action="index.php" method="post">
+<input name="action" value="PolicyItemPublic" type="hidden"/>
+<{xoops_token form=$actionForm}>
+
+<table width="100%" cellspacing="1" class="outer">
+  <tbody>
+  <tr>
+    <th colspan="2"><{"`$constpref`_POLICY_ITEM_PUBLIC_GENERAL_TITLE"|constant}></th>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;">
+      <span style="font-weight: bold;"><{"`$constpref`_POLICY_ITEM_PUBLIC_CERTIFY_ITEM_TITLE"|constant}></span>
+      <br /><br />
+      <span style="font-weight: normal;"><{"`$constpref`_POLICY_ITEM_PUBLIC_CERTIFY_ITEM_DESC"|constant}></span>
+    </td>
+    <td class="even" style="width: 60%; vertical-align: top;">
+      <select name="certify_item" size="1">
+        <option value="on"<{if $actionForm->get('certify_item') == 'on'}> selected="selected"<{/if}>><{"`$constpref`_POLICY_ITEM_PUBLIC_CERTIFY_ITEM_MANUAL"|constant}></option>
+        <option value="auto"<{if $actionForm->get('certify_item') == 'auto'}> selected="selected"<{/if}>><{"`$constpref`_POLICY_ITEM_PUBLIC_CERTIFY_ITEM_AUTO"|constant}></option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;">
+      <span style="font-weight: bold;"><{"`$constpref`_POLICY_ITEM_PUBLIC_DOWNLOAD_FILE_TITLE"|constant}></span>
+      <br /><br />
+      <span style="font-weight: normal;"><{"`$constpref`_POLICY_ITEM_PUBLIC_DOWNLOAD_FILE_DESC"|constant}></span>
+    </td>
+    <td class="even" style="width: 60%; vertical-align: top;">
+      <select name="download_file_compression" size="1">
+        <option value="on"<{if $actionForm->get('download_file_compression') == 'on'}> selected="selected"<{/if}>><{"`$constpref`_POLICY_ITEM_PUBLIC_DOWNLOAD_FILE_ZIP"|constant}></option>
+        <option value="off"<{if $actionForm->get('download_file_compression') == 'off'}> selected="selected"<{/if}>><{"`$constpref`_POLICY_ITEM_PUBLIC_DOWNLOAD_FILE_PLAIN"|constant}></option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;"></td>
+    <td class="even" style="width: 60%; vertical-align: top;">
+      <input name="submit" type="submit" value="<{"`$constpref`_LANG_UPDATE"|constant}>"/>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+</form>
+
+<{include file="file:admin_footer.inc.html"}>

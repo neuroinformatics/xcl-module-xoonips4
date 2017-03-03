@@ -1,0 +1,226 @@
+<{include file="file:admin_header.html"}>
+<script type="text/javascript" charset="utf-8">
+var xoonipsEdit = new XoonipsLibrary.edit('<{$xoops_url}>', '<{$dirname}>', '<{$dirname}>_policy_itemfield_editform', 'policy_itemfield', null);
+jQuery.noConflict();
+// change rights radio box
+function changeRightsRadioBox(flg, radio, targetName) {
+  var target = document.getElementById(targetName);
+  if (radio.checked == true) {
+    if (flg == 1) {
+      target.value = radio.value + (target.value).substr(1);
+    } else if (flg == 2) {
+      target.value = (target.value).substr(0, 1) + radio.value + (target.value).substr(2);
+    } else if (flg == 3) {
+      target.value = (target.value).substr(0, 2) + radio.value + (target.value).substr(3);
+    }
+  }
+}
+
+//change rights jurisdiction
+function changeRightsJurisdiction(select, targetName) {
+	var target = document.getElementById(targetName);
+	var temp = (target.value).split(',');
+	target.value = (target.value).substr(0, 3) + select.value + ',' + (target.value).substr(temp[0].length+1);
+}
+
+function listChange() {
+	var form=jQuery('#<{$dirname}>_policy_itemfield_editform');
+	jQuery('#<{$dirname}>_op').attr('value','edit');
+	jQuery('#<{$dirname}>_changeop').attr('value','listchange');
+	form.submit();
+}
+</script>
+<div style="text-align:right; margin-left: 10px; margin-bottom: 25px;">
+</div>
+<form name="<{$dirname}>_policy_itemfield_editform" id="<{$dirname}>_policy_itemfield_editform" action="policy_itemfield.php" method="post">
+<input type="hidden" name="op" id="<{$dirname}>_op" value="">
+<input type="hidden" name="changeop" id="<{$dirname}>_changeop" value="">
+<input type="hidden" name="base_detailid" value="<{$base_detailid}>">
+<input type="hidden" name="detailid" value="<{$detailid}>">
+<input type="hidden" name="mode" id="<{$dirname}>_mode" value="">
+<{$token_ticket}>
+<table width="100%" cellspacing="1" class="outer">
+  <thead>
+  <tr>
+    <th style="width: 20%; text-align: center;" class="head"><br /></th>
+    <th style="width: 40%; text-align: center;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_MODIFY_CONTENT}></th>
+    <th style="width: 40%; text-align: center;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_RELEASE_CONTENT}></th>
+  </tr>
+  </thead>
+  <tr>
+    <td style="width: 20%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DETAIL_NAME}><{$smarty.const._AM_XOONIPS_LABEL_REQUIRED_MARK}></td>
+    <td style="width: 40%; text-align: left;" class="odd">&nbsp;&nbsp;<input type="text" name="name" size="50" maxlength="255" value="<{$name|xoops_escape}>" /></td>
+    <td style="width: 40%; text-align: left;" class="odd">&nbsp;&nbsp;<{if $name!=$detailInfo.b_name}><span class="<{$dirname}>_diff"><{$detailInfo.b_name|xoops_escape}></span><{else}><{$detailInfo.b_name|xoops_escape}><{/if}></td>
+  </tr>
+  <tr>
+    <td style="width: 20%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_POLICY_ITEMFIELD_ID}><{$smarty.const._AM_XOONIPS_LABEL_REQUIRED_MARK}></td>
+    <td style="width: 40%; text-align: left;" class="even">&nbsp;&nbsp;<input type="text" name="xml" size="50" maxlength="30" value="<{$xml|xoops_escape}>" /></td>
+    <td style="width: 40%; text-align: left;" class="even">&nbsp;&nbsp;<{if $xml!=$detailInfo.b_xml}><span class="<{$dirname}>_diff"><{$detailInfo.b_xml|xoops_escape}></span><{else}><{$detailInfo.b_xml|xoops_escape}><{/if}></td>
+  </tr>
+  <tr>
+    <td style="width: 20%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_VIEW_TYPE}><{$smarty.const._AM_XOONIPS_LABEL_REQUIRED_MARK}></td>
+    <td style="width: 40%; text-align: left;" class="odd">&nbsp;
+   		<select id="viewtype" name="view_type" onchange="op.value='edit'; changeop.value='vtchange'; submit();" <{$disabled_arr}>>
+      	<{foreach item=viewtype from=$viewtypelist}>
+        <option value="<{$viewtype.viewtype_id}>" <{$viewtype.selected}>><{$viewtype.name}></option>
+      	<{/foreach}>
+      	</select>
+      	<{if !empty($disabled_arr)}>
+      	<input type="hidden" name="view_type" value="<{$view_type}>">
+      	<{/if}>
+    </td>
+    <td style="width: 40%; text-align: left;" class="odd">&nbsp;&nbsp;<{if $view_type!=$detailInfo.b_view_type}><span class="<{$dirname}>_diff"><{$detailInfo.b_view_name|xoops_escape}></span><{else}><{$detailInfo.b_view_name|xoops_escape}><{/if}></td>
+  </tr>
+  <tr>
+    <td style="width: 20%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_SUBTYPES}></td>
+    <td style="width: 40%; text-align: left;" class="even">&nbsp;&nbsp;<{$list_block}></td>
+    <td style="width: 40%; text-align: left;" class="even">&nbsp;&nbsp;<{if $list_block!=$detailInfo.b_list}><span class="<{$dirname}>_diff"><{$detailInfo.b_list|xoops_escape}></span><{else}><{$detailInfo.b_list|xoops_escape}><{/if}></td>
+  </tr>
+  <tr>
+    <td style="width: 20%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DATA_TYPE}><{$smarty.const._AM_XOONIPS_LABEL_REQUIRED_MARK}></td>
+    <td style="width: 40%; text-align: left;" class="odd">&nbsp;
+       	<select id="datatype" name="data_type" onchange="op.value='edit'; changeop.value='dtchange'; submit();" <{$disabled_arr}>>
+      	<{foreach item=datatype from=$datatypelist}>
+      	<{if $datatype.selected ne ''}><{assign var=default_data_length value=$datatype.data_length}><{assign var=default_data_decimal_places value=$datatype.data_decimal_places}><{/if}>
+        <option value="<{$datatype.datatype_id}>" <{$datatype.selected}>><{$datatype.name}></option>
+      	<{/foreach}>
+      	</select>
+      	<{if !empty($disabled_arr)}>
+      	<input type="hidden" name="data_type" value="<{$data_type}>">
+      	<{/if}>
+	</td>
+	<td style="width: 40%; text-align: left;" class="odd">&nbsp;&nbsp;<{if $data_type!=$detailInfo.b_data_type}><span class="<{$dirname}>_diff"><{$detailInfo.b_data_name|xoops_escape}></span><{else}><{$detailInfo.b_data_name|xoops_escape}><{/if}></td>
+  </tr>
+  <tr>
+    <td style="width: 20%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DATA_LENGTH}></td>
+    <td style="width: 40%; text-align: left;" class="even">&nbsp;
+       	<input type="text" id="datalength" name="data_length" size="6" maxlength="5" value="<{if $data_length!=0}><{if $data_length!=-1}><{$data_length}><{/if}><{else}><{if $default_data_length!=-1}><{$default_data_length}><{/if}><{/if}>" <{$disabled_arr}> />
+       	<{if !empty($disabled_arr)}>
+       	<input type="hidden" name="data_length" value="<{$data_length}>">
+       	<{/if}>
+	</td>
+	<td style="width: 40%; text-align: left;" class="even">&nbsp;&nbsp;<{if $data_length!=$detailInfo.b_data_length}><span class="<{$dirname}>_diff"><{if $detailInfo.b_data_length!=-1}><{$detailInfo.b_data_length|xoops_escape}><{/if}></span><{else}><{if $detailInfo.b_data_length!=-1}><{$detailInfo.b_data_length|xoops_escape}><{/if}><{/if}></td>
+  </tr>
+  <{if $selected_datatype_name == 'float' || $selected_datatype_name == 'double'}>
+  <tr>
+    <td style="width: 20%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DATA_LENGTH2}></td>
+    <td style="width: 40%; text-align: left;" class="odd">&nbsp;
+      	<input type="text" id="datalength2" name="data_decimal_places" size="3" maxlength="2" value="<{if $data_decimal_places ne ''}><{$data_decimal_places}><{else}><{$default_decimal_places}><{/if}>" <{$disabled_arr}> />
+      	<{if !empty($disabled_arr)}>
+      	<input type="hidden" name="data_decimal_places" value="<{$data_decimal_places}>">
+      	<{/if}>
+	</td>
+	<td style="width: 40%; text-align: left;" class="odd">&nbsp;&nbsp;<{if $data_decimal_places!=$detailInfo.b_data_decimal_places}><span class="<{$dirname}>_diff"><{$detailInfo.b_data_decimal_places|xoops_escape}></span><{else}><{$detailInfo.b_data_decimal_places|xoops_escape}><{/if}></td>
+  </tr>
+  <{/if}>
+  <tr>
+    <td style="width: 20%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DEFAULT_VALUE}></td>
+    <td style="width: 40%; text-align: left;" class="even">&nbsp;&nbsp;<{$default_block}></td>
+    <td style="width: 40%; text-align: left;" class="even"><pre>&nbsp;<{if $default_block!=$detailInfo.b_default_value}><span class="<{$dirname}>_diff"><{$detailInfo.b_default_value|xoops_escape}></span></pre><{else}><{$detailInfo.b_default_value|xoops_escape}><{/if}></td>
+  </tr>
+  <tr>
+    <td style="width: 20%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_ESSENTIAL}></td>
+    <td style="width: 40%; text-align: left;" class="odd">&nbsp;
+        <{if $essential=='1'}>
+        <input type="checkbox" name="essential" value="1" checked />
+    	<{else}>
+    	<input type="checkbox" name="essential" value="1" />
+    	<{/if}>
+    </td>
+    <td style="width: 40%; text-align: left;" class="odd">&nbsp;
+        <{if $detailInfo.b_essential=='1'}>
+    	<{if $essential=='0'}><span class="<{$dirname}>_diff"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_ESSENTIAL}></span><{else}><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_ESSENTIAL}><{/if}>
+    	<{/if}>
+    	<{if $detailInfo.b_essential=='0'}>
+    	<{if $essential=='1'}><span class="<{$dirname}>_diff"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_NONESSENTIAL}></span><{else}><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_NONESSENTIAL}><{/if}>
+    	<{/if}>
+    </td>
+  </tr>
+  <tr>
+    <td style="width: 20%; text-align: left;" class="head" rowspan="3"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DISPLAY}></td>
+    <td style="width: 40%; text-align: left;" class="even">&nbsp;&nbsp;<{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DETAIL_DISPLAY}>&nbsp;&nbsp;&nbsp;&nbsp;
+       	<{if $detail_display=='1'}>
+    	<input type="checkbox" name="detail_display" value="1" checked />
+    	<{else}>
+    	<input type="checkbox" name="detail_display" value="1" />
+    	<{/if}>
+    	<br /><span style="font-weight: normal;"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DETAIL_DISPLAY_DESC}></span>
+    </td>
+    <td style="width: 40%; text-align: left;" class="even">&nbsp;&nbsp;
+        <{if $detailInfo.b_detail_display=='1'}>
+    	<{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DETAIL_DISPLAY}>&nbsp;&nbsp;&nbsp;&nbsp;<{if $detail_display=='0'}><span class="<{$dirname}>_diff"><{$smarty.const._AM_XOONIPS_LABEL_HAVE}></span><{else}><{$smarty.const._AM_XOONIPS_LABEL_HAVE}><{/if}>
+    	<{/if}>
+    	<{if $detailInfo.b_detail_display=='0' }>
+    	<{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DETAIL_DISPLAY}>&nbsp;&nbsp;&nbsp;&nbsp;<{if $detail_display=='1'}><span class="<{$dirname}>_diff"><{$smarty.const._AM_XOONIPS_LABEL_NONE}></span><{else}><{$smarty.const._AM_XOONIPS_LABEL_NONE}><{/if}>
+    	<{/if}>
+    </td>
+  </tr>
+  <tr>
+    <td style="width: 40%; text-align: left;" class="odd">&nbsp;&nbsp;<{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DETAIL_TARGET}>&nbsp;&nbsp;&nbsp;&nbsp;
+        <{if $detail_target=='1'}>
+    	<input type="checkbox" name="detail_target" value="1" checked />
+    	<{else}>
+    	<input type="checkbox" name="detail_target" value="1" />
+    	<{/if}>
+    	<br /><span style="font-weight: normal;"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DETAIL_TARGET_DESC}></span>
+    </td>
+    <td style="width: 40%; text-align: left;" class="odd">&nbsp;&nbsp;
+        <{if $detailInfo.b_detail_target=='1'}>
+    	<{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DETAIL_TARGET}>&nbsp;&nbsp;&nbsp;&nbsp;<{if $detail_target=='0'}><span class="<{$dirname}>_diff"><{$smarty.const._AM_XOONIPS_LABEL_HAVE}></span><{else}><{$smarty.const._AM_XOONIPS_LABEL_HAVE}><{/if}>
+    	<{/if}>
+    	<{if $detailInfo.b_detail_target=='0' }>
+    	<{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DETAIL_TARGET}>&nbsp;&nbsp;&nbsp;&nbsp;<{if $detail_target=='1'}><span class="<{$dirname}>_diff"><{$smarty.const._AM_XOONIPS_LABEL_NONE}></span><{else}><{$smarty.const._AM_XOONIPS_LABEL_NONE}><{/if}>
+    	<{/if}>
+    </td>
+  </tr>
+  <tr>
+    <td style="width: 40%; text-align: left;" class="even">&nbsp;&nbsp;<{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_SCOPE_SEARCH}>&nbsp;&nbsp;&nbsp;&nbsp;
+        <{if $scope_search=='1'}>
+    	<input type="checkbox" name="scope_search" value="1" checked <{$scope_search_arr}> />
+    	<{else}>
+    	<input type="checkbox" name="scope_search" value="1" <{$scope_search_arr}> />
+    	<{/if}>
+    	<input type="hidden" name="scope_search_arr" value="<{$scope_search_arr}>">
+    	<br /><span style="font-weight: normal;"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_SCOPE_SEARCH_DESC}></span>
+    </td>
+    <td style="width: 40%; text-align: left;" class="even">&nbsp;&nbsp;
+        <{if $detailInfo.b_scope_search=='1'}>
+    	<{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_SCOPE_SEARCH}>&nbsp;&nbsp;&nbsp;&nbsp;<{if $scope_search=='0'}><span class="<{$dirname}>_diff"><{$smarty.const._AM_XOONIPS_LABEL_HAVE}></span><{else}><{$smarty.const._AM_XOONIPS_LABEL_HAVE}><{/if}>
+    	<{/if}>
+    	<{if $detailInfo.b_scope_search=='0' }>
+    	<{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_SCOPE_SEARCH}>&nbsp;&nbsp;&nbsp;&nbsp;<{if $scope_search=='1'}><span class="<{$dirname}>_diff"><{$smarty.const._AM_XOONIPS_LABEL_NONE}></span><{else}><{$smarty.const._AM_XOONIPS_LABEL_NONE}><{/if}>
+    	<{/if}>
+    </td>
+  </tr>
+  <{if !is_null($detailInfo.b_nondisplay)}>
+  <tr>
+    <td style="width: 20%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_NONDISPLAY}></td>
+    <td style="width: 40%; text-align: left;" class="odd">&nbsp;
+        <{if $nondisplay=='1'}>
+    	<input type="checkbox" name="nondisplay" value="1" checked />
+    	<{else}>
+    	<input type="checkbox" name="nondisplay" value="1" />
+    	<{/if}>
+    	<br /><span style="font-weight: normal;"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_NONDISPLAY_DESC}></span>
+    </td>
+    <td style="width: 40%; text-align: left;" class="odd">&nbsp;&nbsp;
+        <{if $detailInfo.b_nondisplay=='1'}>
+    	<{if $nondisplay=='0'}><span class="<{$dirname}>_diff"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_NONDISPLAY}></span><{else}><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_NONDISPLAY}><{/if}>
+    	<{/if}>
+    	<{if $detailInfo.b_nondisplay=='0' }>
+    	<{if $nondisplay=='1'}><span class="<{$dirname}>_diff"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DISPLAY}></span><{else}><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DISPLAY}><{/if}>
+    	<{/if}>
+    </td>
+  </tr>
+  <{/if}>
+</table>
+<div style="text-align: left">
+	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_BACK}>"
+	onclick="window.location='index.php?action=PolicyItemField'" />&nbsp;&nbsp;
+	<{if !$disedi}>
+ 	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_UPDATE}>" onclick="op.value='editsave'; mode.value=0; submit();" />&nbsp;&nbsp;
+	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_RELEASE}>" onclick="op.value='editsave'; mode.value=1; submit();"/>
+    <{/if}>
+</div>
+</form>
+<{include file="file:admin_footer.inc.html"}>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<{foreach item=i key=k from=$indexes}>
+  <sitemap>
+    <loc>
+      <{$smarty.const.XOOPS_URL}>/modules/<{$dirname}>/sitemaps.php/sitemap.xml?id=<{$i}>
+    </loc>
+    <lastmod><{$lastmod}></lastmod>
+  </sitemap>
+<{/foreach}>
+</sitemapindex>

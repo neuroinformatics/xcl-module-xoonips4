@@ -1,0 +1,31 @@
+<{include file="file:admin_header.inc.html"}>
+
+<table width="100%" cellspacing="1" class="outer">
+<tbody>
+  <tr>
+    <th style="width: 85%;"><{"`$constpref`_POLICY_ITEM_FIELD_SELECT_NAME"|constant}></th>
+    <th style="width: 15%;"><{"`$constpref`_LANG_ACTION"|constant}></th>
+  </tr>
+<{if !empty($itemFieldSelectNames)}>
+<{foreach item=name from=$itemFieldSelectNames}>
+  <tr class="<{cycle values='odd,even'}>">
+    <td><{$name|xoops_escape}></td>
+    <td style="text-align: center;">
+      <a href="index.php?action=PolicyItemFieldSelectEdit&amp;name=<{$name|xoops_escape}>"><img src="<{"icons/edit.png"|theme}>" alt="<{"`$constpref`_LANG_MODIFY"|constant}>" title="<{"`$constpref`_LANG_MODIFY"|constant}>" /></a>
+<{if !in_array($name, $usedItemFieldSelectNames)}>
+      <a href="index.php?action=PolicyItemFieldSelectDelete&amp;name=<{$name|xoops_escape}>"><img src="<{"icons/delete.png"|theme}>" alt="<{"`$constpref`_LANG_DELETE"|constant}>" title="<{"`$constpref`_LANG_DELETE"|constant}>" /></a>
+<{/if}>
+    </td>
+  </tr>
+<{/foreach}>
+<{else}>
+   <tr>
+    <td class="odd" colspan="4" style="text-align: center;">
+      <span class="notice"><{"`$constpref`_MESSAGE_EMPTY"|constant}></span>
+    </td>
+  </tr>
+<{/if}>
+</tbody>
+</table>
+
+<{include file="file:admin_footer.inc.html"}>

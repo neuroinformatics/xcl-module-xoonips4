@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<{foreach item=i key=itemId from=$items}>
+  <url>
+    <loc>
+      <{$smarty.const.XOOPS_URL}>/modules/<{$dirname}>/<{$i.detail}>
+    </loc>
+    <lastmod><{$i.lastmod}></lastmod>
+    <changefreq>never</changefreq>
+  </url>
+  <{if !empty($i.file_id)}>
+  <url>
+    <loc>
+      <{$smarty.const.XOOPS_URL}>/modules/<{$dirname}>/download.php/<{$i.original_file_name}>?file_id=<{$i.file_id}>
+    </loc>
+  </url>
+    <lastmod><{$i.lastmod}></lastmod>
+    <changefreq>never</changefreq>
+  <{/if}>
+<{/foreach}>
+</urlset>

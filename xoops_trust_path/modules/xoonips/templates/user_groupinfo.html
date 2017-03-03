@@ -1,0 +1,97 @@
+<{include file="db:xoonips_user_header.html"}>
+<h3><{$smarty.const._MD_XOONIPS_LANG_GROUP_INFO}></h3>
+<{if $showThumbnail}>
+<img src="<{$thumbnail|xoops_escape}>" />
+<{/if}>
+<form id="user_groupInfoForm" name="user_groupInfoForm" action="user.php?op=groupList" method="post">
+<{$token_ticket}>
+<table class="outer" cellspacing="1" cellpadding="4">
+ <tr>
+  <td width="40%" class="head"><{$smarty.const._MD_XOONIPS_LANG_GROUP_NAME}></td>
+  <td width="60%" class="<{cycle name="oddeven" values="odd,even"}>">
+ 	<{$group.name|xoops_escape}><{if $group.is_hidden==1}>(secret group)<{/if}>
+  </td>
+ </tr>
+ <tr>
+  <td class="head"><{$smarty.const._MD_XOONIPS_LANG_GROUP_DESCRIPTION}></td>
+  <td class="<{cycle name="oddeven"}>"><pre><{$group.description|xoops_escape}></pre></td>
+ </tr>
+ <tr>
+  <td class="head"><{$smarty.const._MD_XOONIPS_LANG_GROUP_ADMIN}><br /></td>
+  <td class="<{cycle name="oddeven"}>">
+  	<{foreach item=admin from=$admins}>
+    	<{$admin.name|xoops_escape}>
+    	<{if $admin.name}>(<{/if}><{$admin.uname|xoops_escape}><{if $admin.name}>)<{/if}>
+		<br />
+ 	<{/foreach}>
+  </td>
+ </tr>
+ <tr>
+  <td class="head"><{$smarty.const._MD_XOONIPS_LANG_GROUP_MEMBERS}><br /></td>
+  <td class="<{cycle name="oddeven"}>">
+  	<{foreach item=member from=$members}>
+		<{$member.name|xoops_escape}>
+  		<{if $member.name}>(<{/if}><{$member.uname|xoops_escape}><{if $member.name}>)<{/if}>
+    		<{if $member.activate == 1}> (Entry Pending)<{elseif $member.activate == 2}> (Withdraw Pending)<{/if}>
+   		<br />
+  	<{/foreach}>
+  </td>
+ </tr>
+ <tr>
+  <td class="head"><{$smarty.const._MD_XOONIPS_LANG_GROUP_PUBLIC}><br /></td>
+  <td class="<{cycle name="oddeven"}>">
+ 	 <{if $group.is_public eq 1}>
+   		<{$smarty.const._MD_XOONIPS_LANG_ALL}>
+	 <{else}>
+ 		<{$smarty.const._MD_XOONIPS_LANG_GROUP_ONLY}>
+  	<{/if}>
+  </td>
+ </tr>
+ <tr>
+  <td class="head"><{$smarty.const._MD_XOONIPS_LANG_GROUP_JOIN_REQUEST}><br /></td>
+  <td class="<{cycle name="oddeven"}>">
+  	<{if $group.can_join eq 1}>
+  		<{$smarty.const._MD_XOONIPS_LANG_PERMIT}>
+  	<{else}>
+  		<{$smarty.const._MD_XOONIPS_LANG_NO_PERMIT}>
+  	<{/if}>
+  </td>
+ </tr>
+ <tr>
+  <td class="head"><{$smarty.const._MD_XOONIPS_LANG_GROUP_MEMBER_ACCEPT}><br /></td>
+  <td class="<{cycle name="oddeven"}>">
+   	<{if $group.member_accept eq 1}>
+  		<{$smarty.const._MD_XOONIPS_LANG_AUTO}>
+  	<{else}>
+   		<{$smarty.const._MD_XOONIPS_LANG_MANUAL}>
+  	<{/if}>
+  </td>
+ </tr>
+ <tr>
+  <td class="head"><{$smarty.const._MD_XOONIPS_LANG_GROUP_ITEM_ACCEPT}><br /></td>
+  <td class="<{cycle name="oddeven"}>">
+  	<{if $group.item_accept eq 1}>
+    	<{$smarty.const._MD_XOONIPS_LANG_AUTO}>
+	<{else}>
+ 		<{$smarty.const._MD_XOONIPS_LANG_MANUAL}>
+  	<{/if}>
+  </td>
+ </tr>
+ <tr>
+  <td class="head"><{$smarty.const._MD_XOONIPS_LANG_ITEM_LIMIT}></td>
+  <td class="<{cycle name="oddeven"}>"><{$itemNum}>/<{if $itemNumberLimit>0}><{$itemNumberLimit}><{else}><{$smarty.const._MD_XOONIPS_LANG_UNLIMIT}><{/if}></td>
+ </tr>
+ <tr>
+  <td class="head"><{$smarty.const._MD_XOONIPS_LANG_INDEX_LIMIT}></td>
+  <td class="<{cycle name="oddeven"}>"><{$indexNum}>/<{if $indexNumberLimit>0}><{$indexNumberLimit}><{else}><{$smarty.const._MD_XOONIPS_LANG_UNLIMIT}><{/if}></td>
+ </tr>
+ <tr>
+  <td class="head"><{$smarty.const._MD_XOONIPS_LANG_ITEM_STORAGE_LIMIT}></td>
+  <td class="<{cycle name="oddeven"}>"><{$fileSize}>/<{if $itemStorageLimit>0}><{$itemStorageLimit}><{else}><{$smarty.const._MD_XOONIPS_LANG_UNLIMIT}><{/if}></td>
+ </tr>
+</table>
+<div style="text-align: center">
+ <input class="formButton" type="submit" value="<{$smarty.const._MD_XOONIPS_LANG_BACK}>" />
+</div>
+</form>
+<{include file="db:xoonips_user_footer.html"}>

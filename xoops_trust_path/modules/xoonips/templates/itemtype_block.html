@@ -1,0 +1,22 @@
+<table style="width: auto">
+ <tr>
+  <td>
+   <img src="<{$icon}>" alt="<{$displayName|xoops_escape}>" />
+  </td>
+  <td style="vertical-align: middle; font-size: large; ">
+   <a href="<{$xoops_url}>/modules/<{$dirname}>/search.php?op=advanced&amp;search_itemtype=<{$itemtypeId}>"><{$displayName|xoops_escape}></a>
+  </td>
+ </tr>
+</table>
+
+<hr />
+<{$explanation|xoops_escape}>
+
+<br />
+<{if !empty($searchURLs) }>
+  <{foreach from=$searchURLs item=searchURL name=searchURLs}>
+   <{if !$smarty.foreach.searchURLs.first }> / <{/if}>
+   <a href="<{$xoops_url}>/modules/<{$dirname}>/search.php?op=advanced&amp;search_itemtype=<{$itemtypeId}>&amp;search_subtype=<{$searchURL.subtypeId}>">
+   <{$searchURL.subtypeDisplayName|xoops_escape}></a>
+  <{/foreach}>
+<{/if}>

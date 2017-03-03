@@ -1,0 +1,212 @@
+<{include file="db:`$dirname`_header.html"}>
+<script type="text/javascript" charset="utf-8">
+jQuery.noConflict();
+function submit_edit_index(){
+    var form = jQuery('#<{$dirname}>_edit_index_form');
+    form.submit();
+    return false;
+}
+function submit_index_description(){
+    var form = jQuery('#<{$dirname}>_edit_index_description_form');
+    form.submit();
+    return false;
+}
+function submit_order_dir( str ){
+    var form = jQuery('#<{$dirname}>_order_itemcount_form');
+    jQuery('#<{$dirname}>_order_dir').val(str);
+    form.submit();
+    return false;
+}
+</script>
+<h4><{$smarty.const._MD_XOONIPS_ITEM_LISTING_ITEM}></h4>
+<{if isset($index_path) }>
+<form action="export.php" method="post">
+<input type="hidden" name="index_id" value="<{$index_id}>" />
+<input type="hidden" name="op" value="" />
+<{foreach item=index from=$index_path}>
+ / <a href="list.php?index_id=<{$index.index_id}>"><{$index.html_title|xoops_escape}></a>
+<{/foreach}>&nbsp;&nbsp;
+<{$description|xoops_escape}>
+<span class="no_print_span">
+<{if $edit_index }>
+ <input class="formButton" type="button" name="edit_index" value="<{$smarty.const._MD_XOONIPS_ITEM_EDIT_INDEX_BUTTON_LABEL}>" onclick="submit_edit_index();" />
+ <input class="formButton" type="button" name="edit_index" value="<{$smarty.const._MD_XOONIPS_ITEM_INDEX_DESCRIPTION_BUTTON_LABEL}>" onclick="submit_index_description();" />
+<{/if}>
+<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_PRINT_FRIENDLY_BUTTON_LABEL}>" onclick="window.open('<{$smarty.const.XOOPS_URL}>/modules/xoonips/list.php?isPrint=print&index_id=<{$index_id}>&page=<{$page}>&orderby=<{$orderby}>&itemcount=<{$itemcount}>&num_of_items=<{$num_of_items}>');" />
+<{if !empty($export_enabled)}>
+ <input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_LABEL_EXPORT}>" onclick="form.action='list.php'; op.value='<{if $export_select==1}>exportselect<{else}>export<{/if}>'; submit();" />
+<{/if}>
+</span>
+<br />
+</form>
+
+<table>
+
+<tr>
+    <{if !empty($icon)}>
+    <td width="160" style="vertical-align:middle; text-align:center;">
+       <img src="<{$icon|xoops_escape}>" width="150px" alt="" />
+    </td>
+    <{/if}>
+    <td>
+        <{if !empty($detailed_title)}>
+        <h3><{$detailed_title|xoops_escape}></h3>
+        <{/if}>
+        <{if !empty($detailed_description)}>
+        <pre style="font-size:14px;word-wrap:break-word;white-space:pre-wrap;overflow:auto;"><{$detailed_description|xoops_escape}></pre>
+        <{/if}>
+    </td>
+</tr>
+</table>
+
+
+<{foreach item=idx from=$my_indexes name=my_idx}>
+<{if $smarty.foreach.my_idx.first}>
+<table width="100%" border="0" cellspacing="5">
+<{/if}>
+  <tr valign="top">
+    <td class="<{cycle values="odd,even"}>">
+     <{$idx}>
+    </td>
+  </tr>
+<{if $smarty.foreach.my_idx.last}>
+</table>
+<{/if}>
+<{/foreach}>
+<{/if}>
+
+<{if $item_htmls}>
+<form action="" id="<{$dirname}>_order_itemcount_form">
+<div style="text-align: center;" class="no_print_div">
+<table width="100%" border="0" cellspacing="5">
+  <tr valign="top">
+    <td class="odd">
+     <{$smarty.const._MD_XOONIPS_ITEM_ORDER_BY}>
+     <select name="orderby" onchange="submit();">
+		<{foreach key=key item=item from=$order_by_select}>
+      	<option value="<{$key}>" <{if $key==$orderby}> selected="selected" <{/if}> ><{$item}></option>
+		<{/foreach}>
+     </select>
+     <input type="hidden" id="<{$dirname}>_order_dir" name="order_dir" value="<{$order_dir}>" />
+	 <{if $order_dir == $smarty.const.XOONIPS_ASC }>
+    	<{$smarty.const._MD_XOONIPS_ITEM_ASCEND}>
+    	<a href="#" onclick="submit_order_dir('<{$smarty.const.XOONIPS_DESC}>');"><{$smarty.const._MD_XOONIPS_ITEM_DESCEND}></a>
+	 <{else}>
+    	<a href="#" onclick="submit_order_dir('<{$smarty.const.XOONIPS_ASC}>');"><{$smarty.const._MD_XOONIPS_ITEM_ASCEND}></a>
+    	<{$smarty.const._MD_XOONIPS_ITEM_DESCEND}>
+	 <{/if}>
+    </td>
+    <td class="odd">
+     <{$smarty.const._MD_XOONIPS_ITEM_NUM_OF_ITEM_PER_PAGE}>
+     <select name="itemcount" onchange="submit();">
+		<{foreach item=i from=$item_count_select}>
+      	<option value="<{$i}>" <{if $i==$itemcount }> selected="selected" <{/if}> ><{$i}></option>
+		<{/foreach}>
+     </select>
+    </td>
+  </tr>
+</table>
+</div>
+<input type="hidden" name="page" value="1" />
+<input type="hidden" name="num_of_items" value="<{$num_of_items}>" />
+<{if $index_id > 0}>
+<input type="hidden" name="index_id" value="<{$index_id}>" />
+<{/if}>
+</form>
+<{/if}>
+
+<{if $page_no_label}><p><{$page_no_label}></p><{/if}>
+
+<{if $maxpage > 1}>
+<div align="right">
+<{if $page > 1}>
+<{if $index_id > 0}>
+<a href="?index_id=<{$index_id}>&amp;page=<{$page-1}>&amp;orderby=<{$orderby}>&amp;itemcount=<{$itemcount}>&amp;num_of_items=<{$num_of_items}>">PREV</a>&nbsp;
+<{else}>
+<a href="?page=<{$page-1}>&amp;orderby=<{$orderby}>&amp;itemcount=<{$itemcount}>&amp;num_of_items=<{$num_of_items}>">PREV</a>&nbsp;
+<{/if}>
+<{else}>
+PREV&nbsp;
+<{/if}>
+
+<{foreach item=i from=$pages}>
+<{if $i==$page}>
+<{$i}>
+<{else}>
+ <{if $index_id > 0}>
+<a href="?index_id=<{$index_id}>&amp;page=<{$i}>&amp;orderby=<{$orderby}>&amp;itemcount=<{$itemcount}>&amp;num_of_items=<{$num_of_items}>"><{$i}></a>
+ <{else}>
+<a href="?page=<{$i}>&amp;orderby=<{$orderby}>&amp;itemcount=<{$itemcount}>&amp;num_of_items=<{$num_of_items}>"><{$i}></a>
+ <{/if}>
+<{/if}>
+&nbsp;
+<{/foreach}>
+
+<{if $page < $maxpage }>
+ <{if $index_id > 0}>
+<a href="?index_id=<{$index_id}>&amp;page=<{$page+1}>&amp;orderby=<{$orderby}>&amp;itemcount=<{$itemcount}>&amp;num_of_items=<{$num_of_items}>">NEXT</a>
+ <{else}>
+<a href="?page=<{$page+1}>&amp;orderby=<{$orderby}>&amp;itemcount=<{$itemcount}>&amp;num_of_items=<{$num_of_items}>">NEXT</a>
+ <{/if}>
+<{else}>
+NEXT
+<{/if}>
+</div>
+<{/if}>
+
+<{if $item_htmls}>
+<table width="100%" border="0" cellspacing="5">
+<{foreach item=i from=$item_htmls}>
+  <tr valign="top">
+    <td  class="<{cycle values="odd,even"}>">
+     <{$i.html}>
+    </td>
+  </tr>
+<{/foreach}>
+</table>
+<{/if}>
+
+<{if $maxpage > 1}>
+<div align="right">
+<{if $page > 1}>
+<{if $index_id > 0}>
+<a href="?index_id=<{$index_id}>&amp;page=<{$page-1}>&amp;orderby=<{$orderby}>&amp;itemcount=<{$itemcount}>&amp;num_of_items=<{$num_of_items}>">PREV</a>&nbsp;
+<{else}>
+<a href="?page=<{$page-1}>&amp;orderby=<{$orderby}>&amp;itemcount=<{$itemcount}>&amp;num_of_items=<{$num_of_items}>">PREV</a>&nbsp;
+<{/if}>
+<{else}>
+PREV&nbsp;
+<{/if}>
+
+<{foreach item=i from=$pages}>
+<{if $i==$page}>
+<{$i}>
+<{else}>
+ <{if $index_id > 0}>
+<a href="?index_id=<{$index_id}>&amp;page=<{$i}>&amp;orderby=<{$orderby}>&amp;itemcount=<{$itemcount}>&amp;num_of_items=<{$num_of_items}>"><{$i}></a>
+ <{else}>
+<a href="?page=<{$i}>&amp;orderby=<{$orderby}>&amp;itemcount=<{$itemcount}>&amp;num_of_items=<{$num_of_items}>"><{$i}></a>
+ <{/if}>
+<{/if}>
+&nbsp;
+<{/foreach}>
+
+<{if $page < $maxpage }>
+ <{if $index_id > 0}>
+<a href="?index_id=<{$index_id}>&amp;page=<{$page+1}>&amp;orderby=<{$orderby}>&amp;itemcount=<{$itemcount}>&amp;num_of_items=<{$num_of_items}>">NEXT</a>
+ <{else}>
+<a href="?page=<{$page+1}>&amp;orderby=<{$orderby}>&amp;itemcount=<{$itemcount}>&amp;num_of_items=<{$num_of_items}>">NEXT</a>
+ <{/if}>
+<{else}>
+NEXT
+<{/if}>
+</div>
+<{/if}>
+<br />
+<form action="editindex.php" method="get" id="<{$dirname}>_edit_index_form">
+<input type="hidden" name="index_id" value="<{$index_id}>" />
+</form>
+<form action="indexdescription.php" method="get" id="<{$dirname}>_edit_index_description_form">
+<input type="hidden" name="index_id" value="<{$index_id}>" />
+</form>
+<{include file="db:`$dirname`_footer.html"}>

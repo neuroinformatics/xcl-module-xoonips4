@@ -1,0 +1,28 @@
+<b><{$smarty.const._MD_XOONIPS_ITEM_REGISTER_ITEM_TITLE}></b>
+
+<table cellspacing="1">
+  <tr>
+	  <td class="head" style="width: 25%; text-align: center;"><{$smarty.const._MD_XOONIPS_ITEM_SELECT_ITEM_TYPE_LABEL}></td>
+	  <td class="even" style="width: 5%; text-align: center;">-></td>
+	  <td class="even" style="width: 25%; text-align: center;"><{$smarty.const._MD_XOONIPS_ITEM_REGISTER_ITEM_TITLE}></td>
+	  <td class="even" style="width: 5%; text-align: center;">-></td>
+	  <td class="even" style="width: 25%; text-align: center;"><{$smarty.const._MD_XOONIPS_ITEM_REGISTER_ITEM_CONFIRM}></td>
+	  <td style="width: 15%; text-align: center;"></td>
+  </tr>
+</table>
+<form id="<{$dirname}>_registerselectitemtypeform" name="<{$dirname}>_registerselectitemtypeform" action="<{$next_url}>" method="post">
+<input type="hidden" name="op" value="register" />
+<div style="text-align: center">
+<{$smarty.const._MD_XOONIPS_ITEM_SELECT_ITEM_TYPE_LABEL}>
+<select name="itemtype_id">
+	<{foreach item=itemtype from=$itemtypelist}>
+		<option value="<{$itemtype.item_type_id}>"><{$itemtype.name|xoops_escape}></option>
+	<{/foreach}>
+</select>
+</div>
+<br/>
+<div style="text-align: center">
+ <input class="formButton" type="submit" value="<{$smarty.const._MD_XOONIPS_ITEM_NEXT_BUTTON_LABEL}>" />
+ <input type="button" rel="close" value="<{$smarty.const._MD_XOONIPS_LABEL_CANCEL}>" />
+</div>
+</form>

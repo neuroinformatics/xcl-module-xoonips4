@@ -1,0 +1,55 @@
+<div id="<{$xoops_dirname}>_admin">
+
+<{if !empty($xoops_breadcrumbs)}>
+<div class="adminnavi">
+<{foreach name=breadcrumbs item=item from=$xoops_breadcrumbs}>
+<{if $item.url}>
+  <a href="<{$item.url}>"><{$item.name|xoops_escape}></a>
+<{else}>
+  <span class="adminnaviTitle"><{$item.name|xoops_escape}></span>
+<{/if}>
+<{if !$smarty.foreach.breadcrumbs.last}>
+  &raquo;&raquo;
+<{/if}>
+<{/foreach}>
+</div>
+<{/if}>
+
+<h3 class="admintitle"><{$title|xoops_escape}></h3>
+
+<{if $description}>
+<div class="tips">
+  <div class="admininfo">
+    <{if is_array($description)}>
+    <ul>
+    <{foreach item=description2 from=$description}>
+      <li><{$description2|xoops_escape}></li>
+    <{/foreach}>
+    </ul>
+    <{else}>
+    <{$description|xoops_escape}>
+    <{/if}>
+  </div>
+</div>
+<{/if}>
+
+<{if !empty($toptab)}>
+<div style="float:right">
+<ul class="toptab">
+<{foreach item=tab from=$toptab}>
+  <li class="<{$tab.class}>"><a href="<{$tab.link|xoops_escape}>"><{$tab.title|xoops_escape}></a></li>
+<{/foreach}>
+</ul>
+</div><br style="clear:both" />
+<{/if}>
+
+<{if $actionForm && $actionForm->hasError()}>
+<div class="error">
+  <ul>
+    <{foreach item=message from=$actionForm->getErrorMessages()}>
+      <li><{$message|escape}></li>
+    <{/foreach}>
+  </ul>
+</div>
+<{/if}>
+

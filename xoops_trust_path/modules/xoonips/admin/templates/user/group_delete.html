@@ -1,0 +1,81 @@
+<div class="adminnavi">
+  <a href="./index.php"><{$smarty.const._MI_USER_NAME}></a>
+  &raquo;&raquo; <a href="./index.php?action=GroupList"><{$smarty.const._AD_USER_LANG_GROUP_LIST}></a>
+<{if $isExtended}>
+  &raquo;&raquo; <span class="adminnaviTitle"><{"`$constpref`_USER_LANG_GROUP_DELETE"|constant}></span>
+<{else}>
+  &raquo;&raquo; <span class="adminnaviTitle"><{$smarty.const._AD_USER_LANG_GROUP_DELETE}></span>
+<{/if}>
+</div>
+
+<{if $isExtended}>
+<h3 class="admintitle"><{"`$constpref`_USER_LANG_GROUP_DELETE"|constant}> (<{$object->getShow('name')}>)</h3>
+<{else}>
+<h3 class="admintitle"><{$smarty.const._AD_USER_LANG_GROUP_DELETE}> (<{$object->getShow('name')}>)</h3>
+<{/if}>
+
+<div class="confirm">
+<{if $deleteRequired}>
+  <{"`$constpref`_USER_ERROR_GROUP_DELETE_REQUIRED"|constant}><br />
+<{else}>
+<{if $isExtended}>
+  <{"`$constpref`_USER_LANG_GROUP_DELETE_ADVICE"|constant}><br />
+<{else}>
+  <{$smarty.const._AD_USER_LANG_GROUP_DELETE_ADVICE}><br />
+<{/if}>
+  <{$smarty.const._AD_USER_LANG_GROUP_DELETE_ADVICE2}>
+<{/if}>
+</div>
+
+<{if $actionForm->hasError()}>
+<div class="error">
+  <ul>
+    <{foreach item=message from=$actionForm->getErrorMessages()}>
+      <li><{$message|xoops_escape}></li>
+    <{/foreach}>
+  </ul>
+</div>
+<{/if}>
+
+<form action="?action=GroupDelete" method="post">
+  <{xoops_token form=$actionForm}>
+  <{xoops_input type=hidden name=groupid value=$object->get('groupid')}>
+<table class="outer">
+  <tr>
+<{if $isExtended}>
+    <th colspan="2"><img src="<{"icons/group.png"|theme}>" alt="<{$smarty.const._AD_USER_LANG_GROUP}>" title="<{$smarty.const._AD_USER_LANG_GROUP}>" />
+    <{"`$constpref`_USER_LANG_GROUP_DELETE"|constant}> (<{$object->getShow('name')}>)</th>
+<{else}>
+    <th colspan="2"><img src="<{"icons/group.png"|theme}>" alt="<{$smarty.const._AD_USER_LANG_GROUP}>" title="<{$smarty.const._AD_USER_LANG_GROUP}>" /> <{$smarty.const._AD_USER_LANG_GROUP_DELETE}> (<{$object->getShow('name')}>)</th>
+<{/if}>
+  </tr>
+  <tr>
+    <td class="head"><{$smarty.const._AD_USER_LANG_GROUP_GID}></td>
+    <td class="<{cycle values="odd,even"}>"><{$object->getShow('groupid')}></td>
+  </tr>
+  <tr>
+    <td class="head"><{$smarty.const._AD_USER_LANG_GROUP_NAME}></td>
+    <td class="<{cycle values="odd,even"}>"><{$object->getShow('name')}></td>
+  </tr>
+  <tr>
+    <td class="head"><{$smarty.const._AD_USER_LANG_GROUP_DESC}></td>
+    <td class="<{cycle values="odd,even"}>"><{$object->getShow('description')}></td>
+  </tr>
+  <tr>
+    <td class="head"><{$smarty.const._AD_USER_LANG_GROUP_TYPE}></td>
+    <td class="<{cycle values="odd,even"}>"><{$object->getShow('group_type')}></td>
+  </tr>
+  <tr>
+    <td class="head"><{$smarty.const._AD_USER_LANG_GROUP_AMMO}></td>
+    <td class="<{cycle values="odd,even"}>"><{$object->getUserCount()|xoops_escape}></td>
+  </tr>
+  <tr>
+    <td class="foot" colspan="2">
+<{if !$deleteRequired}>
+        <input class="formButton" type="submit" value="<{$smarty.const._DELETE}>" />
+<{/if}>
+        <input class="formButton" type="submit" value="<{$smarty.const._BACK}>" name="_form_control_cancel" />
+    </td>
+  </tr>
+</table>
+</form>

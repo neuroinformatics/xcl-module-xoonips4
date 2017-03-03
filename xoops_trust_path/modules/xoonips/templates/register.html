@@ -1,0 +1,240 @@
+<script type="text/javascript" charset="utf-8">
+
+var <{$dirname}>Edit = new XoonipsLibrary.edit('<{$xoops_url}>', '<{$dirname}>', 'registerform', 'register');
+
+(function($) {
+$(function() {
+'use strict';
+
+<{$dirname}>Edit.setMsgCss();
+<{$dirname}>Edit.sortable();
+
+$('#<{$dirname}>_registerform :button[rel^="<{$mytrustdirname}>Popin"]').<{$mytrustdirname}>Popin({
+  width : 400,
+  height: 400,
+  callback: function(id, value) {
+    return <{$dirname}>Edit.userCallback(id, value);
+  }
+});
+
+$('#<{$dirname}>_registerform :button[rel^="relatedItemPopin"]').<{$mytrustdirname}>Popin({
+  width : 800,
+  height: 600,
+  overflow: 'scroll',
+  callback: function(id, value) {
+    <{$dirname}>Edit.relatedItemCallback(id, value, null);
+  }
+});
+
+$('#<{$dirname}>_registerform :input[rel="date"]').change(function(){
+  <{$dirname}>Edit.changeDate(jQuery(this).attr('id'));
+});
+$('#<{$dirname}>_registerform :input[type=file]').change(function(){
+  <{$dirname}>Edit.changeFile();
+});
+<{if ($relation === false)}>
+  alert('failed to get resources');
+<{/if}>
+});
+})(jQuery);
+</script>
+<h4><{$smarty.const._MD_XOONIPS_ITEM_REGISTER_ITEM_TITLE}></h4>
+<table cellspacing="1">
+	<tr>
+		<td class="even" style="width: 25%; text-align: center;"><{$smarty.const._MD_XOONIPS_ITEM_SELECT_ITEM_TYPE_LABEL}></td>
+		<td class="even" style="width: 5%; text-align: center;">-></td>
+		<td class="head" style="width: 25%; text-align: center;"><{$smarty.const._MD_XOONIPS_ITEM_REGISTER_ITEM_TITLE}></td>
+		<td class="even" style="width: 5%; text-align: center;">-></td>
+		<td class="even" style="width: 25%; text-align: center;"><{$smarty.const._MD_XOONIPS_ITEM_REGISTER_ITEM_CONFIRM}></td>
+		<td style="width: 15%; text-align: center;"></td>
+	</tr>
+</table>
+
+<table><tr><td width="30%">
+<b><{$smarty.const._MD_XOONIPS_ITEM_SELECT_SUB_INDEX_TREE}></b><br />
+<script type="text/javascript" charset="utf-8">
+jQuery(function(){
+	jQuery('#<{$dirname}>_item_regist_index_tree_tabs').tabs({
+        active: jQuery.cookie('register_index_tree_selected_tab'),
+        activate: function(event, ui) {
+            register_index_tree_selected_tab = ui.newTab.index();
+            jQuery.cookie('register_index_tree_selected_tab', register_index_tree_selected_tab, { expires: 1 });
+        },
+	});
+});
+</script>
+<script type="text/javascript">
+jQuery(function(){
+    var data = "action=Ajax&method=GetIndexesInfo&function=register";
+    jQuery.ajax({
+        type: 'GET',
+        scriptCharset: 'utf-8',
+        dataType: 'json',
+        url: '<{$smarty.const.XOOPS_URL}>/modules/<{$dirname}>/index.php',
+        data: data,
+        success: function(json) {
+            jQuery.each(json.trees, function() {
+                jQuery('#' + json.dirname + '_item_regist_index_tree_div_' + this.index_id).jstree({
+                    "core" : {
+                        "data" : this.html
+                    },
+                    "plugins" : [ "checkbox" ],
+                    "checkbox" : {
+                        "three_state" : false
+                    }
+                });
+            });
+            var checkedIndexId = jQuery('#' + json.dirname + 'CheckedXID');
+            jQuery("[id^=" + json.dirname + '_item_regist_index_tree_div_' + "]").bind("changed.jstree", function (e, data) {
+                var checkedIndexes = [];
+                jQuery("[id^=" + json.dirname + '_item_regist_index_tree_div_' + "]").each(function() {
+                    checked = jQuery(this).jstree("get_selected", true);
+                    jQuery.each(checked, function() {
+                        checkedIndexes.push(this.id);
+                    });
+                });
+                checkedIndexId.val(checkedIndexes.join(","));
+                jQuery.cookie('register_checked_indexes', checkedIndexes.join(":"), { expires: 1 });
+            });
+
+            jQuery('#' + json.dirname + '_register_open_all').click(function(){
+                jQuery("[id^=" + json.dirname + '_item_regist_index_tree_div_' + "]").each(function() {
+                    jQuery(this).jstree('open_all');
+                });
+            });
+
+            jQuery('#' + json.dirname + '_register_close_all').click(function(){
+                jQuery("[id^=" + json.dirname + '_item_regist_index_tree_div_' + "]").each(function() {
+                    jQuery(this).jstree('close_all');
+                });
+            });
+
+            jQuery('#' + json.dirname + '_index_tree_clear_button').click(function(){
+                jQuery("[id^=" + json.dirname + '_item_regist_index_tree_div_' + "]").each(function() {
+                    jQuery(this).jstree('uncheck_all');
+                });
+            });
+
+            jQuery("[id^=" + json.dirname + '_item_regist_index_tree_div_' + "]").bind("open_node.jstree", function (e, data) {
+                var nodes = jQuery.cookie("register_opened_indexes");
+                if (nodes == null) {
+                    node = data.node.id;
+                    jQuery.cookie('register_opened_indexes', node, { expires: 1 });
+                } else {
+                    nodes = nodes + ":" + data.node.id;
+                    jQuery.cookie('register_opened_indexes', nodes, { expires: 1  });
+                }
+            });
+
+            jQuery("[id^=" + json.dirname + '_item_regist_index_tree_div_' + "]").bind("close_node.jstree", function (e, data) {
+                var nodes = jQuery.cookie("register_opened_indexes");
+                if (nodes == null) {
+                    return false;
+                }
+                nodes = jQuery.cookie("register_opened_indexes").split(":");
+                close_node = data.node.id;
+                register_opened_indexes = "";
+                first = true;
+                for (i = 0; i < nodes.length; i++) {
+                    if (nodes[i] != close_node && nodes[i] != null) {
+                        if (first) {
+                            register_opened_indexes = nodes[i];
+                            first = false;
+                        } else {
+                            register_opened_indexes = register_opened_indexes + ":" + nodes[i];
+                        }
+                    }
+                }
+                jQuery.cookie('register_opened_indexes', register_opened_indexes, { expires: 1 });
+            });
+
+            jQuery("[id^=" + json.dirname + '_item_regist_index_tree_div_' + "]").bind("scroll", function () {
+                idName = jQuery(this).attr("id");
+                jQuery.cookie(idName + '_scroll', jQuery(this).scrollTop(), { expires: 1 });
+            });
+
+            jQuery("[id^=" + json.dirname + '_item_regist_index_tree_div_' + "]").each(function() {
+                idName = jQuery(this).attr("id");
+                position = jQuery.cookie(idName + '_scroll');
+                if (position != null) {
+                    jQuery(this).animate({scrollTop:position});
+                }
+            });
+
+            <{$dirname}>Edit.setIndexTreeButton('_item_regist');
+        }
+    });
+});
+</script>
+<div id="<{$dirname}>_item_regist_treecontrol" style="float: none; clear: both; margin: 0px 0px 3px 0px; padding: 0px;">
+<button class="formButton" id="<{$dirname}>_register_open_all">open all</button>
+<button class="formButton" id="<{$dirname}>_register_close_all">close all</button>
+<button class="formButton" id="<{$dirname}>_index_tree_clear_button">clear</button>
+</div>
+<div style="margin: 0px; padding: 0px;font-size:80%;" id="<{$dirname}>_item_regist_index_tree_tabs">
+<ul>
+<{foreach item=index from=$indexes}>
+	<li><a href="#<{$dirname}>_item_regist_index_tree_div_<{$index.index_id}>"><{$index.title|xoops_escape}></a></li>
+<{/foreach}>
+</ul>
+<{foreach item=tree from=$trees}>
+	<div id="<{$dirname}>_item_regist_index_tree_div_<{$tree.index_id}>" style="width: 230px; height: 550px; overflow: auto; padding: 0px; margin: 0px;">
+	<ul id="<{$dirname}>_item_regist_index_tree_<{$tree.index_id}>" class="filetree">
+	<!-- <{$tree.html}> -->
+	</ul>
+	</div>
+<{/foreach}>
+</div>
+</td>
+<td width="70%">
+<{$errors}>
+<form id="<{$dirname}>_registerform" target="<{$dirname}>_uploadoutputiframe" name="<{$dirname}>_registerform" action="register.php" method="post" enctype="multipart/form-data">
+<input type="hidden" name="itemtype_id" value="<{$itemtype_id}>" />
+<input id="<{$dirname}>_targetItemId" type="hidden" name="targetItemId" value="" />
+<input id="<{$dirname}>_fileuploadclick" type="hidden" name="fileuploadclick" value="0" />
+<{if !empty($registryView)}>
+	<div style="text-align: center; margin: 10px;">
+	<span id="<{$dirname}>_message_label_top">
+	<{$smarty.const._MD_XOONIPS_ITEM_SELECT_PRIVATE_INDEX}>
+	</span>
+	</div>
+<{/if}>
+<{if !empty($system_message)}>
+	<p><{$system_message}></p>
+<{/if}>
+<{if isset($num_of_items_current) && isset($num_of_items_max)}>
+	<{if $num_of_items_max == 0}>
+		<{$smarty.const._MD_XOONIPS_ITEM_NUM_OF_ITEM}>:<{$num_of_items_current}> / <{$smarty.const._MD_XOONIPS_LABEL_UNLIMIT}><br />
+	<{else}>
+		<{$smarty.const._MD_XOONIPS_ITEM_NUM_OF_ITEM}>:<{$num_of_items_current}> / <{$num_of_items_max}><br />
+	<{/if}>
+<{/if}>
+<{if isset($storage_of_items_current) && isset($storage_of_items_max)}>
+	<{if $storage_of_items_max == 0}>
+		<{$smarty.const._MD_XOONIPS_ITEM_STORAGE_OF_ITEM}>:<{$storage_of_items_current}>MB / <{$smarty.const._MD_XOONIPS_LABEL_UNLIMIT}><br />
+	<{else}>
+		<{$smarty.const._MD_XOONIPS_ITEM_STORAGE_OF_ITEM}>:<{$storage_of_items_current}>MB / <{$storage_of_items_max}>MB<br />
+	<{/if}>	
+<{/if}>
+<{if !empty($registryView)}>
+	<table class="outer">
+	<{$registryView}>
+	</table>
+<{/if}>
+<{if !empty($registryView)}>
+	<div style="text-align: center; margin: 10px;">
+	<span id="<{$dirname}>_message_label_bottom">
+	<{$smarty.const._MD_XOONIPS_ITEM_SELECT_PRIVATE_INDEX}>
+	</span></div>
+<{/if}>
+<{if !empty($registryView)}>
+	<div style="text-align: center">
+	<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_NEXT_BUTTON_LABEL}>" onclick="<{$dirname}>Edit.registry()" />
+	<input type="button" rel="close" value="<{$smarty.const._MD_XOONIPS_LABEL_CANCEL}>" />
+	</div>
+	<iframe id="<{$dirname}>_uploadoutputiframe" name="<{$dirname}>_uploadoutputiframe" style="display:none"></iframe>
+<{/if}>
+</td>
+</tr>
+</table>
+</form>

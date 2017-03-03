@@ -1,0 +1,105 @@
+<{include file="db:`$dirname`_header.html"}>
+<script type="text/javascript" charset="utf-8">
+"use strict";
+
+var <{$dirname}>Edit = new XoonipsLibrary.edit('<{$xoops_url}>', '<{$dirname}>', 'modify_form');
+
+(function($) {
+$(function() {
+
+<{$dirname}>Edit.sortable();
+
+$('.<{$dirname}>_sortable tbody').bind('sortstop',function(event, ui) {
+  $('#<{$dirname}>_op').attr('value','save');
+  $('#<{$dirname}>_modify_form').submit();
+});
+$('#<{$dirname}>_modify_form [rel^="<{$mytrustdirname}>Popin"]').<{$mytrustdirname}>Popin({
+  width : 400,
+  height: 280
+});
+
+});
+})(jQuery);
+
+function xoonipsCallback(id, value) {
+  var form = jQuery('#<{$dirname}>_modify_form');
+  jQuery('#<{$dirname}>_url').val(id);
+  jQuery('#<{$dirname}>_redirect_msg').val(value);
+  jQuery('#<{$dirname}>_op').val('finish');
+  form.attr('action', 'editindex.php');
+  form.submit();
+}
+</script>
+<h3><{$smarty.const._MD_XOONIPS_INDEX_EDIT}></h3>
+<{if $error_message}>
+<{foreach item=error_message from=$error_message}>
+  <span style="color: red;"><{$error_message}></span><br />
+<{/foreach}>
+<br />
+<{/if}>
+  <{foreach item=index from=$index_path}>
+  / <a href="editindex.php?index_id=<{$index.index_id}>"><{$index.html_title|xoops_escape}></a>
+  <{/foreach}><hr />
+<{if $limitLabel }>
+<{$limitLabel}>: <{$indexCount}> (max=<{if $indexNumberLimit==0}><{$smarty.const._MD_XOONIPS_LABEL_UNLIMIT}><{else}><{$indexNumberLimit}><{/if}>)<br />
+<{/if}>
+<h4><{$smarty.const._MD_XOONIPS_INDEX_TITLE_MODIFY}></h4>
+<form action="editindex.php" method="post" id="<{$dirname}>_modify_form">
+<input type="hidden" id="<{$dirname}>_op" name="op" value="" />
+<input type="hidden" id="<{$dirname}>_url" name="url" value="" />
+<input type="hidden" id="<{$dirname}>_redirect_msg" name="redirect_msg" value="" />
+<{if $childCount == 0 }>
+<{$smarty.const._MD_XOONIPS_INDEX_NO_INDEX}><br />
+<{if $indexNumberLimit==0 || $indexCount<$indexNumberLimit}>
+<input id="<{$dirname}>_add_button" class="formButton" type="button" href="editindex.php?op=indexEdit&amp;parent_index_id=<{$xid}>" rel="<{$mytrustdirname}>Popin" value="<{$smarty.const._MD_XOONIPS_INDEX_TITLE_ADD}>" />
+<{/if}>
+<{else}>
+<{$token_ticket}>
+<input type="hidden" name="index_id" value="<{$xid}>" id="<{$dirname}>_index_id" />
+<input type="hidden" name="sel_index_id" value="" id="<{$dirname}>_sel_index_id" />
+<table width="100%" class="<{$dirname}>_sortable">
+	<thead>
+	  <tr valign="top">
+	    <th width="30%"><{$smarty.const._MD_XOONIPS_INDEX_NAME}></th>
+	    <th width="57%"><{$smarty.const._MD_XOONIPS_INDEX_TITLE}></th>
+	    <th width="13%"><{$smarty.const._MD_XOONIPS_LABEL_ACTION}></th>
+	  </tr>
+  	</thead>
+  	<tbody>
+<{foreach item=index from=$child_indexes}>
+  <tr valign="top" class="<{cycle values="even,odd" name="c0" }>">
+    <td class="<{$dirname}>_cursor_title">
+    	<input type="hidden" name="indexIds[]" value="<{$index.index_id}>" />
+    	<input type="hidden" name="weights[]" value="<{$index.weight}>" />
+        <a href="editindex.php?index_id=<{$index.index_id}>"><{$index.title|xoops_escape}></a>
+    </td>
+    <td><pre><{$index.detailed_title|xoops_escape}></pre></td>
+    <td>
+    	<{if !$index.isLocked}>
+        <a href="indexdescription.php?index_id=<{$index.index_id}>&back=<{$xid}>"><img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/edit.png" title="<{$smarty.const._MD_XOONIPS_LABEL_MODIFY}>" alt="<{$smarty.const._MD_XOONIPS_LABEL_MODIFY}>" /></a>
+        <a href="editindex.php?op=indexMove&amp;index_id=<{$index.index_id}>" rel="<{$mytrustdirname}>Popin"><img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/folder_move.png" title="<{$smarty.const._MD_XOONIPS_LABEL_MOVE}>" alt="<{$smarty.const._MD_XOONIPS_LABEL_MOVE}>" /></a>
+        <a href="editindex.php?op=indexDelete&amp;index_id=<{$index.index_id}>" rel="<{$mytrustdirname}>Popin"><img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/delete.png" title="<{$smarty.const._MD_XOONIPS_LABEL_DELETE}>" alt="<{$smarty.const._MD_XOONIPS_LABEL_DELETE}>" /></a>
+		<{/if}>
+      </td>
+  </tr>
+<{/foreach}>
+	</tbody>
+</table>
+<table>
+  <tr>
+      <td align="center">
+      <{if $indexNumberLimit==0 || $indexCount<$indexNumberLimit}>
+        <input id="<{$dirname}>_add_button" class="formButton" type="button" href="editindex.php?op=indexEdit&amp;parent_index_id=<{$xid}>" rel="<{$mytrustdirname}>Popin" value="<{$smarty.const._MD_XOONIPS_INDEX_TITLE_ADD}>" />
+	  <{/if}>
+      </td>
+  </tr>
+</table>
+<{/if}>
+</form>
+<table width="100%" border="0" cellspacing="5">
+  <tr>
+    <td align="right"><a href="list.php?index_id=<{$xid}>"><{$smarty.const._MD_XOONIPS_ITEM_LISTING_ITEM}></a> | <a href="<{$xoops_url}>/"><{$smarty.const._MD_XOONIPS_LABEL_HOME}></a></td>
+  </tr>
+</table>
+<hr />
+<{include file="db:`$dirname`_footer.html"}>

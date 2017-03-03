@@ -1,0 +1,31 @@
+<{include file="db:`$dirname`_header.html"}>
+<h4><{$smarty.const._MD_XOONIPS_ITEM_EXPORT_SELECT}></h4>
+<p style="color:blue">&nbsp;&nbsp;&nbsp;<{$smarty.const._MD_XOONIPS_ITEM_EXPORT_SELECT_DESC}></p>
+<div style="text-align:right; margin-left: 10px; margin-bottom: 10px;">
+</div>
+<form action="list.php" method="post">
+<input type="hidden" name="index_id" value="<{$index_id}>" />
+<input type="hidden" name="op" value="export" />
+<table width="100%" cellspacing="0" class="outer">
+  <tbody>
+  <tr>
+    <th style="text-align: center;" colspan="2"><{$smarty.const._MD_XOONIPS_ITEM_EXPORT_SELECT}></th>
+  </tr>
+  <tr>
+    <td style="width: 30%; text-align: left;" class="head"><{$smarty.const._MD_XOONIPS_ITEM_EXPORT_SUBINDEX}></td>
+    <td class="even" style="width: 70%; vertical-align: top;">
+    <select name="subindex" size="1">
+		<option value=0 selected="selected"><{$smarty.const._MD_XOONIPS_ITEM_EXPORT_SUBINDEX0}></option>
+		<option value=1><{$smarty.const._MD_XOONIPS_ITEM_EXPORT_SUBINDEX1}></option>
+	 </select>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<div style="text-align:right; margin-left: 10px; margin-bottom: 10px;">
+</div>
+<div style="text-align: left">
+ 	<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_LABEL_GO}>" onclick="form.action='list.php'; op.value='export'; submit();" />
+</div>
+</form>
+<{include file="db:`$dirname`_footer.html"}>

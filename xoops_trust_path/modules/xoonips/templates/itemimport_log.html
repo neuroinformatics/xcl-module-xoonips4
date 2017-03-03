@@ -1,0 +1,46 @@
+<{include file="db:`$dirname`_header.html"}>
+<{include file="db:`$dirname`_itemimport_tab.inc.html"}>
+<div style="text-align:right; margin-left: 10px; margin-bottom: 25px;">
+</div>
+<h3><{$smarty.const._MD_XOONIPS_ITEM_IMPORT_LOG_TITLE}></h3>
+<p style="color:blue">&nbsp;&nbsp;&nbsp;<{$smarty.const._MD_XOONIPS_ITEM_IMPORT_LOG_DESC}></p>
+<div style="text-align:right; margin-left: 10px; margin-bottom: 10px;">
+</div>
+<form style="margin-top: 0px;" action="itemimport.php" method="post" enctype="multipart/form-data">
+<input type="hidden" name="op" value="" />
+<table width="100%" cellspacing="1" class="outer">
+  <tbody>
+  <tr>
+    <th style="text-align: left;"><{$smarty.const._MD_XOONIPS_ITEM_IMPORT_LOG_TIME}></th>
+    <th style="text-align: center;"><{$smarty.const._MD_XOONIPS_ITEM_IMPORT_LOG_RESULT}></th>
+    <th style="text-align: center;"><{$smarty.const._MD_XOONIPS_ITEM_IMPORT_LOG_ITEMS}></th>
+    <th style="text-align: center;"><br /></th>
+  </tr>
+  <{foreach item=log from=$logs}>
+  <tr class= "<{cycle values='odd,even'}>">
+    <td style="text-align: left;"><{$log.display_time}></td>
+    <td style="text-align: center;">
+    	<{if $log.result==1}><{$smarty.const._MD_XOONIPS_ITEM_IMPORT_LOG_OK}>
+    	<{else}><{$smarty.const._MD_XOONIPS_ITEM_IMPORT_LOG_NG}><{/if}>
+    </td>
+    <td style="text-align: center;"><{$log.items}></td>
+    <td style="text-align: center;">
+      <a href="itemimport.php?op=log&amp;import_id=<{$log.item_import_log_id}>">
+        <{$smarty.const._MD_XOONIPS_ITEM_IMPORT_LOG_DETAIL}>
+      </a>
+    </td>
+  </tr>
+  <{/foreach}>
+  <{if count($logs)==0}>
+  <tr>
+    <td class="odd" colspan="3" style="text-align: center;">
+      <span style="color: red; font-weight: bold;"><{$smarty.const._MD_XOONIPS_ITEM_IMPORT_LOG_EMPTY}></span>
+    </td>
+  </tr>
+  <{/if}>
+  </tbody>
+</table>
+<div style="text-align:right; margin-left: 10px; margin-bottom: 10px;">
+</div>
+</form>
+<{include file="db:`$dirname`_footer.html"}>

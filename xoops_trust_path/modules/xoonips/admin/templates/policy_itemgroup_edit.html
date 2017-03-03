@@ -1,0 +1,115 @@
+<{include file="file:admin_header.html"}>
+<script type="text/javascript" charset="utf-8">
+var <{$dirname}>Edit = new XoonipsLibrary.edit('<{$xoops_url}>', '<{$dirname}>', 'policy_itemtype_group_editform');
+jQuery(function(){
+  <{$dirname}>Edit.sortable();
+  jQuery('.<{$dirname}>_sortable tbody').bind('sortstop',function(event, ui){
+    jQuery('#<{$dirname}>_op').attr('value','sorteditsave');
+    jQuery('#<{$dirname}>_mode').attr('value','1');
+    jQuery('#<{$dirname}>_policy_itemtype_group_editform').submit();
+  });
+});
+function dconfirm(action){
+  if(confirm('<{$smarty.const._AM_XOONIPS_MSG_DELETE_CONFIRM}>')) {
+    var form=jQuery('#<{$dirname}>_policy_itemtype_group_editform');
+    form.attr('action', action);
+    jQuery('#<{$dirname}>_op').val('detaildelete');
+    form.submit();
+  }
+  return false;
+}
+</script>
+<div style="text-align:right; margin-left: 10px; margin-bottom: 10px;">
+</div>
+<form name="<{$dirname}>_policy_itemtype_group_editform" id="<{$dirname}>_policy_itemtype_group_editform" action="policy_itemgroup.php" method="post">
+<input type="hidden" id="<{$dirname}>_op" name="op" value="">
+<input type="hidden" name="base_groupid" value="<{$base_groupid}>">
+<input type="hidden" name="groupid" value="<{$groupid}>">
+<input type="hidden" name="mode" value="">
+<{$token_ticket}>
+<table width="100%" cellspacing="1" class="outer">
+  <thead>
+  <tr>
+    <th style="width: 20%; text-align: center;" class="head"><br /></th>
+    <th style="width: 40%; text-align: center;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_MODIFY_CONTENT}></th>
+    <th style="width: 40%; text-align: center;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_RELEASE_CONTENT}></th>
+  </tr>
+  </thead>
+  <tr>
+    <td style="width: 20%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_GROUP_NAME}><{$smarty.const._AM_XOONIPS_LABEL_REQUIRED_MARK}></td>
+    <td style="width: 40%; text-align: left;" class="odd">&nbsp;&nbsp;<input type="text" name="name" size="50" maxlength="255" value="<{$groupInfo.a_name|xoops_escape}>"></td>
+    <td style="width: 40%; text-align: left;" class="odd">&nbsp;&nbsp;<{if $groupInfo.a_name!=$groupInfo.b_name}><span class="<{$dirname}>_diff"><{$groupInfo.b_name|xoops_escape}></span><{else}><{$groupInfo.b_name|xoops_escape}><{/if}></td>
+  </tr>
+  <tr>
+    <td style="width: 20%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_POLICY_ITEMFIELDGROUP_ID}><{$smarty.const._AM_XOONIPS_LABEL_REQUIRED_MARK}></td>
+    <td style="width: 40%; text-align: left;" class="even">&nbsp;&nbsp;<input type="text" name="xml" size="50" maxlength="30" value="<{$groupInfo.a_xml|xoops_escape}>"></td>
+    <td style="width: 40%; text-align: left;" class="even">&nbsp;&nbsp;<{if $groupInfo.a_xml!=$groupInfo.b_xml}><span class="<{$dirname}>_diff"><{$groupInfo.b_xml|xoops_escape}></span><{else}><{$groupInfo.b_xml|xoops_escape}><{/if}></td>
+  </tr>
+  <tr>
+    <td style="width: 20%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_OCCURRENCE}></td>
+    <td style="width: 40%; text-align: left;" class="odd">&nbsp;&nbsp;
+        <{if $groupInfo.a_occurrence=='1'}>
+    	<input type="checkbox" name="occurrence" value="1" checked />
+    	<{else}>
+    	<input type="checkbox" name="occurrence" value="1" />
+    	<{/if}>
+    </td>
+    <td style="width: 40%; text-align: left;" class="odd">&nbsp;&nbsp;
+        <{if $groupInfo.b_occurrence=='1'}>
+    	<{if $groupInfo.a_occurrence=='0'}><span class="<{$dirname}>_diff"><{$smarty.const._AM_XOONIPS_LABEL_HAVE}></span><{else}><{$smarty.const._AM_XOONIPS_LABEL_HAVE}><{/if}>
+    	<{/if}>
+    	<{if $groupInfo.b_occurrence=='0'}>
+    	<{if $groupInfo.a_occurrence=='1'}><span class="<{$dirname}>_diff"><{$smarty.const._AM_XOONIPS_LABEL_NONE}></span><{else}><{$smarty.const._AM_XOONIPS_LABEL_NONE}><{/if}>
+    	<{/if}>
+    </td>
+  </tr>
+</table>
+<div style="text-align: right; margin-left: 10px; margin-bottom: 10px;">
+</div>
+<br />
+<p style="color:blue">&nbsp;&nbsp;&nbsp;<{$smarty.const._AM_XOONIPS_POLICY_ITEMTYPE_DETAIL_SELECT_DESC}></p>
+<div style="text-align: right; margin-left: 10px; margin-bottom: 10px;">
+</div>
+<div style="text-align: left">
+ 	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_POLICY_ITEMTYPE_DETAIL_SELECT_TITLE}>" <{if $select_btn=='0'}>disabled<{/if}>
+ 	onclick="window.location='policy_itemgroup.php?op=detailregister&amp;groupid=<{$groupid}>&amp;base_groupid=<{$base_groupid}>'"/>&nbsp;<{if $detail_editing=='1'}><span class="<{$dirname}>_diff"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_EDITING}></span><{/if}>
+</div>
+<div class="<{$dirname}>_sortable">
+<table width="60%" cellspacing="1" class="outer">
+  <thead>
+  <tr>
+    <th style="width: 50%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DETAIL_NAME}></th>
+    <th style="width: 50%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_POLICY_ITEMFIELD_ID}></th>
+  </tr>
+  </thead>
+  <tbody>
+  <{foreach item=detail from=$details}>
+  <tr class= "<{cycle values='odd,even'}>">
+ 	<input type="hidden" name="detail_ids[]" value="<{$detail.detail_id}>">
+	<input type="hidden" name="weights[]" value="<{$detail.weight}>">
+    <td class="<{$dirname}>_cursor_title" width="50%"><{$detail.name|xoops_escape}></td>
+    <td class="<{$dirname}>_cursor_title" width="50%"><{$detail.xml|xoops_escape}></td>
+  </tr>
+  <{/foreach}>
+  </tbody>
+  <{if count($details)==0}>
+  <tr class="odd">
+    <td colspan="2" style="text-align: center;">
+      <span style="color: red; font-weight: bold;"><{$smarty.const._AM_XOONIPS_POLICY_ITEMTYPE_DETAIL_EMPTY}></span>
+    </td>
+  </tr>
+  <{/if}>
+</table>
+</div>
+<div style="text-align:right; margin-left: 10px; margin-bottom: 10px;">
+</div>
+<div style="text-align: left">
+	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_BACK}>"
+	onclick="window.location='policy_itemgroup.php?perpage=<{$perpage}>&amp;start=<{$startpage}>'" />&nbsp;&nbsp;
+	<{if !$disedi}>
+ 	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_UPDATE}>" onclick="op.value='editsave'; mode.value=0; submit();" />&nbsp;&nbsp;
+	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_RELEASE}>" onclick="op.value='editsave'; mode.value=1; submit();"/>
+	<{/if}>
+</div>
+</form>
+<{include file="file:admin_footer.inc.html"}>

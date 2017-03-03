@@ -1,0 +1,31 @@
+<{include file="db:`$dirname`_user_header.html"}>
+<table cellspacing="1">
+	<tr>
+		<td class="head" style="width: 25%; text-align: center;">		
+		<{$smarty.const._MD_XOONIPS_USERSEARCH_TITLE}>		
+		</td>
+		<td class="even" style="width: 25%; text-align: center;">		
+		<a href="<{$smarty.const.XOOPS_URL}>/modules/<{$dirname}>/search.php?op=quick"><{$smarty.const._MD_XOONIPS_QUICK_SEARCH_TITLE}></a>		
+		</td>
+		<td class="even" style="width: 25%; text-align: center;">		
+		<a href="<{$smarty.const.XOOPS_URL}>/modules/<{$dirname}>/search.php?op=advanced"><{$smarty.const._MD_XOONIPS_ITEM_ADVANCED_SEARCH_TITLE}></a>		
+		</td>
+	</tr>
+</table>
+<{$errors}>
+<h3><{$smarty.const._MD_XOONIPS_USERSEARCH_TITLE}></h3>
+<form name="user_searchform" id="user_searchform" method="post">
+<table class="outer">
+<tr>
+<td class="head"><{$smarty.const._MD_XOONIPS_USER_UNAME_LABEL}></td>
+<td class="even"><input type="text" value="<{$uname|xoops_escape}>" name="uname" /></td>
+</tr>
+<tr>
+<td class="head"><{$smarty.const._MD_XOONIPS_USER_NAME_LABEL}></td>
+<td class="even"><input type="text" value="<{$name|xoops_escape}>" name="name" /></td>
+</tr>
+
+</table>
+<input type="button" value="<{$smarty.const._MD_XOONIPS_LANG_SEARCH}>" onclick="this.form.action='user.php?op=userSearch&action=search';this.form.submit();" />
+</form>
+<{include file="db:`$dirname`_user_footer.html"}>

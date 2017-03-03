@@ -1,0 +1,18 @@
+<{if $viewType eq 'input'}>
+	<select size="5" name="<{$groupName}>" multiple="multiple" onchange="<{$dirname}>Edit.changeGroupName(this,'<{$fieldName}>');">
+	<{foreach key=key item=listName from=$list}>
+		<option label="<{$key}>_<{$listName|xoops_escape}>" value="<{$key}>"
+			<{foreach item=gid from=$valueList}>
+				<{$gid}>
+				<{if $key==$gid}>selected<{/if}>
+			<{/foreach}>	
+		><{$listName|xoops_escape}></option>
+	<{/foreach}>
+	</select>
+	<input id="<{$fieldName}>" name="<{$fieldName}>" type="hidden" value="<{$value|xoops_escape}>" />
+<{elseif $viewType eq 'confirm'}>
+	<{foreach item=gid from=$valueList name=value}><{if !$smarty.foreach.value.first}>,<{/if}><{foreach key=key item=listName from=$list}><{if $key==$gid}><{$listName}><{/if}><{/foreach}><{/foreach}>
+	<input type="hidden" name="<{$fieldName}>" value="<{$value|xoops_escape}>" />
+<{elseif $viewType eq 'detail'}>
+	<{foreach item=value from=$valueList name=value}><{foreach key=key item=listName from=$list}><{if $key==$value|xoops_escape}><{if !$smarty.foreach.value.first}>,<{/if}><{$listName}><{/if}><{/foreach}><{/foreach}>
+<{/if}>

@@ -1,0 +1,67 @@
+<{if $actionForm->get('condition_id') == 1 }>
+<script type="text/javascript">
+(function($){
+$(document).ready(function () {
+  $('#<{$xoops_dirname}>_policy_item_quicksearchform [name="itemFieldIds[]"]:checkbox').attr('disabled', true);
+});
+})(jQuery);
+</script>
+<{/if}>
+<{include file="file:admin_header.inc.html"}>
+
+<form name="<{$xoops_dirname}>_policy_item_quicksearchform" id="<{$xoops_dirname}>_policy_item_quicksearchform" action="index.php" method="post">
+<input type="hidden" name="action" value="PolicyItemQuickSearchEdit" />
+<input type="hidden" name="condition_id" value="<{$actionForm->get('condition_id')}>" />
+
+<{xoops_token form=$actionForm}>
+<table width="100%" cellspacing="1" class="outer">
+  <tr>
+    <th style="width: 20%;">
+      <{"`$constpref`_POLICY_ITEM_QUICKSEARCH_LABEL"|constant}>
+    </th>
+    <td style="width: 80%;" class="even">
+      <input type="text" name="condition_name" size="30" maxlength="255" value="<{$actionForm->get('condition_name')|xoops_escape}>" />
+    </td>
+  </tr>
+</table>
+
+<table width="100%" cellspacing="1" class="outer">
+  <tbody>
+  <tr>
+    <th style="text-align: center;"><{"`$constpref`_LANG_SELECT"|constant}></th>
+    <th style="text-align: left;"><{"`$constpref`_LANG_ITEM_FIELD_NAME"|constant}></th>
+    <th style="text-align: left;"><{"`$constpref`_LANG_ITEM_FIELD_ID"|constant}></th>
+  </tr>
+<{foreach item=itemFieldObject from=$itemFieldObjects}>
+  <tr class= "<{cycle values='odd,even'}>">
+    <td style="text-align: center;">
+      <input type="checkbox" name="itemFieldIds[]" value="<{$itemFieldObject->get('item_field_detail_id')}>"<{if in_array($itemFieldObject->get('item_field_detail_id'), $actionForm->get('itemFieldIds'))}> checked="checked"<{/if}> />
+    </td>
+    <td style="text-align: left;">
+      <{$itemFieldObject->getShow('name')}>
+      <{if in_array($itemFieldObject->get('item_field_detail_id'), $pendingIds) }>
+        &nbsp;
+        <span class="notice"><{"`$constpref`_LANG_ITEM_EDITING"|constant}></span>
+      <{/if}>
+    </td>
+    <td style="text-align: left;"><{$itemFieldObject->getShow('xml')}></td>
+  </tr>
+<{/foreach}>
+<{if empty($itemFieldObjects)}>
+  <tr>
+    <td class="odd" colspan="3" style="text-align: center;">
+      <span style="notice"><{"`$constpref`_MESSAGE_EMPTY"|constant}></span>
+    </td>
+  </tr>
+<{/if}>
+  </tbody>
+</table>
+
+<div style="text-align: center; margin-top: 10px;">
+  <input type="submit" class="formButton" value="<{$smarty.const._CANCEL}>" name="_form_control_cancel" />
+  &nbsp;
+  <input type="submit" class="formButton" value="<{"`$constpref`_LANG_SAVE"|constant}>" name="submit" />
+</div>
+</form>
+
+<{include file="file:admin_footer.inc.html"}>

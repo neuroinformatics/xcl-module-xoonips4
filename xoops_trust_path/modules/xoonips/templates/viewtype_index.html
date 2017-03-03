@@ -1,0 +1,71 @@
+<{if $viewType eq 'input'}>
+	<table>
+	<{if !empty($value)}>
+		<{foreach item=index from=$indexInfo}>
+			<tr><td><{$index|xoops_escape}></td></tr>
+		<{/foreach}>
+	<{/if}>
+	</table>
+	<input type="hidden" id="<{$dirname}>CheckedXID" name="<{$fieldName}>" value="<{$value|xoops_escape}>" />
+	<input type="hidden" id="<{$dirname}>TreeCheckedXID" name="tree_checked_indexes" value="<{$treeCheckedIndexes}>" />
+	<{if $hasPrivate == ''}>
+		<input type="hidden" id="<{$dirname}>PrivateXID" name="xoonipsPrivateXID" value="1" />
+	<{else}>
+		<input type="hidden" id="<{$dirname}>PrivateXID" name="xoonipsPrivateXID" value="0" />
+	<{/if}>
+<{elseif $viewType eq 'confirm'}>
+	<table>
+	<{if !empty($value)}>
+		<{foreach item=index from=$indexInfo}>
+			<tr><td><{$index|xoops_escape}></td></tr>
+		<{/foreach}>
+        <{if $hasPrivate == ''}>
+            <tr><td><{$private_index_name}></td></tr>
+        <{/if}>
+		</table>
+		<input type="hidden" id="<{$dirname}>CheckedXID" name="<{$fieldName}>" value="<{$value|xoops_escape}>" />
+		<input type="hidden" id="<{$dirname}>TreeCheckedXID" name="tree_checked_indexes" value="<{$value|xoops_escape}>" />
+		<{if $hasPrivate == ''}>
+			<input type="hidden" id="<{$dirname}>PrivateXID" name="xoonipsPrivateXID" value="1" />
+		<{else}>
+			<input type="hidden" id="<{$dirname}>PrivateXID" name="xoonipsPrivateXID" value="0" />
+		<{/if}>
+	<{else}>
+		<tr><td><{$private_index_name}></td></tr>
+		</table>
+		<input type="hidden" id="<{$dirname}>CheckedXID" name="<{$fieldName}>" value="" />
+		<input type="hidden" id="<{$dirname}>TreeCheckedXID" name="tree_checked_indexes" value="" />
+		<input type="hidden" id="<{$dirname}>PrivateXID" name="xoonipsPrivateXID" value="1" />
+	<{/if}>
+<{elseif $viewType eq 'detail'}>
+	<{if !empty($value)}>
+		<table>
+		<{foreach item=index from=$indexInfo name=loop}>
+			<tr>
+				<td><{$index|xoops_escape}></td>
+				<{if $smarty.foreach.loop.first}>
+					<td rowspan="<{$indexInfo|@count}>" style="vertical-align: middle;" nowrap>
+					<span class="no_print_span">
+						<span id="<{$dirname}>IndexEdit" style="display: none;">
+						<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_EDIT_INDEX_BUTTON_LABEL}>" onclick="<{$dirname}>Edit.indexEdit();" />
+						</span>
+						<span id="<{$dirname}>Accept" style="display: none;">
+						<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_ACCEPT_BUTTON_LABEL}>" onclick="<{$dirname}>Edit.itemAccept();" />
+						</span>
+					</span>
+					</td>
+				<{/if}>
+			</tr>
+		<{/foreach}>
+		</table>
+	<{/if}>
+	<input type="hidden" id="<{$dirname}>CheckedXID" name="checked_indexes" value="<{$value|xoops_escape}>" />
+	<input type="hidden" id="<{$dirname}>TreeCheckedXID" name="tree_checked_indexes" value="<{$treeCheckedIndexes}>" />
+<{elseif $viewType eq 'itemIndexEdit'}>
+	<input type="hidden" id="<{$dirname}>CheckedXID" name="checked_indexes" value="<{$value|xoops_escape}>" />
+	<input type="hidden" id="<{$dirname}>TreeCheckedXID" name="tree_checked_indexes" value="<{$treeCheckedIndexes}>" />
+<{elseif $viewType eq 'search'}>
+	<input type="text" name="<{$fieldName}>" size="50" value="" />
+<{elseif $viewType eq 'default'}>
+	<input type="hidden" name="default_value" value="" />
+<{/if}>

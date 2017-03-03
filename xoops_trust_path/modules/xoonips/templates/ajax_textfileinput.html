@@ -1,0 +1,148 @@
+</head>
+<script type="text/javascript">
+function headText(str){
+    str = str.replace(/\r\n/, '\n');
+    str = str.replace(/\r/, '\n');
+    return str;
+}
+
+function nl2br(str){
+    return str.replace(/\n/, ' <br /> ');
+}
+
+function clickOK(){
+    var opener = window.opener;
+
+    var name = document.getElementById('<{$dirname}>_Name').value;
+    var elementId = document.getElementById('<{$dirname}>_ElementId').value;
+    
+    // textarea -> opener_text
+    var textarea = document.getElementById('<{$dirname}>_Text');
+    var text = textarea.value; // IE:OK mozilla:OK safari:OK
+    text = text.split('\u00a5').join('\u005c'); // yen sign -> backslash
+    
+    // set text to opener
+    var openerEncText = opener.document.getElementById(elementId);
+    var openerShowText = opener.document.getElementById(elementId+'ShowText');
+
+    if (name == 'rights') {
+        var oldValue = openerEncText.value;
+        var temp = (oldValue).split(',');
+        openerEncText.value = temp[0] + ',' + text;
+    } else {
+        openerEncText.value = text;
+    }
+    
+    //openerShowText.firstChild.nodeValue = nl2br(headText(text)); // IE:OK mozilla:OK safari:OK
+    var str = text;
+    str = str.replace(/\r\n/g, '\n');
+    str = str.replace(/\r/g, '\n');
+    var ar = str.split( '\n' );
+    
+    // clear showText
+    while ( openerShowText.hasChildNodes() )
+        openerShowText.removeChild( openerShowText.lastChild );
+    
+    // appendto showText
+    var i;
+    var visibleLines = 3;
+    for ( i = 0; i < ar.length && i < visibleLines; i++ ){
+        if ( i == visibleLines-1 ){
+            if ( ar.length > visibleLines+1 || ar.length == visibleLines+1 && ar[visibleLines] != '' ){
+                //window.alert(ar);
+                //window.alert(visibleLines);
+                ar[i] = ar[i] + ' ...';
+            }
+        }
+        openerShowText.appendChild( opener.document.createTextNode(ar[i]) );
+        openerShowText.appendChild( opener.document.createElement('BR'));
+    }
+
+    window.close();
+    return false;
+}
+
+function clickCancel(){
+    window.close();
+    return false;
+}
+
+function resizer(){
+    
+    window.resizeTo( 500, 400 );
+    
+    var windowInnerHeight;
+    if (self.innerHeight) // all except Explorer
+        windowInnerHeight = self.innerHeight;
+    else if (document.documentElement && document.documentElement.clientHeight) // Explorer 6 Strict Mode
+        windowInnerHeight = document.documentElement.clientHeight;
+    else if (document.body) // other Explorers
+        windowInnerHeight = document.body.clientHeight;
+    
+    var documentHeight;
+    var test1 = document.body.scrollHeight;
+    var test2 = document.body.offsetHeight
+    if (test1 > test2) // all but Explorer Mac
+        documentHeight = document.body.scrollHeight;
+    else // Explorer Mac;
+         //would also work in Explorer 6 Strict, Mozilla and Safari
+        documentHeight = document.body.offsetHeight;
+    
+    if ( windowInnerHeight && documentHeight ){
+        window.resizeBy( 0, documentHeight - windowInnerHeight );
+    }
+}
+
+function getTextFromOpener(){
+    var opener = window.opener;
+    var name = document.getElementById('<{$dirname}>_Name').value;
+    var elementId = document.getElementById('<{$dirname}>_ElementId').value;
+    
+    // opener_text -> textarea
+    var encText = opener.document.getElementById(elementId).value; // IE:OK mozilla:OK safari:OK
+    var tarea = document.getElementById('<{$dirname}>_Text');
+    if (name == 'rights') {
+        var temp = encText.split(',');
+        if (temp[1] == '' ) {
+            encText = 'All rights reserved.\nLicense:\n';
+        } else {
+            if (encText.length>temp[0].length+1) {
+                encText = encText.substr(temp[0].length+1);
+            } else {
+                encText = '';
+            }
+        }
+    }
+        
+    tarea.value = encText;
+    resizer();
+}
+</script>
+<body<{if $textFromOpener}> onload="getTextFromOpener();"<{/if}>>
+<form method="post" action="index.php?action=Ajax&amp;method=InputTextFile" enctype="multipart/form-data">
+<table class="outer">
+<tr>
+<td class="head"><{$displayName|xoops_escape}></td>
+<td class="even">
+<input type="hidden" name="elementId" value="<{$elementId}>" id="<{$dirname}>_ElementId" />
+<input type="hidden" name="name" value="<{$name|xoops_escape}>" id="<{$dirname}>_Name" />
+<input type="hidden" name="elementId" value="<{$elementId}>" id="<{$dirname}>_ElementId" />
+<input type="file" name="file" />
+<input class="formButton" type="submit" name="" value="<{$smarty.const._MD_XOONIPS_ITEM_UPLOAD_LABEL}>" />
+<br />
+<{if ($errorMessage)}>
+<div style="color:red; font-weight:bold;">;
+    <{$errorMessage|xoops_escape}>
+</div>;
+<{/if}>
+<br />
+<textarea name="text" id="<{$dirname}>_Text" cols="37" rows="8" style="width:296px;">
+    <{$text|xoops_escape}>
+</textarea>
+<br />
+<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_OK_LABEL}>" onclick="clickOK()" />
+<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_CANCEL_LABEL}>" onclick="clickCancel()" />
+</td>
+</tr>
+</table>
+</form>

@@ -1,0 +1,47 @@
+<{include file="file:admin_header.inc.html"}>
+
+<form name="<{$xoops_dirname}>_system_notificationform" action="index.php" method="post">
+<input name="action" value="SystemNotification" type="hidden" />
+<{xoops_token form=$actionForm}>
+<table width="100%" cellspacing="1" class="outer">
+  <tbody>
+  <tr>
+    <th colspan="2"><{"`$constpref`_SYSTEM_NOTIFICATION_TITLE"|constant}></th>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;">
+      <span style="font-weight: bold;"><{$smarty.const._NOT_CONFIG_ENABLED}></span><br /><br />
+      <span style="font-weight: normal;"><{$smarty.const._NOT_CONFIG_ENABLEDDSC}></span>
+    </td>
+    <td class="even" style="text-align:left; vertical-align:top;">
+      <select size="1" name="notification_enabled">
+        <option value="0"<{if $actionForm->get('notification_enabled') == 0 }> selected="selected"<{/if}>><{$smarty.const._NOT_CONFIG_DISABLE}></option>
+        <option value="3"<{if $actionForm->get('notification_enabled') == 3 }> selected="selected"<{/if}>><{"`$constpref`_SYSTEM_NOTIFICATION_ENABLED"|constant}></option>
+     </select>
+    </td>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;">
+      <span style="font-weight: bold;"><{$smarty.const._NOT_CONFIG_EVENTS}></span><br /><br />
+      <span style="font-weight: normal;"><{$smarty.const._NOT_CONFIG_EVENTSDSC}></span>
+    </td>
+    <td class="even" style="text-align:left; vertical-align:top;">
+      <select size="6" name='notification_events[]' multiple="multiple">
+<{foreach item=event_label key=event from=$events}>
+        <option value="<{$event|xoops_escape}>"<{if in_array($event, $actionForm->get('notification_events'))}> selected="selected"<{/if}>><{$event_label|escape}></option>
+<{/foreach}>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;">
+      <span style="font-weight: bold;"></span>
+    </td>
+    <td class="even" style="width: 60%; vertical-align: top;">
+      <input name="submit" type="submit" value="<{"`$constpref`_LANG_UPDATE"|constant}>" />
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<{include file="file:admin_footer.inc.html"}>

@@ -1,0 +1,23 @@
+<script language="javascript" type="text/javascript">  
+function cancelLink(){   	
+ 	window.location.href = '<{$smarty.const.XOOPS_URL}>/modules/<{$dirname}>/index.php?action=userSearch';   
+}
+
+function deleteLink(){
+	var uid = document.getElementById('<{$dirname}>_userId').value;
+	document.<{$dirname}>_deleteUserForm.action = 'user.php?op=delete&uid='+uid;
+	document.<{$dirname}>_deleteUserForm.submit(); 
+}
+</script>
+<h3><{$smarty.const._MD_USER_LANG_ACCOUNT_DELETE_CONFIRM}></h3>
+
+<{$smarty.const._MD_USER_LANG_USERNAME}><{$username}><br />
+<pre><{$notice}></pre><br />
+
+<form name="<{$dirname}>_deleteUserForm" method="post">
+<{$token_ticket}>
+<input type="hidden" id="<{$dirname}>_userId" value="<{$uid}>" />
+<input type="button" value="<{$smarty.const._MD_USER_LANG_STOP}>" onclick="cancelLink();" />
+<input type="button" value="<{$smarty.const._MD_USER_LANG_DELETE}>" onclick="deleteLink();" />
+</form>
+

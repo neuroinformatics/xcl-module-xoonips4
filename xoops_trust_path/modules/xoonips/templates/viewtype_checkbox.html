@@ -1,0 +1,14 @@
+<{if $viewType eq 'input'}>
+	<input name="<{$chkName}>" type="checkbox" value="1" onclick="<{$dirname}>Edit.changeCheckBox(this,'<{$fieldName}>');" <{$checked}> /><{$name|xoops_escape}>
+	<input id="<{$fieldName}>" name="<{$fieldName}>" type="hidden" value="<{$value|xoops_escape}>" />
+<{elseif $viewType eq 'confirm'}>
+	<input type="checkbox" onclick="return false" <{$checked}>><{$name|xoops_escape}> />
+	<input type="hidden" name="<{$fieldName}>" value="<{$value|xoops_escape}>" />
+<{elseif $viewType eq 'detail'}>
+	<input type="checkbox" onclick="return false" <{$checked}>><{$name|xoops_escape}> />
+<{elseif $viewType eq 'default'}>
+	<input type="checkbox" name="default_value" value="1" <{$checked}> <{$disabled}> />
+	<{if !empty( $disabled ) }>
+		<input type="hidden" name="default_value" value="<{$value|xoops_escape}>" />
+	<{/if}>
+<{/if}>

@@ -1,0 +1,129 @@
+<script type="text/javascript">
+	function pageSubmit(val){
+		document.contentForm.action = val;
+		document.contentForm.method = 'post';
+		document.contentForm.submit();
+	}
+	function setSort(sortkey,order){
+		document.contentForm.sortkey.value = sortkey;
+		document.contentForm.newOrder.value = order;
+		document.contentForm.action = 'user.php?op=userSearch&action=sort&key='+sortkey+'&order='+order;
+		document.contentForm.method = 'post';
+		document.contentForm.submit();
+	}
+</script>
+<{include file="db:`$dirname`_user_header.html"}>
+<h3><{$smarty.const._MD_XOONIPS_LANG_USERLIST}></h3>
+
+<{if $head}>
+<form name="contentForm" method="post">
+<table class="outer">
+<input type="hidden" name="sortkey" value="<{$sortkey}>" />
+<input type="hidden" name="newOrder" value="<{$order}>" />
+	<tr>
+	<{foreach item=position from=$head}>
+		<th align="center"><{$position.name}>
+		<{if $position.list_sort_key eq 1}>
+		<div>
+		<input type="image" src="<{$smarty.const.XOOPS_MODULE_URL}>/<{$dirname}>/image.php/up.gif" alt="<{$smarty.const._ASCENDING}>" title="<{$smarty.const._ASCENDING}>" onclick="setSort('<{$position.column_name}>','ASC');" />
+		<input type="image" src="<{$smarty.const.XOOPS_MODULE_URL}>/<{$dirname}>/image.php/down.gif" alt="<{$smarty.const._DESCENDING}>" title="<{$smarty.const._DESCENDING}>" onclick="setSort('<{$position.column_name}>','DESC');" />
+		</div>
+		<{/if}>
+		</th>
+	<{/foreach}>
+		<th align="center"><{$smarty.const._MD_XOONIPS_LANG_ACTION}></th>
+	</tr>
+
+	<{if $userslist}>
+	<{foreach item=row from=$userslist}>
+	<{if $isModerator || $row.level >= 2}>
+	<tr class="<{cycle values="odd,even" name="c0" }>">
+		<{foreach item=position from=$head}>
+			<{assign var='rowTag' value=$position.column_name}>
+			<td>
+				<{$row.$rowTag}>
+			</td>
+		<{/foreach}>
+			<td align="center">
+				<a href="<{$smarty.const.XOOPS_URL}>/userinfo.php?uid=<{$row.uid}>"><img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/view.png" alt="<{$smarty.const._VIEW}>" title="<{$smarty.const._VIEW}>" /></a>
+				<{if $userId eq $row.uid}>
+				<a href="<{$smarty.const.XOOPS_URL}>/edituser.php?uid=<{$row.uid}>"><img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/edit.png" title="<{$smarty.const._EDIT}>" /></a>
+				<{/if}>
+				<{if $userId eq $row.uid && !$isModerator && $isSelfDelete && $row.uid != 1}>
+				<a href="<{$smarty.const.XOOPS_URL}>/user.php?op=delete&uid=<{$row.uid}>"><img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/delete.png" alt="<{$smarty.const._DELETE}>" title="<{$smarty.const._DELETE}>" /></a>
+				<{/if}>
+				<{if $userId neq $row.uid && $isModerator && $row.level >= 2}>
+				<a href="user.php?op=userSu&uid=<{$row.uid}>"><img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/user.png" alt="<{$smarty.const._MD_XOONIPS_LANG_ACCOUNT_CHANGE}>" title="<{$smarty.const._MD_XOONIPS_LANG_ACCOUNT_CHANGE}>" /></a>
+				<{/if}>
+				<{if $row.level eq 0}>
+				<div>Activate Pending</div>
+				<{/if}>
+				<{if $row.level eq 1}>
+				<div>Approval Pending</div>
+				<{/if}>
+			</td>
+	</tr>
+	<{/if}>
+	<{/foreach}>
+	<{/if}>
+</table>
+<{/if}>
+
+<!-- set search data-->
+<{if $hiddenData}>
+	<{foreach item=hiddenValue key=key from=$hiddenData}>
+	<{if is_array($hiddenValue)}>
+		<{foreach item=v from=$hiddenValue}>
+			<input type="hidden" name="<{$key|cat:'[]'}>" value="<{$v}>" />
+		<{/foreach}>
+	<{else}>
+		<input type="hidden" name="<{$key}>" value="<{$hiddenValue}>" />
+	<{/if}>
+	<{/foreach}>
+<{/if}>
+
+<!-- page -->
+<{if $pagenavi}>
+	<table>
+		<tr>
+			<td align="center">
+	<{if $page neq 1}>
+		<{foreach item=pageValue key=key from=$pagenavi}>
+			<{if $key eq $page-1}>
+			<a href="#" onclick="pageSubmit('<{$pageValue}>');">&laquo;</a>
+			<{/if}>
+		<{/foreach}>
+	<{/if}>	
+	
+	<{assign var='counter' value=1}>	
+	<{assign var='offset' value=4}>
+	<{assign var='totalPages' value=$pagenavi|@count}>
+	<{foreach item=pageValue key=key from=$pagenavi}>
+	<{if $counter eq $page}>
+		<strong>(<{$key}>)</strong>
+	<{elseif ($counter>$page-$offset && $counter<$page+$offset)||$counter eq 1||$counter eq $totalPages}>	
+		<{if $counter eq $totalPages && $page<$totalPages-$offset}>
+		...
+		<{/if}>
+		<a href="#" onclick="pageSubmit('<{$pageValue}>');"><{$counter}></a>
+		<{if $counter eq 1 && $page>1+$offset}>
+		...
+		<{/if}>
+	<{/if}>
+	<{assign var='counter' value=$counter+1}>
+	<{/foreach}>
+	
+	<{if $page neq $pagenavi|@count}>
+		<{foreach item=pageValue key=key from=$pagenavi}>
+			<{if $key eq $page+1}>
+			<a href="#" onclick="pageSubmit('<{$pageValue}>');">&raquo;</a>
+			<{/if}>
+		<{/foreach}>
+	<{/if}>
+			</td>		
+		</tr>
+	</table>
+<{/if}>
+
+</form>
+<{include file="db:`$dirname`_user_footer.html"}>

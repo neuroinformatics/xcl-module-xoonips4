@@ -1,0 +1,28 @@
+<script type="text/javascript">
+var <{$dirname}>Edit = new XoonipsLibrary.edit('<{$xoops_url}>', '<{$dirname}>', 'editconfirmform', 'edit');
+jQuery.noConflict();
+jQuery(function(){
+	<{$dirname}>Edit.setMsgCss();
+});
+</script>
+<h4><{$smarty.const._MD_XOONIPS_ITEM_MODIFY_ITEM_CONFIRM}></h4>
+<form id="<{$dirname}>_editconfirmform" name="<{$dirname}>_editconfirmform" action="edit.php?op=save" method="post">
+<input type="hidden" name="item_id" value="<{$item_id}>" />
+<input type="hidden" name="itemtype_id" value="<{$itemtype_id}>" />
+<div style="text-align: left; margin: 1px;">
+<span id="<{$dirname}>_message_label_top">
+	<{$smarty.const._MD_XOONIPS_ITEM_SELECT_PRIVATE_INDEX_AUTO}>
+</span>
+</div>
+<{$token_titcket}>
+<{if !empty($confirmView)}>
+	<table class="outer">
+	<tr><td class="head" width="25%"><{$smarty.const._MD_XOONIPS_ITEM_ITEM_TYPE_LABEL}></td><td class="even"><{$itemtype_name|xoops_escape}></td></tr>
+	<{$confirmView}>
+	</table>
+<{/if}>
+<div style="text-align: center; margin-top: 20px;">
+<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_BACK_BUTTON_LABEL}>" onclick="jQuery('#<{$dirname}>_editconfirmform').attr('action', 'edit.php?op=back');jQuery('#<{$dirname}>_editconfirmform').submit();" />
+<input class="formButton" type="submit" value="<{$smarty.const._MD_XOONIPS_ITEM_UPDATE_BUTTON_LABEL}>" />
+</div>
+</form>

@@ -1,0 +1,177 @@
+<script type="text/javascript">
+jQuery(function(){
+	jQuery('#<{$block.dirname}>_index_tree_tabs').tabs({
+        active: jQuery.cookie('index_tree_selected_tab'),
+        activate: function(event, ui) {
+            index_tree_selected_tab = ui.newTab.index();
+            jQuery.cookie('index_tree_selected_tab', index_tree_selected_tab, { expires: 1, path: '/' });
+        },
+	});
+});
+</script>
+<script type="text/javascript">
+var getIndexesInfo = function() {
+        var editMode = false;
+        var data = "action=Ajax&method=GetIndexesInfo";
+        var url = window.location.href;
+        var filename = url.substr(url.lastIndexOf('/') + 1);
+        if (filename.indexOf("edit.php") == 0) {
+            editMode = true;
+                var formId = jQuery("input[name=item_id]").closest("form").attr('id');
+                if (formId.indexOf("_itemindexeditform") != -1) {
+                        data += "&item_id=" + jQuery("input[name=item_id]").val();
+                }
+        }
+        jQuery.ajax({
+                type: 'GET',
+                scriptCharset: 'utf-8',
+                dataType: 'json',
+                url: '<{$smarty.const.XOOPS_URL}>/modules/<{$block.dirname}>/index.php',
+                data: data,
+                success: function(json) {
+                        var idNamePrefix = json.dirname + '_index_tree_div_';
+                        jQuery.each(json.trees, function() {
+                                if (editMode) {
+                                    jQuery('#' + idNamePrefix + this.index_id).jstree({
+                                       "core" : {
+                                            "data" : this.html
+                                        },
+                                        "plugins" : [ "checkbox" ],
+                                        "checkbox" : {
+                                            "three_state" : false
+                                        }
+                                    });
+                                } else {
+                                    jQuery('#' + idNamePrefix + this.index_id).jstree({
+                                        "core" : {
+                                            "data" : this.html
+                                        },
+                                        "plugins" : [ 'json_data' ]
+                                    });
+                                }
+                        });
+
+                        if (editMode) {
+                            var checkedIndexId = jQuery('#' + json.dirname + 'CheckedXID');
+                            jQuery("[id^=" + idNamePrefix + "]").bind("changed.jstree", function (e, data) {
+                                var checkedIndexes = [];
+                                jQuery("[id^=" + idNamePrefix + "]").each(function() {
+                                    checked = jQuery(this).jstree("get_selected", true);
+                                    jQuery.each(checked, function() {
+                                        checkedIndexes.push(this.id);
+                                    });
+                                });
+                                checkedIndexId.val(checkedIndexes.join(","));
+                            });
+                            setClearButtonAction();
+                        } else {
+                            jQuery("[id^=" + idNamePrefix + "]").bind("changed.jstree", function (e, data) {
+                                checked = jQuery(this).jstree("get_selected", true);
+                                jQuery.each(checked, function() {
+                                    url = '<{$smarty.const.XOOPS_URL}>/modules/' + json.dirname + '/list.php?index_id=' + this.id;
+                                    location.href = url;
+                                });
+                            });
+                        }
+
+                        jQuery('#open_all').click(function(){
+                            jQuery("[id^=" + idNamePrefix + "]").each(function() {
+                                    jQuery(this).jstree('open_all');
+                            });
+                        });
+                      
+                        jQuery('#close_all').click(function(){
+                            jQuery("[id^=" + idNamePrefix + "]").each(function() {
+                                    jQuery(this).jstree('close_all');
+                            });
+                        });
+
+                        jQuery('#' + json.dirname + '_index_tree_clear_button').click(function(){
+                            jQuery("[id^=" + idNamePrefix + "]").each(function() {
+                                    jQuery(this).jstree('uncheck_all');
+                            });
+                        });
+
+                        jQuery("[id^=" + idNamePrefix + "]").bind("open_node.jstree", function (e, data) {
+                                var nodes = jQuery.cookie("opened_indexes");
+                                if (nodes == null) {
+                                    node = data.node.id;
+                                    jQuery.cookie('opened_indexes', node, { expires: 1, path: '/' });
+                                } else {
+                                    nodes = nodes + ":" + data.node.id;
+                                    jQuery.cookie('opened_indexes', nodes, { expires: 1, path: '/' });
+                                }
+                        });
+
+                        jQuery("[id^=" + idNamePrefix + "]").bind("close_node.jstree", function (e, data) {
+                            var nodes = jQuery.cookie("opened_indexes");
+                            if (nodes == null) {
+                                return false;
+                            }
+                            nodes = jQuery.cookie("opened_indexes").split(":");
+                            close_node = data.node.id;
+                            opened_indexes = "";
+                            first = true;
+                            for (i = 0; i < nodes.length; i++) {
+                                if (nodes[i] != close_node && nodes[i] != null) {
+                                    if (first) {
+                                        opened_indexes = nodes[i];
+                                        first = false;
+                                    } else {
+                                        opened_indexes = opened_indexes + ":" + nodes[i];
+                                    }
+                                }
+                            }
+                            jQuery.cookie('opened_indexes', opened_indexes, { expires: 1, path: '/' });
+                        });
+
+                        jQuery("[id^=" + idNamePrefix + "]").bind("scroll", function () {
+                            idName = jQuery(this).attr("id");
+                            jQuery.cookie(idName + '_scroll', jQuery(this).scrollTop(), { expires: 1, path: '/' });
+                        });
+
+                        jQuery("[id^=" + idNamePrefix + "]").each(function() {
+                            idName = jQuery(this).attr("id");
+                            position = jQuery.cookie(idName + '_scroll');
+                            if (position != null) {
+                                jQuery(this).animate({scrollTop:position});
+                            }
+                        });
+                }
+        });
+};
+if(window.addEventListener) {
+        window.addEventListener("load", getIndexesInfo, false);
+} else if(window.attachEvent){
+        window.attachEvent("onload", getIndexesInfo);
+}
+</script>
+<script type="text/javascript">
+function setClearButtonAction() {
+	<{if $block.checkbox}>
+		var <{$block.dirname}>Edit = new XoonipsLibrary.edit('<{$xoops_url}>', '<{$block.dirname}>', 'itemindexeditform');
+		<{$block.dirname}>Edit.setIndexTreeButton('');
+	<{/if}>
+}
+</script>
+<div id="<{$block.dirname}>_treecontrol" style="float: none; clear: both; margin: 0px 0px 3px 0px; padding: 0px;">
+<button class="formButton" id="open_all">open all</button>
+<button class="formButton" id="close_all">close all</button>
+<{if $block.checkbox}>
+	<button class="formButton" id="<{$block.dirname}>_index_tree_clear_button">clear</button>
+<{/if}>
+</div>
+<div style="margin: 0px; padding: 0px;font-size:80%;" id="<{$block.dirname}>_index_tree_tabs">
+<ul>
+<{foreach item=index from=$block.indexes}>
+	<li><a href="#<{$block.dirname}>_index_tree_div_<{$index.index_id}>"><{$index.title|xoops_escape}></a></li>
+<{/foreach}>
+</ul>
+<{foreach item=tree from=$block.trees}>
+    <div id="<{$block.dirname}>_index_tree_div_<{$tree.index_id}>" style="width: 280px; height: 550px; overflow: auto; padding: 0px; margin: 0px;">
+    <ul id="<{$block.dirname}>_index_tree_<{$tree.index_id}>" class="filetree">
+    <!-- <{$tree.html}> -->
+    </ul>
+    </div>
+<{/foreach}>
+</div>

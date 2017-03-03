@@ -1,0 +1,45 @@
+<{if $messages == false && $warnings == false && $errors == false}>
+	<script type="text/javascript" charset="utf-8">
+		xoonipsCallback('<{$callbackid}>', '<{$callbackvalue}>');
+	</script>
+<{else}>
+	<br><br>
+	<{if $messages}>
+		<span style="color: black;">
+		<ul>
+		<{foreach item=message from=$messages}>
+	  		<li><{$message}></li>
+		<{/foreach}>
+		</ul>
+		</span>
+	<{/if}>
+	<{if $warnings}>
+		<span style="color: blue;">
+		<ul>
+		<{foreach item=warning from=$warnings}>
+  			<li><{$warning}></li>
+		<{/foreach}>
+		</ul>
+		</span>
+	<{/if}>
+	<{if $errors}>
+		<span style="color: red;">
+		<ul>
+		<{foreach item=error from=$errors}>
+	  		<li><{$error}></li>
+		<{/foreach}>
+		</ul>
+		</span>
+	<{/if}><br />
+	<div style="text-align:center;">
+	<{if $errors}>
+		<input type="button" rel="cancel" value="OK" >
+	<{else}>
+		<input type="hidden" id="<{$dirname}>_callbackid"  name="callbackid" value="<{$callbackid}>">
+		<input type="hidden" id="<{$dirname}>_callbackvalue" name="callbackvalue" value="<{$callbackvalue}>">
+		<input type="button" id="<{$dirname}>_sub_msg_ok" rel="callback" value="OK">
+	<{/if}>
+	</div>
+<{/if}>
+
+

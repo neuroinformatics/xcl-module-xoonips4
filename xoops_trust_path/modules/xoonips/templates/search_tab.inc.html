@@ -1,0 +1,27 @@
+<table cellspacing="1">
+	<tr>
+		<{if $user_tab_chk == 1}>
+		<td class=<{if $select_tab==1}>"head"<{else}>"even"<{/if}> style="width: 25%; text-align: center;">
+		<{if $select_tab==1}>
+		<{$smarty.const._MD_XOONIPS_USERSEARCH_TITLE}>
+		<{else}>
+		<a href="<{$smarty.const.XOOPS_URL}>/user.php?op=userSearch"><{$smarty.const._MD_XOONIPS_USERSEARCH_TITLE}></a>
+		<{/if}>
+		</td>
+		<{/if}>
+		<td class=<{if $select_tab==2}>"head"<{else}>"even"<{/if}> style="width: 25%; text-align: center;">
+		<{if $select_tab==2}>
+		<{$smarty.const._MD_XOONIPS_QUICK_SEARCH_TITLE}>
+		<{else}>
+		<a href="search.php?op=quick"><{$smarty.const._MD_XOONIPS_QUICK_SEARCH_TITLE}></a>
+		<{/if}>
+		</td>
+		<td class=<{if $select_tab==3}>"head"<{else}>"even"<{/if}> style="width: 25%; text-align: center;">
+		<{if $select_tab==3}>
+		<{$smarty.const._MD_XOONIPS_ITEM_ADVANCED_SEARCH_TITLE}>
+		<{else}>
+		<a href="search.php?op=advanced"><{$smarty.const._MD_XOONIPS_ITEM_ADVANCED_SEARCH_TITLE}></a>
+		<{/if}>
+		</td>
+	</tr>
+</table>

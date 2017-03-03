@@ -1,0 +1,28 @@
+<ul id="usermenu">
+	<li><a href="<{$xoops_url}>/userinfo.php?uid=<{$block.uid}>"><{$smarty.const._MB_XOONIPS_USER_PROFILE}></a></li>
+	<li><a href="<{$xoops_url}>/user.php?op=groupList"><{$smarty.const._MB_XOONIPS_USER_GROUP}></a></li>
+<{if $block.workflow_isapprovaluser}>
+<{if $block.workflow_myitemcount > 0}>
+	<li><a class="highlight" href="<{$xoops_url}>/modules/<{$block.workflow_dirname}>/"><{$smarty.const._MB_XOONIPS_USER_WORKFLOW}>(<span style="color:#ff0000; font-weight: bold;"><{$block.workflow_myitemcount}></span>)</a></li>
+<{else}>
+	<li><a href="<{$xoops_url}>/modules/<{$block.workflow_dirname}>/"><{$smarty.const._MB_XOONIPS_USER_WORKFLOW}></a></li>
+<{/if}>
+<{/if}>     
+<{if $block.new_messages > 0}>
+	<li><a class="highlight" href="<{$xoops_url}>/viewpmsg.php"><{$smarty.const._MB_XOONIPS_USER_INBOX}> (<span style="color:#ff0000; font-weight: bold;"><{$block.new_messages}></span>)</a></li>
+<{else}>
+	<li><a href="<{$xoops_url}>/viewpmsg.php"><{$smarty.const._MB_XOONIPS_USER_INBOX}></a></li>
+<{/if}>
+ <li><a href="<{$xoops_url}>/modules/<{$block.dirname}>/notifications.php"><{$smarty.const._MB_XOONIPS_USER_NOTIFICATION}></a></li>
+<{if $block.is_su}>
+	<li><a class="highlight" href="<{$xoops_url}>/user.php?op=su"><{$block.lang_su_end}></a></li>
+<{else}>
+	<li><a href="<{$xoops_url}>/user.php?op=logout"><{$smarty.const._MB_XOONIPS_USER_LOGOUT}></a></li>
+<{/if}>
+<{if $block.xoonips_isadmin}>
+	<{if !$block.is_su}>
+		<li><a href="<{$xoops_url}>/user.php?op=su"><{$smarty.const._MB_XOONIPS_USER_SU_START}></a></li>
+		<li><a href="<{$xoops_url}>/admin.php"><{$smarty.const._MB_XOONIPS_USER_ADMINMENU}></a></li>
+	<{/if}>
+<{/if}>
+</ul>

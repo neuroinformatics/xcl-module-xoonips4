@@ -1,0 +1,20 @@
+<{if $index}>
+	<li><span class="folder">
+	<{if is_null($checkbox)}>
+		<a href="#" value="<{$indexId}>"><{if $index.open_level==$smarty.const.XOONIPS_OL_PRIVATE && $index.parent_index_id==$smarty.const.XOONIPS_IID_ROOT}>Private<{else}><{$index.title|xoops_escape}><{/if}><{if $cnt > 0}>(<{$cnt}>)<{/if}></a>
+	<{elseif $checkbox}>
+		<input type="checkbox" <{if $index.open_level==$smarty.const.XOONIPS_OL_PRIVATE}>private=true<{/if}> value=<{$indexId}> id="<{$dirname}>_index_tree_chk_<{$indexId}>" name="<{$dirname}>_index_tree_chk_<{$indexId}>" />
+		<label for="<{$dirname}>_index_tree_chk_<{$indexId}>"><{if $index.open_level==$smarty.const.XOONIPS_OL_PRIVATE && $index.parent_index_id==$smarty.const.XOONIPS_IID_ROOT && $index.uid==$uid}>Private<{else}><{$index.title|xoops_escape}><{/if}><{if $cnt > 0}>(<{$cnt}>)<{/if}></label>
+	<{else}>
+		<a href="<{$url}>?index_id=<{$indexId}>"><{if $index.open_level==$smarty.const.XOONIPS_OL_PRIVATE && $index.parent_index_id==$smarty.const.XOONIPS_IID_ROOT && $index.uid==$uid}>Private<{else}><{$index.title|xoops_escape}><{/if}><{if $cnt > 0}>(<{$cnt}>)<{/if}></a>
+	<{/if}>
+	</span>
+<{/if}>
+<{if count($childIndexes) > 0}>
+	<ul>
+	<{foreach item=childIndex from=$childIndexes}>
+		<{$childIndex}>
+	<{/foreach}>
+	</ul>
+<{/if}>
+</li>

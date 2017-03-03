@@ -1,0 +1,157 @@
+<{include file="db:`$dirname`_header.html"}>
+<script type="text/javascript" charset="utf-8">
+jQuery.noConflict();
+function submit_order_dir(str){
+	jQuery('#<{$dirname}>_order_dir').attr('value', str);
+	jQuery('#<{$dirname}>_itemselect_form').submit();
+}
+function submit_page_link(page){
+	jQuery('#<{$dirname}>_itemselect_form').attr('action', 'search.php?page='+page);
+	jQuery('#<{$dirname}>_itemselect_form').submit();
+}
+function openWindowWithPost(){
+	jQuery('#<{$dirname}>_print_form').attr('action', '<{$smarty.const.XOOPS_URL}>/modules/<{$dirname}>/search.php');
+	var toDay =  new Date();
+	windowname='win'+toDay.getTime();
+	window.open('<{$smarty.const.XOOPS_URL}>/modules/<{$dirname}>/search.php', windowname);
+	jQuery('#<{$dirname}>_print_form').attr('target',windowname);
+	jQuery('#<{$dirname}>_print_form').submit();
+}
+</script>
+<h3><{$smarty.const._MD_XOONIPS_ITEM_SEARCH_RESULT}></h3>
+
+<{if $op=='quicksearch' }>
+<{$smarty.const._MD_XOONIPS_ITEM_SEARCH_KEYWORD}> : <{$keyword}><br />
+<{/if}>
+
+<{if $item_no_label}><br /><span><{$item_no_label}></span><{/if}>
+
+<{if $item_htmls}>
+<form action="search.php" id="<{$dirname}>_itemselect_form" method="post">
+<input type="hidden" name="op" value="<{$op}>" />
+<input type="hidden" name="search_itemtype" value="<{$search_itemtype}>" />
+<input type="hidden" name="search_subtype" value="<{$search_subtype}>" />
+<input type="hidden" name="keyword" value="<{$keyword}>" />
+<input type="hidden" name="search_condition" value="<{$search_condition}>" />
+<{foreach key=key item=item from=$search_data}>
+	<{if is_array($item)}>
+		<{foreach item=val from=$item}>
+			<input type="hidden" name="<{$key|cat:'[]'}>" value="<{$val}>" />
+		<{/foreach}>
+	<{else}>
+		<{if $key!="op"}>
+			<input type="hidden" name="<{$key}>" value="<{$item}>" />
+		<{/if}>
+	<{/if}>
+<{/foreach}>
+
+<div class="no_print_div">
+	<{$smarty.const._MD_XOONIPS_ITEM_ORDER_BY}>
+	<{html_options name="orderby" options=$order_by_select selected=$orderby onchange="submit();" }> 
+	<input type="hidden" id="<{$dirname}>_order_dir" name="order_dir" value="<{$order_dir}>" />
+	<{if $order_dir == $smarty.const.XOONIPS_ASC }>
+		<{$smarty.const._MD_XOONIPS_ITEM_ASCEND}>
+		<span style="cursor:pointer;" onclick="submit_order_dir('<{$smarty.const.XOONIPS_DESC}>');"><{$smarty.const._MD_XOONIPS_ITEM_DESCEND}></span>
+	<{else}>
+		<span style="cursor:pointer;" onclick="submit_order_dir('<{$smarty.const.XOONIPS_ASC }>');"><{$smarty.const._MD_XOONIPS_ITEM_ASCEND}></span>
+		<{$smarty.const._MD_XOONIPS_ITEM_DESCEND}>
+	<{/if}>
+	<{$smarty.const._MD_XOONIPS_ITEM_NUM_OF_ITEM_PER_PAGE}>
+	<{html_options name="itemcount" values=$item_count_select output=$item_count_select selected=$itemcount onchange="submit();" }> 
+	<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_PRINT_FRIENDLY_BUTTON_LABEL}>" onclick="openWindowWithPost();" />
+	<{if !empty($export_enabled)}>
+	<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_LABEL_EXPORT}>" onclick="op.value='export'; submit(); op.value='quick';" />
+<{/if}>
+</div>
+</form>
+<{/if}>
+
+<table>
+<tr>
+<td><{$page_no_label}></td>
+<{if $maxpage > 1}>
+<td align="right">
+<{if $page > 1}>
+<a href="#" onclick="submit_page_link(<{$page-1}>);">PREV</a>&nbsp;
+<{else}>
+PREV&nbsp;
+<{/if}>
+<{foreach item=i from=$pages}>
+<{if $i==$page}>
+<{$i}>
+<{else}>
+<a href="#" onclick="submit_page_link(<{$i}>);"><{$i}></a>
+<{/if}>
+&nbsp;
+<{/foreach}>
+<{if $page < $maxpage }>
+<a href="#" onclick="submit_page_link(<{$page+1}>);">NEXT</a>
+<{else}>
+NEXT
+<{/if}>
+</td>
+<{/if}>
+</tr>
+</table>
+
+<{if $item_htmls}>
+<table width="100%" border="0" cellspacing="5">
+<{foreach item=i from=$item_htmls}>
+  <tr valign="top">
+    <td  class="<{cycle values="odd,even"}>">
+     <{$i.html}>
+    </td>
+  </tr>
+<{/foreach}>
+</table>
+<{/if}>
+
+<table>
+<tr>
+<td><{$page_no_label}></td>
+<{if $maxpage > 1}>
+<td align="right">
+<{if $page > 1}>
+<a href="#" onclick="submit_page_link(<{$page-1}>);">PREV</a>&nbsp;
+<{else}>
+PREV&nbsp;
+<{/if}>
+<{foreach item=i from=$pages}>
+<{if $i==$page}>
+<{$i}>
+<{else}>
+<a href="#" onclick="submit_page_link(<{$i}>);"><{$i}></a>
+<{/if}>
+&nbsp;
+<{/foreach}>
+<{if $page < $maxpage }>
+<a href="#" onclick="submit_page_link(<{$page+1}>);">NEXT</a>
+<{else}>
+NEXT
+<{/if}>
+</td>
+<{/if}>
+</tr>
+</table>
+
+<form action="" id="<{$dirname}>_print_form" method="post" target="_blank">
+<input type="hidden" name="op" value="<{$op}>" />
+<input type="hidden" name="print" value="print" />
+<input type="hidden" name="page" value="<{$page}>" />
+<input type="hidden" name="itemcount" value="<{$itemcount}>" />
+<input type="hidden" name="search_itemtype" value="<{$search_itemtype}>" />
+<input type="hidden" name="search_subtype" value="<{$search_subtype}>" />
+<input type="hidden" name="keyword" value="<{$keyword}>" />
+<input type="hidden" name="search_condition" value="<{$search_condition}>" />
+<{foreach key=key item=item from=$search_data}>
+	<{if is_array($item)}>
+		<{foreach item=val from=$item}>
+			<input type="hidden" name="<{$key|cat:'[]'}>" value="<{$val}>" />
+		<{/foreach}>
+	<{else}>
+		<input type="hidden" name="<{$key}>" value="<{$item}>" />
+	<{/if}>
+<{/foreach}>
+</form>
+
+<{include file="db:`$dirname`_footer.html"}>

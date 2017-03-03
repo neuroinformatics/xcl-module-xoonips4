@@ -1,0 +1,98 @@
+<{if $viewType eq 'input'}>
+	<table>
+	<tr>
+		<td><input type="radio" name="<{$rightsUseCC}>" value="1" <{$check_cc[1]}> onclick="<{$dirname}>Edit.changeRightsRadioBox(1, this, '<{$fieldName}>');" /></td>
+		<td><{$smarty.const._MD_XOONIPS_RIGHTS_SOME_RIGHTS_RESERVED}></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+			<ul>
+				<li><{$smarty.const._MD_XOONIPS_RIGHTS_ALLOW_COMMERCIAL_USE}><br />
+					<div style="padding-left: 20px;">
+					<input type="radio" name="<{$rightsCCCommercialUse}>" value="1" <{$check_com[1]}> onclick="<{$dirname}>Edit.changeRightsRadioBox(2, this, '<{$fieldName}>');" /><{$smarty.const._YES}><br />
+					<input type="radio" name="<{$rightsCCCommercialUse}>" value="0" <{$check_com[0]}> onclick="<{$dirname}>Edit.changeRightsRadioBox(2, this, '<{$fieldName}>');" /><{$smarty.const._NO}><br />
+					</div>
+				</li>
+				<li><{$smarty.const._MD_XOONIPS_RIGHTS_ALLOW_MODIFICATIONS}><br />
+					<div style="padding-left: 20px;">
+					<input type="radio" name="<{$rightsCCModification}>" value="2" <{$check_mod[2]}> onclick="<{$dirname}>Edit.changeRightsRadioBox(3, this, '<{$fieldName}>');" /><{$smarty.const._YES}><br />
+					<input type="radio" name="<{$rightsCCModification}>" value="1" <{$check_mod[1]}> onclick="<{$dirname}>Edit.changeRightsRadioBox(3, this, '<{$fieldName}>');" /><{$smarty.const._MD_XOONIPS_RIGHTS_YES_SA}><br />
+					<input type="radio" name="<{$rightsCCModification}>" value="0" <{$check_mod[0]}> onclick="<{$dirname}>Edit.changeRightsRadioBox(3, this, '<{$fieldName}>');" /><{$smarty.const._NO}><br />
+					</div>
+				</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<td><input type="radio" name="<{$rightsUseCC}>" value="0" <{$check_cc[0]}> onclick="<{$dirname}>Edit.changeRightsRadioBox(1, this, '<{$fieldName}>');" /></td>
+		<td><{$smarty.const._MD_XOONIPS_RIGHTS_ALL_RIGHTS_RESERVED}></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+		<div id="<{$showTextDiv}>" style="width: 100%;"><{$text|xoops_escape}></div>
+		<div style="vertical-align: text-bottom; text-align:right">
+		<a href="#" onclick="return <{$dirname}>Edit.openInputTextFileWindow('rights','<{$fieldName}>')"><{$smarty.const._MD_XOONIPS_ITEM_TEXT_FILE_EDIT_LABEL}></a>
+		</div>
+		</td>
+	</tr>
+	</table>
+	<input type="hidden" name="<{$fieldName}>" value="<{$value|xoops_escape}>" id="<{$fieldName}>" />
+<{elseif $viewType eq 'confirm'}>
+	<{if $use_cc=='0'}>
+		<textarea readonly="readonly" rows="5" cols="40" style="width:320px;"><{$text|xoops_escape}></textarea>
+	<{else}>
+		<{$ccLicense}>
+	<{/if}>
+	<input type="hidden" name="<{$fieldName}>" value="<{$value|xoops_escape}>" id="<{$fieldName}>" />
+<{elseif $viewType eq 'detail'}>
+	<{if $use_cc=='0'}>
+		<textarea readonly="readonly" rows="5" cols="40" style="width:320px;"><{$text|xoops_escape}></textarea>
+	<{else}>
+		<{$ccLicense}>
+	<{/if}>
+<{elseif $viewType eq 'search'}>
+	<input type="text" name="<{$fieldName}>" size="50" value="" />
+<{elseif $viewType eq 'default'}>
+	<table>
+	<tr>
+		<td><input type="radio" name="<{$rightsUseCC}>" value="1" <{$check_cc[1]}> <{$disabled}> onclick="<{$dirname}>Edit.changeRightsRadioBox(1, this, '<{$fieldName}>');" /></td>
+		<td><{$smarty.const._MD_XOONIPS_RIGHTS_SOME_RIGHTS_RESERVED}></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+			<ul>
+				<li><{$smarty.const._MD_XOONIPS_RIGHTS_ALLOW_COMMERCIAL_USE}><br />
+					<div style="padding-left: 20px;">
+					<input type="radio" name="<{$rightsCCCommercialUse}>" value="1" <{$check_com[1]}> <{$disbaled}> onclick="<{$dirname}>Edit.changeRightsRadioBox(2, this, '<{$fieldName}>');" /><{$smarty.const._YES}><br />
+					<input type="radio" name="<{$rightsCCCommercialUse}>" value="0" <{$check_com[0]}> <{$disabled}> onclick="<{$dirname}>Edit.changeRightsRadioBox(2, this, '<{$fieldName}>');" /><{$smarty.const._NO}><br />
+					</div>
+				</li>
+				<li><{$smarty.const._MD_XOONIPS_RIGHTS_ALLOW_MODIFICATIONS}><br />
+					<div style="padding-left: 20px;">
+					<input type="radio" name="<{$rightsCCModification}>" value="2" <{$check_mod[2]}> <{$disbaled}> onclick="<{$dirname}>Edit.changeRightsRadioBox(3, this, '<{$fieldName}>');" /><{$smarty.const._YES}><br />
+					<input type="radio" name="<{$rightsCCModification}>" value="1" <{$check_mod[1]}> <{$disbaled}> onclick="<{$dirname}>Edit.changeRightsRadioBox(3, this, '<{$fieldName}>');" /><{$smarty.const._MD_XOONIPS_RIGHTS_YES_SA}><br />
+					<input type="radio" name="<{$rightsCCModification}>" value="0" <{$check_mod[0]}> <{$disbaled}> onclick="<{$dirname}>Edit.changeRightsRadioBox(3, this, '<{$fieldName}>');" /><{$smarty.const._NO}><br />
+					</div>
+				</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<td><input type="radio" name="<{$rightsUseCC}>" value="0" <{$check_cc[0]}> <{$disabled}> onclick="<{$dirname}>Edit.changeRightsRadioBox(1, this, '<{$fieldName}>');" /></td>
+		<td><{$smarty.const._MD_XOONIPS_RIGHTS_ALL_RIGHTS_RESERVED}></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+		<div id="<{$showTextDiv}>" style="width: 100%;"><{$text|xoops_escape}></div>
+		<div style="vertical-align: text-bottom; text-align:right">
+		<a href="#" <{$disabled}> onclick="return xoonipsOpenTextFileInputWindow('rights','<{$fieldName}>')"><{$smarty.const._MD_XOONIPS_ITEM_TEXT_FILE_EDIT_LABEL}></a>
+		</div>
+		</td>
+	</tr>
+	</table>
+	<input type="hidden" name="<{$fieldName}>" value="<{$value|xoops_escape}>" id="<{$fieldName}>" />
+<{/if}>

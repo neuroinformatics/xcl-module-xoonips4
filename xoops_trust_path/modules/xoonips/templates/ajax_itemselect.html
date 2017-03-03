@@ -1,0 +1,263 @@
+<b><{$smarty.const._MD_XOONIPS_ITEM_SELECT_SUB_TITLE}></b><br />
+<script type="text/javascript">
+jQuery.noConflict();
+jQuery(function(){
+    var data = "action=Ajax&method=GetIndexesInfo&function=register";
+    jQuery.ajax({
+        type: 'GET',
+        scriptCharset: 'utf-8',
+        dataType: 'json',
+        url: '<{$smarty.const.XOOPS_URL}>/modules/<{$dirname}>/index.php',
+        data: data,
+        success: function(json) {
+            var idNamePrefix = json.dirname + '_item_select_index_tree_div_';
+            jQuery.each(json.trees, function() {
+                jQuery('#' + json.dirname + '_item_select_index_tree_div_' + this.index_id).jstree({
+                    "core" : {
+                        "data" : this.html
+                    },
+                    "plugins" : [ 'json_data' ]
+                });
+            });
+            jQuery("[id^=" + json.dirname + '_item_select_index_tree_div_' + "]").bind("changed.jstree", function (e, data) {
+                jQuery('#' + json.dirname + '_item_select_index_id').val(data.node.id);
+                jQuery('#<{$dirname}>_title').val('');
+                jQuery('#<{$dirname}>_itemselectsubform').submit();
+                return false;
+            });
+
+            jQuery('#<{$dirname}>_item_select_open_all').click(function(){
+                jQuery("[id^=" + idNamePrefix + "]").each(function() {
+                    jQuery(this).jstree('open_all');
+                });
+            });
+
+            jQuery('#<{$dirname}>_item_select_close_all').click(function(){
+                jQuery("[id^=" + idNamePrefix + "]").each(function() {
+                    jQuery(this).jstree('close_all');
+                });
+            });
+        }
+    });
+
+
+	jQuery('#<{$dirname}>_item_select_index_tree_tabs').tabs({ 
+		cookie: {}
+	});
+
+	jQuery('#<{$dirname}>_item_select_search_button').click(function(){
+		jQuery('#<{$dirname}>_item_select_index_id').val('');
+	});
+});
+function submitOrderDir(str) {
+	jQuery('#<{$dirname}>_order_dir').attr('value', str);
+	jQuery('#<{$dirname}>_itemselectsubform').submit();
+	return false;
+}
+function submitOrderby() {
+	jQuery('#<{$dirname}>_itemselectsubform').submit();
+	return false;
+}
+function submitItemcount() {
+	jQuery('#<{$dirname}>_itemselectsubform').submit();
+	return false;
+}
+function submitPage(index_id, page, orderby, itemcount) {
+	jQuery('#<{$dirname}>_itemselectsubform').attr('action', 'index.php?action=Ajax&method=ItemSelect&op=search&index_id=' + index_id + '&page=' + page + '&orderby=' + orderby + '&itemcount=' + itemcount);
+	jQuery('#<{$dirname}>_itemselectsubform').submit();
+	return false;
+}
+</script>
+<table><tr><td width="30%">
+<b><{$smarty.const._MD_XOONIPS_ITEM_SELECT_SUB_INDEX_TREE}></b><br />
+<div id="<{$dirname}>_item_select_treecontrol" style="float: none; clear: both; margin: 0px 0px 3px 0px; padding: 0px;">
+<button class="formButton" id="<{$dirname}>_item_select_open_all" >open all</button>
+<button class="formButton" id="<{$dirname}>_item_select_close_all" >close all</button>
+</div>
+<form id="<{$dirname}>_itemselectsubform" action="index.php?action=Ajax&amp;method=ItemSelect" method="post">
+<input type="hidden" name="op" value="search" />
+<input type="hidden" id="<{$dirname}>_item_select_index_id" name="indexId" value="<{$select_index_id}>" />
+<input type="hidden" id="<{$dirname}>_callbackid"  name="callbackid" value="<{$callbackid}>" />
+<input type="hidden" id="<{$dirname}>_callbackvalue" name="callbackvalue" value="" />
+<div style="margin: 0px; padding: 0px;font-size:80%;" id="<{$dirname}>_item_select_index_tree_tabs">
+<ul>
+<{foreach item=index from=$indexes}>
+	<li><a href="#<{$dirname}>_item_select_index_tree_div_<{$index.index_id}>"><{$index.title|xoops_escape}></a></li>
+<{/foreach}>
+</ul>
+<{foreach item=tree from=$trees}>
+	<div id="<{$dirname}>_item_select_index_tree_div_<{$tree.index_id}>" style="width: 190px; height: 360px; overflow: auto; padding: 0px; margin: 0px;">
+	<ul id="<{$dirname}>_item_select_index_tree_<{$tree.index_id}>" class="filetree">
+	<!-- <{$tree.html}> -->
+	</ul>
+	</div>
+<{/foreach}>
+</div>
+</td>
+<td width="70%">
+<table class="outer">
+<tr>
+<td class="head"><{$smarty.const._MD_XOONIPS_ITEM_SELECT_SUB_TITLE_LABEL}></td>
+<td class="even">
+<input type="text" id="<{$dirname}>_title" name="title"  value="<{$title|xoops_escape}>" size="35" />
+<input type="submit" id="<{$dirname}>_item_select_search_button" name="search_button" value="<{$smarty.const._MD_XOONIPS_ITEM_SELECT_SUB_SEARCH_BUTTON}>" />
+</td>
+</tr>
+</table>
+<hr />
+<{if $item_no_label}><span><{$item_no_label}></span><{/if}>
+<{if $items}>
+	<table width="100%" border="0" cellspacing="5">
+	<tr valign="top">
+		<td class="odd">
+		<{$smarty.const._MD_XOONIPS_ITEM_ORDER_BY}>
+		<select id="<{$dirname}>_order_by" name="order_by" onchange="submitOrderby();">
+		<{foreach key=key item=item from=$order_by_select}>
+   			<option value="<{$key}>" <{if $key == $orderby}> selected="selected" <{/if}> ><{$item}></option>
+		<{/foreach}>
+		</select>
+		<input type="hidden" id="<{$dirname}>_order_dir" name="order_dir" value="<{$order_dir}>" />
+		<{if $order_dir == $smarty.const.ASC}>
+			<{$smarty.const._MD_XOONIPS_ITEM_ASCEND}>
+			<a href="#" onclick="submitOrderDir('<{$smarty.const.XOONIPS_DESC}>');return false;"><{$smarty.const._MD_XOONIPS_ITEM_DESCEND}></a>
+		<{else}>
+			<a href="#" onclick="submitOrderDir('<{$smarty.const.XOONIPS_ASC }>');return false;"><{$smarty.const._MD_XOONIPS_ITEM_ASCEND}></a>
+			<{$smarty.const._MD_XOONIPS_ITEM_DESCEND}>
+		<{/if}>
+		</td>
+		<td class="odd">
+		<{$smarty.const._MD_XOONIPS_ITEM_NUM_OF_ITEM_PER_PAGE}>
+		<select id="<{$dirname}>_itemcount" name="itemcount" onchange="submitItemcount();">
+		<{foreach item=i from=$item_count_select}>
+	      	<option value="<{$i}>" <{if $i == $itemcount}> selected="selected" <{/if}> ><{$i}></option>
+		<{/foreach}>
+	     </select>
+	    </td>
+	  </tr>
+	</table>
+
+	<table>
+	<tr>
+	<td><{$page_no_label}></td>
+	<{if $maxpage > 1}>
+		<td align="right">
+		<{if $page > 1}>
+			<{if $index_id > 0}>
+				<a href="#" onclick="submitPage(<{$index_id}>, <{$page-1}>, <{$orderby}>, <{$itemcount}>);return false;">PREV</a>&nbsp;
+			<{else}>
+				<a href="#" onclick="submitPage('', <{$page-1}>, <{$orderby}>, <{$itemcount}>);return false;">PREV</a>&nbsp;
+			<{/if}>
+		<{else}>
+			PREV&nbsp;
+		<{/if}>
+
+		<{foreach item=i from=$pages}>
+			<{if $i == $page}>
+				<{$i}>
+			<{else}>
+				<{if $index_id > 0}>
+					<a href="#" onclick="submitPage(<{$index_id}>, <{$i}>, <{$orderby}>, <{$itemcount}>);return false;"><{$i}></a>
+				<{else}>
+					<a href="#" onclick="submitPage('', <{$i}>, <{$orderby}>, <{$itemcount}>);return false;"><{$i}></a>
+				<{/if}>
+			<{/if}>
+			&nbsp;
+		<{/foreach}>
+
+		<{if $page < $maxpage}>
+			<{if $index_id > 0}>
+				<a href="#" onclick="submitPage(<{$index_id}>, <{$page+1}>, <{$orderby}>, <{$itemcount}>);return false;">NEXT</a>
+			<{else}>
+				<a href="#" onclick="submitPage('', <{$page+1}>, <{$orderby}>, <{$itemcount}>);return false;">NEXT</a>
+			<{/if}>
+		<{else}>
+			NEXT
+		<{/if}>
+		</td>
+	<{/if}>
+	</tr>
+	</table>
+
+	<table class="outer">
+	<{foreach key=key item=item from=$items}>
+		<tr class="<{cycle values="even,odd"}>">
+		<td valign="middle">
+		<input type="checkbox" rel="select" name="sel<{$key}>" value="<{$item.item_id}>" />
+		</td>
+		<td>
+		<{$item.html}>
+		</td>
+		</tr>
+	<{/foreach}>
+	</table>
+
+	<table>
+	<tr>
+	<td><{$page_no_label}></td>
+	<{if $maxpage > 1}>
+		<td align="right">
+		<{if $page > 1}>
+			<{if $index_id > 0}>
+				<a href="#" onclick="submitPage(<{$index_id}>, <{$page-1}>, <{$orderby}>, <{$itemcount}>);return false;">PREV</a>&nbsp;
+			<{else}>
+				<a href="#" onclick="submitPage('', <{$page-1}>, <{$orderby}>, <{$itemcount}>);return false;">PREV</a>&nbsp;
+			<{/if}>
+		<{else}>
+			PREV&nbsp;
+		<{/if}>
+
+		<{foreach item=i from=$pages}>
+			<{if $i == $page}>
+				<{$i}>
+			<{else}>
+				<{if $index_id > 0}>
+					<a href="#" onclick="submitPage(<{$index_id}>, <{$i}>, <{$orderby}>, <{$itemcount}>);return false;"><{$i}></a>
+				<{else}>
+					<a href="#" onclick="submitPage('', <{$i}>, <{$orderby}>, <{$itemcount}>);return false;"><{$i}></a>
+				<{/if}>
+			<{/if}>
+			&nbsp;
+		<{/foreach}>
+
+		<{if $page < $maxpage}>
+			<{if $index_id > 0}>
+				<a href="#" onclick="submitPage(<{$index_id}>, <{$page+1}>, <{$orderby}>, <{$itemcount}>);return false;">NEXT</a>
+			<{else}>
+				<a href="#" onclick="submitPage('', <{$page+1}>, <{$orderby}>, <{$itemcount}>);return false;">NEXT</a>
+			<{/if}>
+		<{else}>
+			NEXT
+		<{/if}>
+		</td>
+		</tr>
+		</table>
+	<{/if}>
+
+	</td>
+	</tr>
+	</table>
+	<br />
+
+	<div style="text-align: center;">
+	<input type="button" rel="callback" value="<{$smarty.const._MD_XOONIPS_LABEL_SELECT}>" />
+	<input type="button" rel="close" value="<{$smarty.const._MD_XOONIPS_LABEL_CANCEL}>" />
+	<script language="javascript">
+	jQuery(function(){
+		jQuery(':button[rel=callback]').click(function(){
+			jQuery(":checked[rel='select']").each(function(){
+				if (jQuery('#<{$dirname}>_callbackvalue').val() == '') {
+					jQuery('#<{$dirname}>_callbackvalue').val(jQuery(this).val());
+				} else {
+					jQuery('#<{$dirname}>_callbackvalue').val(jQuery('#<{$dirname}>_callbackvalue').val() + ',' + jQuery(this).val());
+				}
+			});
+		})
+	});
+	</script>
+	</div>
+<{else}>
+<div style="text-align: center;">
+<input type="button" rel="close" value="<{$smarty.const._MD_XOONIPS_LABEL_CANCEL}>" />
+</div>
+<{/if}>
+</form>

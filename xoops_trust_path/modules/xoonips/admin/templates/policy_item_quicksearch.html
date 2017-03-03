@@ -1,0 +1,30 @@
+<{include file="file:admin_header.inc.html"}>
+
+<table width="100%" cellspacing="1" class="outer">
+<tbody>
+  <tr>
+    <th style="width: 85%; text-align: center;"><{"`$constpref`_POLICY_ITEM_QUICKSEARCH_LABEL"|constant}></th>
+    <th style="width: 15%; text-align: center;"><{"`$constpref`_LANG_ACTION"|constant}></th>
+  </tr>
+<{foreach item=object from=$objects}>
+  <tr class= "<{cycle values='odd,even'}>">
+    <td><{$object->get('title')|xoops_escape}></td>
+    <td style="text-align: center;">
+      <a href="index.php?action=PolicyItemQuickSearchEdit&amp;condition_id=<{$object->get('condition_id')}>"><img src="<{"icons/edit.png"|theme}>" alt="<{"`$constpref`_LANG_MODIFY"|constant}>" title="<{"`$constpref`_LANG_MODIFY"|constant}>" /></a>
+      <{if $object->get('condition_id') != 1}>
+      <a href="index.php?action=PolicyItemQuickSearchDelete&amp;condition_id=<{$object->get('condition_id')}>"><img src="<{"icons/delete.png"|theme}>" alt="<{"`$constpref`_LANG_DELETE"|constant}>" title="<{"`$constpref`_LANG_DELETE"|constant}>" /></a>
+      <{/if}>
+    </td>
+  </tr>
+<{/foreach}>
+<{if empty($objects)}>
+  <tr>
+    <td class="odd" colspan="2" style="text-align: center;">
+       <span style="color: red; font-weight: bold;"><{"`$constpref`_MESSAGE_EMPTY"|constant}></span>
+    </td>
+  </tr>
+<{/if}>
+</tbody>
+</table>
+
+<{include file="file:admin_footer.inc.html"}>

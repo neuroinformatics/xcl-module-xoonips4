@@ -1,0 +1,34 @@
+<{include file="file:admin_header.html"}>
+
+<form id="<{$dirname}>_itemform" name="<{$dirname}>_itemform" action="maintenance_itemdelete.php" method="post" enctype="multipart/form-data">
+<input type="hidden" name="op" value="">
+<input type="hidden" name="searchUserID" value="<{$searchUserID}>">
+<input type="hidden" name="searchUserName" value="<{$searchUserName}>">
+<{$token_ticket}>
+<table width="100%" cellspacing="0" class="outer">
+  <tbody>
+  <tr>
+	<td style="width: 20%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_MAINTENANCE_ITEMDELETE_USER}></td>
+	<td class="even" style="width: 80%; vertical-align: top;">
+	<{$searchUserName|xoops_escape}>
+	</td>
+  </tr>
+  <tr>
+    <td style="width: 20%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_MAINTENANCE_ITEM_INDEX}></td>
+    <td style="width: 80%; text-align: left;" class="odd">
+	<{foreach item=index from=$req_indexes}>
+	<ul>
+	<{$index.path}><input type="hidden" name="<{$dirname}>_index_tree_chk_del_<{$index.id}>" value="<{$index.id}>">
+	</ul>
+	<{/foreach}>
+	</td>
+  </tr>
+  </tbody>
+</table>
+<div style="text-align: left">
+  <input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_EXECUTE}>" onclick="op.value='execute'; submit();" />&nbsp;&nbsp;
+  <input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_BACK}>" onclick="op.value='index'; submit();" />
+</div>
+</form>
+
+<{include file="file:admin_footer.inc.html"}>

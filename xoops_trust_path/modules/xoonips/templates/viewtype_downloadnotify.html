@@ -1,0 +1,31 @@
+<{if $viewType eq 'input'}>
+	<{foreach key=key item=listName from=$list}>
+		<label><input name="<{$radioName}>" type="radio" value="<{$key}>" <{if $key==$value}>checked="checked"<{/if}> onclick="<{$dirname}>Edit.changeRadioBox(this, '<{$fieldName}>');" /><{$listName|xoops_escape}></label>
+	<{/foreach}>
+	<input id="<{$fieldName}>" name="<{$fieldName}>" type="hidden" value="<{$value|xoops_escape}>" />
+	<br /><{$smarty.const._MD_XOONIPS_ITEM_ATTACHMENT_DL_NOTIFY_EXPLANATION}>
+<{elseif $viewType eq 'confirm'}>
+	<{$valueName|xoops_escape}><input type="hidden" name="<{$fieldName}>" value="<{$value|xoops_escape}>" />
+<{elseif $viewType eq 'detail'}>
+	<{$valueName|xoops_escape}>
+<{elseif $viewType eq 'search'}>
+	<select name="<{$fieldName}>">
+	<option <{if $value===""}>selected<{/if}>> </option>
+	<{foreach key=key item=listName from=$list}>
+		<option value="<{$key}>" <{if $value!=='' && $key==$value}>selected<{/if}>><{$listName|xoops_escape}></option>
+	<{/foreach}>
+	</select>
+<{elseif $viewType eq 'list'}>
+	<input type="hidden" name="list" value="<{$value|xoops_escape}>" />
+<{elseif $viewType eq 'default'}>
+	<{if count($selectValues) == 0}>
+		<input type="hidden" name="default_value" value="<{$value|xoops_escape}>" />
+	<{else}>
+		<{foreach key=key item=selectValue from=$selectValues}>
+			<input type="radio" name="default_value" value="<{$key}>" <{if $key==$value}>checked="checked"<{/if}> <{$disabled}> /><{$selectValue|xoops_escape}>&nbsp;&nbsp;
+		<{/foreach}>
+		<{if !empty($disabled)}>
+			<input type="hidden" name="default_value" value="<{$value|xoops_escape}>" />
+		<{/if}>
+	<{/if}>
+<{/if}>

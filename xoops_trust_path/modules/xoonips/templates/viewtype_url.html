@@ -1,0 +1,5 @@
+<{if $viewType eq 'detail'}>
+<{if $value != ''}>
+<a href="<{$value|xoops_escape}>" target="_blank" onclick="return <{$dirname}>Edit.linkCountUp(<{$groupId}>, <{$fieldId}>);"><{$value|xoops_escape}></a>
+<{/if}>
+<{/if}>

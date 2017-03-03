@@ -1,0 +1,103 @@
+a.formButton {
+	display: inline-block;
+	text-decoration: none;
+	border: 1px solid #cccccc;
+	background-color: #f0f0f0;
+	margin: 5px;
+	padding: 5px 10px;
+	color: #000000;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	font-size: 8pt;
+	text-shadow: #f2f2f2 1px 1px 0;
+}
+a.formButton:hover {
+	border: 1px solid #888888;
+	background-color: #f8f8f8;
+}
+a.formButton:focus {
+	border: 1px solid #0088c8;
+}
+a.formButton:active {
+	border: 1px solid #0088c8;
+	background-color: #c8c8c8;
+}
+a.formButton:link {
+	color: #000000;
+	text-decoration: none;
+}
+/* search */
+.<{$xoops_dirname}>_padding{
+	padding: 2pt;
+}
+
+.<{$xoops_dirname}>_search_block{
+	display:none;
+}
+
+/* error */
+.<{$xoops_dirname}>_error {
+	color: red;
+	border: 2px dotted #ff6633;
+	padding: 8px 8px 8px 35px;
+	margin: 5px 5px;
+	background: #fff8ee url("<{$xoops_url}>/modules/<{$xoops_dirname}>/image.php/error.gif") no-repeat 5px 4px;
+}
+
+/* download confirmation in detail.php */
+#<{$xoops_dirname}>_lightbox {
+	position: absolute;
+	top: 40px;
+	left: 0;
+	width: 100%;
+	z-index: 100;
+	text-align: center;
+}
+
+#<{$xoops_dirname}>_outerImageContainer {
+	position: relative;
+	background-color: #d8d8d8;
+	width: 250px;
+	margin: 0 auto;
+}
+
+#<{$xoops_dirname}>_imageContainer {
+	padding: 10px;
+}
+
+#<{$xoops_dirname}>_overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 90;
+	width: 100%;
+	height: 500px;
+	background-color: #000;
+	filter:alpha(opacity=80);
+	-moz-opacity: 0.8;
+	opacity: 0.8;
+}
+
+.<{$xoops_dirname}>_download_box {
+	background-color: #fff;
+	padding: 10px;
+}
+.<{$xoops_dirname}>_cursor {
+	cursor: move;
+	text-align:center;
+}
+.<{$xoops_dirname}>_sortable .<{$xoops_dirname}>_cursor_title,
+.<{$xoops_dirname}>_sortableDiv .<{$xoops_dirname}>_cursor_title {
+	cursor: move;
+	text-align:left;
+	padding-left:5px;
+	font-weight:bold;
+}
+/* jstree customization styles for the index tree */
+div.ui-tabs > div.jstree > ul.jstree-container-ul > li.jstree-node > i.jstree-icon {
+	display: none;
+}
+div.ui-tabs > div.jstree > ul.jstree-container-ul > li.jstree-node > ul.jstree-children > li.jstree-node {
+	margin-left: 0;
+}

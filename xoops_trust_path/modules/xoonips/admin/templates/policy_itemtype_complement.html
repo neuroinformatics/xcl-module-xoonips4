@@ -1,0 +1,70 @@
+<{include file="file:admin_header.html"}>
+<script type="text/javascript" charset="utf-8">
+function relationChange(value){
+	window.location = 'policy_itemtype.php?op=complement&itemtypeid=<{$itemtypeid}>&base_itemtypeid=<{$base_itemtypeid}>&select=' + value;
+}
+</script>
+<form name="<{$dirname}>_policy_itemtype_complementform" id="<{$dirname}>_policy_itemtype_complementform" action="policy_itemtype.php" method="post">
+<input name="op" type="hidden" value="complementsave"/>
+<input name="itemtypeid" type="hidden" value="<{$itemtypeid}>"/>
+<input name="base_itemtypeid" type="hidden" value="<{$base_itemtypeid}>"/>
+<{$token_ticket}>
+<div style="text-align:right; margin-left: 10px; margin-bottom: 25px;">
+</div>
+<table width="100%" cellspacing="1" class="outer">
+  <tr>
+    <td style="width: 25%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEM_TYPE}></td>
+    <td style="width: 75%; text-align: left;" class="odd">&nbsp;&nbsp;<{$itemtypename}></td>
+  </tr>
+  <tr>
+    <td style="width: 25%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_COMPLEMENT}></td>
+    <td style="width: 75%; text-align: left;" class="even">&nbsp;&nbsp;
+      <select size="1" name="selectid" onchange="relationChange(this.value);">
+      <{foreach item=relation from=$relationlist}>
+        <option value="<{$relation.complement_id}>" <{$relation.selected}>><{$relation.title}></option>
+      <{/foreach}>
+      </select>
+    </td>
+  </tr>
+</table>
+<{if count($relationdetaillist)>0}>
+<hr>
+<{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_COMPLEMENT_DETAIL}>
+<table width="100%" cellspacing="1" class="outer">
+  <tr>
+    <th style="width: 20%; text-align: center;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_COMPLEMENT_COLUMN}></th>
+    <th style="width: 40%; text-align: center;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_COMPLEMENT_FIELD}></th>
+    <th style="width: 40%; text-align: center;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_RELEASE_CONTENT}></th>
+  </tr>
+  <{foreach item=relationdetail from=$relationdetaillist name=comp}>
+  <tr>
+    <td style="width: 20%; text-align: left;" class="head"><{$relationdetail.title}></td>
+    <td style="width: 40%; text-align: left;" class="<{if $smarty.foreach.comp.iteration % 2}>odd<{else}>even<{/if}>">&nbsp;&nbsp;
+      <select size="1" name="selectdetailid[]" disabled>
+      <{assign var=title value=''}>
+      <{foreach item=detail from=$detaillist}>
+      <{if $relationdetail.item_field_detail_id==$detail.detail_id && $relationdetail.group_id==$detail.group_id}>
+        <option value="<{$relationdetail.complement_detail_id}>,<{$detail.detail_id}>,<{$detail.group_id}>" selected><{assign var=title value=$detail.title}><{$detail.title}></option>
+      <{else}>
+      	 <option value="<{$relationdetail.complement_detail_id}>,<{$detail.detail_id}>,<{$detail.group_id}>"><{$detail.title}></option>
+      <{/if}>
+
+      <{/foreach}>
+      </select>
+    </td>
+    <td style="width: 40%; text-align: left;" class="<{if $smarty.foreach.comp.iteration % 2}>odd<{else}>even<{/if}>">&nbsp;&nbsp;
+      <{foreach key=key item=basecomplement from=$basecomplementlist}>
+		<{if $key==$relationdetail.complement_detail_id}><{if $title!=$basecomplement.title}><span class="<{$dirname}>_diff"><{$basecomplement.title}></span><{else}><{$basecomplement.title}><{/if}><{/if}>
+      <{/foreach}>
+    </td>
+  </tr>
+  <{/foreach}>
+</table>
+<!--
+<div style="text-align: center">
+ 	<input class="formButton" type="submit" id="setButton" value="<{$smarty.const._AM_XOONIPS_LABEL_PREFERENCES}>"/>
+</div>
+-->
+<{/if}>
+</form>
+<{include file="file:admin_footer.inc.html"}>

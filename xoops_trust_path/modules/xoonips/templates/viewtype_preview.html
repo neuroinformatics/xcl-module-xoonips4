@@ -1,0 +1,38 @@
+<{if $viewType eq 'input'}>
+	<input type="file" name="<{$fileName}>" size="50" />
+	<{if $fileId=='error'}>
+		<br /><font color="red"><{$smarty.const._MD_XOONIPS_ITEM_THUMBNAIL_BAD_FILETYPE}></font>
+		<input type="hidden" name="<{$fieldName}>" value="" />
+	<{elseif empty($value) && $fileId=='none'}>
+		<input type="hidden" name="<{$fieldName}>" value="" />
+	<{else}>
+		<br /><a href="<{$xoops_url}>/modules/<{$dirname}>/image.php/file/<{$fileId}>/<{$preview.original_file_name|xoops_escape}>" target="_blank">
+			<img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/thumbnail/<{$fileId}>/<{$preview.original_file_name|xoops_escape}>" alt="thumbnail" /></a>
+		<br /><input class="formButton" type="button" name="btnDel" value="<{$smarty.const._MD_XOONIPS_ITEM_DELETE_BUTTON_LABEL}>" onclick="<{$dirname}>Edit.deleteFile('<{$fieldName}>', '<{$fileId}>');" />
+		<input type="hidden" name="<{$fieldName}>" value="<{$fileId}>" />
+	<{/if}>
+<{elseif $viewType eq 'confirm'}>
+	<{if $fileId=='error'}>
+		<br /><font color="red"><{$smarty.const._MD_XOONIPS_ITEM_THUMBNAIL_BAD_FILETYPE}></font>
+		<input type="hidden" name="<{$fieldName}>" value="" />
+	<{elseif empty($value) && $fileId=='none'}>
+		<input type="hidden" name="<{$fieldName}>" value="" />
+	<{else}>
+		<br /><a href="<{$xoops_url}>/modules/<{$dirname}>/image.php/file/<{$fileId}>/<{$preview.original_file_name|xoops_escape}>" target="_blank">
+			<img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/thumbnail/<{$fileId}>/<{$preview.original_file_name|xoops_escape}>" alt="thumbnail" /></a>
+		<input type="hidden" name="<{$fieldName}>" value="<{$fileId}>" />
+	<{/if}>
+<{elseif $viewType eq 'detail'}>
+	<{if !empty($fileId)}>
+		<br /><a href="<{$xoops_url}>/modules/<{$dirname}>/image.php/file/<{$fileId}>/<{$preview.original_file_name|xoops_escape}>" target="_blank">
+			<img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/thumbnail/<{$fileId}>/<{$preview.original_file_name|xoops_escape}>" alt="thumbnail" /></a>
+	<{/if}>
+<{elseif $viewType eq 'search'}>
+	<input type="text" name="<{$fieldName}>" size="50" value="" />
+<{elseif $viewType eq 'fileUpload'}>
+	<{if empty($value) && $fileId!="none"}>
+		<input type="text" id="<{$dirname}>_fileId" name="<{$fieldName}>" value="<{$fileId}>" />
+	<{/if}>
+<{elseif $viewType eq 'default'}>
+	<input type="hidden" name="default_value" value="" />
+<{/if}>

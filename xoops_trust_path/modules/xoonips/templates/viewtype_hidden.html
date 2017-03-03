@@ -1,0 +1,11 @@
+<{if $viewType eq 'input'}>
+	<{if $len==-1}>
+		<input type="hidden" name="<{$fieldName}>" size="50" value="<{$value|xoops_escape}>" />
+	<{else}>
+		<input type="hidden" name="<{$fieldName}>" maxlength="<{$len}>" size="<{if $len < 50}><{$len}><{else}>50<{/if}>>" value="<{$value|xoops_escape}>" />
+	<{/if}>
+<{elseif $viewType eq 'confirm'}>
+	<{$value|xoops_escape}><input type="hidden" name="<{$fieldName}>" value="<{$value|xoops_escape}>" />
+<{elseif $viewType eq 'detail'}>
+	<{$value|xoops_escape}>
+<{/if}>

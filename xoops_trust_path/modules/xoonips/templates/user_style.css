@@ -1,0 +1,27 @@
+<style TYPE="text/css">
+
+.<{$dirname}>_outer1 td , .<{$dirname}>_outer1 th {
+	border:0px;
+}
+table.<{$dirname}>_outer1 {
+	border:0px;
+}
+
+/* search */
+.<{$dirname}>_padding{
+	padding: 2pt;
+}
+
+.<{$dirname}>_search_block{
+	display:none;
+}
+
+/* error */
+.<{$dirname}>_error {
+	color: red;
+	border: 2px dotted #ff6633;
+	padding: 8px 8px 8px 35px;
+	margin: 5px 5px;
+	background: #fff8ee url("<{$xoops_url}>/modules/<{$dirname}>/image.php/error.gif") no-repeat 5px 4px;
+}
+</style>

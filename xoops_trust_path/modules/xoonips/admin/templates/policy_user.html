@@ -1,0 +1,98 @@
+<{include file="file:admin_header.inc.html"}>
+
+<form name="<{$xoops_dirname}>_policy_userform" action="index.php" method="post">
+<input name="action" value="PolicyUser" type="hidden" />
+<{xoops_token form=$actionForm}>
+<table width="100%" cellspacing="1" class="outer">
+  <tbody>
+  <tr>
+    <th colspan="2"><{"`$constpref`_POLICY_USER_REGIST_TITLE"|constant}></th>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;">
+      <span style="font-weight: bold;"><{"`$constpref`_POLICY_USER_REGIST_ACTIVATE_TITLE"|constant}></span><br /><br />
+      <span style="font-weight: normal;"><{"`$constpref`_POLICY_USER_REGIST_ACTIVATE_DESC"|constant}></span>
+    </td>
+    <td class="even" style="width: 60%; vertical-align: top;">
+      <select name="activate_user" size="1">
+        <option value="0"<{if $actionForm->get('activate_user') == 0}> selected="selected"<{/if}>><{"`$constpref`_POLICY_USER_REGIST_ACTIVATE_USER"|constant}></option> 
+        <option value="1"<{if $actionForm->get('activate_user') == 1}> selected="selected"<{/if}>><{"`$constpref`_POLICY_USER_REGIST_ACTIVATE_AUTO"|constant}></option> 
+        <option value="2"<{if $actionForm->get('activate_user') == 2}> selected="selected"<{/if}>><{"`$constpref`_POLICY_USER_REGIST_ACTIVATE_ADMIN"|constant}></option> 
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;">
+      <span style="font-weight: bold;"><{"`$constpref`_POLICY_USER_REGIST_CERTIFY_TITLE"|constant}></span><br /><br />
+      <span style="font-weight: normal;"><{"`$constpref`_POLICY_USER_REGIST_CERTIFY_DESC"|constant}></span>
+    </td>
+    <td class="even" style="width: 60%; vertical-align: top;">
+      <select name="certify_user" size="1">
+        <option value="on"<{if $actionForm->get('certify_user') == 'on'}> selected="selected"<{/if}>><{"`$constpref`_POLICY_USER_REGIST_CERTIFY_MODERATOR"|constant}></option> 
+        <option value="auto"<{if $actionForm->get('certify_user') == 'auto'}> selected="selected"<{/if}>><{"`$constpref`_POLICY_USER_REGIST_CERTIFY_AUTO"|constant}></option> 
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;">
+      <span style="font-weight: bold;"><{"`$constpref`_POLICY_USER_REGIST_DATELIMIT_TITLE"|constant}></span><br /><br />
+      <span style="font-weight: normal;"><{"`$constpref`_POLICY_USER_REGIST_DATELIMIT_DESC"|constant}></span>
+    </td>
+    <td class="even" style="width: 60%; vertical-align: top;">
+      <{xoops_input name=user_certify_date type=text size=7 value=$actionForm->get('user_certify_date')}>
+    </td>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;"></td>
+    <td class="even" style="width: 60%; vertical-align: top;">
+      <input name="_form_mode_regist" type="submit" value="<{"`$constpref`_LANG_UPDATE"|constant}>" />
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<br />
+
+<table width="100%" cellspacing="1" class="outer">
+  <tbody>
+  <tr>
+    <th colspan="2"><{"`$constpref`_POLICY_USER_INITVAL_TITLE"|constant}></th>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;">
+      <span style="font-weight: bold;"><{"`$constpref`_POLICY_USER_INITVAL_MAXITEM_TITLE"|constant}></span><br /><br />
+      <span style="font-weight: normal;"><{"`$constpref`_POLICY_USER_INITVAL_MAXITEM_DESC"|constant}></span>
+    </td>
+    <td class="even" style="width: 60%; vertical-align: top;">
+      <input name="private_item_number_limit" type="text" value="<{$actionForm->get('private_item_number_limit')|xoops_escape}>" size="7" maxlength="7" />
+    </td>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;">
+      <span style="font-weight: bold;"><{"`$constpref`_POLICY_USER_INITVAL_MAXINDEX_TITLE"|constant}></span><br /><br />
+      <span style="font-weight: normal;"><{"`$constpref`_POLICY_USER_INITVAL_MAXINDEX_DESC"|constant}></span>
+    </td>
+    <td class="even" style="width: 60%; vertical-align: top;">
+      <input name="private_index_number_limit" type="text" value="<{$actionForm->get('private_index_number_limit')|xoops_escape}>" size="7" maxlength="7" />
+    </td>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;">
+      <span style="font-weight: bold;"><{"`$constpref`_POLICY_USER_INITVAL_MAXDISK_TITLE"|constant}></span><br /><br />
+      <span style="font-weight: normal;"><{"`$constpref`_POLICY_USER_INITVAL_MAXDISK_DESC"|constant}></span>
+    </td>
+    <td class="even" style="width: 60%; vertical-align: top;">
+      <input name="private_item_storage_limit" type="text" value="<{$actionForm->get('private_item_storage_limit')|xoops_escape}>" size="7" maxlength="7" />
+    </td>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;"></td>
+    <td class="even" style="width: 60%; vertical-align: top;">
+      <input name="_form_mode_initval" type="submit" value="<{"`$constpref`_LANG_UPDATE"|constant}>" />
+    </td>
+  </tr>
+  </tbody>
+</table>
+</form>
+
+<{include file="file:admin_footer.inc.html"}>

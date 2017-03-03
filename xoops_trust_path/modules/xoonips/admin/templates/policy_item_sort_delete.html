@@ -1,0 +1,32 @@
+<{include file="file:admin_header.inc.html"}>
+
+<form name="<{$xoops_dirname}>_policy_item_sort_deleteform" id="<{$xoops_dirname}>_policy_item_sort_deleteform" action="index.php" method="post">
+<input type="hidden" name="action" value="PolicyItemSortDelete" />
+<input type="hidden" name="sort_id" value="<{$object->getShow('sort_id')}>" />
+
+<{xoops_token form=$actionForm}>
+<table width="100%" cellspacing="1" class="outer">
+  <tr>
+    <th colspan="2">
+      <{"`$constpref`_MESSAGE_DELETE_CONFIRM"|constant}>
+    </th>
+  </tr>
+  <tr>
+    <td style="width: 20%;" class="odd">
+      <{"`$constpref`_POLICY_ITEM_SORT_LABEL"|constant}>
+    </th>
+    <td style="width: 80%;" class="even">
+      <{$object->getShow('title')}>
+    </td>
+  </tr>
+</table>
+
+<div style="text-align: center; margin-top: 10px;">
+  <input type="submit" class="formButton" value="<{$smarty.const._CANCEL}>" name="_form_control_cancel" />
+  &nbsp;
+  <input type="submit" class="formButton" value="<{"`$constpref`_LANG_DELETE"|constant}>" name="submit" />
+</div>
+
+</form>
+
+<{include file="file:admin_footer.inc.html"}>

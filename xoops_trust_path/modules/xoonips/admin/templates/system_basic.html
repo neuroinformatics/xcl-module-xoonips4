@@ -1,0 +1,46 @@
+<{include file="file:admin_header.inc.html"}>
+
+<form name="<{$xoops_dirname}>_system_basicform" action="index.php" method="post">
+<input name="action" value="SystemBasic" type="hidden" />
+<{xoops_token form=$actionForm}>
+
+<table width="100%" cellspacing="1" class="outer">
+  <tbody>
+  <tr>
+    <th colspan="2"><{$title|xoops_escape}></th>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;">
+      <span style="font-weight: bold;"><{"`$constpref`_SYSTEM_BASIC_MODERATOR_GROUP_TITLE"|constant}></span>
+      <br /><br />
+      <span style="font-weight: normal;"><{"`$constpref`_SYSTEM_BASIC_MODERATOR_GROUP_DESC"|constant}></span>
+    </td>
+    <td class="even" style="width: 60%; vertical-align: top;">
+      <select name="moderator_gid" size="1">
+      <{foreach item=gname key=gid from=$groups}>
+          <option value="<{$gid}>"<{if $gid == $actionForm->get('moderator_gid') }> selected="selected"<{/if}>><{$gname|xoops_escape}></option>
+      <{/foreach}>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;">
+      <span style="font-weight: bold;"><{"`$constpref`_SYSTEM_BASIC_UPLOAD_DIR_TITLE"|constant}></span>
+      <br /><br />
+      <span style="font-weight: normal;"><{"`$constpref`_SYSTEM_BASIC_UPLOAD_DIR_DESC"|constant}></span>
+    </td>
+    <td class="even" style="width: 60%; vertical-align: top;">
+      <input name="upload_dir" type="text" size="50" value="<{$actionForm->get('upload_dir')|xoops_escape}>" />
+    </td>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;">&nbsp;</td>
+    <td class="even" style="width: 60%; vertical-align: top;">
+      <input type="submit" name="submit" value="<{"`$constpref`_LANG_UPDATE"|constant}>" />
+    </td>
+  </tr>
+  </tbody>
+</table>
+</form>
+
+<{include file="file:admin_footer.inc.html"}>

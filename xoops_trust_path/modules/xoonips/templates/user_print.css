@@ -1,0 +1,27 @@
+<style media=<{if $isPrintPage}>"all"<{else}>"print"<{/if}> TYPE="text/css">
+/* print control */
+div.headerbar{
+    display: none;
+}
+div.footerbar{
+    display: none;
+}
+div.no_print_div{
+    display: none;
+}
+td.leftcolumn{
+	display: none;
+}
+td.rightcolumn{
+	display: none;
+}
+td.headerlogo{
+    display: none;
+}
+td.headerbanner{
+    display: none;
+}
+span.no_print_span{
+    display: none;
+}
+</style>

@@ -1,0 +1,319 @@
+<script type="text/javascript">
+'use strict';
+(function($){
+$(function() {
+
+var viewTypeInfoDefault = {"dataTypesInfo":{"":{"length":"-1","decimal_places":"-1"}},"hasSelectionList":false};
+var viewTypeInfo;
+
+function <{$xoops_dirname}>_getValue(name) {
+  var $form = $('#<{$xoops_dirname}>_policy_item_field_editform');
+  var $input = $form.find('[name=' + name + ']');
+  var type = $input.attr('type');
+  if (type === 'checkbox') {
+    return $.map($input.filter(':checked'), function(el, index) {
+      return el.value;
+    });
+  } else if (type === 'radio') {
+    return $input.filter(':checked').val() || null;
+  } else if ($input.prop('tagName') === 'SELECT') {
+    if ($input.attr('multiple')) {
+      return $input.val() || [];
+    }
+    if ($input.prop('selectedIndex') < 0) {
+      return null;
+    } else {
+      return $input.val();
+    }
+  } else {
+    return $input.val();
+  }
+}
+
+function <{$xoops_dirname}>_view_type_onchange() {
+  var viewTypeId = $('#legacy_xoopsform_view_type_id').val();
+  var isReleased = 0;
+  viewTypeInfo = viewTypeInfoDefault;
+  if (viewTypeId != '') {
+    $.ajax({
+      type: 'POST',
+      url: '<{$smarty.const.XOOPS_MODULE_URL}>/<{$xoops_dirname}>/index.php',
+      data: {
+        'action': 'Ajax',
+        'method': 'GetViewTypeInfo',
+        'viewTypeId': viewTypeId
+      },
+      dataType: 'json',
+      async: false,
+      success: function(json) {
+        viewTypeInfo = json;
+      },
+      error: function(xhr, textStatus, errorThrown) {
+        alert('unexpected error occured.');
+      }
+    });
+  }
+  var dataTypeId = $('#legacy_xoopsform_data_type_id').val();
+  var dataTypeIdFirst;
+  $('#legacy_xoopsform_data_type_id option').prop('disabled', true);
+  $.each(viewTypeInfo['dataTypesInfo'], function(key, val) {
+    if (typeof dataTypeIdFirst == 'undefined')
+      dataTypeIdFirst = key;
+    $('#legacy_xoopsform_data_type_id option[value="' + key + '"]').prop('disabled', false);
+  });
+  if ($('#legacy_xoopsform_data_type_id option[value="' + dataTypeId + '"]').prop('disabled')) {
+    dataTypeId = dataTypeIdFirst;
+    $('#legacy_xoopsform_data_type_id').val(dataTypeId);
+  }
+  <{$xoops_dirname}>_data_type_onchange();
+  <{$xoops_dirname}>_list_onchange();
+}
+
+function <{$xoops_dirname}>_list_onchange() {
+  if (viewTypeInfo['hasSelectionList']) {
+    $('#legacy_xoopsform_list_hidden').prop('disabled', true);
+    $('#legacy_xoopsform_list_select').prop('disabled', false);
+    $('#legacy_xoopsform_list_select').parent('td').parent('tr').show();
+  } else {
+    $('#legacy_xoopsform_list_select').parent('td').parent('tr').hide();
+    $('#legacy_xoopsform_list_select').prop('disabled', true);
+    $('#legacy_xoopsform_list_hidden').prop('disabled', false);
+  }
+  var viewTypeId = $('#legacy_xoopsform_view_type_id').val();
+  var isReleased = <{$object->get('released')}>;
+  if (viewTypeId != '') {
+    $.ajax({
+      type: 'POST',
+      url: '<{$smarty.const.XOOPS_MODULE_URL}>/<{$xoops_dirname}>/index.php',
+      data: {
+        'action': 'Ajax',
+        'method': 'GetViewTypeInfo',
+        'viewTypeId': viewTypeId,
+        'mode': 'default',
+        'list': (viewTypeInfo['hasSelectionList'] ? $('#legacy_xoopsform_list_select').val() : ''),
+        'default': <{$xoops_dirname}>_getValue('default_value'),
+        'disabled': isReleased
+      },
+      dataType: 'json',
+      async: false,
+      success: function(json) {
+        $('#legacy_xoopsform_default_value_td').empty();
+        $('#legacy_xoopsform_default_value_td').html(json);
+      },
+      error: function(xhr, textStatus, errorThrown) {
+        alert('unexpected error occured.');
+      }
+    });
+  }
+}
+
+function <{$xoops_dirname}>_data_type_onchange() {
+  var dataTypeId = $('#legacy_xoopsform_data_type_id').val();
+  $('#legacy_xoopsform_data_length').val(viewTypeInfo['dataTypesInfo'][dataTypeId]['length']);
+  $('#legacy_xoopsform_data_decimal_places').val(viewTypeInfo['dataTypesInfo'][dataTypeId]['decimal_places']);
+  <{$xoops_dirname}>_data_length_onchange();
+}
+
+function <{$xoops_dirname}>_data_length_onchange() {
+  var dataTypeId = $('#legacy_xoopsform_data_type_id').val();
+  if (viewTypeInfo['dataTypesInfo'][dataTypeId]['length'] == -1) {
+    $('#legacy_xoopsform_data_length').parent('td').parent('tr').hide();
+  } else {
+    $('#legacy_xoopsform_data_length').parent('td').parent('tr').show();
+  }
+  if (viewTypeInfo['dataTypesInfo'][dataTypeId]['decimal_places'] == -1) {
+    $('#legacy_xoopsform_data_decimal_places').parent('td').parent('tr').hide();
+  } else {
+    $('#legacy_xoopsform_data_decimal_places').parent('td').parent('tr').show();
+  }
+}
+
+$('#legacy_xoopsform_view_type_id').change(function() {
+  <{$xoops_dirname}>_view_type_onchange();
+});
+
+$('#legacy_xoopsform_data_type_id').change(function() {
+  <{$xoops_dirname}>_data_type_onchange();
+});
+
+$('#legacy_xoopsform_list_select').change(function() {
+  <{$xoops_dirname}>_list_onchange();
+});
+
+<{$xoops_dirname}>_view_type_onchange();
+
+});
+})(jQuery);
+</script>
+<{include file="file:admin_header.inc.html"}>
+
+<form name="<{$xoops_dirname}>_policy_item_field_editform" id="<{$xoops_dirname}>_policy_item_field_editform" action="index.php?action=PolicyItemFieldEdit" method="post">
+<input type="hidden" name="field_id" value="<{$actionForm->get('field_id')|xoops_escape}>" />
+
+<{xoops_token form=$actionForm}>
+<table width="100%" cellspacing="1" class="outer">
+  <tr>
+    <th>&nbsp;</th>
+    <th>
+      <{"`$constpref`_LANG_MODIFY_CONTENT"|constant}>
+    </th>
+  </tr>
+  <tr>
+    <td style="width: 20%;" class="odd">
+      <{"`$constpref`_LANG_ITEM_FIELD_ID"|constant}><{"`$constpref`_LANG_REQUIRED_MARK"|constant}>
+    </th>
+    <td style="width: 80%;" class="even">
+      <{xoops_input type=text name=xml size=30 maxlength=255 value=$actionForm->get('xml')|xoops_escape}>
+    </td>
+  </tr>
+  <tr>
+    <td class="odd">
+      <{"`$constpref`_LANG_ITEM_FIELD_NAME"|constant}><{"`$constpref`_LANG_REQUIRED_MARK"|constant}>
+    </th>
+    <td class="even">
+      <{xoops_input type=text name=name size=30 maxlength=255 value=$actionForm->get('name')|xoops_escape}>
+    </td>
+  </tr>
+  <tr>
+    <td class="odd">
+      <{"`$constpref`_LANG_ITEM_FIELD_VIEW_TYPE"|constant}><{"`$constpref`_LANG_REQUIRED_MARK"|constant}>
+    </td>
+    <td class="even">
+<{if $object->get('released') == 1}>
+      <{assign var=if_view_type_id value=$object->get('view_type_id')}>
+      <{$viewTypes.$if_view_type_id->getShow('name')}>
+      <{xoops_input type=hidden name=view_type_id value=$object->get('view_type_id')}>
+<{else}>
+      <select id="legacy_xoopsform_view_type_id" name="view_type_id">
+        <{xoops_optionsArray from=$viewTypes value=view_type_id label=name default=$actionForm->get('view_type_id')}>
+      </select>
+<{/if}>
+    </td>
+  </tr>
+  <tr style="display: none;">
+    <td class="odd">
+      <{"`$constpref`_LANG_ITEM_FIELD_LIST"|constant}>
+    </td>
+    <td class="even">
+<{if $object->get('released') == 1}>
+      <{assign var=if_list value=$object->get('list')}>
+      <{$selectNames.$if_list|xoops_escape}>
+      <{xoops_input type=hidden name=list value=$object->get('list')}>
+<{else}>
+      <select id="legacy_xoopsform_list_select" name="list" disabled="disabled">
+      <{foreach from=$selectNames item=selectName}>
+        <option value="<{$selectName|xoops_escape}>"<{if $selectName == $actionForm->get('list')}> selected="selected"<{/if}>><{$selectName|xoops_escape}></option>
+      <{/foreach}>
+      </select>
+      <{xoops_input id=legacy_xoopsform_list_hidden type=hidden name=list value=$actionForm->get('list')}>
+<{/if}>
+    </td>
+  </tr>
+  <tr>
+    <td class="odd">
+      <{"`$constpref`_LANG_ITEM_FIELD_DATA_TYPE"|constant}><{"`$constpref`_LANG_REQUIRED_MARK"|constant}>
+    </td>
+    <td class="even">
+<{if $object->get('released') == 1}>
+      <{assign var=data_type_id value=$object->get('data_type_id')}>
+      <{$dataTypes.$data_type_id->getShow('name')}>
+      <{xoops_input type=hidden name=data_type_id value=$object->get('data_type_id')}>
+<{else}>
+      <select id="legacy_xoopsform_data_type_id" name="data_type_id">
+        <{xoops_optionsArray from=$dataTypes value=data_type_id label=name default=$actionForm->get('data_type_id')}>
+      </select>
+<{/if}>
+    </td>
+  </tr>
+  <tr>
+    <td class="odd">
+      <{"`$constpref`_LANG_ITEM_FIELD_DATA_LENGTH"|constant}>
+    </td>
+    <td class="even">
+<{if $object->get('released') == 1}>
+      <{$object->getShow('data_length')}>
+      <{xoops_input type=hiden name=data_length size=6 maxlength=5 value=$object->get('data_length')}>
+<{else}>
+      <{xoops_input type=text name=data_length size=6 maxlength=5 value=$actionForm->get('data_length')}>
+<{/if}>
+    </td>
+  </tr>
+  <tr>
+    <td class="odd">
+      <{"`$constpref`_LANG_ITEM_FIELD_DATA_SCALE"|constant}>
+    </td>
+    <td class="even">
+<{if $object->get('released') == 1}>
+      <{$object->getShow('data_decimal_places')}>
+      <{xoops_input type=hidden name=data_decimal_places size=3 maxlength=2 value=$object->get('data_decimal_places')}>
+<{else}>
+      <{xoops_input type=text name=data_decimal_places size=3 maxlength=2 value=$actionForm->get('data_decimal_places')}>
+<{/if}>
+    </td>
+  </tr>
+  <tr>
+    <td class="odd">
+      <{"`$constpref`_LANG_ITEM_FIELD_DEFAULT"|constant}>
+    </td>
+    <td id="legacy_xoopsform_default_value_td" class="even">
+      <{xoops_input type=hidden name=default_value value=$actionForm->get('default_value')}>
+    </td>
+  </tr>
+  <tr>
+    <td class="odd">
+      <{"`$constpref`_LANG_ITEM_FIELD_ESSENTIAL"|constant}>
+    </td>
+    <td class="even">
+      <{xoops_input type=checkbox name=essential value=1 default=$actionForm->get('essential')}>
+    </td>
+  </tr>
+  <tr>
+    <td class="odd" rowspan="3">
+      <{"`$constpref`_LANG_ITEM_FIELD_OTHER"|constant}>
+    </td>
+    <td class="even">
+      <{"`$constpref`_LANG_ITEM_FIELD_OTHER_DISPLAY"|constant}>
+      <{xoops_input type=checkbox name=detail_display value=1 default=$actionForm->get('detail_display')}>
+      <br />&nbsp;&raquo;
+      <{"`$constpref`_POLICY_ITEM_FIELD_OTHER_DISPLAY_DESC"|constant}>
+    </td>
+  </tr>
+  <tr>
+    <td class="even">
+      <{"`$constpref`_LANG_ITEM_FIELD_OTHER_DETAIL_SEARCH"|constant}>
+      <{xoops_input type=checkbox name=detail_target value=1 default=$actionForm->get('detail_target')}>
+      <br />&nbsp;&raquo;
+      <{"`$constpref`_POLICY_ITEM_FIELD_OTHER_DETAIL_SEARCH_DESC"|constant}>
+    </td>
+  </tr>
+  <tr>
+    <td class="even">
+      <{"`$constpref`_LANG_ITEM_FIELD_OTHER_SCOPE_SEARCH"|constant}>
+      <{xoops_input type=checkbox name=scope_search value=1 default=$actionForm->get('scope_search')}>
+      <br />&nbsp;&raquo;
+      <{"`$constpref`_POLICY_ITEM_FIELD_OTHER_SCOPE_SEARCH_DESC"|constant}>
+    </td>
+  </tr>
+  <tr<{if $object->get('released') == 0}> style="display: none;"<{/if}>>
+    <td class="odd">
+      <{"`$constpref`_LANG_ITEM_FIELD_HIDE"|constant}>
+    </td>
+    <td class="even">
+      <{xoops_input type=checkbox name=nondisplay value=1 default=$actionForm->get('nondisplay')}>
+    </td>
+  </tr>
+</table>
+
+<div style="text-align: center; margin-top: 10px;">
+  <input type="submit" class="formButton" value="<{$smarty.const._CANCEL}>" name="_form_control_cancel" />
+  &nbsp;
+  <input type="submit" class="formButton" value="<{"`$constpref`_LANG_SAVE"|constant}>" name="submit" />
+<{if $object->get('item_field_detail_id') != 0 }>
+  &nbsp;
+  <input type="submit" class="formButton" value="<{"`$constpref`_LANG_RELEASE"|constant}>" name="release" />
+<{/if}>
+</div>
+
+</form>
+
+<{include file="file:admin_footer.inc.html"}>

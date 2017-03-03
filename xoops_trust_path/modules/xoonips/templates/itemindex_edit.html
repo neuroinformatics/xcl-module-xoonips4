@@ -1,0 +1,20 @@
+<{include file="db:`$dirname`_header.html"}>
+<h3><{$smarty.const._MD_XOONIPS_INDEX_EDIT}></h3>
+<script type="text/javascript">
+function indexSave(form) {
+	form.action = '<{$xoops_url}>/modules/<{$dirname}>/edit.php?op=confirmIndex';
+	form.submit();
+}
+</script>
+&nbsp;&nbsp;&nbsp;&nbsp;<{$smarty.const._MD_XOONIPS_ITEM_SELECT_INDEX}>
+<br /><br />
+<form id="<{$dirname}>_itemindexeditform" action="edit.php" name="<{$dirname}>_itemindexeditform" method="post">
+<{$token_ticket}>
+<input type="hidden" name="item_id" value="<{$item_id}>" />
+<{$item_html}>
+<{$index_html}>
+<div style="text-align: center; margin-top: 20px;">
+	<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_SAVE_INDEX_BUTTON_LABEL}>" onclick="indexSave(this.form);" />
+</div>
+</form>
+<{include file="db:`$dirname`_footer.html"}>

@@ -1,0 +1,43 @@
+<{include file="db:`$dirname`_header.html"}>
+<script type="text/javascript" charset="utf-8">
+(function($) {
+$(function() {
+'use strict';
+
+$('#<{$dirname}>_registertopform :button[rel^="SelectItemTypePopin"]').<{$mytrustdirname}>Popin({
+  overflow : 'scroll',
+  callback: xoonipsCallback
+});
+
+$(window).load(function() {
+  $('#<{$dirname}>_selectitemtypebutton').click();
+});
+
+});
+})(jQuery);
+
+function xoonipsCallback(id, value) {
+  if (id != null) {
+    var form = jQuery('#<{$dirname}>_registertopform');
+    jQuery('#<{$dirname}>_url').val(id);
+    jQuery('#<{$dirname}>_redirect_msg').val(value);
+    form.attr('action', 'register.php?op=finish');
+    form.submit();
+  }
+  return false;
+}
+</script>
+
+<div id="<{$dirname}>PrivateIndexCheckedHandler" style="display: none;"></div>
+
+<h4><{$smarty.const._MD_XOONIPS_ITEM_REGISTER_ITEM_TITLE}></h4>
+
+<form id="<{$dirname}>_registertopform" name="<{$dirname}>_registertopform" action="<{$next_url}>" method="post">
+<input id="<{$dirname}>_url" type="hidden" name="url" value="" />
+<input id="<{$dirname}>_redirect_msg" type="hidden" name="redirect_msg" value="" />
+
+<div style="text-align: center">
+	<input id="<{$dirname}>_selectitemtypebutton" type="button" href="register.php?op=selectItemtype" rel="SelectItemTypePopin" value="<{$smarty.const._MD_XOONIPS_ITEM_REGISTER_BUTTON_LABEL}>" />
+</div>
+</form>
+<{include file="db:`$dirname`_footer.html"}>

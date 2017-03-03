@@ -1,0 +1,107 @@
+<script type="text/javascript" charset="utf-8">
+function pageSubmit(value) {
+	jQuery('#<{$dirname}>_userselectsub').attr('action', '<{$smarty.const.XOOPS_URL}>/modules/<{$dirname}>/index.php?action=Ajax&method=UserSelect&op=search&page=' + value);
+	jQuery('#<{$dirname}>_userselectsub').submit();
+}
+function setSort(sortkey, order) {
+	jQuery('#<{$dirname}>_userselectsub').attr('action', '<{$smarty.const.XOOPS_URL}>/modules/<{$dirname}>/index.php?action=Ajax&method=UserSelect&op=sort&sortkey=' + sortkey + '&order=' + order);
+}
+</script>
+
+<b><{$USERSELECT_TITLE}></b><br />
+<form id="<{$dirname}>_userselectsub" action="<{$smarty.const.XOOPS_URL}>/modules/<{$dirname}>/index.php?action=Ajax&amp;method=UserSelect" method="post">
+<{$token_ticket}>
+
+<table class="outer">
+<tr>
+<td class="head"><{$USER_UNAME_LABEL}></td>
+<td class="even"><input type="text" value="<{$uname|xoops_escape}>" name="uname" /></td>
+<td class="even" rowspan="2" valign="middle"><input type="submit" value="<{$LABEL_SEARCH}>" onclick="this.form.action='<{$smarty.const.XOOPS_URL}>/modules/<{$dirname}>/index.php?action=Ajax&method=UserSelect&op=search';" /></td>
+</tr>
+<tr>
+<td class="head"><{$USER_NAME_LABEL}></td>
+<td class="even"><input type="text" value="<{$name|xoops_escape}>" name="name" /></td>
+</tr>
+</table>
+
+<input type="hidden" id="<{$dirname}>_callbackid" name="callbackid" value="<{$callbackid}>" />
+<input type="hidden" id="<{$dirname}>_callbackvalue" name="callbackvalue" value="" />
+<input type="hidden" id="<{$dirname}>_hiduname" name="hiduname" value="<{$uname|xoops_escape}>" />
+<input type="hidden" id="<{$dirname}>_hidname" name="hidname" value="<{$name|xoops_escape}>" />
+<input type="hidden" id="<{$dirname}>_hidkey" name="hidkey" value="<{$sortkey}>" />
+<input type="hidden" id="<{$dirname}>_hidorder" name="hidorder" value="<{$order}>" />
+<input type="hidden" name="mode" value="<{$mode}>" />
+
+<{* display page navigation *}>
+<{if $userlist}>
+	<hr>
+	<{if $pageNavi->hasPrivPage()}>
+		<a href="#" onclick="pageSubmit(<{$pageNavi->getCurrentPage()}> - 1)">&laquo;</a>
+	<{/if}>
+	<{section name=cnt start=1 loop=$pageNavi->getTotalPages()+1}>
+	<{if $smarty.section.cnt.index eq $pageNavi->getCurrentPage()}>
+		<strong>(<{$smarty.section.cnt.index}>)</strong>
+	<{/if}>
+	<{if $smarty.section.cnt.index != $pageNavi->getCurrentPage()}>
+		<a href="#" onclick="pageSubmit(<{$smarty.section.cnt.index}>)"><{$smarty.section.cnt.index}></a>
+	<{/if}>
+	<{/section}>
+	<{if $pageNavi->hasNextPage()}>
+		<a href="#" onclick="pageSubmit(<{$pageNavi->getCurrentPage()}> + 1)">&raquo;</a>
+	<{/if}>
+
+	<{* display users *}>
+	<table class="outer">
+  	<thead>
+  	<th>&nbsp;</th>
+  	<th><{$USER_UNAME_LABEL}><br />
+  		<input type="image" src="<{$xoops_url}>/modules/<{$dirname}>/image.php/up.gif" alt="<{$smarty.const._ASCENDING}>" title="<{$smarty.const._ASCENDING}>" onclick="setSort('uname','ASC');" />
+  		<input type="image" src="<{$xoops_url}>/modules/<{$dirname}>/image.php/down.gif" alt="<{$smarty.const._DESCENDING}>" title="<{$smarty.const._DESCENDING}>" onclick="setSort('uname','DESC');" /></th>
+  	<th><{$USER_NAME_LABEL}><br />
+  		<input type="image" src="<{$xoops_url}>/modules/<{$dirname}>/image.php/up.gif" alt="<{$smarty.const._ASCENDING}>" title="<{$smarty.const._ASCENDING}>" onclick="setSort('name','ASC');" />
+  		<input type="image" src="<{$xoops_url}>/modules/<{$dirname}>/image.php/down.gif" alt="<{$smarty.const._DESCENDING}>" title="<{$smarty.const._DESCENDING}>" onclick="setSort('name','DESC');" /></th>
+  	</thead>
+	<{foreach key=key item=user from=$userlist}>
+		<tr class='<{cycle values="odd,even"}>'>
+  			<td width="10%" style="text-align: center;">
+			<{if $mode eq 'single'}>
+  			<input type="radio" <{if $key eq 0}>checked="checked"<{/if}> name="seluser" value="<{$user.uid}>" />
+	  		<{else}>
+  				<input type="checkbox" rel="select" name="sel<{$key}>" value="<{$user.uid}>" />
+  			<{/if}>
+  			</td>	
+  			<td width="45%"><{$user.uname|xoops_escape}></td>
+  			<td width="45%"><{$user.name|xoops_escape}></td>
+		</tr>
+	<{/foreach}>
+	</table>
+
+	<div style="text-align: center;">
+	<input type="button" rel="callback" value="<{$LABEL_SELECT}>" />
+	<input type="button" rel="close" value="<{$LABEL_CANCEL}>" />
+	<script language="javascript">
+	<{if $mode eq 'single'}>	
+		jQuery(function(){
+			jQuery(":button[rel=callback]").click(
+			function(){
+				var value = jQuery(":radio:checked").val();
+				jQuery("#<{$dirname}>_callbackvalue").val(value);
+			})
+		});
+	<{else}>
+		jQuery(function(){
+			jQuery(':button[rel=callback]').click(function(){
+				jQuery(":checked[rel='select']").each(function(){
+					if (jQuery('#<{$dirname}>_callbackvalue').val() == '') {
+						jQuery('#<{$dirname}>_callbackvalue').val(jQuery(this).val());
+					} else {
+						jQuery('#<{$dirname}>_callbackvalue').val(jQuery('#<{$dirname}>_callbackvalue').val() + ',' + jQuery(this).val());
+					}
+				});
+			})
+		});
+	<{/if}>
+	</script>
+	</div>
+<{/if}>
+</form>

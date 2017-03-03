@@ -1,0 +1,97 @@
+<{include file="file:admin_header.html"}>
+<script type="text/javascript" charset="utf-8">
+jQuery.noConflict();
+function dconfirm(action){
+  if(confirm('<{$smarty.const._AM_XOONIPS_MSG_DELETE_CONFIRM}>')) {
+    var form=jQuery('#<{$dirname}>_policy_itemtypeform');
+    form.attr('action', action);
+    jQuery('#<{$dirname}>_policy_itemtype_op').attr('value','delete');
+    form.submit();
+  }
+  return false;
+}
+function doClick(){
+  jQuery('#file').click();
+}
+function doImport(){
+  alert('abc');
+  var form=$('#<{$dirname}>_policy_itemtypeform');
+  form.submit();
+}
+</script>
+<form name="<{$dirname}>_policy_itemtypeform" id="<{$dirname}>_policy_itemtypeform" action="policy_itemtype.php" method="post" enctype="multipart/form-data">
+<p style="color:blue">&nbsp;&nbsp;&nbsp;<{$smarty.const._AM_XOONIPS_POLICY_ITEMTYPE_ATTENTION}></p>
+<div style="text-align:right; margin-left: 10px; margin-bottom: 15px;">
+  <span style="border-top: 1px solid #EEEEFF; border-left: 1px solid #EEEEFF; border-right: 1px solid #666699; border-bottom: 1px solid #666699; padding: 5px; background-color: #EEEEEE; vertical-align: top;">
+    <span style="font-weight: bold; color: red;">&raquo;</span>&nbsp;&nbsp;
+    <a href="policy_itemtype.php?op=import"><{$smarty.const._AM_XOONIPS_POLICY_ITEMTYPE_IMPORT}></a>
+</span>
+&nbsp;&nbsp;
+  <span style="border-top: 1px solid #EEEEFF; border-left: 1px solid #EEEEFF; border-right: 1px solid #666699; border-bottom: 1px solid #666699; padding: 5px; background-color: #EEEEEE; vertical-align: top;">
+    <span style="font-weight: bold; color: red;">&raquo;</span>&nbsp;&nbsp;
+    <a href="policy_itemtype.php?op=exports"><{$smarty.const._AM_XOONIPS_POLICY_ITEMTYPE_EXPORTS}></a>
+</span>
+&nbsp;&nbsp;
+  <span style="border-top: 1px solid #EEEEFF; border-left: 1px solid #EEEEFF; border-right: 1px solid #666699; border-bottom: 1px solid #666699; padding: 5px; background-color: #EEEEEE; vertical-align: top;">
+    <span style="font-weight: bold; color: red;">&raquo;</span>&nbsp;&nbsp;
+    <a href="policy_itemtype.php?op=register"><{$smarty.const._AM_XOONIPS_POLICY_ITEMTYPE_ADD_TITLE}></a>
+</span>
+</div>
+<{$token_ticket}>
+<input type="hidden" name="op" id="<{$dirname}>_policy_itemtype_op" value="">
+<div>
+<table>
+<tr>
+<td style="width: 50%; text-align: right;"><{$navi_title}></td>
+</tr>
+</table>
+</div>
+<table width="100%" cellspacing="1" class="outer">
+  <tbody>
+  <tr>
+    <th style="width: 7%; text-align: center;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_ICON}></th>
+    <th style="width: 20%; text-align: center;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_NAME}></th>
+    <th style="width: 25%; text-align: center;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DESCRIPTION}></th>
+    <th style="width: 35%; text-align: center;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_SUBTYPES}></th>
+    <th style="width: 13%; text-align: center;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ACTION}></th>
+  </tr>
+  <{foreach item=itemtype from=$itemtypes}>
+  <tr class= "<{cycle values='odd,even'}>">
+    <td style="width: 7%; text-align: center;">
+      <{if ($itemtype.icon)}><img src="<{$itemtype.icon}>" alt="<{$itemtype.name|xoops_escape}>" title="<{$itemtype.name|xoops_escape}>"/><{/if}>
+    </td>
+    <td style="width: 20%; text-align: center;"><{$itemtype.name|xoops_escape}>&nbsp;&nbsp;<{if $itemtype.editing ne ''}><span class="<{$dirname}>_diff"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_EDITING}></span><{/if}></td>
+    <td style="width: 25%; text-align: left;"><{$itemtype.desc|xoops_escape}></td>
+    <td style="width: 35%; text-align: left;"><{$itemtype.subtypes|xoops_escape}></td>
+    <td style="width: 13%; text-align: center;">
+      <a href="policy_itemtype.php?op=edit&amp;itemtypeid=<{$itemtype.itemtypeid}>&amp;perpage=<{$perpage}>&amp;start=<{$startpage}>">
+        <img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/edit.png" alt="<{$smarty.const._AM_XOONIPS_LABEL_MODIFY}>" title="<{$smarty.const._AM_XOONIPS_LABEL_MODIFY}>"/>
+      </a>
+      <a href="policy_itemtype.php?op=copy&amp;itemtypeid=<{$itemtype.itemtypeid}>">
+        <img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/clone.png" alt="<{$smarty.const._AM_XOONIPS_LABEL_COPY}>" title="<{$smarty.const._AM_XOONIPS_LABEL_COPY}>"/>
+      </a>
+      <{if ($itemtype.disdel)}>
+      <a href="#">
+        <img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/delete.png" alt="<{$smarty.const._AM_XOONIPS_LABEL_DELETE}>" title="<{$smarty.const._AM_XOONIPS_LABEL_DELETE}>"
+        onclick="return dconfirm('policy_itemtype.php?op=delete&amp;itemtypeid=<{$itemtype.itemtypeid}>')" />
+      </a>
+      <{/if}>
+      <a href="policy_itemtype.php?op=export&amp;itemtypeid=<{$itemtype.itemtypeid}>">
+        <img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/download.png" alt="<{$smarty.const._AM_XOONIPS_LABEL_EXPORT}>" title="<{$smarty.const._AM_XOONIPS_LABEL_EXPORT}>"/>
+      </a>
+    </td>
+  </tr>
+  <{/foreach}>
+  <{if count($itemtypes)==0}>
+  <tr>
+    <td class="odd" colspan="5" style="text-align: center;">
+      <span style="color: red; font-weight: bold;"><{$smarty.const._AM_XOONIPS_POLICY_ITEMTYPE_EMPTY}></span>
+    </td>
+  </tr>
+  <{/if}>
+  </tbody>
+</table>
+</form>
+<br />
+<div class="pagenavi"><{xoops_pagenavi pagenavi=$pageNavi}></div>
+<{include file="file:admin_footer.inc.html"}>

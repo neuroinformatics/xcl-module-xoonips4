@@ -1,0 +1,121 @@
+<{include file="file:admin_header.html"}>
+<script type="text/javascript" charset="utf-8">
+var <{$dirname}>Edit = new XoonipsLibrary.edit('<{$xoops_url}>', '<{$dirname}>', 'policy_itemtype_editform');
+jQuery(function(){
+  <{$dirname}>Edit.sortable();
+  jQuery('.<{$dirname}>_sortable tbody').bind('sortstop',function(event, ui){
+    jQuery('#<{$dirname}>_op').attr('value','sorteditsave');
+    jQuery('#<{$dirname}>_mode').attr('value','1');
+    jQuery('#<{$dirname}>_policy_itemtype_editform').submit();
+  });
+});
+function dconfirm(action){
+  if(confirm('<{$smarty.const._AM_XOONIPS_MSG_DELETE_CONFIRM}>')) {
+    var form=jQuery('#<{$dirname}>_policy_itemtype_editform');
+    form.attr('action', action);
+    jQuery('#<{$dirname}>_op').val('groupdelete');
+    form.submit();
+  }
+  return false;
+}
+function doExport(){
+  var form=jQuery('#<{$dirname}>_policy_itemtype_editform');
+  form.attr('action', 'policy_itemtype.php?op=export');
+  jQuery('#op').val('export');
+  form.submit();
+}
+</script>
+<div style="text-align:right; margin-left: 10px; margin-bottom: 10px;">
+</div>
+<form name="<{$dirname}>_policy_itemtype_editform" id="<{$dirname}>_policy_itemtype_editform" action="policy_itemtype.php" method="post" enctype="multipart/form-data">
+<input type="hidden" id="<{$dirname}>_op" name="op" value="">
+<input type="hidden" id="<{$dirname}>_mode" name="mode" value="">
+<input type="hidden" name="itemtypeid" value="<{$base_itemtypeid}>">
+<input type="hidden" name="upd_itemtypeid" value="<{$upd_itemtypeid}>">
+<{$token_ticket}>
+<table width="100%" cellspacing="1" class="outer">
+  <thead>
+  <tr>
+    <th style="width: 20%; text-align: center;" class="head"><br /></th>
+    <th style="width: 40%; text-align: center;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_MODIFY_CONTENT}></th>
+    <th style="width: 40%; text-align: center;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_RELEASE_CONTENT}></th>
+  </tr>
+  </thead>
+  <tr>
+    <td style="width: 20%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_NAME}><{$smarty.const._AM_XOONIPS_LABEL_REQUIRED_MARK}></td>
+    <td style="width: 40%; text-align: left;" class="odd">&nbsp;&nbsp;<input type="text" name="name" size="50" maxlength="30" value="<{$itemtypeInfo.a_name|xoops_escape}>"></td>
+    <td style="width: 40%; text-align: left;" class="odd">&nbsp;&nbsp;<{if $itemtypeInfo.a_name!=$itemtypeInfo.b_name}><span class="<{$dirname}>_diff"><{$itemtypeInfo.b_name|xoops_escape}></span><{else}><{$itemtypeInfo.b_name|xoops_escape}><{/if}></td>
+  </tr>
+  <tr>
+    <td style="width: 20%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DESCRIPTION}></td>
+    <td style="width: 40%; text-align: left;" class="even">&nbsp;&nbsp;<input type="text" name="description" size="50" maxlength="255" value="<{$itemtypeInfo.a_description|xoops_escape}>"></td>
+    <td style="width: 40%; text-align: left;" class="even">&nbsp;&nbsp;<{if $itemtypeInfo.a_description!=$itemtypeInfo.b_description}><span class="<{$dirname}>_diff"><{$itemtypeInfo.b_description|xoops_escape}></span><{else}><{$itemtypeInfo.b_description|xoops_escape}><{/if}></td>
+  </tr>
+  <tr>
+    <td style="width: 20%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_ICON}></td>
+    <td style="width: 40%; text-align: left;" class="odd">&nbsp;&nbsp;<input type="file" name="icon_file" size="60" value="<{$itemtypeInfo.a_icon|xoops_escape}>">
+    <{if $itemtypeInfo.a_icon}><br /><img src="<{$xoops_url}>/modules/<{$dirname}>/images/<{$itemtypeInfo.a_icon|xoops_escape}>"><{/if}></td>
+    <td style="width: 40%; text-align: left;" class="odd">&nbsp;&nbsp;<{if $itemtypeInfo.a_icon!=$itemtypeInfo.b_icon}><span class="<{$dirname}>_diff"><{$itemtypeInfo.b_icon|xoops_escape}></span><{else}><{$itemtypeInfo.b_icon|xoops_escape}><{/if}>
+    <{if $itemtypeInfo.b_icon}><br /><img src="<{$xoops_url}>/modules/<{$dirname}>/images/<{$itemtypeInfo.b_icon|xoops_escape}>"><{/if}>
+    </td>
+  </tr>
+  <tr>
+    <td style="width: 20%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DISPLAY_ORDER}></td>
+    <td style="width: 40%; text-align: left;" class="even">&nbsp;&nbsp;<input type="text" name="weight" size="10" maxlength="3" value="<{$itemtypeInfo.a_weight|xoops_escape}>"></td>
+    <td style="width: 40%; text-align: left;" class="even">&nbsp;&nbsp;<{if $itemtypeInfo.a_weight!=$itemtypeInfo.b_weight}><span class="<{$dirname}>_diff"><{$itemtypeInfo.b_weight|xoops_escape}></span><{else}><{$itemtypeInfo.b_weight|xoops_escape}><{/if}></td>
+  </tr>
+  <tr>
+    <td style="width: 20%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_TEMPLATE}></td>
+    <td style="width: 40%; text-align: left;" class="odd">&nbsp;&nbsp;<textarea name="template" rows="15" cols="50" ><{$itemtypeInfo.a_template|xoops_escape}></textarea></td>
+    <td style="width: 40%; text-align: left;" class="odd">&nbsp;&nbsp;<textarea readonly="readonly" rows="15" cols="50" <{if $itemtypeInfo.a_template!=$itemtypeInfo.b_template}>style="color:red;"<{/if}>><{$itemtypeInfo.b_template|xoops_escape}></textarea></td>
+  </tr>
+</table>
+<div style="text-align: right; margin-left: 10px; margin-bottom: 15px;">
+</div>
+<p style="color:blue">&nbsp;&nbsp;&nbsp;<{$smarty.const._AM_XOONIPS_POLICY_ITEMTYPE_GROUP_SELECT_DESC}></p>
+<div style="text-align: right; margin-left: 10px; margin-bottom: 10px;">
+</div>
+<div style="text-align: left">
+ 	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_POLICY_ITEMTYPE_GROUP_SELECT_TITLE}>"
+ 	onclick="window.location='policy_itemtype.php?op=groupregister&itemtypeid=<{$upd_itemtypeid}>&base_itemtypeid=<{$base_itemtypeid}>'"/>&nbsp;<{if $group_diff=='1'}><span class="<{$dirname}>_diff"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_EDITING}></span><{/if}>
+</div>
+<div class="<{$dirname}>_sortable">
+<table width="60%" cellspacing="1" class="outer">
+  <thead>
+  <tr>
+    <th style="width: 50%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_GROUP_NAME}></th>
+    <th style="width: 50%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_POLICY_ITEMFIELDGROUP_ID}></th>
+  </tr>
+  </thead>
+  <tbody>
+  <{foreach item=group from=$groups}>
+  <tr class= "<{cycle values='odd,even'}>">
+ 	<input type="hidden" name="group_ids[]" value="<{$group.group_id}>">
+	<input type="hidden" name="weights[]" value="<{$group.weight}>">
+    <td class="<{$dirname}>_cursor_title" width="50%"><{$group.name|xoops_escape}></td>
+    <td class="<{$dirname}>_cursor_title" width="50%"><{$group.xml|xoops_escape}></td>
+  </tr>
+  <{/foreach}>
+  </tbody>
+  <{if count($groups)==0}>
+  <tr class="odd">
+    <td colspan="2" style="text-align: center;">
+      <span style="color: red; font-weight: bold;"><{$smarty.const._AM_XOONIPS_POLICY_ITEMTYPE_GROUP_EMPTY}></span>
+    </td>
+  </tr>
+  <{/if}>
+</table>
+</div>
+<div style="text-align: right; margin-left: 10px; margin-bottom: 10px;">
+</div>
+<div style="text-align: left">
+	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_BACK}>"
+	onclick="window.location='policy_itemtype.php?perpage=<{$perpage}>&amp;start=<{$startpage}>'" />&nbsp;&nbsp;
+ 	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_COMPLEMENT}>"
+ 	onclick="window.location='policy_itemtype.php?op=complement&itemtypeid=<{$upd_itemtypeid}>&base_itemtypeid=<{$base_itemtypeid}>'"/>
+ 	<{if $complement_diff}><span class="<{$dirname}>_diff"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_EDITING}></span><{/if}>&nbsp;&nbsp;
+ 	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_UPDATE}>" onclick="op.value='editsave'; submit();" />&nbsp;&nbsp;
+ 	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_RELEASE}>" onclick="op.value='release'; submit();"/>&nbsp;&nbsp;
+</div>
+</form>
+<{include file="file:admin_footer.inc.html"}>

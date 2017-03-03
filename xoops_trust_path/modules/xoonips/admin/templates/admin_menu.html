@@ -1,0 +1,15 @@
+<{include file="file:admin_header.inc.html"}>
+
+<table class="outer">
+  <tr class="odd">
+  <td>
+    <ul class="adminMenu">
+<{foreach item=menu from=$adminMenu}>
+      <li><a href="<{$menu.link|xoops_escape}>"><{$menu.title|xoops_escape}></a></li>
+<{/foreach}>
+    </ul>
+  </td>
+  </tr>
+</table>
+
+<{include file="file:admin_footer.inc.html"}>

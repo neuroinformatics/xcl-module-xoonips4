@@ -1,0 +1,132 @@
+<{include file="db:`$dirname`_header.html"}>
+<{include file="db:`$dirname`_itemimport_tab.inc.html"}>
+<div style="text-align:right; margin-left: 10px; margin-bottom: 25px;">
+</div>
+<h3><{$smarty.const._MD_XOONIPS_ITEM_IMPORT_TITLE}></h3>
+<p style="color:blue">&nbsp;&nbsp;&nbsp;<{$smarty.const._MD_XOONIPS_ITEM_IMPORT_DESC}></p>
+<div style="text-align:right; margin-left: 10px; margin-bottom: 10px;">
+</div>
+<form style="margin-top: 0px;" action="itemimport.php" method="post" enctype="multipart/form-data">
+<input type="hidden" name="op" value="" />
+<input type="hidden" id="<{$dirname}>CheckedXID" name="checked_indexes" value="" />
+<{$token_ticket}>
+<table width="100%" cellspacing="0" class="outer">
+  <tbody>
+  <tr>
+    <th style="text-align: center;" colspan="2"><{$smarty.const._MD_XOONIPS_ITEM_IMPORT_TITLE}></th>
+  </tr>
+  <tr>
+    <td style="width: 30%; text-align: left;" class="head"><{$smarty.const._MD_XOONIPS_ITEM_IMPORT_INDEX_SELECT}></td>
+    <td class="even" style="width: 70%; vertical-align: top;">
+    <select name="index_select" size="1" onchange="submit();">
+      <{foreach item=obj from=$index_select_arr}>
+       <{if $obj.selected == 'yes'}>
+          <option value="<{$obj.value}>" selected="selected"><{$obj.label}></option>
+      <{else}>
+      	  <option value="<{$obj.value}>"><{$obj.label}></option>
+       <{/if}>
+       <{/foreach}>
+      </select>
+    </td>
+  </tr>
+<{if $index_self}>
+  <tr>
+    <td style="width: 30%; text-align: left;" class="head"><{$smarty.const._MD_XOONIPS_ITEM_IMPORT_INDEX_PLACE}></td>
+    <td style="width: 70%; text-align: left;" class="odd">
+<script type="text/javascript" charset="utf-8">
+jQuery(function(){
+	jQuery('#<{$dirname}>_item_import_index_tree_tabs').tabs({
+		cookie: {}
+	});
+});
+</script>
+<script type="text/javascript">
+function getImportIndexesInfo() {
+	var data = "action=Ajax&method=GetIndexesInfo&function=itemimport";
+	jQuery.ajax({
+		type: 'GET',
+		scriptCharset: 'utf-8',
+		dataType: 'json',
+		url: '<{$smarty.const.XOOPS_URL}>/modules/<{$dirname}>/index.php',
+		data: data,
+		success: function(json) {
+			jQuery.each(json.trees, function() {
+				jQuery('#' + json.dirname + '_item_import_index_tree_div_' + this.index_id).jstree({
+                    "core" : {
+                        "data" : this.html
+                    },
+                    "plugins" : [ "checkbox" ],
+                    "checkbox" : {
+                        "three_state" : false
+                    }
+				});
+			});
+
+            var checkedIndexId = jQuery('#' + json.dirname + 'CheckedXID');
+            jQuery("[id^=" + json.dirname + '_item_import_index_tree_div_' + "]").bind("changed.jstree", function (e, data) {
+                var checkedIndexes = [];
+                jQuery("[id^=" + json.dirname + '_item_import_index_tree_div_' + "]").each(function() {
+                    checked = jQuery(this).jstree("get_selected", true);
+                    jQuery.each(checked, function() {
+                        checkedIndexes.push(this.id);
+                    });
+                });
+                checkedIndexId.val(checkedIndexes.join(","));
+             });
+
+            jQuery('#' + json.dirname + '_import_open_all').click(function(){
+                jQuery("[id^=" + json.dirname + '_item_import_index_tree_div_' + "]").each(function() {
+                    jQuery(this).jstree('open_all');
+                });
+            });
+
+            jQuery('#' + json.dirname + '_import_close_all').click(function(){
+                jQuery("[id^=" + json.dirname + '_item_import_index_tree_div_' + "]").each(function() {
+                    jQuery(this).jstree('close_all');
+                });
+            });
+		}
+	});
+}
+
+if(window.addEventListener) {
+        window.addEventListener("load", getImportIndexesInfo, false);
+} else if(window.attachEvent){
+        window.attachEvent("onload", getImportIndexesInfo);
+}
+</script>
+<div id="<{$dirname}>_item_import_treecontrol" style="float: none; clear: both; margin: 0px 0px 3px 0px; padding: 0px;">
+<button type="button" class="formButton" id="<{$dirname}>_import_open_all">open all</button>
+<button type="button" class="formButton" id="<{$dirname}>_import_close_all">close all</button>
+</div>
+<div style="margin: 0px; padding: 0px;font-size:80%;" id="<{$dirname}>_item_import_index_tree_tabs">
+<ul>
+<{foreach item=index from=$indexes}>
+	<li><a href="#<{$dirname}>_item_import_index_tree_div_<{$index.index_id}>"><{$index.title|xoops_escape}></a></li>
+<{/foreach}>
+</ul>
+<{foreach item=tree from=$trees}>
+	<div id="<{$dirname}>_item_import_index_tree_div_<{$tree.index_id}>" style="border-right: 1px solid #404040;border-top: 1px solid #e4e4e4; border-left: 1px solid #e4e4e4;
+            border-bottom: 1px solid #858585; border-right: 1px solid #858585; padding: 0px; margin: 0px;">
+	<ul id="<{$dirname}>_item_import_index_tree_<{$tree.index_id}>" class="filetree">
+	<!-- <{$tree.html}> -->
+	</ul>
+	</div>
+<{/foreach}>
+</div>
+    </td>
+  </tr>
+<{/if}>
+  <tr>
+    <td style="width: 30%; text-align: left;" class="head"><{$smarty.const._MD_XOONIPS_ITEM_IMPORT_FILE}></td>
+    <td style="width: 70%; text-align: left;" class="even"><input type="file" name="import_file" size="30" /></td>
+  </tr>
+  </tbody>
+</table>
+<div style="text-align:right; margin-left: 10px; margin-bottom: 10px;">
+</div>
+<div style="text-align: left">
+ 	<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_LABEL_REGISTER}>" onclick="op.value='importsave'; submit();" />&nbsp;&nbsp;
+</div>
+</form>
+<{include file="db:`$dirname`_footer.html"}>

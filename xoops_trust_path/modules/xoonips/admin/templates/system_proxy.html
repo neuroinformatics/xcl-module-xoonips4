@@ -1,0 +1,63 @@
+<{include file="file:admin_header.inc.html"}>
+
+<form name="<{$xoops_dirname}>_system_proxyform" action="index.php" method="post">
+<input name="action" value="SystemProxy" type="hidden" />
+<{xoops_token form=$actionForm}>
+<table width="100%" cellspacing="1" class="outer">
+  <tbody>
+  <tr>
+    <th colspan="2"><{"`$constpref`_SYSTEM_PROXY_TITLE"|constant}></th>
+  </tr>
+
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;">
+      <span style="font-weight: bold;"><{"`$constpref`_SYSTEM_PROXY_PROXY_HOST_TITLE"|constant}></span>
+      <br /><br />
+      <span style="font-weight: normal;"><{"`$constpref`_SYSTEM_PROXY_PROXY_HOST_DESC"|constant}></span>
+    </td>
+    <td class="even" style="width: 60%; vertical-align: top;">
+      <input name="proxy_host" type="text" size="50" value="<{$actionForm->get('proxy_host')|xoops_escape}>" />
+    </td>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;">
+      <span style="font-weight: bold;"><{"`$constpref`_SYSTEM_PROXY_PROXY_PORT_TITLE"|constant}></span>
+      <br /><br />
+      <span style="font-weight: normal;"><{"`$constpref`_SYSTEM_PROXY_PROXY_PORT_DESC"|constant}></span>
+    </td>
+
+    <td class="even" style="width: 60%; vertical-align: top;">
+      <input name="proxy_port" type="text" size="5" maxlength="5" value="<{$actionForm->get('proxy_port')|xoops_escape}>" />
+    </td>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;">
+      <span style="font-weight: bold;"><{"`$constpref`_SYSTEM_PROXY_PROXY_USER_TITLE"|constant}></span>
+      <br /><br />
+      <span style="font-weight: normal;"><{"`$constpref`_SYSTEM_PROXY_PROXY_USER_DESC"|constant}></span>
+    </td>
+    <td class="even" style="width: 60%; vertical-align: top;">
+      <input name="proxy_user" type="text" size="20" value="<{$actionForm->get('proxy_user')|xoops_escape}>" />
+    </td>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;">
+      <span style="font-weight: bold;"><{"`$constpref`_SYSTEM_PROXY_PROXY_PASS_TITLE"|constant}></span>
+      <br /><br />
+      <span style="font-weight: normal;"><{"`$constpref`_SYSTEM_PROXY_PROXY_PASS_DESC"|constant}></span>
+    </td>
+    <td class="even" style="width: 60%; vertical-align: top;">
+      <input name="proxy_pass" type="password" size="20" value="<{$actionForm->get('proxy_pass')|xoops_escape}>" />
+    </td>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;"></td>
+    <td class="even" style="width: 60%; vertical-align: top;">
+      <input name="submit" type="submit" value="<{"`$constpref`_LANG_UPDATE"|constant}>" />
+    </td>
+  </tr>
+  </tbody>
+</table>
+</form>
+
+<{include file="file:admin_footer.inc.html"}>

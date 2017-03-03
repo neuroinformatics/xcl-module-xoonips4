@@ -1,0 +1,23 @@
+<{if $viewType eq 'input'}>
+	<select name="<{$fieldName}>">
+	<{foreach item=listName from=$list}>
+		<option value="<{$listName.offset.value}>" <{if $listName.offset.value==$value}>selected<{/if}>><{$listName.zone_name.value}></option>
+	<{/foreach}>
+	</select>
+<{elseif $viewType eq 'confirm'}>
+	<{foreach item=listName from=$list}>
+		<{if $listName.offset.value==$value}><{$listName.zone_name.value}><{/if}>
+	<{/foreach}>
+	<input type="hidden" name="<{$fieldName}>" value="<{$value}>" />
+<{elseif $viewType eq 'detail'}>
+	<{foreach item=listName from=$list}>
+		<{if $listName.offset.value==$value}><{$listName.zone_name.value}><{/if}>
+	<{/foreach}>
+<{elseif $viewType eq 'search'}>
+	<select name="<{$fieldName}>">
+	<option <{if $value===''}>selected<{/if}>></option>
+	<{foreach item=listName from=$list}>
+		<option value="<{$listName.offset.value}>" <{if $value!=='' && $listName.offset.value==$value}>selected<{/if}>><{$listName.zone_name.value}></option>
+	<{/foreach}>
+	</select>
+<{/if}>

@@ -1,0 +1,11 @@
+<{if $isAdmin}>
+	<{foreach item=error from=$errors}>
+		<{$error->getMessage()|xoops_escape}>
+	<{/foreach}>
+<{else}>
+	<div class="<{$dirname}>_error"><ul>
+	<{foreach item=error from=$errors}>
+		<li><{$error->getMessage()|xoops_escape}></li>
+	<{/foreach}>
+	</ul></div>
+<{/if}>

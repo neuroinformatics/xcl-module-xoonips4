@@ -1,0 +1,47 @@
+<{if $viewType eq 'input'}>
+	<input type="hidden" name="<{$fieldName}>" value="<{$value|xoops_escape}>" />
+	<table>
+	<{if !empty($changeLogInfos)}>
+		<{foreach item=changeLogInfo from=$changeLogInfos}>
+			<{if isset($changeLogInfo.logDate)}>
+				<tr><td nowrap><{$changeLogInfo.logDate}></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><{$changeLogInfo.log}></td></tr>
+			<{else}>
+				<tr></tr>
+			<{/if}>
+		<{/foreach}>
+	<{else}>
+		<tr><td></td><td></td></td></tr>
+	<{/if}>
+	</table>
+<{elseif $viewType eq 'confirm'}>
+	<input type="hidden" name="<{$fieldName}>" value="<{$value|xoops_escape}>" />
+	<table>
+	<{if !empty($changeLogInfos)}>
+		<{foreach item=changeLogInfo from=$changeLogInfos}>
+			<{if isset($changeLogInfo.logDate)}>
+				<tr><td nowrap><{$changeLogInfo.logDate}></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><{$changeLogInfo.log}></td></tr>
+			<{else}>
+				<tr></tr>
+			<{/if}>
+		<{/foreach}>
+	<{else}>
+		<tr><td></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td></td></tr>
+	<{/if}>
+	</table>
+<{elseif $viewType eq 'detail'}>
+	<{if !empty($changeLogInfos)}>
+		<table>
+		<{foreach item=changeLogInfo from=$changeLogInfos}>
+			<{if isset($changeLogInfo.logDate)}>
+				<tr><td nowrap><{$changeLogInfo.logDate}></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><{$changeLogInfo.log}></td></tr>
+			<{else}>
+				<tr></tr>
+			<{/if}>
+		<{/foreach}>
+		</table>
+	<{/if}>
+<{elseif $viewType eq 'search'}>
+	<input type="text" name="<{$fieldName}>" size="50" value="" />
+<{elseif $viewType eq "default"}>
+	<input type="hidden" name="default_value" value="" />
+<{/if}>

@@ -1,0 +1,69 @@
+<{include file="db:`$dirname`_user_header.html"}>
+<h3><{$smarty.const._MD_XOONIPS_LANG_GROUP_LIST}></h3>
+
+<script type="text/javascript" charset="utf-8">
+jQuery.noConflict();
+function group_list_submit(type,groupid){
+	jQuery('#user_action').attr('value',type);
+	jQuery('#user_groupForm').attr('action','user.php?op=groupList&groupid='+groupid);
+	jQuery('#user_groupForm').submit();
+}
+</script>
+
+<{$errors}>
+
+<form id="user_groupForm" name="user_groupForm" action="user.php?op=groupRegister" method="post">
+<{$token_ticket}>
+<input type="hidden" id="user_action" name="action" value="init" />
+<table class="outer" cellspacing="1" cellpadding="4">
+	<tr>
+		<th><{$smarty.const._MD_XOONIPS_LANG_GROUP_NAME}></th>
+		<th><{$smarty.const._MD_XOONIPS_LANG_GROUP_DESCRIPTION}></th>
+		<th><{$smarty.const._MD_XOONIPS_LANG_ACTION}></th>
+	</tr>
+<{if empty($groups)}>
+	<tr>
+		<td class="odd" colspan="3"><{$smarty.const._MD_XOONIPS_MESSAGE_GROUP_EMPTY}></td>
+	</tr>
+<{else}>
+	<{foreach from=$groups item=group}>
+		<tr class="<{cycle values="odd,even"}>">
+			<td width="25%">
+				<{$group.name|xoops_escape}>
+				<{if !empty($group.secret) && $group.secret==1}>(secret)<{/if}>
+				<{if $group.activate==$grpPublic || $group.activate==$grpCloseRequired}>(public)<{/if}>
+			</td>
+			<td width="50%">
+				<pre><{$group.description|xoops_escape}></pre>
+			</td>
+			<td width="25%">
+				<a href="user.php?op=groupInfo&groupid=<{$group.groupid}>"><img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/view.png" alt="<{$smarty.const._VIEW}>" title="<{$smarty.const._VIEW}>" /></a>
+				<{if $group.editflag }>
+					<a href="user.php?op=groupEdit&groupid=<{$group.groupid}>"><img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/edit.png" alt="<{$smarty.const._EDIT}>" title="<{$smarty.const._EDIT}>" /></a>
+				<{/if}>
+				<{if $group.memberflag }>
+					<a href="user.php?op=groupMember&groupid=<{$group.groupid}>"><img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/members.png" alt="<{$smarty.const._MD_XOONIPS_LANG_MEMBER}>" title="<{$smarty.const._MD_XOONIPS_LANG_MEMBER}>" style="cursor:pointer" /></a>
+				<{/if}>
+				<{if $group.joinflag }>
+					<img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/members_join.png" alt="<{$smarty.const._MD_XOONIPS_LANG_GROUP_JOIN}>" title="<{$smarty.const._MD_XOONIPS_LANG_GROUP_JOIN}>" style="cursor:pointer" onclick="group_list_submit('join',<{$group.groupid}>)" />
+				<{/if}>
+				<{if $group.leaveflag }>
+					<img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/members_leave.png" alt="<{$smarty.const._MD_XOONIPS_LANG_GROUP_LEAVE}>" title="<{$smarty.const._MD_XOONIPS_LANG_GROUP_LEAVE}>" style="cursor:pointer" onclick="group_list_submit('leave',<{$group.groupid}>)" />
+				<{/if}>
+				<{if $group.deleteflag }>
+					<img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/delete.png" alt="<{$smarty.const._DELETE}>" title="<{$smarty.const._DELETE}>" style="cursor:pointer" onclick="group_list_submit('delete',<{$group.groupid}>)" />
+				<{/if}>
+				<{if $group.activate==$grpNotCertified}><br/>Pending<{elseif $group.activate==$grpOpenRequired}><br/>Open Pending<{elseif $group.activate==$grpCloseRequired}><br/>Close Pending<{elseif $group.activate==$grpDeleteRequired}><br/>Delete Pending<{/if}>
+				<{if !empty($group.userActivate)}><{if $group.userActivate==1}><br/>Join Pending<{elseif $group.userActivate==2}><br/>Leave Pending<{/if}><{/if}>
+			</td>
+		</tr>
+	<{/foreach}>
+<{/if}>
+</table>
+<{if $newflag }>
+<div style="text-align: center">
+	<input class="formButton" type="submit" value="<{$smarty.const._MD_XOONIPS_LANG_NEW_REGISTER}>" />
+</div>
+<{/if}>
+</form>
+<{include file="db:`$dirname`_user_footer.html"}>

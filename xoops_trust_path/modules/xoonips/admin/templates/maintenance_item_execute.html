@@ -1,0 +1,65 @@
+<{include file="file:admin_header.html"}>
+
+<form id="<{$dirname}>_itemform" name="<{$dirname}>_itemform" action="<{$action}>.php" method="post" enctype="multipart/form-data">
+<input type="hidden" name="op" value="">
+<table width="100%" cellspacing="0" class="outer">
+  <tbody>
+  <tr>
+    <th width="25%" style="text-align: left;"></th>
+    <{if $agree_flg}>
+    <th width="25%" style="text-align: center;"><{$smarty.const._AM_XOONIPS_MAINTENANCE_ITEM_AGREE_NG}></th>
+    <{/if}>
+    <th width="25%" style="text-align: center;"><{$smarty.const._AM_XOONIPS_MAINTENANCE_ITEM_SUCCESS}></th>
+    <th width="25%" style="text-align: center;"><{$smarty.const._AM_XOONIPS_MAINTENANCE_ITEM_FAIL}></th>
+  </tr>
+  <tr>
+    <td style="text-align: right;" class="head"><{$smarty.const._AM_XOONIPS_MAINTENANCE_ITEM_RESULT_TOTAL}></td>
+    <{if $agree_flg}>
+    <td style="text-align: center;"><{$total_noagree}></td>
+    <{/if}>
+    <td style="text-align: center;"><{$total_success}></td>
+    <td style="text-align: center;"><{$total_fail}></td>
+  </tr>
+  </tbody>
+</table>
+
+<{if $total_success > 0 || $total_fail > 0}>
+<table width="100%" cellspacing="0" class="outer">
+  <tbody>
+  <tr>
+    <th colspan="5"><{$smarty.const._AM_XOONIPS_MAINTENANCE_ITEM_RESULT_DETAIL}></th>
+  </tr>
+  <tr>
+ 	<{if $user_flg}>
+    <td style="text-align: left;" class="head"><{if $action=='maintenance_itemtransfer'}><{$smarty.const._AM_XOONIPS_MAINTENANCE_ITEMTRANSFER_FROM}><{/if}><{$smarty.const._AM_XOONIPS_MAINTENANCE_ITEM_USER}></td>
+    <{/if}>
+    <td style="text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_MAINTENANCE_ITEM_INDEX}></td>
+    <td style="text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_MAINTENANCE_ITEM_ITEM}></td>
+    <{if $agree_flg}>
+    <td style="text-align: center;" class="head"><{$smarty.const._AM_XOONIPS_MAINTENANCE_ITEM_AGREE}></td>
+    <{/if}>
+    <td style="text-align: center;" class="head"><{$smarty.const._AM_XOONIPS_MAINTENANCE_ITEM_RESULT}></td>
+  </tr>
+  <{foreach item=item from=$items}>
+  <tr class= "<{cycle values='odd,even'}>">
+  	<{if $user_flg}>
+	<td><{$searchUserName|xoops_escape}></td>
+	<{/if}>
+	<td><{$item.index|xoops_escape}></td>
+	<td><{$item.title|xoops_escape}></td>
+	<{if $agree_flg}>
+    <td style="text-align: center;"><{if $item.agree==1}><{$smarty.const._AM_XOONIPS_MAINTENANCE_ITEM_AGREE_OK}><{else}><font color="red"><{$smarty.const._AM_XOONIPS_MAINTENANCE_ITEM_AGREE_NG}></font><{/if}></td>
+	<{/if}>
+    <td style="text-align: center;"><{if $item.result==1}><{$smarty.const._AM_XOONIPS_MAINTENANCE_ITEM_SUCCESS}><{else}><font color="red"><{$smarty.const._AM_XOONIPS_MAINTENANCE_ITEM_FAIL}></font><{/if}></td>
+  </tr>
+  <{/foreach}>
+  </tbody>
+</table>
+<{/if}>
+
+<div style="text-align: left">
+  <input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_BACK}>" onclick="op.value='init'; submit();" />
+</div>
+</form>
+
+<{include file="file:admin_footer.inc.html"}>

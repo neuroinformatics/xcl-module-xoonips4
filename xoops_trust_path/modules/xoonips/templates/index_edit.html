@@ -1,0 +1,18 @@
+<b><{$smarty.const._MD_XOONIPS_EDIT_INDEX_SUB_PAGE_TITLE}></b><br />
+<{$errors}>
+<form action="editindex.php" method="post">
+<{$token_ticket}>
+<input type="hidden" name="op" value="update" />
+<input type="hidden" name="index_id" value="<{$index.index_id}>" />
+<input type="hidden" name="parent_index_id" value="<{$parent_index_id}>" />
+<table class="outer">
+	<tr>
+  		<td class="head" width="30%"><{$smarty.const._MD_XOONIPS_INDEX_NAME}></td>
+  		<td class="even" width="70%"><input type="text" name="title" value="<{$index.title|xoops_escape}>" /></td>
+	</tr>
+</table>
+<div style="text-align: center;">
+<input type="submit" value="<{$smarty.const._MD_XOONIPS_LABEL_UPDATE}>" />
+<input type="button" rel="close" value="<{$smarty.const._MD_XOONIPS_LABEL_CANCEL}>" />
+</div>
+</form>

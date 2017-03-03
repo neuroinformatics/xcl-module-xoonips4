@@ -1,0 +1,28 @@
+<script type="text/javascript" charset="utf-8">
+jQuery.noConflict();
+jQuery(function(){
+    jQuery('#<{$block.dirname}>_login_rememberme').change(function(){
+    	if (this.checked) {
+			jQuery('#<{$block.dirname}>_login_pass').attr('autocomplete', 'on');
+		} else {
+			jQuery('#<{$block.dirname}>_login_pass').attr('autocomplete', 'off');
+		}
+    });
+});
+</script>
+<form id="<{$block.dirname}>_login_form" style="margin-top: 0px;" action="<{$xoops_url}>/user.php" method="post">
+    <{$smarty.const._MB_XOONIPS_LOGIN_USERNAME}><br />
+    <input type="text" id="<{$block.dirname}>_login_uname" name="uname" size="12" value="<{$block.unamevalue}>" maxlength="25" /><br />
+    <{$smarty.const._MB_XOONIPS_LOGIN_PASSWORD}><br />
+    <input type="password" id="<{$block.dirname}>_login_pass" name="pass" autocomplete="off" size="12" maxlength="32" /><br />
+    <input type="checkbox" id="<{$block.dirname}>_login_rememberme" name="rememberme" value="On" class ="formButton" /><{$smarty.const._MB_XOONIPS_LOGIN_REMEMBERME}><br />
+    <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>" />
+    <input type="hidden" name="op" value="login" />
+    <input id="<{$block.dirname}>_login_submit" class="formButton" type="submit" value="<{$smarty.const._MB_XOONIPS_LOGIN_LOGIN}>" /><br />
+</form>
+<{if $block.use_ssl == '1'}>
+	<a href="javascript:openWithSelfMain('<{$block.sslloginlink}>', 'ssllogin', 300, 200);"><{$smarty.const._MB_XOONIPS_LOGIN_SECURE}></a>
+<{/if}>
+<a href="<{$xoops_url}>/lostpass.php"><{$smarty.const._MB_XOONIPS_LOGIN_LOSTPASS}></a>
+<br /><br />
+<a href="<{$xoops_url}>/register.php"><{$smarty.const._MB_XOONIPS_LOGIN_USERREG}></a>

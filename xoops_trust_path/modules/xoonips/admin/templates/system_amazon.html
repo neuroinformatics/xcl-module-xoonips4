@@ -1,0 +1,37 @@
+<{include file="file:admin_header.inc.html"}>
+
+<form name="<{$xoops_dirname}>_system_amazonform" action="index.php" method="post">
+<input name="action" value="SystemAmazon" type="hidden" />
+<{xoops_token form=$actionForm}>
+<table width="100%" cellspacing="1" class="outer">
+  <tbody>
+  <tr>
+    <th colspan="2"><{"`$constpref`_SYSTEM_AMAZON_TITLE"|constant}></th>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;">
+      <span style="font-weight: bold;"><{"`$constpref`_SYSTEM_AMAZON_ACCESS_KEY_TITLE"|constant}></span>
+    </td>
+    <td class="even" style="width: 60%; vertical-align: top;">
+      <input name="access_key" type="text" size="40" value="<{$actionForm->get('access_key')|xoops_escape}>" />
+    </td>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;">
+      <span style="font-weight: bold;"><{"`$constpref`_SYSTEM_AMAZON_SECRET_ACCESS_KEY_TITLE"|constant}></span>
+    </td>
+    <td class="even" style="width: 60%; vertical-align: top;">
+      <input name="secret_access_key" type="password" size="60" value="<{$actionForm->get('secret_access_key')|xoops_escape}>" />
+    </td>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;"></td>
+    <td class="even" style="width: 60%; vertical-align: top;">
+      <input name="submit" type="submit" value="<{"`$constpref`_LANG_UPDATE"|constant}>" />
+    </td>
+  </tr>
+  </tbody>
+</table>
+</form>
+
+<{include file="file:admin_footer.inc.html"}>

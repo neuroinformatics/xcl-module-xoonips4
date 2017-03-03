@@ -1,0 +1,136 @@
+<{include file="file:admin_header.inc.html"}>
+
+<script type="text/javascript">
+(function($) {
+
+$(function() {
+  function table_sortable_update() {
+      $("#<{$xoops_dirname}>_admin .sortable tr:odd").removeClass('even').addClass('odd');
+      $("#<{$xoops_dirname}>_admin .sortable tr:even").removeClass('odd').addClass('even');
+  }
+  function table_sortable_append() {
+    var tr = $('#<{$xoops_dirname}>_admin .sortable tr').eq(0).clone(true).css('display', '');
+    $('#<{$xoops_dirname}>_admin .sortable').append(tr);
+    table_sortable_update();
+  }
+  function table_sortable_cleanup() {
+    var tr = $('#<{$xoops_dirname}>_admin .sortable tr').eq(0).remove();
+  }
+  $('#<{$xoops_dirname}>_admin .sortable').sortable({
+    cursor: 'move',
+    handle: '.handle',
+    helper: function(e, tr) {
+      var $origs = tr.children();
+      var $helper = tr.clone();
+      $helper.children().each(function(idx) {
+        $(this).width($origs.eq(idx).width());
+      });
+      return $helper;
+    },
+    update: function(ev, ui) {
+      table_sortable_update();
+    }       
+  });
+  $('#<{$xoops_dirname}>_admin table .addnew').click(function() {
+    table_sortable_append();
+  });
+  $('#<{$xoops_dirname}>_admin tr .delete').click(function() {
+    $(this).parent().parent().remove();
+    table_sortable_update();
+  });
+  if ($('#<{$xoops_dirname}>_admin .sortable tr').length < 2)
+    table_sortable_append();
+  $('#<{$xoops_dirname}>_policy_item_field_select_editform').submit(function() {
+    table_sortable_cleanup();
+  });
+});
+
+})(jQuery);
+</script>
+
+<form name="<{$xoops_dirname}>_policy_item_field_select_editform" id="<{$xoops_dirname}>_policy_item_field_select_editform" action="index.php" method="post">
+<input type="hidden" name="action" value="PolicyItemFieldSelectEdit" />
+<input type="hidden" name="name" value="<{$actionForm->get('name')|xoops_escape}>" />
+
+<{xoops_token form=$actionForm}>
+
+<table width="100%" cellspacing="1" class="outer">
+  <tr>
+    <th style="width: 20%;">
+      <{"`$constpref`_POLICY_ITEM_FIELD_SELECT_NAME"|constant}>
+    </th>
+    <td style="width: 80%;" class="even">
+<{if $isUsed}>
+      <{$actionForm->get('select_name')|xoops_escape}>
+      <input type="hidden" name="select_name" value="<{$actionForm->get('select_name')|xoops_escape}>" />
+<{else}>
+      <{xoops_input type=text name=select_name size=30 maxlength=255 value=$actionForm->get('select_name')}>
+<{/if}>
+    </td>
+  </tr>
+</table>
+
+<table width="100%" cellspacing="1" class="outer">
+  <thead>
+  <tr>
+    <th style="width: 30%;"><{"`$constpref`_POLICY_ITEM_FIELD_SELECT_LANG_VALUE_CODE"|constant}></th>
+    <th style="width: 55%;"><{"`$constpref`_POLICY_ITEM_FIELD_SELECT_LANG_VALUE_NAME"|constant}></th>
+    <th style="width: 10%;"><{"`$constpref`_LANG_ACTION"|constant}></th>
+  </tr>
+  </thead>
+  <tbody class="sortable">
+  <tr style="display: none;">
+    <td>
+      <img class="handle" src="<{"icons/dragarea.png"|image}>" alt="<{"`$constpref`_LANG_MOVE"|constant}>" title="<{"`$constpref`_LANG_MOVE"|constant}>" />
+      <input type="text" name="codes[]" size=30 maxlength=30 value="" />
+    </td>
+    <td>
+      <input type="text" name="names[]" size=60 maxlength=255 value="" />
+    </td>
+    <td style="text-align: center;">
+      <img class="handle" src="<{"icons/move.png"|image}>" alt="<{"`$constpref`_LANG_MOVE"|constant}>" title="<{"`$constpref`_LANG_MOVE"|constant}>" />
+      <img class="delete" src="<{"icons/delete.png"|theme}>" alt="<{"`$constpref`_LANG_DELETE"|constant}>" title="<{"`$constpref`_LANG_DELETE"|constant}> "/>
+    </td>
+  </tr>
+<{assign var=codes value=$actionForm->get('codes')}>
+<{assign var=names value=$actionForm->get('names')}>
+<{foreach item=code key=num from=$codes}>
+  <tr class="<{cycle values='odd,even'}>">
+    <td>
+      <img class="handle" src="<{"icons/dragarea.png"|image}>" alt="<{"`$constpref`_LANG_MOVE"|constant}>" title="<{"`$constpref`_LANG_MOVE"|constant}>" />
+<{if $isUsed}>
+      <{$code|xoops_escape}>
+      <input type="hidden" name="codes[]" value="<{$code|xoops_escape}>" />
+<{else}>
+      <input type="text" name="codes[]" size=30 maxlength=30 value="<{$code|xoops_escape}>" />
+<{/if}>
+    </td>
+    <td>
+      <input type="text" name="names[]" size="60" maxlength="255" value="<{$names.$num|xoops_escape}>" />
+    </td>
+    <td style="text-align: center;">
+      <img class="handle" src="<{"icons/move.png"|image}>" alt="<{"`$constpref`_LANG_MOVE"|constant}>" title="<{"`$constpref`_LANG_MOVE"|constant}>" />
+<{if !$isUsed}>
+      <img class="delete" src="<{"icons/delete.png"|theme}>" alt="<{"`$constpref`_LANG_DELETE"|constant}>" title="<{"`$constpref`_LANG_DELETE"|constant}> "/>
+<{/if}>
+      </td>
+  </tr>
+<{/foreach}>
+  </tbody>
+  <tfoot>
+  <tr class="even">
+    <td colspan="3" style="text-align: right;">
+      <input type="button" class="formButton addnew" value="<{"`$constpref`_LANG_ADDNEW"|constant}>" />
+    </td>
+  </tr>
+  </tfoot>
+</table>
+
+<div style="text-align: center; margin-top: 10px;">
+  <input type="submit" class="formButton" value="<{$smarty.const._CANCEL}>" name="_form_control_cancel" />
+  &nbsp;
+  <input type="submit" class="formButton" value="<{"`$constpref`_LANG_SAVE"|constant}>" name="submit" />
+</div>
+</form>
+
+<{include file="file:admin_footer.inc.html"}>

@@ -1,0 +1,14 @@
+<form style="margin-top: 0px;" action="<{$block.submit_url}>" method="get">
+  <input type="hidden" name="op" value="<{$block.op}>" />
+  <input type="text" name="keyword" size="16" value="<{$block.keyword|xoops_escape}>" />
+  <select name="search_condition">
+    <{html_options options=$block.search_conditions|xoops_escape selected=$block.search_conditions_selected}>
+  </select>
+  <br />
+  <input class="formButton" type="submit" value="<{$smarty.const._MB_XOONIPS_SEARCH_QUICK}>" />
+
+<{if !isset($block.advanced_search_enable) || $block.advanced_search_enable}>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="<{$xoops_url}>/modules/<{$block.dirname}>/search.php?op=advanced"><{$smarty.const._MB_XOONIPS_SEARCH_ADVANCED}></a>
+<{/if}>
+</form>

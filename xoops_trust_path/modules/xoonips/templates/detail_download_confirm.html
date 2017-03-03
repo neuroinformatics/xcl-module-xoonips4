@@ -1,0 +1,142 @@
+<script type="text/javascript" charset="utf-8">
+;(function($, document, window) {
+"use strict";
+
+function <{$dirname}>ChangeDownloadEnabled(file_id) {
+  var form = $('#<{$dirname}>_downloadform_' + file_id);
+  var notify = form.find(':radio[name="radio_notify"]:checked').val() || 1;
+  var license = form.find(':radio[name="radio_license"]:checked').val() || 1;
+  if (notify == 0 || license == 0) {
+    form.find(':submit[name="download"]').attr('disabled', 'disabled');
+  } else {
+    form.find(':submit[name="download"]').removeAttr('disabled');
+  }
+}
+
+$(document).ready(function() {
+  $('#<{$dirname}>_overlay').detach().appendTo($('body'));
+  $('#<{$dirname}>_lightbox').detach().appendTo($('body'));
+
+  $(window).resize(function() {
+    $('#<{$dirname}>_overlay').width($(window).width()).height($(window).height())
+  }).scroll(function() {
+    $('#<{$dirname}>_overlay').css({'left':$(window).scrollLeft(), 'top':+$(window).scrollTop()});
+    var lightbox = jQuery('#<{$dirname}>_lightbox');
+    lightbox.css({
+      'left': Math.max(0, (($(window).width() - lightbox.outerWidth()) / 2) + $(window).scrollLeft()) + 'px',
+      'top': Math.max(0, (($(window).height() - lightbox.outerHeight()) / 2) + $(window).scrollTop()) + 'px'
+    });
+  });
+
+<{foreach name='files' item=file from=$files}>
+  var form = $('#<{$dirname}>_downloadform_<{$file.fileID}>');
+  form.submit(function() {
+    $('#<{$dirname}>_overlay').hide();
+    $('#<{$dirname}>_lightbox').hide();
+    $('#<{$dirname}>_download_page_<{$file.fileID}>').hide();
+  })
+  form.find(':button[name="cancel"]').click(function() {
+    $('#<{$dirname}>_overlay').hide();
+    $('#<{$dirname}>_lightbox').hide();
+    $('#<{$dirname}>_download_page_<{$file.fileID}>').hide();
+  });
+  form.find(':radio[name="radio_notify"]').change(function() {
+    <{$dirname}>ChangeDownloadEnabled(<{$file.fileID}>);
+  });
+  form.find(':radio[name="radio_license"]').change(function() {
+    <{$dirname}>ChangeDownloadEnabled(<{$file.fileID}>);
+  });
+<{/foreach}>
+});
+
+})(jQuery, document, window);
+
+function xoonipsDownloadConfirmation(file_id) {
+  // overlay
+  jQuery('#<{$dirname}>_overlay').width(jQuery(document).width()+jQuery(window).scrollLeft()).height(jQuery(document).height()+jQuery(window).scrollTop()).show();
+
+  // initialize controls
+  var form = jQuery('#<{$dirname}>_downloadform_' + file_id);
+  form.find(':radio[name="radio_notify"]').val([0]);
+  form.find(':radio[name="radio_license"]').val([0]);
+  form.find(':submit[name="download"]').attr('disabled', 'disabled');
+  jQuery('#<{$dirname}>_download_page_' + file_id).show();
+
+  // lightbox
+  var lightbox = jQuery('#<{$dirname}>_lightbox');
+  lightbox.css({
+    'left': Math.max(0, (($(window).width() - lightbox.outerWidth()) / 2) + $(window).scrollLeft()) + 'px',
+    'top': Math.max(0, (($(window).height() - lightbox.outerHeight()) / 2) + $(window).scrollTop()) + 'px'
+  }).show();
+
+  return false;
+}
+
+</script>
+<div style="opacity: 0.8; display: none;" id="<{$dirname}>_overlay">
+</div>
+<div style="display: none;" id="<{$dirname}>_lightbox">
+	<div style="width: 570px;" id="<{$dirname}>_outerImageContainer" >
+		<div id="<{$dirname}>_imageContainer">
+		<{foreach name='files' item=file from=$files}>
+			<div id="<{$dirname}>_download_page_<{$file.fileID}>" style="display: none;" >
+			<form action="<{$download_url}>" method="post" id="<{$dirname}>_downloadform_<{$file.fileID}>">
+			<input type="hidden" name="file_id" value="<{$file.fileID}>" />
+				<div style="text-align: left">
+				<{$smarty.const._MD_XOONIPS_ITEM_ATTACHMENT_FILE_INFO_TITLE_LABEL}>
+					<div class="<{$dirname}>_download_box">
+					<{$file.fileName|xoops_escape}><br />
+					<table style="width: auto">
+					<tr>
+						<td><{$smarty.const._MD_XOONIPS_ITEM_TYPE_LABEL}></td>
+						<td>: <{$file.mimeType}></td>
+					</tr>
+					<tr>
+						<td><{$smarty.const._MD_XOONIPS_ITEM_SIZE_LABEL}></td>
+						<td>: <{$file.fileSizeStr}></td>
+					</tr>
+					<tr>
+						<td><{$smarty.const._MD_XOONIPS_ITEM_LAST_UPDATED_LABEL}></td>
+						<td>: <{$file.lastUpdated|date_format:"%b %d, %Y"}></td>
+					</tr>
+					</table>
+					</div>
+					<br />
+ 					<{if $use_license}>
+						<{$smarty.const._MD_XOONIPS_ITEM_ATTACHMENT_LICENSE_TITLE_LABEL}>
+						<div class="<{$dirname}>_download_box">
+						<{$smarty.const._MD_XOONIPS_ITEM_ATTACHMENT_LICENSE_QUERY_LABEL}><br />
+						<{if $use_cc == '1'}>
+							<{$cc_license}><br />
+						<{else}>
+							<textarea readonly="readonly" rows="10" cols="60" style="width:480px;"><{$rights|xoops_escape}></textarea><br />
+						<{/if}>
+						<input type="radio" name="radio_license" value="1" /><{$smarty.const._MD_XOONIPS_ITEM_ATTACHMENT_LICENSE_YES_LABEL}><br />
+						<input type="radio" name="radio_license" value="0" checked="checked" /><{$smarty.const._MD_XOONIPS_ITEM_ATTACHMENT_LICENSE_NO_LABEL}><br />
+						</div>
+						<br />
+					<{/if}>
+					<{if $attachment_dl_notify == '1'}>
+						<{$smarty.const._MD_XOONIPS_ITEM_ATTACHMENT_DL_NOTIFY_TITLE_LABEL}>
+						<div class="<{$dirname}>_download_box">
+						<{$smarty.const._MD_XOONIPS_ITEM_ATTACHMENT_DL_NOTIFY_QUERY_LABEL}><br />
+						<input type="radio" name="radio_notify" value="1" /><{$smarty.const._MD_XOONIPS_ITEM_ATTACHMENT_DL_NOTIFY_YES_LABEL}><br />
+						<input type="radio" name="radio_notify" value="0" checked="checked" /><{$smarty.const._MD_XOONIPS_ITEM_ATTACHMENT_DL_NOTIFY_NO_LABEL}><br />
+						</div>
+						<br />
+					<{/if}>
+				</div>
+			<{if $use_license && $attachment_dl_notify}>
+				<{$smarty.const._MD_XOONIPS_ITEM_ATTACHMENT_NEED_AGREE_BOTH_LABEL}>
+			<{else}>
+				<{$smarty.const._MD_XOONIPS_ITEM_ATTACHMENT_NEED_AGREE_LABEL}>
+			<{/if}>
+			<br />
+			<input class="formButton" type="submit" name="download" value="<{$smarty.const._MD_XOONIPS_ITEM_ATTACHMENT_DOWNLOAD_LABEL}>" disabled="disabled" />
+			<input class="formButton" type="button" name="cancel" value="<{$smarty.const._MD_XOONIPS_ITEM_ATTACHMENT_CANCEL_LABEL}>" />
+			</form>
+			</div>
+		<{/foreach}>
+		</div>
+	</div>
+</div>

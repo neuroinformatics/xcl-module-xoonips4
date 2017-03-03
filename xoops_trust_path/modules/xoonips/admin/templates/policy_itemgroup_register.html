@@ -1,0 +1,88 @@
+<{include file="file:admin_header.html"}>
+<div style="text-align:right; margin-left: 10px; margin-bottom: 10px;">
+</div>
+<form name="<{$dirname}>_policy_itemtype_group_registerform" id="<{$dirname}>_policy_itemtype_group_registerform" action="policy_itemgroup.php" method="post">
+<input type="hidden" name="op" value="">
+<input type="hidden" name="mode" value="">
+<{$token_ticket}>
+
+<table width="100%" cellspacing="1" class="outer">
+  <thead>
+  <tr>
+    <th style="width: 25%; text-align: center;" class="head"><br /></th>
+    <th style="width: 75%; text-align: center;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_MODIFY_CONTENT}></th>
+  </tr>
+  </thead>
+  <tr>
+    <td style="width: 25%; text-align: left;" class="head">
+    	<{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_GROUP_NAME}><{$smarty.const._AM_XOONIPS_LABEL_REQUIRED_MARK}>
+    </td>
+    <td style="width: 75%; text-align: left;" class="odd">&nbsp;&nbsp;
+    	<input type="text" name="name" size="50" maxlength="255" value="<{$name}>" />
+    </td>
+  </tr>
+  <tr>
+    <td style="width: 25%; text-align: left;" class="head">
+    	<{$smarty.const._AM_XOONIPS_POLICY_ITEMFIELDGROUP_ID}><{$smarty.const._AM_XOONIPS_LABEL_REQUIRED_MARK}>
+    </td>
+    <td style="width: 75%; text-align: left;" class="even">&nbsp;&nbsp;
+    	<input type="text" name="xml" size="50" maxlength="30" value="<{$xml}>" />
+    </td>
+  </tr>
+  <tr>
+    <td style="width: 25%; text-align: left;" class="head">
+   		<{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_OCCURRENCE}>
+   	</td>
+    <td style="width: 75%; text-align: left;" class="odd">&nbsp;&nbsp;
+    	<{if $occurrence=='1'}>
+    	<input type="checkbox" name="occurrence" value="1" checked />
+    	<{else}>
+    	<input type="checkbox" name="occurrence" value="1" />
+    	<{/if}>
+    </td>
+  </tr>
+</table>
+
+<div style="text-align: right; margin-left: 10px; margin-bottom: 10px;">
+</div>
+<p style="color:blue">&nbsp;&nbsp;&nbsp;<{$smarty.const._AM_XOONIPS_POLICY_ITEMTYPE_DETAIL_SELECT_DESC}></p>
+<table width="100%" cellspacing="1" class="outer">
+  <tbody>
+  <tr>
+    <th style="text-align: center;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_SELECT}></th>
+    <th style="text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DETAIL_NAME}></th>
+    <th style="text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_POLICY_ITEMFIELD_ID}></th>
+  </tr>
+  <{foreach item=itemfield from=$itemfields}>
+  <tr class= "<{cycle values='odd,even'}>">
+    <td style="text-align: center;">
+    	<{if $itemfield.select=='1'}>
+    	<input type="checkbox" name="checkbox_<{$itemfield.itemfieldid}>" value="1" checked/>
+    	<{else}>
+    	<input type="checkbox" name="checkbox_<{$itemfield.itemfieldid}>" value="1" />
+    	<{/if}>
+    </td>
+    <td style="text-align: left;"><{$itemfield.name|xoops_escape}>&nbsp;&nbsp;<{if $itemfield.editing ne ''}><span class="<{$dirname}>_diff"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_EDITING}></span><{/if}></td>
+    <td style="text-align: left;"><{$itemfield.xml|xoops_escape}></td>
+  </tr>
+  <{/foreach}>
+  <{if count($itemfields)==0}>
+  <tr>
+    <td class="odd" colspan="3" style="text-align: center;">
+      <span style="color: red; font-weight: bold;"><{$smarty.const._AM_XOONIPS_POLICY_ITEMTYPE_DETAIL_EMPTY}></span>
+    </td>
+  </tr>
+  <{/if}>
+  </tbody>
+</table>
+<div style="text-align: right; margin-left: 10px; margin-bottom: 10px;">
+</div>
+
+<div style="text-align: left">
+	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_BACK}>"
+	onclick="window.location='policy_itemgroup.php'" />&nbsp;&nbsp;
+ 	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_REGISTER}>" onclick="op.value='registersave'; mode.value=0; submit();">&nbsp;&nbsp;
+	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_RELEASE}>" onclick="op.value='registersave'; mode.value=1; submit();" />
+</div>
+</form>
+<{include file="file:admin_footer.inc.html"}>

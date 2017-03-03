@@ -1,0 +1,101 @@
+<script type="text/javascript" charset="utf-8">
+var <{$dirname}>Edit = new XoonipsLibrary.edit('<{$xoops_url}>', '<{$dirname}>', 'detailform', 'detail', '<{$item_id}>');
+
+(function($) {
+$(function() {
+'use strict';
+
+$('#<{$dirname}>_detailform :button[rel^="itemModifyPopin"]').<{$mytrustdirname}>Popin({
+  overflow : 'scroll',
+  callback: xoonipsCallback
+});
+
+});
+})(jQuery);
+
+function xoonipsCallback(id, value) {
+  if (id != null) {
+    var form = jQuery('#<{$dirname}>_detailform');
+    form.find('#<{$dirname}>_url').val(id);
+    form.find('#<{$dirname}>_redirect_msg').val(value);
+    jQuery('#<{$dirname}>_detailform :input[name="op"]').val('finish');
+    form.attr('action', 'edit.php');
+    form.submit();
+  }
+  return false;
+}
+</script>
+<{include file="db:`$dirname`_header.html"}>
+<h4><{$smarty.const._MD_XOONIPS_ITEM_DETAIL_ITEM_TITLE}></h4>
+<{if $buttonVisible.users_edit}>
+	<script type="text/javascript" charset="utf-8">
+	jQuery(function(){
+		jQuery('#<{$dirname}>CreateUser').css({display:'block'});
+	});
+	</script>
+	<form name="<{$dirname}>_itemownersedit" action="edit.php" method="get">
+	<input type="hidden" name="op" value="editOwners" />
+	<input type="hidden" name="item_id" value="<{$item_id}>" />
+	</form>
+<{/if}>
+
+<{if $buttonVisible.index_edit}>
+	<script type="text/javascript" charset="utf-8">
+	jQuery(function(){
+		jQuery('#<{$dirname}>IndexEdit').css({display:'block'});
+	});
+	</script>
+<{/if}>
+
+<{if $buttonVisible.accept_certify}>
+	<script type="text/javascript" charset="utf-8">
+	jQuery(function(){
+		jQuery('#<{$dirname}>Accept').css({display:'block'});
+	});
+	</script>
+<{/if}>
+
+<form id="<{$dirname}>_detailform" action="detail.php?item_id=<{$item_id}>" name="<{$dirname}>_detailform" method="post">
+<{$token_ticket}>
+<input type="hidden" name="item_id" value="<{$item_id}>" />
+<input type="hidden" name="op" value="" />
+<input id="<{$dirname}>_url" type="hidden" name="url" value="" />
+<input id="<{$dirname}>_redirect_msg" type="hidden" name="redirect_msg" value="" />
+<div class="no_print_div">
+<{if $buttonVisible.item_edit}>
+	<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_MODIFY_BUTTON_LABEL}>" href="<{$xoops_url}>/modules/<{$dirname}>/edit.php?item_id=<{$item_id}>" rel="itemModifyPopin" />
+<{/if}>
+<{if $buttonVisible.users_edit}>
+	<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_EDIT_USERS_BUTTON_LABEL}>" onclick="document.<{$dirname}>_itemownersedit.submit();" />
+<{/if}>
+<{if $buttonVisible.index_edit}>
+	<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_EDIT_INDEX_BUTTON_LABEL}>" onclick="<{$dirname}>Edit.indexEdit();" />
+<{/if}>
+<{if $buttonVisible.item_delete}>
+	<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_DELETE_BUTTON_LABEL}>" onclick="<{$dirname}>Edit.itemDelete();" />
+<{/if}>
+<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_PRINT_FRIENDLY_BUTTON_LABEL}>" onclick="window.open('<{$xoops_url}>/modules/<{$dirname}>/detail.php?op=print&item_id=<{$item_id}>');" />
+<{if $buttonVisible.item_export}>
+	<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_LABEL_EXPORT}>" onclick="op.value='export'; submit();" />
+<{/if}>
+</div>
+
+<{if ($buttonVisible.item_edit || $buttonVisible.index_edit) && $locked_message}>
+	<br /><span style="color: red;"><{$locked_message}></span><br />
+<{/if}>
+
+<div align="right"><{$smarty.const._MD_XOONIPS_ITEM_VIEWED_COUNT_LABEL}>:<{$viewed_count}></div>
+
+<{if !empty($detailView)}>
+	<table class="outer">
+	<tr>
+		<td class="head" width="25%"><{$smarty.const._MD_XOONIPS_ITEM_ITEM_TYPE_LABEL}></td>
+		<td class="even"><{$itemtype_name|xoops_escape}></td>
+	</tr>
+	<{$detailView}>
+	</table>
+<{/if}>
+</form>
+<{$download_confirmation}>
+
+<{include file="db:`$dirname`_footer.html"}>

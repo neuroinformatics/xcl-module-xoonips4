@@ -1,0 +1,57 @@
+<{include file="file:admin_header.inc.html"}>
+
+<form name="<{$xoops_dirname}>_policy_item_sort_editform" id="<{$xoops_dirname}>_policy_itemsort_editform" action="index.php" method="post">
+<input type="hidden" name="action" value="PolicyItemSortEdit" />
+
+<{xoops_token form=$actionForm}>
+<{xoops_input type=hidden name=sort_id value=$actionForm->get('sort_id')}>
+
+<table width="100%" cellspacing="1" class="outer">
+  <tr>
+    <th style="width: 20%;">
+      <{"`$constpref`_POLICY_ITEM_SORT_LABEL"|constant}>
+    </th>
+    <td style="width: 80%;" class="even">
+      <{xoops_input type=text name=title size=30 maxlength=255 value=$actionForm->get('title')}>
+    </td>
+  </tr>
+</table>
+
+<table width="100%" cellspacing="1" class="outer">
+  <tbody>
+  <tr>
+    <th style="width:30%; text-align:center;"><{"`$constpref`_LANG_ITEM_TYPE"|constant}></th>
+    <th style="width:70%; text-align:center;"><{"`$constpref`_POLICY_ITEM_SORT_FIELD"|constant}></th>
+  </tr>
+<{if !empty($selectableFields) }>
+<{foreach item=itemTypeInfo from=$selectableFields}>
+  <tr class="<{cycle values='odd,even'}>">
+    <td><{$itemTypeInfo.item_type_name|xoops_escape}></td>
+    <td>
+      <select name="fields[]" style="width:200px">
+<{foreach item=field from=$itemTypeInfo.fields}>
+        <option value="<{$field.key|xoops_escape}>"<{if in_array($field.key, $actionForm->get('fields'))}> selected="selected"<{/if}>><{$field.item_field_group_name|xoops_escape}>.<{$field.item_field_name|xoops_escape}></option>
+<{/foreach}>
+      </select>
+    </td>
+  </tr>
+<{/foreach}>
+<{else}>
+  <tr>
+    <td class="even" colspan="2" style="text-align: center;">
+      <span class="notice"><{"`$constpref`_MESSAGE_EMPTY"|constant}></span>
+    </td>
+  </tr>
+<{/if}>
+</tbody>
+</table>
+
+<div style="text-align: center; margin-top: 10px;">
+  <input type="submit" class="formButton" value="<{$smarty.const._CANCEL}>" name="_form_control_cancel" />
+  &nbsp;
+  <input type="submit" class="formButton" value="<{"`$constpref`_LANG_SAVE"|constant}>" name="submit" />
+</div>
+
+</form>
+
+<{include file="file:admin_footer.inc.html"}>

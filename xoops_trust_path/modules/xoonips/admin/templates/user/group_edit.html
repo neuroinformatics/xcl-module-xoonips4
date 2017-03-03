@@ -1,0 +1,287 @@
+<{if $isExtended }>
+<script type="text/javascript">
+(function($){
+
+<{$xoops_dirname}>_AdminGroupEditJS = function() {
+  var obj = this;
+  $(document).ready(function (){obj.onDocumentReady()});
+}
+<{$xoops_dirname}>_AdminGroupEditJS.prototype = {
+  /**
+   * add group admin by uid
+   *
+   * @param int uid
+   */
+  addGroupAdminByUid: function(uid) {
+    var obj = this;
+    $.ajax({
+      type: 'GET',
+      scriptCharset: 'utf-8',
+      dataType: 'json',
+      url: '<{$smarty.const.XOOPS_URL}>/modules/<{$xoops_dirname}>/index.php',
+      data: 'action=Ajax&method=GetUserInfo&uid=' + uid,
+      success: function(json) {
+        obj.addGroupAdmin(uid, json.uname, json.name);
+      }
+    });
+  },
+
+  /**
+   * add group admin
+   *
+   * @param int uid
+   * @param string uname
+   * @param string name
+   */
+  addGroupAdmin: function(uid, uname, name) {
+    if ($('#<{$xoops_dirname}>_groupAdminUid' + uid).length > 0)
+      return false;
+    var username = (name != '') ? (name + '(' + uname + ')') : uname;
+    var div = document.createElement('div');
+    var input = document.createElement('input');
+    var text = document.createTextNode(username);
+    var img = document.createElement('img');
+    div.id = '<{$xoops_dirname}>_groupAdminUid' + uid;
+    input.setAttribute('type', 'hidden');
+    input.setAttribute('name', 'adminUids[]');
+    input.value = uid;
+    img.src = '<{"icons/delete.png"|theme}>';
+    img.setAttribute('alt', "<{$smarty.const._DELETE}>");
+    img.setAttribute('title', "<{$smarty.const._DELETE}>");
+    img.onclick = function () {
+      $('#<{$xoops_dirname}>_groupAdminUid' + uid).remove();
+    };
+    div.appendChild(input);
+    div.appendChild(text);
+    div.appendChild(img);
+    $('#<{$xoops_dirname}>_groupAdmins').append($(div))
+  },
+
+  /**
+   * update is hidden
+   */
+  updateIsHidden: function() {
+    value = $('#<{$xoops_dirname}>_AdminGroupEditForm [name="is_hidden"]:checked').val();
+    if (value == 1) {
+      $('#<{$xoops_dirname}>_AdminGroupEditForm [name="is_public"][value="0"]').attr('checked', true);
+      $('#<{$xoops_dirname}>_AdminGroupEditForm [name="is_public"]').attr('disabled', true);
+      $('#<{$xoops_dirname}>_AdminGroupEditForm [name="can_join"][value="0"]').attr('checked', true);
+      $('#<{$xoops_dirname}>_AdminGroupEditForm [name="can_join"]').attr('disabled', true);
+    } else {
+<{if $pending == ''}>
+      $('#<{$xoops_dirname}>_AdminGroupEditForm [name="is_public"]').attr('disabled', false);
+<{/if}>
+      $('#<{$xoops_dirname}>_AdminGroupEditForm [name="can_join"]').attr('disabled', false);
+    }
+  },
+
+  /**
+   * callback function on document ready
+   */
+  onDocumentReady: function() {
+    var obj = this;
+    // admin uids
+<{foreach item=adminUid from=$actionForm->get('adminUids')}>
+    this.addGroupAdmin(<{$adminUid}>, '<{$adminUid|xoops_user:"uname"|escape:javascript}>', '<{$adminUid|xoops_user:"name"|escape:javascript}>');
+<{/foreach}>
+    // admin user search
+    $('#<{$xoops_dirname}>_AdminGroupEditForm [rel^="<{$dirname}>Popin"]').<{$mytrustdirname}>Popin({
+      width : 400,
+      height: 400,
+      opacity: 0.5,
+      animationSpeed: '0',
+      close : false,
+      followScroll: false,
+      dirname : '<{$xoops_dirname}>',
+      loader_path: '<{$xoops_url}>/modules/<{$xoops_dirname}>/image.php/loader.gif',
+      callback: function(id, value){
+        if (id == 'groupAdmin') {
+          var uids = value.split(',');
+          for (var i = 0; i < uids.length; i++)
+            obj.addGroupAdminByUid(uids[i].trim());
+        }
+        return false;
+      }
+    });
+    // is hidden
+    this.updateIsHidden();
+    $('#<{$xoops_dirname}>_AdminGroupEditForm [name="is_hidden"]').change(function () {
+       obj.updateIsHidden();
+    });
+    // icon
+    $('#<{$xoops_dirname}>_iconDeleteButton').click(function () {
+      $('#<{$xoops_dirname}>_icon').attr('style','display:none');
+      $('#<{$xoops_dirname}>_AdminGroupEditForm [name="iconDelete"]').val(1);
+      return false;
+    });
+  }
+}
+
+new <{$xoops_dirname}>_AdminGroupEditJS();
+
+})(jQuery);
+</script>
+<{/if}>
+<div class="adminnavi">
+  <a href="./index.php"><{$smarty.const._MI_USER_NAME}></a>
+  &raquo;&raquo; <a href="./index.php?action=GroupList"><{$smarty.const._AD_USER_LANG_GROUP_LIST}></a>
+  &raquo;&raquo;
+  <{if $actionForm->get('groupid') }>
+  <{if $isExtended }>
+    <span class="adminnaviTitle"><{"`$constpref`_USER_LANG_GROUP_EDIT"|constant}></span>
+  <{else}>
+    <span class="adminnaviTitle"><{$smarty.const._AD_USER_LANG_GROUP_EDIT}></span>
+  <{/if}>
+  <{else}>
+  <{if $isExtended }>
+    <span class="adminnaviTitle"><{"`$constpref`_USER_LANG_GROUP_NEW"|constant}></span>
+  <{else}>
+    <span class="adminnaviTitle"><{$smarty.const._AD_USER_LANG_GROUP_NEW}></span>
+  <{/if}>
+  <{/if}>
+</div>
+
+<{if $actionForm->get('groupid') }>
+<{if $isExtended }>
+  <h3 class="admintitle"><{"`$constpref`_USER_LANG_GROUP_EDIT"|constant}> (<{$actionForm->get('name')}>)</h3>
+<{else}>
+  <h3 class="admintitle"><{$smarty.const._AD_USER_LANG_GROUP_EDIT}> (<{$actionForm->get('name')}>)</h3>
+<{/if}>
+<{else}>
+<{if $isExtended }>
+  <h3 class="admintitle"><{"`$constpref`_USER_LANG_GROUP_NEW"|constant}></h3>
+<{else}>
+  <h3 class="admintitle"><{$smarty.const._AD_USER_LANG_GROUP_NEW}></h3>
+<{/if}>
+<{/if}>
+
+<{if $actionForm->hasError()}>
+<div class="error">
+  <ul>
+    <{foreach item=message from=$actionForm->getErrorMessages()}>
+      <li><{$message|xoops_escape}></li>
+    <{/foreach}>
+  </ul>
+</div>
+<{/if}>
+
+<form id="<{$xoops_dirname}>_AdminGroupEditForm" action="?action=GroupEdit" method="post" enctype="multipart/form-data">
+  <{xoops_token form=$actionForm}>
+  <{xoops_input type=hidden name=groupid value=$actionForm->get('groupid')}>
+  <{xoops_input type=hidden name=group_type value=$actionForm->get('group_type')}>
+  <table class="outer">
+    <tr>
+      <th colspan="2">
+      <{if $actionForm->get('groupid') }>
+      <{if $isExtended }>
+        <{"`$constpref`_USER_LANG_GROUP_EDIT"|constant}> (<{$actionForm->get('name')|xoops_escape}>)
+      <{else}>
+        <{$smarty.const._AD_USER_LANG_GROUP_EDIT}> (<{$actionForm->get('name')|xoops_escape}>)
+      <{/if}>
+      <{else}>
+      <{if $isExtended }>
+        <{"`$constpref`_USER_LANG_GROUP_NEW"|constant}>
+      <{else}>
+        <{$smarty.const._AD_USER_LANG_GROUP_NEW}>
+      <{/if}>
+      <{/if}>
+      </th>
+    </tr>
+    <tr>
+      <td class="head"><{$smarty.const._AD_USER_LANG_GROUP_NAME}><span style="color: red;">*</span></td>
+      <td class="<{cycle values="odd,even"}>">
+        <{xoops_input type=text name=name value=$actionForm->get('name')}>
+      </td>
+    </tr>
+    <tr>
+      <td class="head"><{$smarty.const._AD_USER_LANG_GROUP_DESC}></td>
+      <td class="<{cycle values="odd,even"}>">
+        <{xoops_dhtmltarea name=description value=$actionForm->get('description')}>
+      </td>
+    </tr>
+    <{if $isExtended }>
+    <tr>
+      <td class="head"><{"`$constpref`_USER_LANG_GROUP_ADMINS"|constant}><span style="color: red;">*</span></td>
+      <td class="<{cycle values="odd,even"}>">
+        <div id="<{$xoops_dirname}>_groupAdmins"></div>
+        <input type="button" href="<{$smarty.const.XOOPS_URL}>/modules/<{$xoops_dirname}>/index.php?action=Ajax&method=UserSelect&callbackid=groupAdmin" class="formButton" rel="<{$dirname}>Popin" value="<{"`$constpref`_USER_LANG_SEARCH"|constant}>" />
+      </td>
+    </tr>
+    <tr>
+      <td class="head"><{"`$constpref`_USER_LANG_GROUP_ICON"|constant}><br /></td>
+      <td class="<{cycle values="odd,even"}>">
+        <input type="file" name="iconFile" size="40">
+        <{xoops_input type=hidden id=`$xoops_dirname`_iconDelete name=iconDelete value="0"}>
+        <div id="<{$xoops_dirname}>_icon">
+        <{if $icon }>
+          <img src="<{$xoops_url}>/modules/<{$xoops_dirname}>/image.php/group/<{$actionForm->get('groupid')}>/<{$icon.file_name|xoops_escape}>" alt="<{$icon.file_name|xoops_escape}>" title="<{$icon.file_name|xoops_escape}>" />
+          <input type="button" id="<{$xoops_dirname}>_iconDeleteButton" class="formButton" value="<{$smarty.const._DELETE}>" />
+        <{/if}>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="head"><{"`$constpref`_USER_LANG_GROUP_IS_PUBLIC"|constant}><br /></td>
+      <td class="<{cycle values="odd,even"}>">
+        <input type="radio" name="is_public" value="1" <{if $actionForm->get('is_public') == 1}> checked="checked"<{/if}><{if $pending != ''}> disabled="disabled"<{/if}> /><{"`$constpref`_USER_LANG_ALL"|constant}>
+        <input type="radio" name="is_public" value="0" <{if $actionForm->get('is_public') == 0}> checked="checked"<{/if}><{if $pending != ''}> disabled="disabled"<{/if}> /><{"`$constpref`_USER_LANG_GROUP_ONLY"|constant}>
+        <{if $pending != ''}><p style="color:red;"><{$pending|xoops_escape}></p><{/if}>
+      </td>
+    </tr>
+    <tr>
+      <td class="head"><{"`$constpref`_USER_LANG_GROUP_CAN_JOIN"|constant}><br /></td>
+      <td class="<{cycle values="odd,even"}>">
+       <input type="radio" name="can_join" value="1"<{if $actionForm->get('can_join') == 1}> checked="checked"<{/if}> /><{"`$constpref`_USER_LANG_PERMIT"|constant}>
+       <input type="radio" name="can_join" value="0"<{if $actionForm->get('can_join') == 0}> checked="checked"<{/if}> /><{"`$constpref`_USER_LANG_NO_PERMIT"|constant}>
+      </td>
+    </tr>
+    <tr>
+      <td class="head"><{"`$constpref`_USER_LANG_GROUP_IS_HIDDEN"|constant}><br /></td>
+      <td class="<{cycle values="odd,even"}>">
+        <input type="radio" name="is_hidden" value="0"<{if $actionForm->get('is_hidden') == 0}> checked="checked"<{/if}><{if $pending != ''}> disabled="disabled"<{/if}> /><{"`$constpref`_USER_LANG_NO"|constant}>
+        <input type="radio" name="is_hidden" value="1"<{if $actionForm->get('is_hidden') == 1}> checked="checked"<{/if}><{if $pending != ''}> disabled="disabled"<{/if}> /><{"`$constpref`_USER_LANG_YES"|constant}>
+        <{if $pending != ''}><p style="color:red;"><{$pending|xoops_escape}></p><{/if}>
+      </td>
+    </tr>
+    <tr>
+      <td class="head"><{"`$constpref`_USER_LANG_GROUP_MEMBER_ACCEPT"|constant}><br /></td>
+      <td class="<{cycle values="odd,even"}>">
+        <input type="radio" name="member_accept" value="1"<{if $actionForm->get('member_accept') == 1}> checked="checked"<{/if}> /><{"`$constpref`_USER_LANG_AUTO"|constant}>
+        <input type="radio" name="member_accept" value="0"<{if $actionForm->get('member_accept') == 0}> checked="checked"<{/if}> /><{"`$constpref`_USER_LANG_MANUAL"|constant}>
+      </td>
+    </tr>
+    <tr>
+      <td class="head"><{"`$constpref`_USER_LANG_GROUP_ITEM_ACCEPT"|constant}><br /></td>
+      <td class="<{cycle values="odd,even"}>">
+        <input type="radio" name="item_accept" value="1"<{if $actionForm->get('item_accept') == 1}> checked="checked"<{/if}> /><{"`$constpref`_USER_LANG_AUTO"|constant}>
+        <input type="radio" name="item_accept" value="0"<{if $actionForm->get('item_accept') == 0}> checked="checked"<{/if}> /><{"`$constpref`_USER_LANG_MANUAL"|constant}>
+      </td>
+    </tr>
+    <tr>
+      <td class="head"><{"`$constpref`_USER_LANG_GROUP_MAXITEM"|constant}></td>
+      <td class="<{cycle values="odd,even"}>">
+        <input type="text" name="item_number_limit" size="50" value="<{$actionForm->get('item_number_limit')}>" />
+        <br /><{"`$constpref`_USER_MESSAGE_UNLIMIT_IFZERO"|constant}></td>
+
+    </tr>
+    <tr>
+      <td class="head"><{"`$constpref`_USER_LANG_GROUP_MAXINDEX"|constant}></td>
+      <td class="<{cycle values="odd,even"}>">
+        <input type="text" name="index_number_limit" size="50" value="<{$actionForm->get('index_number_limit')}>" />
+        <br /><{"`$constpref`_USER_MESSAGE_UNLIMIT_IFZERO"|constant}></td>
+    </tr>
+    <tr>
+      <td class="head"><{"`$constpref`_USER_LANG_GROUP_MAXDISK"|constant}></td>
+      <td class="<{cycle values="odd,even"}>">
+        <input type="text" name="item_storage_limit" size="50" value="<{$actionForm->get('item_storage_limit')}>" />
+        <br /><{"`$constpref`_USER_MESSAGE_UNLIMIT_IFZERO"|constant}></td>
+    </tr>
+    <{/if}>
+    <tr>
+      <td colspan="2" class="foot">
+        <input class="formButton" type="submit" value="<{$smarty.const._SUBMIT}>" />
+        <input class="formButton" type="submit" value="<{$smarty.const._BACK}>" name="_form_control_cancel" />
+      </td>
+    </tr>
+  </table>
+</form>

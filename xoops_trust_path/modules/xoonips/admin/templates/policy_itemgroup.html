@@ -1,0 +1,72 @@
+<{include file="file:admin_header.html"}>
+<script type="text/javascript" charset="utf-8">
+jQuery.noConflict();
+function dconfirm(action){
+  if(confirm('<{$smarty.const._AM_XOONIPS_MSG_DELETE_CONFIRM}>')) {
+    var form=jQuery('#<{$dirname}>_policy_itemgroupform');
+    form.attr('action', action);
+    jQuery('#<{$dirname}>_policy_itemgroup_op').attr('value','delete');
+    form.submit();
+  }
+  return false;
+}
+function doClick(){
+  jQuery('#file').click();
+}
+</script>
+<form name="<{$dirname}>_policy_itemgroupform" id="<{$dirname}>_policy_itemgroupform" action="policy_itemgroup.php" method="post" enctype="multipart/form-data">
+<p style="color:blue">&nbsp;&nbsp;&nbsp;<{$smarty.const._AM_XOONIPS_POLICY_ITEMFIELDGROUP_ATTENTION}></p>
+<div style="text-align:right; margin-left: 10px; margin-bottom: 15px;">
+  <span style="border-top: 1px solid #EEEEFF; border-left: 1px solid #EEEEFF; border-right: 1px solid #666699; border-bottom: 1px solid #666699; padding: 5px; background-color: #EEEEEE; vertical-align: top;">
+    <span style="font-weight: bold; color: red;">&raquo;</span>&nbsp;&nbsp;
+    <a href="policy_itemgroup.php?op=register"><{$smarty.const._AM_XOONIPS_POLICY_ITEMGROUP_ADD_TITLE}></a>
+  </span>
+</div>
+<{$token_ticket}>
+<input type="hidden" name="op" id="<{$dirname}>_policy_itemgroup_op" value="">
+<div>
+<table>
+<tr>
+<td style="width: 50%; text-align: left;">
+</td>
+<td style="width: 50%; text-align: right;"><{$navi_title}></td>
+</tr>
+</table>
+</div>
+<table width="100%" cellspacing="1" class="outer">
+  <tbody>
+  <tr>
+    <th style="text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_GROUP_NAME}></th>
+    <th style="text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_POLICY_ITEMFIELDGROUP_ID}></th>
+    <th style="text-align: center;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ACTION}></th>
+  </tr>
+  <{foreach item=itemgroup from=$itemgroups}>
+  <tr class= "<{cycle values='odd,even'}>">
+    <td style="text-align: left;"><{$itemgroup.name|xoops_escape}>&nbsp;&nbsp;<{if $itemgroup.editing ne ''}><span class="<{$dirname}>_diff"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_EDITING}></span><{/if}></td>
+    <td style="text-align: left;"><{$itemgroup.xml|xoops_escape}></td>
+    <td style="text-align: center;">
+      <a href="policy_itemgroup.php?op=edit&amp;groupid=<{$itemgroup.itemgroupid}>&amp;perpage=<{$perpage}>&amp;start=<{$startpage}>">
+        <img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/edit.png" alt="<{$smarty.const._AM_XOONIPS_LABEL_MODIFY}>" title="<{$smarty.const._AM_XOONIPS_LABEL_MODIFY}>"/>
+      </a>&nbsp;
+      <{if ($itemgroup.disdel)}>
+      <a href="#">
+        <img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/delete.png" alt="<{$smarty.const._AM_XOONIPS_LABEL_DELETE}>" title="<{$smarty.const._AM_XOONIPS_LABEL_DELETE}>"
+        onclick="return dconfirm('policy_itemgroup.php?op=delete&amp;groupid=<{$itemgroup.itemgroupid}>')" />
+      </a>
+      <{/if}>
+    </td>
+  </tr>
+  <{/foreach}>
+  <{if count($itemgroups)==0}>
+  <tr>
+    <td class="odd" colspan="4" style="text-align: center;">
+      <span style="color: red; font-weight: bold;"><{$smarty.const._AM_XOONIPS_POLICY_ITEMTYPE_GROUP_EMPTY}></span>
+    </td>
+  </tr>
+  <{/if}>
+  </tbody>
+</table>
+</form>
+<br />
+<div class="pagenavi"><{xoops_pagenavi pagenavi=$pageNavi}></div>
+<{include file="file:admin_footer.inc.html"}>

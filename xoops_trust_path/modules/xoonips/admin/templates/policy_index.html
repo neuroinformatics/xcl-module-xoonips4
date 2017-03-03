@@ -1,0 +1,32 @@
+<{include file="file:admin_header.inc.html"}>
+
+<form name="<{$xoops_dirname}>_policy_indexform" action="index.php" method="post">
+<input name="action" value="PolicyIndex" type="hidden" />
+<{xoops_token form=$actionForm}>
+
+<table width="100%" cellspacing="1" class="outer">
+  <tbody>
+  <tr>
+    <th colspan="2"><{"`$constpref`_POLICY_INDEX_DETAILED_DESCRIPTION"|constant}></th>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;">
+      <span style="font-weight: bold;"><{"`$constpref`_POLICY_INDEX_INDEX_UPLOAD_DIR_TITLE"|constant}></span>
+      <br /><br />
+      <span style="font-weight: normal;"><{"`$constpref`_POLICY_INDEX_INDEX_UPLOAD_DIR_DESC"|constant}></span>
+    </td>
+    <td class="even" style="width: 60%; vertical-align: top;">
+      <input name="index_upload_dir" type="text" size="50" value="<{$actionForm->get('index_upload_dir')|xoops_escape}>" />
+    </td>
+  </tr>
+  <tr>
+    <td class="head" style="width: 40%; vertical-align: top;">&nbsp;</td>
+    <td class="even" style="width: 60%; vertical-align: top;">
+      <input type="submit" name="submit" value="<{"`$constpref`_LANG_UPDATE"|constant}>" />
+    </td>
+  </tr>
+  </tbody>
+</table>
+</form>
+
+<{include file="file:admin_footer.inc.html"}>

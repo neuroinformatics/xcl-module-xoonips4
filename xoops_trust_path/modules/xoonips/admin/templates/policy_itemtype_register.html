@@ -1,0 +1,90 @@
+<{include file="file:admin_header.html"}>
+<div style="text-align:right; margin-left: 10px; margin-bottom: 10px;">
+</div>
+<form name="<{$dirname}>_policy_itemtype_registerform" id="<{$dirname}>_policy_itemtype_registerform" action="policy_itemtype.php" method="post" enctype="multipart/form-data">
+<input type="hidden" name="op" value="">
+<input type="hidden" name="mode" value="">
+<{$token_ticket}>
+<table width="100%" cellspacing="1" class="outer">
+  <tr>
+    <td style="width: 25%; text-align: left;" class="head">
+      <{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_NAME}><{$smarty.const._AM_XOONIPS_LABEL_REQUIRED_MARK}>
+    </td>
+    <td style="width: 75%; text-align: left;" class="even">&nbsp;&nbsp;
+      <input type="text" name="name" size="50" maxlength="30" value="<{$name}>">
+    </td>
+  </tr>
+  <tr>
+    <td style="width: 25%; text-align: left;" class="head">
+      <{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DESCRIPTION}>
+    </td>
+    <td style="width: 75%; text-align: left;" class="even">&nbsp;&nbsp;
+      <input type="text" name="descrip" size="50" maxlength="255" value="<{$descrip}>">
+    </td>
+  </tr>
+  <tr>
+    <td style="width: 25%; text-align: left;" class="head">
+       <{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_ICON}>
+     </td>
+    <td style="width: 75%; text-align: left;" class="even">&nbsp;&nbsp;
+      <input type="file" name="icon_file" size="60" >
+    </td>
+  </tr>
+  <tr>
+    <td style="width: 25%; text-align: left;" class="head">
+      <{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DISPLAY_ORDER}>
+    </td>
+    <td style="width: 75%; text-align: left;" class="even">&nbsp;&nbsp;
+      <input type="text" name="weight" size="10" maxlength="3" value="<{$weight}>">
+    </td>
+  </tr>
+  <tr>
+    <td style="width: 25%; text-align: left;" class="head">
+      <{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_TEMPLATE}>
+    </td>
+    <td style="width: 75%; text-align: left;" class="even">&nbsp;&nbsp;
+      <textarea name="template" rows="5" cols="50" ><{$template}></textarea>
+    </td>
+  </tr>
+</table>
+<div style="text-align: right; margin-left: 10px; margin-bottom: 10px;">
+</div>
+<p style="color:blue">&nbsp;&nbsp;&nbsp;<{$smarty.const._AM_XOONIPS_POLICY_ITEMTYPE_GROUP_SELECT_DESC}></p>
+<table width="100%" cellspacing="1" class="outer">
+  <tbody>
+  <tr>
+    <th style="text-align: center;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_SELECT}></th>
+    <th style="text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_GROUP_NAME}></th>
+    <th style="text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_POLICY_ITEMFIELDGROUP_ID}></th>
+  </tr>
+  <{foreach item=group from=$groups}>
+  <tr class= "<{cycle values='odd,even'}>">
+    <td style="text-align: center;">
+      <{if $group.select=='1'}>
+      <input type="checkbox" name="checkbox_<{$group.groupid}>" value="1" checked <{if $group.preselect=='1'}>disabled<{/if}> />
+      <{else}>
+      <input type="checkbox" name="checkbox_<{$group.groupid}>" value="1" <{if $group.preselect=='1'}>disabled<{/if}> />
+      <{/if}>
+    </td>
+    <td style="text-align: left;"><{$group.name|xoops_escape}></td>
+    <td style="text-align: left;"><{$group.xml|xoops_escape}></td>
+  </tr>
+  <{/foreach}>
+  <{if count($groups)==0}>
+  <tr>
+    <td class="odd" colspan="3" style="text-align: center;">
+      <span style="color: red; font-weight: bold;"><{$smarty.const._AM_XOONIPS_POLICY_ITEMTYPE_GROUP_EMPTY}></span>
+    </td>
+  </tr>
+  <{/if}>
+  </tbody>
+</table>
+<div style="text-align: right; margin-left: 10px; margin-bottom: 10px;">
+</div>
+<div style="text-align: left">
+  <input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_BACK}>" onclick="window.location='policy_itemtype.php'" />&nbsp;&nbsp;
+   <input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_REGISTER}>" onclick="op.value='registersave'; mode.value=0; submit();" />&nbsp;&nbsp;
+  <input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_RELEASE}>" onclick="op.value='registersave'; mode.value=1; submit();" />
+</div>
+</form>
+<{include file="file:admin_footer.inc.html"}>

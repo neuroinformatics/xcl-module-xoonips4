@@ -1,0 +1,47 @@
+<{include file="file:admin_header.html"}>
+<{$errors}>
+<div style="text-align:right; margin-left: 10px; margin-bottom: 25px;">
+</div>
+<form name="<{$dirname}>_policy_itemtype_group_registerform" id="<{$dirname}>_policy_itemtype_group_registerform" action="policy_itemtype.php" method="post">
+<input type="hidden" name="op" value="groupregistersave">
+<input type="hidden" name="itemtypeid"  value="<{$itemtypeid}>"/>
+<input type="hidden" name="base_itemtypeid"  value="<{$base_itemtypeid}>"/>
+<{$token_ticket}>
+
+<table width="100%" cellspacing="1" class="outer">
+  <{$smarty.const._AM_XOONIPS_POLICY_ITEMTYPE_TITLE}>&nbsp;&nbsp;<b><{$itemtype_name}></b>
+  <tbody>
+  <tr>
+    <th style="text-align: center;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_SELECT}></th>
+    <th style="text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_GROUP_NAME}></th>
+    <th style="text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_POLICY_ITEMFIELDGROUP_ID}></th>
+  </tr>
+  <{foreach item=group from=$groups}>
+  <tr class= "<{cycle values='odd,even'}>">
+    <td style="text-align: center;">
+      <{if $group.select=='1'}>
+      <input type="checkbox" name="checkbox_<{$group.groupid}>" value="1" checked <{if $group.preselect=='1'}>disabled<{/if}> />
+      <{else}>
+      <input type="checkbox" name="checkbox_<{$group.groupid}>" value="1" <{if $group.preselect=='1'}>disabled<{/if}> />
+      <{/if}>
+    </td>
+    <td style="text-align: left;"><{$group.name|xoops_escape}></td>
+    <td style="text-align: left;"><{$group.xml|xoops_escape}></td>
+  </tr>
+  <{/foreach}>
+  <{if count($groups)==0}>
+  <tr>
+    <td class="odd" colspan="3" style="text-align: center;">
+      <span style="color: red; font-weight: bold;"><{$smarty.const._AM_XOONIPS_POLICY_ITEMTYPE_GROUP_EMPTY}></span>
+    </td>
+  </tr>
+  <{/if}>
+  </tbody>
+</table>
+
+<div style="text-align: left">
+  <input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_BACK}>" onclick="window.location='policy_itemtype.php?op=edit&itemtypeid=<{$base_itemtypeid}>'" />&nbsp;&nbsp;
+   <input class="formButton" type="submit" value="<{$smarty.const._AM_XOONIPS_LABEL_OK}>">
+</div>
+</form>
+<{include file="file:admin_footer.inc.html"}>
