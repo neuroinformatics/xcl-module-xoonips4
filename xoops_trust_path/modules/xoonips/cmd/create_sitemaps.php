@@ -8,36 +8,40 @@ $mytrustdirpath = dirname(dirname(__FILE__));
 $mytrustdirname = basename($mytrustdirpath);
 
 $ping = false;
-$opts = getopt("p");
-if (array_key_exists("p", $opts)) {
-	$ping = true;
+$opts = getopt('p');
+if (array_key_exists('p', $opts)) {
+    $ping = true;
 }
 
-$mainfile = dirname(dirname(dirname($mytrustdirpath))) . '/html/mainfile.php';
-if (basename($mainfile) != 'mainfile.php' || !file_exists($mainfile))
-        printUsage('mainfile.php not found');
+$mainfile = dirname(dirname(dirname($mytrustdirpath))).'/html/mainfile.php';
+if (basename($mainfile) != 'mainfile.php' || !file_exists($mainfile)) {
+    printUsage('mainfile.php not found');
+}
 require_once $mainfile;
 $dirnames = Legacy_Utils::getDirnameListByTrustDirname($mytrustdirname);
 $mydirname = $dirnames[0];
 
 // load required classes
-require_once $mytrustdirpath . '/class/core/Sitemaps.class.php';
+require_once $mytrustdirpath.'/class/core/Sitemaps.class.php';
 
 $sitemaps = new Xoonips_Sitemaps($mydirname, $mytrustdirname);
-if (!$sitemaps->create())
-        printUsage('sitemaps create failed.');
+if (!$sitemaps->create()) {
+    printUsage('sitemaps create failed.');
+}
 
 // ping
 if ($ping) {
-	if (!$sitemaps->ping()) {
-        	printUsage('sitemaps ping failed.');
-	}
+    if (!$sitemaps->ping()) {
+        printUsage('sitemaps ping failed.');
+    }
 }
 
 exit;
 
-function printUsage($message) {
-        if ($message)
-                fprintf(STDERR, 'Error: '. $message . PHP_EOL . PHP_EOL);
-        exit(2);
+function printUsage($message)
+{
+    if ($message) {
+        fprintf(STDERR, 'Error: '.$message.PHP_EOL.PHP_EOL);
+    }
+    exit(2);
 }

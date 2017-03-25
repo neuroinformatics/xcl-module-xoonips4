@@ -1,107 +1,134 @@
 <?php
 
-require_once XOOPS_TRUST_PATH . '/modules/xoonips/class/core/BeanFactory.class.php';
-require_once XOOPS_TRUST_PATH . '/modules/xoonips/class/core/Field.class.php';
-require_once XOOPS_TRUST_PATH . '/modules/xoonips/class/Enum.class.php';
+require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/BeanFactory.class.php';
+require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Field.class.php';
+require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/Enum.class.php';
 
-class Xoonips_ItemField extends Xoonips_Field {
+class Xoonips_ItemField extends Xoonips_Field
+{
+    private $detailTarget;
+    private $itemTypeId;
 
-	private $detailTarget;
-	private $itemTypeId;
+    public function setItemTypeId($v)
+    {
+        $this->itemTypeId = $v;
+    }
 
-	public function setItemTypeId($v) {
-		$this->itemTypeId = $v;
-	}
+    public function getItemTypeId()
+    {
+        return $this->itemTypeId;
+    }
 
-	public function getItemTypeId() {
-		return $this->itemTypeId;
-	}
+    public function setDetailTarget($v)
+    {
+        $this->detailTarget = $v;
+    }
 
-	public function setDetailTarget($v) {
-		$this->detailTarget = $v;
-	}
+    public function getDetailTarget()
+    {
+        return $this->detailTarget;
+    }
 
-	public function getDetailTarget() {
-		return $this->detailTarget;
-	}
+    public function isDisplay($op, $userTp)
+    {
+        $ret = true;
+        $viewType = $this->getViewType();
 
-	public function isDisplay($op, $userTp) {
-		$ret = true;
-		$viewType = $this->getViewType();
+        if ($viewType->isDisplay($op) == false) {
+            return false;
+        }
 
-		if ($viewType->isDisplay($op) == false) {
-			return false;
-		}
+        // $op(1:list 2:detail 3:search)
+        switch ($op) {
+            case Xoonips_Enum::OP_TYPE_LIST:
+                if ($this->getListDisplay() == 0) {
+                    $ret = false;
+                }
+                break;
+            case Xoonips_Enum::OP_TYPE_DETAIL:
+                if ($this->getDetailDisplay() == 0) {
+                    $ret = false;
+                }
+                break;
+            case Xoonips_Enum::OP_TYPE_METAINFO:
+                if ($this->getDetailDisplay() == 0) {
+                    $ret = false;
+                }
+                break;
+            case Xoonips_Enum::OP_TYPE_ITEMUSERSEDIT:
+                if ($this->getDetailDisplay() == 0) {
+                    $ret = false;
+                }
+                break;
+            case Xoonips_Enum::OP_TYPE_SEARCH:
+                if ($this->getDetailTarget() == 0) {
+                    $ret = false;
+                }
+                break;
+            case Xoonips_Enum::OP_TYPE_SIMPLESEARCH:
+                if ($this->getDetailTarget() == 0) {
+                    $ret = false;
+                }
+                break;
+            case Xoonips_Enum::OP_TYPE_QUICKSEARCH:
+                $handler = Legacy_Utils::getModuleHandler('ItemQuickSearchCondition', $this->dirname);
+                if (!$handler->existItemFieldId($this->getId())) {
+                    $ret = false;
+                }
+                break;
+            default:
+                break;
+        }
 
-		// $op(1:list 2:detail 3:search)
-		switch ($op) {
-			case Xoonips_Enum::OP_TYPE_LIST:
-				if ($this->getListDisplay() == 0) $ret = false;
-				break;
-			case Xoonips_Enum::OP_TYPE_DETAIL:
-				if ($this->getDetailDisplay() == 0) $ret = false;
-				break;
-			case Xoonips_Enum::OP_TYPE_METAINFO:
-				if ($this->getDetailDisplay() == 0) $ret = false;
-				break;
-			case Xoonips_Enum::OP_TYPE_ITEMUSERSEDIT:
-				if ($this->getDetailDisplay() == 0) $ret = false;
-				break;
-			case Xoonips_Enum::OP_TYPE_SEARCH:
-				if ($this->getDetailTarget() == 0) $ret = false;
-				break;
-			case Xoonips_Enum::OP_TYPE_SIMPLESEARCH:
-				if ($this->getDetailTarget() == 0) $ret = false;
-				break;
-			case Xoonips_Enum::OP_TYPE_QUICKSEARCH:
-				$handler = Legacy_Utils::getModuleHandler('ItemQuickSearchCondition', $this->dirname);
-				if (!$handler->existItemFieldId($this->getId())) $ret = false;
-				break;
-			default:
-				break;
-		}
-		return $ret;
-	}
+        return $ret;
+    }
 
-	public function getList() {
-		$ret = array();
-		global $xoopsDB;
-		$sql = 'select title_id, title from ' . $xoopsDB->prefix($this->dirname . '_item_field_value_set').
-		" where select_name='" . $this->listId ."' order by weight";
-		$result = $xoopsDB->queryF($sql);
-		while ($row = $xoopsDB->fetchArray($result)) {
-			$ret[$row['title_id']] = $row['title'];
-		}
-		return $ret;
-	}
+    public function getList()
+    {
+        $ret = array();
+        global $xoopsDB;
+        $sql = 'select title_id, title from '.$xoopsDB->prefix($this->dirname.'_item_field_value_set').
+        " where select_name='".$this->listId."' order by weight";
+        $result = $xoopsDB->queryF($sql);
+        while ($row = $xoopsDB->fetchArray($result)) {
+            $ret[$row['title_id']] = $row['title'];
+        }
 
-	public function getItemOwnersEditView($value, $groupLoopId, $cnt) {
-		return $this->getDetailViewSub($this->viewType->getItemOwnersEditView($this, $value, $groupLoopId), $cnt);
-	}
+        return $ret;
+    }
 
-	public function getItemOwnersEditViewWithData($value, $groupLoopId, $cnt) {
-		return $this->getDetailViewSub($this->viewType->getItemOwnersEditViewWithData($this, $value, $groupLoopId), $cnt);
-	}
+    public function getItemOwnersEditView($value, $groupLoopId, $cnt)
+    {
+        return $this->getDetailViewSub($this->viewType->getItemOwnersEditView($this, $value, $groupLoopId), $cnt);
+    }
 
-	public function isItemOwnersMust() {
-		return $this->viewType->isItemOwnersMust();
-	}
+    public function getItemOwnersEditViewWithData($value, $groupLoopId, $cnt)
+    {
+        return $this->getDetailViewSub($this->viewType->getItemOwnersEditViewWithData($this, $value, $groupLoopId), $cnt);
+    }
 
-	public function ownersEditCheck($value, &$errors, $groupLoopId) {
-		$fieldName = $this->getFieldName($groupLoopId);
-		//mustCheck
-		$this->viewType->ownersEditCheck($errors, $this, $value, $fieldName);
-	}
+    public function isItemOwnersMust()
+    {
+        return $this->viewType->isItemOwnersMust();
+    }
 
-	public function getSimpleSearchView($value, $itemtypeId, $cnt) {
-		$fieldTitle = '';
-		if ($cnt > 1 && $this->getViewType()->isDisplayFieldName()) {
-			$fieldTitle = $this->getName();
-		}
-		$this->getXoopsTpl()->assign('viewType', 'simpleSearch');
-		$this->getXoopsTpl()->assign('fieldTitle', $fieldTitle);
-		$this->getXoopsTpl()->assign('viewTypeSimpleSearch', $this->viewType->getSimpleSearchView($this, $value, $itemtypeId));
-		return $this->getXoopsTpl()->fetch('db:' . $this->template);
-	}
+    public function ownersEditCheck($value, &$errors, $groupLoopId)
+    {
+        $fieldName = $this->getFieldName($groupLoopId);
+        //mustCheck
+        $this->viewType->ownersEditCheck($errors, $this, $value, $fieldName);
+    }
+
+    public function getSimpleSearchView($value, $itemtypeId, $cnt)
+    {
+        $fieldTitle = '';
+        if ($cnt > 1 && $this->getViewType()->isDisplayFieldName()) {
+            $fieldTitle = $this->getName();
+        }
+        $this->getXoopsTpl()->assign('viewType', 'simpleSearch');
+        $this->getXoopsTpl()->assign('fieldTitle', $fieldTitle);
+        $this->getXoopsTpl()->assign('viewTypeSimpleSearch', $this->viewType->getSimpleSearchView($this, $value, $itemtypeId));
+
+        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+    }
 }
-

@@ -1,13 +1,12 @@
 <?php
 
 /**
- * item object
+ * item object.
  */
 class Xoonips_ItemObject extends XoopsSimpleObject
 {
-
     /**
-     * constructor
+     * constructor.
      */
     public function __construct()
     {
@@ -20,7 +19,7 @@ class Xoonips_ItemObject extends XoopsSimpleObject
     }
 
     /**
-     * get url of detail page
+     * get url of detail page.
      *
      * @return string
      */
@@ -28,11 +27,12 @@ class Xoonips_ItemObject extends XoopsSimpleObject
     {
         $doi = $this->get('doi');
         $item_id = $this->get('item_id');
-        return XOOPS_URL . '/modules/' . $this->mDirname . '/detail.php?' . (empty($doi) ? 'item_id=' . $item_id : XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME . '=' . $doi);
+
+        return XOOPS_URL.'/modules/'.$this->mDirname.'/detail.php?'.(empty($doi) ? 'item_id='.$item_id : XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME.'='.$doi);
     }
 
     /**
-     * is readable
+     * is readable.
      *
      * @return bool
      */
@@ -40,11 +40,12 @@ class Xoonips_ItemObject extends XoopsSimpleObject
     {
         $trustDirname = Xoonips_Utils::getTrustDirnameByDirname($this->mDirname);
         $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->mDirname, $trustDirname);
+
         return $itemBean->canView($this->get('item_id'), $uid);
     }
 
     /**
-     * is download limit
+     * is download limit.
      *
      * @return bool false if not limit
      */
@@ -52,11 +53,12 @@ class Xoonips_ItemObject extends XoopsSimpleObject
     {
         $trustDirname = Xoonips_Utils::getTrustDirnameByDirname($this->mDirname);
         $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->mDirname, $trustDirname);
+
         return !$itemBean->getDownloadLimit($this->get('item_id'), $this->get('item_type_id'));
     }
 
     /**
-     * is download notify
+     * is download notify.
      *
      * @return bool false if not notification needed
      */
@@ -64,44 +66,46 @@ class Xoonips_ItemObject extends XoopsSimpleObject
     {
         $trustDirname = Xoonips_Utils::getTrustDirnameByDirname($this->mDirname);
         $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->mDirname, $trustDirname);
+
         return $itemBean->getDownloadNotify($this->get('item_id'), $this->get('item_type_id'));
     }
 }
 
 /**
- * item object handler
+ * item object handler.
  */
 class Xoonips_ItemHandler extends XoopsObjectGenericHandler
 {
-
     /**
-     * constructor
+     * constructor.
      *
      * @param XoopsDatabase &$db
-     * @param string $dirname
+     * @param string        $dirname
      */
     public function __construct(&$db, $dirname)
     {
-        $this->mTable = $dirname . '_item';
+        $this->mTable = $dirname.'_item';
         $this->mPrimary = 'item_id';
         $this->mClass = preg_replace('/Handler$/', 'Object', get_class());
         parent::__construct($db);
     }
 
     /**
-     * get object by doi
+     * get object by doi.
      *
      * @param string $doi
+     *
      * @return &object
      */
     public function &getByDoi($doi)
     {
         $ret = null;
         $criteria = new Criteria('doi', $doi);
-        $objArr =& $this->getObjects($criteria);
+        $objArr = &$this->getObjects($criteria);
         if (count($objArr) == 1) {
-            $ret =& $objArr[0];
+            $ret = &$objArr[0];
         }
+
         return $ret;
     }
 }

@@ -1,174 +1,195 @@
 <?php
 
-require_once XOOPS_TRUST_PATH . '/modules/' . $mytrustdirname . '/class/core/BeanFactory.class.php';
-require_once XOOPS_TRUST_PATH . '/modules/' . $mytrustdirname . '/class/viewtype/ViewType.class.php';
-require_once XOOPS_TRUST_PATH . '/modules/' . $mytrustdirname . '/include/itemtypetemplate.inc.php';
+require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/core/BeanFactory.class.php';
+require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/viewtype/ViewType.class.php';
+require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/include/itemtypetemplate.inc.php';
 
-class Xoonips_ViewTypeRelatedTo extends Xoonips_ViewType {
+class Xoonips_ViewTypeRelatedTo extends Xoonips_ViewType
+{
+    public function setTemplate()
+    {
+        $this->template = $this->dirname.'_viewtype_relatedTo.html';
+    }
 
-	public function setTemplate() {
-		$this->template = $this->dirname . '_viewtype_relatedTo.html';
-	}
+    public function getInputView($field, $value, $groupLoopId)
+    {
+        $itemInfo = array();
+        if (!empty($value)) {
+            $vas = explode(',', $value);
+            foreach ($vas as $va) {
+                $itemInfo[] = array('listInfo' => $this->getItemInfo($va), 'id' => $va);
+            }
+        }
+        $fieldName = $this->getFieldName($field, $groupLoopId);
+        $divName = $fieldName.'_div';
+        $this->getXoopsTpl()->assign('viewType', 'input');
+        $this->getXoopsTpl()->assign('dirname', $this->dirname);
+        $this->getXoopsTpl()->assign('fieldName', $fieldName);
+        $this->getXoopsTpl()->assign('divName', $divName);
+        $this->getXoopsTpl()->assign('value', $value);
+        $this->getXoopsTpl()->assign('itemInfo', $itemInfo);
 
-	public function getInputView($field, $value, $groupLoopId) {
-		$itemInfo = array();
-		if (!empty($value)) {
-			$vas = explode(',', $value);
-			foreach ($vas as $va) {
-				$itemInfo[] = array('listInfo' => $this->getItemInfo($va), 'id' => $va);
-			}
-		}
-		$fieldName = $this->getFieldName($field, $groupLoopId);
-		$divName = $fieldName . '_div';
-   		$this->getXoopsTpl()->assign('viewType', 'input');
-   		$this->getXoopsTpl()->assign('dirname', $this->dirname);
-		$this->getXoopsTpl()->assign('fieldName', $fieldName);
-		$this->getXoopsTpl()->assign('divName', $divName);
-		$this->getXoopsTpl()->assign('value', $value);
-		$this->getXoopsTpl()->assign('itemInfo', $itemInfo);
-		return $this->getXoopsTpl()->fetch('db:'. $this->template);
-	}
+        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+    }
 
-	public function getEditView($field, $value, $groupLoopId) {
-		return $this->getInputView($field, $value, $groupLoopId);
-	}
+    public function getEditView($field, $value, $groupLoopId)
+    {
+        return $this->getInputView($field, $value, $groupLoopId);
+    }
 
-	public function getDisplayView($field, $value, $groupLoopId) {
-		$itemInfo = array();
-		if (!empty($value)) {
-			$vas = explode(',', $value);
-			foreach ($vas as $va) {
-				$itemInfo[] = $this->getItemInfo($va);
-			}
-		}
-		$fieldName = $this->getFieldName($field, $groupLoopId);
-		$divName = $fieldName . '_div';
-   		$this->getXoopsTpl()->assign('viewType', 'confirm');
-   		$this->getXoopsTpl()->assign('dirname', $this->dirname);
-		$this->getXoopsTpl()->assign('fieldName', $fieldName);
-		$this->getXoopsTpl()->assign('divName', $divName);
-		$this->getXoopsTpl()->assign('value', $value);
-		$this->getXoopsTpl()->assign('itemInfo', $itemInfo);
-		return $this->getXoopsTpl()->fetch('db:'. $this->template);
-	}
+    public function getDisplayView($field, $value, $groupLoopId)
+    {
+        $itemInfo = array();
+        if (!empty($value)) {
+            $vas = explode(',', $value);
+            foreach ($vas as $va) {
+                $itemInfo[] = $this->getItemInfo($va);
+            }
+        }
+        $fieldName = $this->getFieldName($field, $groupLoopId);
+        $divName = $fieldName.'_div';
+        $this->getXoopsTpl()->assign('viewType', 'confirm');
+        $this->getXoopsTpl()->assign('dirname', $this->dirname);
+        $this->getXoopsTpl()->assign('fieldName', $fieldName);
+        $this->getXoopsTpl()->assign('divName', $divName);
+        $this->getXoopsTpl()->assign('value', $value);
+        $this->getXoopsTpl()->assign('itemInfo', $itemInfo);
 
-	public function getDetailDisplayView($field, $value, $display) {
-		$itemInfo = array();
-		if (!empty($value)) {
-			$vas = explode(',', $value);
-			foreach ($vas as $va) {
-				$itemInfo[] = $this->getItemInfo($va);
-			}
-		}
-   		$this->getXoopsTpl()->assign('viewType', 'detail');
-		$this->getXoopsTpl()->assign('value', $value);
-		$this->getXoopsTpl()->assign('itemInfo', $itemInfo);
-		return $this->getXoopsTpl()->fetch('db:'. $this->template);
-	}
+        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+    }
 
-	public function getMetaInfo($field, $value) {
-		$ret = '';
-		$fields = array();
-		if (!empty($value)) {
-			$vas = explode(',', $value);
-			foreach ($vas as $va) {
-				$fields[]= $va;
-			}
-		}
-		return $ret.implode("\r\n", $fields);
-	}
+    public function getDetailDisplayView($field, $value, $display)
+    {
+        $itemInfo = array();
+        if (!empty($value)) {
+            $vas = explode(',', $value);
+            foreach ($vas as $va) {
+                $itemInfo[] = $this->getItemInfo($va);
+            }
+        }
+        $this->getXoopsTpl()->assign('viewType', 'detail');
+        $this->getXoopsTpl()->assign('value', $value);
+        $this->getXoopsTpl()->assign('itemInfo', $itemInfo);
 
-	public function getSearchView($field, $groupLoopId) {
-		$fieldName = $this->getFieldName($field, $groupLoopId);
-   		$this->getXoopsTpl()->assign('viewType', 'search');
-		$this->getXoopsTpl()->assign('fieldName', $fieldName);
-		return $this->getXoopsTpl()->fetch('db:'. $this->template);
-	}
+        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+    }
 
-	public function inputCheck(&$errors, $field, $value, $fieldName) {
-		return true;
-	}
+    public function getMetaInfo($field, $value)
+    {
+        $ret = '';
+        $fields = array();
+        if (!empty($value)) {
+            $vas = explode(',', $value);
+            foreach ($vas as $va) {
+                $fields[] = $va;
+            }
+        }
 
-	public function editCheck(&$errors, $field, $value, $fieldName, $uid) {
-		return true;
-	}
+        return $ret.implode("\r\n", $fields);
+    }
 
-	private function getItemInfo($iid) {
-		$itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
-		$itemInfo = $itemBean->getItem2($iid);
-		return $itemBean->getItemListHtml($itemInfo);
-	}
+    public function getSearchView($field, $groupLoopId)
+    {
+        $fieldName = $this->getFieldName($field, $groupLoopId);
+        $this->getXoopsTpl()->assign('viewType', 'search');
+        $this->getXoopsTpl()->assign('fieldName', $fieldName);
 
-	public function doRegistry($field, &$data, &$sqlStrings, $groupLoopId) {
-		$tableName = $field->getTableName();
-		$columnName = $field->getColumnName();
-		$value = $data[$this->getFieldName($field, $groupLoopId)];
+        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+    }
 
-		$tableData;
-		$columnData;
+    public function inputCheck(&$errors, $field, $value, $fieldName)
+    {
+        return true;
+    }
 
-		if (isset($sqlStrings[$tableName])) {
-			$tableData = &$sqlStrings[$tableName];
-		} else {
-			$tableData = array();
-			$sqlStrings[$tableName] = &$tableData;
-		}
+    public function editCheck(&$errors, $field, $value, $fieldName, $uid)
+    {
+        return true;
+    }
 
-		if (isset($tableData[$columnName])) {
-			$columnData = &$tableData[$columnName];
-		} else {
-			$columnData = array();
-			$tableData[$columnName] = &$columnData;
-		}
+    private function getItemInfo($iid)
+    {
+        $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
+        $itemInfo = $itemBean->getItem2($iid);
 
-		if ($value != '') {
-			$vas = explode(',', $value);
-			foreach ($vas as $va) {
-				$columnData[] = $va;
-			}
-		}
-	}
-	
-	public function getMetadata($field, &$data) {
-		$table = $field->getTableName();
-		$column = $field->getColumnName();
-		$itemBean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
-		$database_id = Xoonips_Utils::getXooNIpsConfig($this->dirname, XOONIPS_CONFIG_REPOSITORY_NIJC_CODE);
-		$fields = array();
-		foreach ($data[$table] as $value) {
-			$item = $itemBean->getItemBasicInfo($value[$column]);
-			$doi = $item['doi'];
-			if ($doi == null) {
-				$fields[] = "$database_id/$item_type_id.$item_id";
-			} else {
-				$fields[] = "$database_id:" . XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME . "/$doi";
-			}
-		}
-		return implode(',', $fields);
-	}
-	
-	/**
-	 *
-	 * get default value block view
-	 *
-	 * @param $list, $value, $disabled
-	 * @return string
-	 */
-	public function getDefaultValueBlockView($list, $value, $disabled = '') {
-		$this->getXoopsTpl()->assign('viewType', 'default');
-		$this->getXoopsTpl()->assign('value', $value);
-		return $this->getXoopsTpl()->fetch('db:'. $this->template);
-	}
-	
-	/**
-	 *
-	 * must Create item_extend table
-	 *
-	 * @param
-	 * @return boolean
-	 */
-	public function mustCreateItemExtendTable() {
-		return false;
-	}
+        return $itemBean->getItemListHtml($itemInfo);
+    }
+
+    public function doRegistry($field, &$data, &$sqlStrings, $groupLoopId)
+    {
+        $tableName = $field->getTableName();
+        $columnName = $field->getColumnName();
+        $value = $data[$this->getFieldName($field, $groupLoopId)];
+
+        $tableData;
+        $columnData;
+
+        if (isset($sqlStrings[$tableName])) {
+            $tableData = &$sqlStrings[$tableName];
+        } else {
+            $tableData = array();
+            $sqlStrings[$tableName] = &$tableData;
+        }
+
+        if (isset($tableData[$columnName])) {
+            $columnData = &$tableData[$columnName];
+        } else {
+            $columnData = array();
+            $tableData[$columnName] = &$columnData;
+        }
+
+        if ($value != '') {
+            $vas = explode(',', $value);
+            foreach ($vas as $va) {
+                $columnData[] = $va;
+            }
+        }
+    }
+
+    public function getMetadata($field, &$data)
+    {
+        $table = $field->getTableName();
+        $column = $field->getColumnName();
+        $itemBean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
+        $database_id = Xoonips_Utils::getXooNIpsConfig($this->dirname, XOONIPS_CONFIG_REPOSITORY_NIJC_CODE);
+        $fields = array();
+        foreach ($data[$table] as $value) {
+            $item = $itemBean->getItemBasicInfo($value[$column]);
+            $doi = $item['doi'];
+            if ($doi == null) {
+                $fields[] = "$database_id/$item_type_id.$item_id";
+            } else {
+                $fields[] = "$database_id:".XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME."/$doi";
+            }
+        }
+
+        return implode(',', $fields);
+    }
+
+    /**
+     * get default value block view.
+     *
+     * @param $list, $value, $disabled
+     *
+     * @return string
+     */
+    public function getDefaultValueBlockView($list, $value, $disabled = '')
+    {
+        $this->getXoopsTpl()->assign('viewType', 'default');
+        $this->getXoopsTpl()->assign('value', $value);
+
+        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+    }
+
+    /**
+     * must Create item_extend table.
+     *
+     * @param
+     *
+     * @return bool
+     */
+    public function mustCreateItemExtendTable()
+    {
+        return false;
+    }
 }
-

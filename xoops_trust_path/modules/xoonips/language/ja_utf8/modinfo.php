@@ -66,7 +66,7 @@ define('_MI_XOONIPS_INSTALL_COMPLEMENT_PUBLISHER', '出版社');
 define('_MI_XOONIPS_INSTALL_COMPLEMENT_URL', 'URL');
 define('_MI_XOONIPS_INSTALL_COMPLEMENT_ROMAJI', 'ローマ字');
 
-// Field Value 
+// Field Value
 define('_MI_XOONIPS_INSTALL_LANG_ENGLISH', '英語');
 define('_MI_XOONIPS_INSTALL_LANG_JAPANES', '日本語');
 define('_MI_XOONIPS_INSTALL_LANG_FRENCH', 'フランス語');
@@ -358,13 +358,13 @@ define('_MI_XOONIPS_USER_IMPORT_ITEM', 'アイテムインポート');
 
 //Preference
 //removed XooNIps expand User Module
-define('_MI_XOONIPS_CONF_CERTIFY_USER', "新規登録ユーザアカウントの承認の方法");
-define('_MI_XOONIPS_CONF_CER_USER_DESC', "アカウントを有効化されたユーザが XooNIps を利用するためにはそのユーザアカウントを承認する必要があります。ここではこのアカウント承認の方法を設定します。");
-define('_MI_XOONIPS_CONF_USER_CERTIFY_DATE', "有効化待機期間（単位：日）");
-define('_MI_XOONIPS_CONF_LOGIN_AUTH_METHOD', "ログイン認証設定");
-define('_MI_XOONIPS_CONF_CERTIFY_USER_AUTO', "自動的にアカウントを承認する");
-define('_MI_XOONIPS_CONF_CERTIFY_USER_BY_MODERATOR', "モデレータが確認してアカウントを承認する");
-define('_MI_XOONIPS_CONF_XOONIPS_LABEL', "XooNIps認証");
+define('_MI_XOONIPS_CONF_CERTIFY_USER', '新規登録ユーザアカウントの承認の方法');
+define('_MI_XOONIPS_CONF_CER_USER_DESC', 'アカウントを有効化されたユーザが XooNIps を利用するためにはそのユーザアカウントを承認する必要があります。ここではこのアカウント承認の方法を設定します。');
+define('_MI_XOONIPS_CONF_USER_CERTIFY_DATE', '有効化待機期間（単位：日）');
+define('_MI_XOONIPS_CONF_LOGIN_AUTH_METHOD', 'ログイン認証設定');
+define('_MI_XOONIPS_CONF_CERTIFY_USER_AUTO', '自動的にアカウントを承認する');
+define('_MI_XOONIPS_CONF_CERTIFY_USER_BY_MODERATOR', 'モデレータが確認してアカウントを承認する');
+define('_MI_XOONIPS_CONF_XOONIPS_LABEL', 'XooNIps認証');
 define('_MI_XOONIPS_CONF_GROUP_CONSTRUCT_PERMIT', 'グループ作成の許可');
 define('_MI_XOONIPS_CONF_GROUP_CONSTRUCT_ACCEPT', 'グループ作成の承認方法');
 define('_MI_XOONIPS_CONF_GROUP_PUBLIC_ACCEPT', 'グループ公開の承認方法');
@@ -374,5 +374,3 @@ define('_MI_XOONIPS_CONF_AUTO_ADMIT', 'ユーザが作成したグループを�
 define('_MI_XOONIPS_CONF_MODERATOR_ADMIT', 'モデレータがグループを承認する');
 define('_MI_XOONIPS_CONF_AUTO_PUBLIC_ADMIT', '自動的にグループの公開を承認する');
 define('_MI_XOONIPS_CONF_MODERATOR_PUBLIC_ADMIT', 'モデレータが確認してグループの公開を承認する');
-
-

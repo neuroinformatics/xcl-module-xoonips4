@@ -1,351 +1,351 @@
 <?php
 
-if (!isset($mydirname)) exit();
+if (!isset($mydirname)) {
+    exit();
+}
 
-$constpref = '_AD_' . strtoupper($mydirname);
+$constpref = '_AD_'.strtoupper($mydirname);
 
-if (defined($constpref . '_LOADED')) return;
+if (defined($constpref.'_LOADED')) {
+    return;
+}
 
-define($constpref . '_LOADED', 1);
+define($constpref.'_LOADED', 1);
 
 // action form error
-define($constpref . '_ERROR_REQUIRED', '{0}は必ず入力して下さい');
-define($constpref . '_ERROR_MINLENGTH', '{0}は半角{1}文字以上にして下さい');
-define($constpref . '_ERROR_MAXLENGTH', '{0}は半角{1}文字以内で入力して下さい');
-define($constpref . '_ERROR_INTRANGE', '{0}は{1}以上{2}以下の数値を指定して下さい');
-define($constpref . '_ERROR_MIN', '{0}は{1}以上の数値を指定して下さい');
-define($constpref . '_ERROR_MAX', '{0}は{1}以下の数値を指定して下さい');
-define($constpref . '_ERROR_EMAIL', '{0}は不正なメールアドレスです');
-define($constpref . '_ERROR_MASK', '{0}は入力フォーマットに反しています');
-define($constpref . '_ERROR_EXTENSION', '許可されたファイル形式ではありません');
-define($constpref . '_ERROR_MAXFILESIZE', '{0}の最大ファイルサイズは{1}バイトです');
-define($constpref . '_ERROR_OBJECTEXIST', '{0}の値が不正です');
+define($constpref.'_ERROR_REQUIRED', '{0}は必ず入力して下さい');
+define($constpref.'_ERROR_MINLENGTH', '{0}は半角{1}文字以上にして下さい');
+define($constpref.'_ERROR_MAXLENGTH', '{0}は半角{1}文字以内で入力して下さい');
+define($constpref.'_ERROR_INTRANGE', '{0}は{1}以上{2}以下の数値を指定して下さい');
+define($constpref.'_ERROR_MIN', '{0}は{1}以上の数値を指定して下さい');
+define($constpref.'_ERROR_MAX', '{0}は{1}以下の数値を指定して下さい');
+define($constpref.'_ERROR_EMAIL', '{0}は不正なメールアドレスです');
+define($constpref.'_ERROR_MASK', '{0}は入力フォーマットに反しています');
+define($constpref.'_ERROR_EXTENSION', '許可されたファイル形式ではありません');
+define($constpref.'_ERROR_MAXFILESIZE', '{0}の最大ファイルサイズは{1}バイトです');
+define($constpref.'_ERROR_OBJECTEXIST', '{0}の値が不正です');
 
 // messages
-define($constpref . '_MESSAGE_DBUPDATED', 'データベースを更新しました');
-define($constpref . '_MESSAGE_DBDELETED', 'データを削除しました。');
-define($constpref . '_MESSAGE_EMPTY', '未登録です');
-define($constpref . '_MESSAGE_DELETE_CONFIRM', '本当に削除しますか？');
-define($constpref . '_ERROR_INPUTVALUE', '{0}の入力値が不正です');
-define($constpref . '_ERROR_INPUTFILE', '{0}のファイルが不正です');
-define($constpref . '_ERROR_DUPLICATED', '{0}は既に存在しています');
-define($constpref . '_ERROR_DBUPDATE_FAILED', 'データベースの更新に失敗しました');
-define($constpref . '_ERROR_DBDELETED_FAILED', 'データの削除に失敗しました。');
+define($constpref.'_MESSAGE_DBUPDATED', 'データベースを更新しました');
+define($constpref.'_MESSAGE_DBDELETED', 'データを削除しました。');
+define($constpref.'_MESSAGE_EMPTY', '未登録です');
+define($constpref.'_MESSAGE_DELETE_CONFIRM', '本当に削除しますか？');
+define($constpref.'_ERROR_INPUTVALUE', '{0}の入力値が不正です');
+define($constpref.'_ERROR_INPUTFILE', '{0}のファイルが不正です');
+define($constpref.'_ERROR_DUPLICATED', '{0}は既に存在しています');
+define($constpref.'_ERROR_DBUPDATE_FAILED', 'データベースの更新に失敗しました');
+define($constpref.'_ERROR_DBDELETED_FAILED', 'データの削除に失敗しました。');
 
 // labels
-define($constpref . '_LANG_ACTION', '操作');
-define($constpref . '_LANG_ADDNEW', '新規追加');
-define($constpref . '_LANG_MODIFY', '編集');
-define($constpref . '_LANG_DELETE', '削除');
-define($constpref . '_LANG_UPDATE', '更新');
-define($constpref . '_LANG_SELECT', '選択');
-define($constpref . '_LANG_SAVE', '保存');
-define($constpref . '_LANG_RELEASE', 'リリース');
-define($constpref . '_LANG_MOVE', '移動');
-define($constpref . '_LANG_SEARCH', '検索');
-define($constpref . '_LANG_MODIFY_CONTENT', '編集内容');
-define($constpref . '_LANG_RELEASE_CONTENT', 'リリース内容');
-define($constpref . '_LANG_ITEM_EDITING', '(編集中)');
-define($constpref . '_LANG_ITEM_TYPE', 'アイテムタイプ');
-define($constpref . '_LANG_ITEM_FIELD_ID', '項目ID');
-define($constpref . '_LANG_ITEM_FIELD_NAME', '項目名');
-define($constpref . '_LANG_ITEM_FIELD_XML', '項目XML ID');
-define($constpref . '_LANG_ITEM_FIELD_VIEW_TYPE', '表示型');
-define($constpref . '_LANG_ITEM_FIELD_DATA_TYPE', 'データ型');
-define($constpref . '_LANG_ITEM_FIELD_DATA_LENGTH', 'データ長');
-define($constpref . '_LANG_ITEM_FIELD_DATA_SCALE', '小数点以下桁数');
-define($constpref . '_LANG_ITEM_FIELD_DEFAULT', 'デフォルト値');
-define($constpref . '_LANG_ITEM_FIELD_LIST', '選択候補');
-define($constpref . '_LANG_ITEM_FIELD_ESSENTIAL', '必須');
-define($constpref . '_LANG_ITEM_FIELD_OTHER', 'その他');
-define($constpref . '_LANG_ITEM_FIELD_OTHER_DISPLAY', '表示する');
-define($constpref . '_LANG_ITEM_FIELD_OTHER_DETAIL_SEARCH', '詳細検索');
-define($constpref . '_LANG_ITEM_FIELD_OTHER_SCOPE_SEARCH', '範囲検索');
-define($constpref . '_LANG_ITEM_FIELD_HIDE', '使用しない');
-define($constpref . '_LANG_FILE_MIMETYPE', 'Mime-Type');
-define($constpref . '_LANG_FILE_EXTENSION', '拡張子');
-define($constpref . '_LANG_FILE_SEARCH_PLUGIN', '検索プラグイン');
-define($constpref . '_LANG_FILE_SEARCH_VERSION', 'バージョン');
-define($constpref . '_LANG_REQUIRED_MARK', '<span style="font-weight: bold; color: red;">*</span>');
+define($constpref.'_LANG_ACTION', '操作');
+define($constpref.'_LANG_ADDNEW', '新規追加');
+define($constpref.'_LANG_MODIFY', '編集');
+define($constpref.'_LANG_DELETE', '削除');
+define($constpref.'_LANG_UPDATE', '更新');
+define($constpref.'_LANG_SELECT', '選択');
+define($constpref.'_LANG_SAVE', '保存');
+define($constpref.'_LANG_RELEASE', 'リリース');
+define($constpref.'_LANG_MOVE', '移動');
+define($constpref.'_LANG_SEARCH', '検索');
+define($constpref.'_LANG_MODIFY_CONTENT', '編集内容');
+define($constpref.'_LANG_RELEASE_CONTENT', 'リリース内容');
+define($constpref.'_LANG_ITEM_EDITING', '(編集中)');
+define($constpref.'_LANG_ITEM_TYPE', 'アイテムタイプ');
+define($constpref.'_LANG_ITEM_FIELD_ID', '項目ID');
+define($constpref.'_LANG_ITEM_FIELD_NAME', '項目名');
+define($constpref.'_LANG_ITEM_FIELD_XML', '項目XML ID');
+define($constpref.'_LANG_ITEM_FIELD_VIEW_TYPE', '表示型');
+define($constpref.'_LANG_ITEM_FIELD_DATA_TYPE', 'データ型');
+define($constpref.'_LANG_ITEM_FIELD_DATA_LENGTH', 'データ長');
+define($constpref.'_LANG_ITEM_FIELD_DATA_SCALE', '小数点以下桁数');
+define($constpref.'_LANG_ITEM_FIELD_DEFAULT', 'デフォルト値');
+define($constpref.'_LANG_ITEM_FIELD_LIST', '選択候補');
+define($constpref.'_LANG_ITEM_FIELD_ESSENTIAL', '必須');
+define($constpref.'_LANG_ITEM_FIELD_OTHER', 'その他');
+define($constpref.'_LANG_ITEM_FIELD_OTHER_DISPLAY', '表示する');
+define($constpref.'_LANG_ITEM_FIELD_OTHER_DETAIL_SEARCH', '詳細検索');
+define($constpref.'_LANG_ITEM_FIELD_OTHER_SCOPE_SEARCH', '範囲検索');
+define($constpref.'_LANG_ITEM_FIELD_HIDE', '使用しない');
+define($constpref.'_LANG_FILE_MIMETYPE', 'Mime-Type');
+define($constpref.'_LANG_FILE_EXTENSION', '拡張子');
+define($constpref.'_LANG_FILE_SEARCH_PLUGIN', '検索プラグイン');
+define($constpref.'_LANG_FILE_SEARCH_VERSION', 'バージョン');
+define($constpref.'_LANG_REQUIRED_MARK', '<span style="font-weight: bold; color: red;">*</span>');
 
 // action: Index
-define($constpref . '_TITLE', 'XooNIps 設定');
-define($constpref . '_SYSTEM_TITLE', 'システム設定');
-define($constpref . '_SYSTEM_DESC', 'XooNIps を動作させるための設定です。これらの項目はシステム管理者が変更します。');
-define($constpref . '_POLICY_TITLE', 'サイトポリシー設定');
-define($constpref . '_POLICY_DESC', 'XooNIps を運用する際のサイトポリシーを設定します。サイトを利用する前にこれらのポリシーを決めてください。');
-define($constpref . '_MAINTENANCE_TITLE', 'メンテナンス');
-define($constpref . '_MAINTENANCE_DESC', 'XooNIps を運用する上での様々な情報のメンテナンスを行います。');
+define($constpref.'_TITLE', 'XooNIps 設定');
+define($constpref.'_SYSTEM_TITLE', 'システム設定');
+define($constpref.'_SYSTEM_DESC', 'XooNIps を動作させるための設定です。これらの項目はシステム管理者が変更します。');
+define($constpref.'_POLICY_TITLE', 'サイトポリシー設定');
+define($constpref.'_POLICY_DESC', 'XooNIps を運用する際のサイトポリシーを設定します。サイトを利用する前にこれらのポリシーを決めてください。');
+define($constpref.'_MAINTENANCE_TITLE', 'メンテナンス');
+define($constpref.'_MAINTENANCE_DESC', 'XooNIps を運用する上での様々な情報のメンテナンスを行います。');
 
 // action: System
-define($constpref . '_SYSTEM_BASIC_TITLE', '基本設定');
-define($constpref . '_SYSTEM_BASIC_DESC', 'XooNIps の最低限の動作に関わる設定です。');
-define($constpref . '_SYSTEM_MSGSIGN_TITLE', 'メッセージ署名設定');
-define($constpref . '_SYSTEM_MSGSIGN_DESC', '通知されるメッセージの最後部に追加されるシステムの署名について設定します。');
-define($constpref . '_SYSTEM_OAIPMH_TITLE', 'OAI-PMH 設定');
-define($constpref . '_SYSTEM_OAIPMH_DESC', 'OAI-PMH のリポジトリ機能に関する設定です。');
-define($constpref . '_SYSTEM_PROXY_TITLE', 'プロキシ設定');
-define($constpref . '_SYSTEM_PROXY_DESC', 'XooNIps から他のサーバのデータを取得する際のプロキシサーバについて設定します。');
-define($constpref . '_SYSTEM_AMAZON_TITLE', 'Amazon Web サービス設定');
-define($constpref . '_SYSTEM_AMAZON_DESC', 'Amazon Web サービスに関する設定です。 XooNIps が Amazon から書誌情報等を引用する際に利用します。');
-define($constpref . '_SYSTEM_NOTIFICATION_TITLE', 'イベント通知設定');
-define($constpref . '_SYSTEM_NOTIFICATION_DESC', '特定のイベントにおいて待ち構えているユーザにメッセージを送信する機能について設定します。');
+define($constpref.'_SYSTEM_BASIC_TITLE', '基本設定');
+define($constpref.'_SYSTEM_BASIC_DESC', 'XooNIps の最低限の動作に関わる設定です。');
+define($constpref.'_SYSTEM_MSGSIGN_TITLE', 'メッセージ署名設定');
+define($constpref.'_SYSTEM_MSGSIGN_DESC', '通知されるメッセージの最後部に追加されるシステムの署名について設定します。');
+define($constpref.'_SYSTEM_OAIPMH_TITLE', 'OAI-PMH 設定');
+define($constpref.'_SYSTEM_OAIPMH_DESC', 'OAI-PMH のリポジトリ機能に関する設定です。');
+define($constpref.'_SYSTEM_PROXY_TITLE', 'プロキシ設定');
+define($constpref.'_SYSTEM_PROXY_DESC', 'XooNIps から他のサーバのデータを取得する際のプロキシサーバについて設定します。');
+define($constpref.'_SYSTEM_AMAZON_TITLE', 'Amazon Web サービス設定');
+define($constpref.'_SYSTEM_AMAZON_DESC', 'Amazon Web サービスに関する設定です。 XooNIps が Amazon から書誌情報等を引用する際に利用します。');
+define($constpref.'_SYSTEM_NOTIFICATION_TITLE', 'イベント通知設定');
+define($constpref.'_SYSTEM_NOTIFICATION_DESC', '特定のイベントにおいて待ち構えているユーザにメッセージを送信する機能について設定します。');
 
 // action: SystemBasic
-define($constpref . '_SYSTEM_BASIC_MODERATOR_GROUP_TITLE', 'モデレータグループ');
-define($constpref . '_SYSTEM_BASIC_MODERATOR_GROUP_DESC', 'XooNIps のモデレータとして動作させる XOOPS グループを選びます。');
-define($constpref . '_SYSTEM_BASIC_UPLOAD_DIR_TITLE', 'ファイルアップロードディレクトリ');
-define($constpref . '_SYSTEM_BASIC_UPLOAD_DIR_DESC', '各アイテムの添付ファイルを格納するディレクトリをシステムの絶対パスで指定します。このディレクトリは Web サーバプロセスの権限で書き込みができる必要があります。');
-define($constpref . '_ERROR_UPLOAD_DIRECTORY', '指定されたファイルアップロードディレクトリにアクセス権限がありません');
+define($constpref.'_SYSTEM_BASIC_MODERATOR_GROUP_TITLE', 'モデレータグループ');
+define($constpref.'_SYSTEM_BASIC_MODERATOR_GROUP_DESC', 'XooNIps のモデレータとして動作させる XOOPS グループを選びます。');
+define($constpref.'_SYSTEM_BASIC_UPLOAD_DIR_TITLE', 'ファイルアップロードディレクトリ');
+define($constpref.'_SYSTEM_BASIC_UPLOAD_DIR_DESC', '各アイテムの添付ファイルを格納するディレクトリをシステムの絶対パスで指定します。このディレクトリは Web サーバプロセスの権限で書き込みができる必要があります。');
+define($constpref.'_ERROR_UPLOAD_DIRECTORY', '指定されたファイルアップロードディレクトリにアクセス権限がありません');
 
 // action: SystemMessageSign
-define($constpref . '_SYSTEM_MSGSIGN_SIGN_TITLE', '署名テンプレート');
-define($constpref . '_SYSTEM_MSGSIGN_SIGN_DESC', '通知の署名欄をこの内容で置換します。予約語としてサイト名：{X_SITENAME}、サイトへのリンク：{X_SITEURL}、管理者のメールアドレス：{X_ADMINMAIL}を使用できます。');
+define($constpref.'_SYSTEM_MSGSIGN_SIGN_TITLE', '署名テンプレート');
+define($constpref.'_SYSTEM_MSGSIGN_SIGN_DESC', '通知の署名欄をこの内容で置換します。予約語としてサイト名：{X_SITENAME}、サイトへのリンク：{X_SITEURL}、管理者のメールアドレス：{X_ADMINMAIL}を使用できます。');
 
 // action: SystemOaipmh
-define($constpref . '_SYSTEM_OAIPMH_REPOSITORY_TITLE', 'リポジトリ設定');
-define($constpref . '_SYSTEM_OAIPMH_REPOSITORY_NAME_TITLE', 'リポジトリ名');
-define($constpref . '_SYSTEM_OAIPMH_REPOSITORY_NAME_DESC', '');
-define($constpref . '_SYSTEM_OAIPMH_REPOSITORY_CODE_TITLE', 'データベースID');
-define($constpref . '_SYSTEM_OAIPMH_REPOSITORY_CODE_DESC', '');
-define($constpref . '_SYSTEM_OAIPMH_REPOSITORY_DELETION_TRACK_TITLE', 'アイテムの削除状態を保存する日数');
-define($constpref . '_SYSTEM_OAIPMH_REPOSITORY_DELETION_TRACK_DESC', '');
+define($constpref.'_SYSTEM_OAIPMH_REPOSITORY_TITLE', 'リポジトリ設定');
+define($constpref.'_SYSTEM_OAIPMH_REPOSITORY_NAME_TITLE', 'リポジトリ名');
+define($constpref.'_SYSTEM_OAIPMH_REPOSITORY_NAME_DESC', '');
+define($constpref.'_SYSTEM_OAIPMH_REPOSITORY_CODE_TITLE', 'データベースID');
+define($constpref.'_SYSTEM_OAIPMH_REPOSITORY_CODE_DESC', '');
+define($constpref.'_SYSTEM_OAIPMH_REPOSITORY_DELETION_TRACK_TITLE', 'アイテムの削除状態を保存する日数');
+define($constpref.'_SYSTEM_OAIPMH_REPOSITORY_DELETION_TRACK_DESC', '');
 
 // action: SystemProxy
-define($constpref . '_SYSTEM_PROXY_PROXY_HOST_TITLE', 'ホスト名');
-define($constpref . '_SYSTEM_PROXY_PROXY_HOST_DESC', 'プロキシを利用する場合，プロキシサーバのホスト名を指定します。');
-define($constpref . '_SYSTEM_PROXY_PROXY_PORT_TITLE', 'ポート番号');
-define($constpref . '_SYSTEM_PROXY_PROXY_PORT_DESC', 'プロキシサーバのポート番号を指定します。');
-define($constpref . '_SYSTEM_PROXY_PROXY_USER_TITLE', 'ユーザ名');
-define($constpref . '_SYSTEM_PROXY_PROXY_USER_DESC', 'プロキシサーバにユーザ認証が必要な場合，ユーザ名を入力します。');
-define($constpref . '_SYSTEM_PROXY_PROXY_PASS_TITLE', 'パスワード');
-define($constpref . '_SYSTEM_PROXY_PROXY_PASS_DESC', 'ユーザ認証のためのパスワードを入力します。');
+define($constpref.'_SYSTEM_PROXY_PROXY_HOST_TITLE', 'ホスト名');
+define($constpref.'_SYSTEM_PROXY_PROXY_HOST_DESC', 'プロキシを利用する場合，プロキシサーバのホスト名を指定します。');
+define($constpref.'_SYSTEM_PROXY_PROXY_PORT_TITLE', 'ポート番号');
+define($constpref.'_SYSTEM_PROXY_PROXY_PORT_DESC', 'プロキシサーバのポート番号を指定します。');
+define($constpref.'_SYSTEM_PROXY_PROXY_USER_TITLE', 'ユーザ名');
+define($constpref.'_SYSTEM_PROXY_PROXY_USER_DESC', 'プロキシサーバにユーザ認証が必要な場合，ユーザ名を入力します。');
+define($constpref.'_SYSTEM_PROXY_PROXY_PASS_TITLE', 'パスワード');
+define($constpref.'_SYSTEM_PROXY_PROXY_PASS_DESC', 'ユーザ認証のためのパスワードを入力します。');
 
 // action: SystemAmazon
-define($constpref . '_SYSTEM_AMAZON_ACCESS_KEY_TITLE', 'Amazon Product Advertising API アクセスキー');
-define($constpref . '_SYSTEM_AMAZON_SECRET_ACCESS_KEY_TITLE', 'Amazon Product Advertising API 秘密キー');
+define($constpref.'_SYSTEM_AMAZON_ACCESS_KEY_TITLE', 'Amazon Product Advertising API アクセスキー');
+define($constpref.'_SYSTEM_AMAZON_SECRET_ACCESS_KEY_TITLE', 'Amazon Product Advertising API 秘密キー');
 
 // action: SystemNotification
-define($constpref . '_SYSTEM_NOTIFICATION_ENABLED', 'この機能を有効にする');
+define($constpref.'_SYSTEM_NOTIFICATION_ENABLED', 'この機能を有効にする');
 
 // action: Policy
-define($constpref . '_POLICY_USER_TITLE', 'ユーザ情報');
-define($constpref . '_POLICY_USER_DESC', 'ユーザ情報に関するポリシーの設定を行います。');
-define($constpref . '_POLICY_GROUP_TITLE', 'グループ情報');
-define($constpref . '_POLICY_GROUP_DESC', 'グループ情報に関するポリシーの設定を行います。');
-define($constpref . '_POLICY_ITEM_TITLE', 'アイテム情報');
-define($constpref . '_POLICY_ITEM_DESC', 'アイテム情報に関するポリシーの設定を行います。');
-define($constpref . '_POLICY_INDEX_TITLE', 'インデックス情報');
-define($constpref . '_POLICY_INDEX_DESC', 'インデックス情報に関するポリシーの設定を行います。');
+define($constpref.'_POLICY_USER_TITLE', 'ユーザ情報');
+define($constpref.'_POLICY_USER_DESC', 'ユーザ情報に関するポリシーの設定を行います。');
+define($constpref.'_POLICY_GROUP_TITLE', 'グループ情報');
+define($constpref.'_POLICY_GROUP_DESC', 'グループ情報に関するポリシーの設定を行います。');
+define($constpref.'_POLICY_ITEM_TITLE', 'アイテム情報');
+define($constpref.'_POLICY_ITEM_DESC', 'アイテム情報に関するポリシーの設定を行います。');
+define($constpref.'_POLICY_INDEX_TITLE', 'インデックス情報');
+define($constpref.'_POLICY_INDEX_DESC', 'インデックス情報に関するポリシーの設定を行います。');
 
 // action: PolicyUser
 // - mode: regist
-define($constpref . '_POLICY_USER_REGIST_TITLE', '新規ユーザ登録方法の設定');
-define($constpref . '_POLICY_USER_REGIST_ACTIVATE_TITLE', 'アカウント有効化の方法');
-define($constpref . '_POLICY_USER_REGIST_ACTIVATE_DESC', '新規登録されたユーザを有効にするための方法を設定します。');
-define($constpref . '_POLICY_USER_REGIST_ACTIVATE_USER', 'ユーザ自身の確認が必要(推奨)');
-define($constpref . '_POLICY_USER_REGIST_ACTIVATE_AUTO', '自動的にアカウントを有効にする');
-define($constpref . '_POLICY_USER_REGIST_ACTIVATE_ADMIN', '管理者が確認してアカウントを有効にする');
-define($constpref . '_POLICY_USER_REGIST_CERTIFY_TITLE', 'アカウント承認の方法');
-define($constpref . '_POLICY_USER_REGIST_CERTIFY_DESC', 'アカウントを有効化されたユーザが XooNIps を利用するためにはそのユーザアカウントを承認する必要があります。ここではこのアカウント承認の方法を設定します。');
-define($constpref . '_POLICY_USER_REGIST_CERTIFY_MODERATOR', 'モデレータが確認してアカウントを承認する');
-define($constpref . '_POLICY_USER_REGIST_CERTIFY_AUTO', '自動的にアカウントを承認する');
-define($constpref . '_POLICY_USER_REGIST_DATELIMIT_TITLE', 'アカウントの承認期限 [日]');
-define($constpref . '_POLICY_USER_REGIST_DATELIMIT_DESC', 'アカウントが登録されてから承認されるまでの制限時間です。この期間までにアカウントが承認されない場合、アカウントの登録手続きは却下されます。0 を指定するとこの機能は無効となります。');
+define($constpref.'_POLICY_USER_REGIST_TITLE', '新規ユーザ登録方法の設定');
+define($constpref.'_POLICY_USER_REGIST_ACTIVATE_TITLE', 'アカウント有効化の方法');
+define($constpref.'_POLICY_USER_REGIST_ACTIVATE_DESC', '新規登録されたユーザを有効にするための方法を設定します。');
+define($constpref.'_POLICY_USER_REGIST_ACTIVATE_USER', 'ユーザ自身の確認が必要(推奨)');
+define($constpref.'_POLICY_USER_REGIST_ACTIVATE_AUTO', '自動的にアカウントを有効にする');
+define($constpref.'_POLICY_USER_REGIST_ACTIVATE_ADMIN', '管理者が確認してアカウントを有効にする');
+define($constpref.'_POLICY_USER_REGIST_CERTIFY_TITLE', 'アカウント承認の方法');
+define($constpref.'_POLICY_USER_REGIST_CERTIFY_DESC', 'アカウントを有効化されたユーザが XooNIps を利用するためにはそのユーザアカウントを承認する必要があります。ここではこのアカウント承認の方法を設定します。');
+define($constpref.'_POLICY_USER_REGIST_CERTIFY_MODERATOR', 'モデレータが確認してアカウントを承認する');
+define($constpref.'_POLICY_USER_REGIST_CERTIFY_AUTO', '自動的にアカウントを承認する');
+define($constpref.'_POLICY_USER_REGIST_DATELIMIT_TITLE', 'アカウントの承認期限 [日]');
+define($constpref.'_POLICY_USER_REGIST_DATELIMIT_DESC', 'アカウントが登録されてから承認されるまでの制限時間です。この期間までにアカウントが承認されない場合、アカウントの登録手続きは却下されます。0 を指定するとこの機能は無効となります。');
 // - mode: initval
-define($constpref . '_POLICY_USER_INITVAL_TITLE', '新規ユーザ登録時の初期値の設定');
-define($constpref . '_POLICY_USER_INITVAL_MAXITEM_TITLE', '個人領域の最大アイテム数');
-define($constpref . '_POLICY_USER_INITVAL_MAXITEM_DESC', '個人領域に登録可能なアイテム数の最大値を設定します。0 を指定すると無制限となります。');
-define($constpref . '_POLICY_USER_INITVAL_MAXINDEX_TITLE', '個人領域の最大インデックス数');
-define($constpref . '_POLICY_USER_INITVAL_MAXINDEX_DESC', '個人領域に登録可能なインデックス数の最大値を設定します。0 を指定すると無制限となります。');
-define($constpref . '_POLICY_USER_INITVAL_MAXDISK_TITLE', '個人領域の最大ディスク容量 [MB]');
-define($constpref . '_POLICY_USER_INITVAL_MAXDISK_DESC', '個人領域の利用可能なディスク容量の最大値を[MB]単位で指定します。小数点を含む実数を指定できます。0 を指定すると無制限となります。');
+define($constpref.'_POLICY_USER_INITVAL_TITLE', '新規ユーザ登録時の初期値の設定');
+define($constpref.'_POLICY_USER_INITVAL_MAXITEM_TITLE', '個人領域の最大アイテム数');
+define($constpref.'_POLICY_USER_INITVAL_MAXITEM_DESC', '個人領域に登録可能なアイテム数の最大値を設定します。0 を指定すると無制限となります。');
+define($constpref.'_POLICY_USER_INITVAL_MAXINDEX_TITLE', '個人領域の最大インデックス数');
+define($constpref.'_POLICY_USER_INITVAL_MAXINDEX_DESC', '個人領域に登録可能なインデックス数の最大値を設定します。0 を指定すると無制限となります。');
+define($constpref.'_POLICY_USER_INITVAL_MAXDISK_TITLE', '個人領域の最大ディスク容量 [MB]');
+define($constpref.'_POLICY_USER_INITVAL_MAXDISK_DESC', '個人領域の利用可能なディスク容量の最大値を[MB]単位で指定します。小数点を含む実数を指定できます。0 を指定すると無制限となります。');
 
 // action: PolicyGroup
 // - mode: general
-define($constpref . '_POLICY_GROUP_GENERAL_TITLE', 'グループの動作設定');
-define($constpref . '_POLICY_GROUP_CONSTRUCT_PERMIT_TITLE', 'グループ作成の許可');
-define($constpref . '_POLICY_GROUP_CONSTRUCT_PERMIT_DESC', '許可すると通常のユーザがグループを作成できるようになります。');
-define($constpref . '_POLICY_GROUP_CONSTRUCT_PERMIT_ALLOW', '許可する');
-define($constpref . '_POLICY_GROUP_CONSTRUCT_PERMIT_DENY', '許可しない');
-define($constpref . '_POLICY_GROUP_CONSTRUCT_CERTIFY_TITLE', 'グループ作成の承認方法');
-define($constpref . '_POLICY_GROUP_CONSTRUCT_CERTIFY_DESC', 'ユーザがグループを作成する際の承認方法を設定します。');
-define($constpref . '_POLICY_GROUP_CONSTRUCT_CERTIFY_MODERATOR', 'モデレータがグループの作成を承認する');
-define($constpref . '_POLICY_GROUP_CONSTRUCT_CERTIFY_AUTO', '自動的にグループの作成を承認する');
-define($constpref . '_POLICY_GROUP_PUBLISH_CERTIFY_TITLE', 'グループ公開の承認方法');
-define($constpref . '_POLICY_GROUP_PUBLISH_CERTIFY_DESC', 'グループ管理者がグループを公開する際の承認方法を設定します。');
-define($constpref . '_POLICY_GROUP_PUBLISH_CERTIFY_MODERATOR', 'モデレータがグループの公開を承認する');
-define($constpref . '_POLICY_GROUP_PUBLISH_CERTIFY_AUTO', '自動的にグループの公開を承認する');
+define($constpref.'_POLICY_GROUP_GENERAL_TITLE', 'グループの動作設定');
+define($constpref.'_POLICY_GROUP_CONSTRUCT_PERMIT_TITLE', 'グループ作成の許可');
+define($constpref.'_POLICY_GROUP_CONSTRUCT_PERMIT_DESC', '許可すると通常のユーザがグループを作成できるようになります。');
+define($constpref.'_POLICY_GROUP_CONSTRUCT_PERMIT_ALLOW', '許可する');
+define($constpref.'_POLICY_GROUP_CONSTRUCT_PERMIT_DENY', '許可しない');
+define($constpref.'_POLICY_GROUP_CONSTRUCT_CERTIFY_TITLE', 'グループ作成の承認方法');
+define($constpref.'_POLICY_GROUP_CONSTRUCT_CERTIFY_DESC', 'ユーザがグループを作成する際の承認方法を設定します。');
+define($constpref.'_POLICY_GROUP_CONSTRUCT_CERTIFY_MODERATOR', 'モデレータがグループの作成を承認する');
+define($constpref.'_POLICY_GROUP_CONSTRUCT_CERTIFY_AUTO', '自動的にグループの作成を承認する');
+define($constpref.'_POLICY_GROUP_PUBLISH_CERTIFY_TITLE', 'グループ公開の承認方法');
+define($constpref.'_POLICY_GROUP_PUBLISH_CERTIFY_DESC', 'グループ管理者がグループを公開する際の承認方法を設定します。');
+define($constpref.'_POLICY_GROUP_PUBLISH_CERTIFY_MODERATOR', 'モデレータがグループの公開を承認する');
+define($constpref.'_POLICY_GROUP_PUBLISH_CERTIFY_AUTO', '自動的にグループの公開を承認する');
 // - mode: initval
-define($constpref . '_POLICY_GROUP_INITVAL_TITLE', '新規グループ作成時の初期値の設定');
-define($constpref . '_POLICY_GROUP_INITVAL_MAXITEM_TITLE', 'グループ領域の最大アイテム数');
-define($constpref . '_POLICY_GROUP_INITVAL_MAXITEM_DESC', 'グループ領域に登録可能なアイテム数の最大値を設定します。0 を指定すると無制限となります。');
-define($constpref . '_POLICY_GROUP_INITVAL_MAXINDEX_TITLE', 'グループ領域の最大インデックス数');
-define($constpref . '_POLICY_GROUP_INITVAL_MAXINDEX_DESC', 'グループ領域に登録可能なインデックス数の最大値を設定します。0 を指定すると無制限となります。');
-define($constpref . '_POLICY_GROUP_INITVAL_MAXDISK_TITLE', 'グループ領域の最大ディスク容量 [MB]');
-define($constpref . '_POLICY_GROUP_INITVAL_MAXDISK_DESC', 'グループ領域の利用可能なディスク容量の最大値を[MB]単位で指定します。小数点を含む実数を指定できます。0 を指定すると無制限となります。');
+define($constpref.'_POLICY_GROUP_INITVAL_TITLE', '新規グループ作成時の初期値の設定');
+define($constpref.'_POLICY_GROUP_INITVAL_MAXITEM_TITLE', 'グループ領域の最大アイテム数');
+define($constpref.'_POLICY_GROUP_INITVAL_MAXITEM_DESC', 'グループ領域に登録可能なアイテム数の最大値を設定します。0 を指定すると無制限となります。');
+define($constpref.'_POLICY_GROUP_INITVAL_MAXINDEX_TITLE', 'グループ領域の最大インデックス数');
+define($constpref.'_POLICY_GROUP_INITVAL_MAXINDEX_DESC', 'グループ領域に登録可能なインデックス数の最大値を設定します。0 を指定すると無制限となります。');
+define($constpref.'_POLICY_GROUP_INITVAL_MAXDISK_TITLE', 'グループ領域の最大ディスク容量 [MB]');
+define($constpref.'_POLICY_GROUP_INITVAL_MAXDISK_DESC', 'グループ領域の利用可能なディスク容量の最大値を[MB]単位で指定します。小数点を含む実数を指定できます。0 を指定すると無制限となります。');
 
 // action: PolicyItem
-define($constpref . '_POLICY_ITEM_TYPE_TITLE', 'アイテムタイプ');
-define($constpref . '_POLICY_ITEM_TYPE_DESC', 'アイテムタイプ及びアイテムタイプ項目の追加・変更を行います。');
-define($constpref . '_POLICY_ITEM_FIELD_GROUP_TITLE', 'アイテム項目グループ');
-define($constpref . '_POLICY_ITEM_FIELD_GROUP_DESC', 'アイテム項目グループの追加・変更を行います。');
-define($constpref . '_POLICY_ITEM_FIELD_TITLE', 'アイテム項目');
-define($constpref . '_POLICY_ITEM_FIELD_DESC', 'アイテム項目の追加・変更を行います。');
-define($constpref . '_POLICY_ITEM_FIELD_SELECT_TITLE', 'アイテム項目選択リスト');
-define($constpref . '_POLICY_ITEM_FIELD_SELECT_DESC', 'アイテム項目でリスト選択するためのリストを作成・編集します。');
-define($constpref . '_POLICY_ITEM_PUBLIC_TITLE', 'アイテム公開');
-define($constpref . '_POLICY_ITEM_PUBLIC_DESC', 'アイテムの公開に関するポリシーの設定を行います。');
-define($constpref . '_POLICY_ITEM_SORT_TITLE', 'アイテム並び順');
-define($constpref . '_POLICY_ITEM_SORT_DESC', 'アイテム並び順の設定を行います。');
-define($constpref . '_POLICY_ITEM_QUICKSEARCH_TITLE', '簡易検索条件');
-define($constpref . '_POLICY_ITEM_QUICKSEARCH_DESC', 'アイテムを簡易検索する際の検索条件を設定します。');
-define($constpref . '_POLICY_ITEM_OAIPMH_TITLE', 'OAI-PMH 割当');
-define($constpref . '_POLICY_ITEM_OAIPMH_DESC', 'OAI-PMH スキーマ毎に対応するアイテムタイプの項目を割り当てます。');
+define($constpref.'_POLICY_ITEM_TYPE_TITLE', 'アイテムタイプ');
+define($constpref.'_POLICY_ITEM_TYPE_DESC', 'アイテムタイプ及びアイテムタイプ項目の追加・変更を行います。');
+define($constpref.'_POLICY_ITEM_FIELD_GROUP_TITLE', 'アイテム項目グループ');
+define($constpref.'_POLICY_ITEM_FIELD_GROUP_DESC', 'アイテム項目グループの追加・変更を行います。');
+define($constpref.'_POLICY_ITEM_FIELD_TITLE', 'アイテム項目');
+define($constpref.'_POLICY_ITEM_FIELD_DESC', 'アイテム項目の追加・変更を行います。');
+define($constpref.'_POLICY_ITEM_FIELD_SELECT_TITLE', 'アイテム項目選択リスト');
+define($constpref.'_POLICY_ITEM_FIELD_SELECT_DESC', 'アイテム項目でリスト選択するためのリストを作成・編集します。');
+define($constpref.'_POLICY_ITEM_PUBLIC_TITLE', 'アイテム公開');
+define($constpref.'_POLICY_ITEM_PUBLIC_DESC', 'アイテムの公開に関するポリシーの設定を行います。');
+define($constpref.'_POLICY_ITEM_SORT_TITLE', 'アイテム並び順');
+define($constpref.'_POLICY_ITEM_SORT_DESC', 'アイテム並び順の設定を行います。');
+define($constpref.'_POLICY_ITEM_QUICKSEARCH_TITLE', '簡易検索条件');
+define($constpref.'_POLICY_ITEM_QUICKSEARCH_DESC', 'アイテムを簡易検索する際の検索条件を設定します。');
+define($constpref.'_POLICY_ITEM_OAIPMH_TITLE', 'OAI-PMH 割当');
+define($constpref.'_POLICY_ITEM_OAIPMH_DESC', 'OAI-PMH スキーマ毎に対応するアイテムタイプの項目を割り当てます。');
 
 // action: PolicyItemField
-define($constpref . '_POLICY_ITEM_FIELD_DESC_MORE1', '名称が編集中のものはアイテム項目編集画面でリリースすることではじめて変更内容が反映されます。');
-define($constpref . '_POLICY_ITEM_FIELD_DESC_MORE2', 'アイテム項目グループに登録されていないアイテム項目のみ削除することができます。');
+define($constpref.'_POLICY_ITEM_FIELD_DESC_MORE1', '名称が編集中のものはアイテム項目編集画面でリリースすることではじめて変更内容が反映されます。');
+define($constpref.'_POLICY_ITEM_FIELD_DESC_MORE2', 'アイテム項目グループに登録されていないアイテム項目のみ削除することができます。');
 
 // action: PolicyItemFieldEdit
-define($constpref . '_POLICY_ITEM_FIELD_REGISTER_TITLE', 'アイテム項目追加');
-define($constpref . '_POLICY_ITEM_FIELD_REGISTER_DESC', 'アイテム項目の新規追加を行います。');
-define($constpref . '_POLICY_ITEM_FIELD_EDIT_TITLE', 'アイテム項目編集');
-define($constpref . '_POLICY_ITEM_FIELD_EDIT_DESC', 'アイテム項目を編集します。');
-define($constpref . '_POLICY_ITEM_FIELD_OTHER_DISPLAY_DESC', 'チェックを外すとモデレータ以外見ることができなくなります。');
-define($constpref . '_POLICY_ITEM_FIELD_OTHER_DETAIL_SEARCH_DESC', 'チェックすると詳細検索で検索対象項目となります。');
-define($constpref . '_POLICY_ITEM_FIELD_OTHER_SCOPE_SEARCH_DESC', 'チェックすると詳細検索で範囲検索することができます。');
+define($constpref.'_POLICY_ITEM_FIELD_REGISTER_TITLE', 'アイテム項目追加');
+define($constpref.'_POLICY_ITEM_FIELD_REGISTER_DESC', 'アイテム項目の新規追加を行います。');
+define($constpref.'_POLICY_ITEM_FIELD_EDIT_TITLE', 'アイテム項目編集');
+define($constpref.'_POLICY_ITEM_FIELD_EDIT_DESC', 'アイテム項目を編集します。');
+define($constpref.'_POLICY_ITEM_FIELD_OTHER_DISPLAY_DESC', 'チェックを外すとモデレータ以外見ることができなくなります。');
+define($constpref.'_POLICY_ITEM_FIELD_OTHER_DETAIL_SEARCH_DESC', 'チェックすると詳細検索で検索対象項目となります。');
+define($constpref.'_POLICY_ITEM_FIELD_OTHER_SCOPE_SEARCH_DESC', 'チェックすると詳細検索で範囲検索することができます。');
 
 // action: PolicyItemFieldDelete
-define($constpref . '_POLICY_ITEM_FIELD_DELETE_TITLE', 'アイテム項目削除');
-define($constpref . '_POLICY_ITEM_FIELD_DELETE_DESC', 'アイテム項目を削除します。この操作は取り消すことができません。');
+define($constpref.'_POLICY_ITEM_FIELD_DELETE_TITLE', 'アイテム項目削除');
+define($constpref.'_POLICY_ITEM_FIELD_DELETE_DESC', 'アイテム項目を削除します。この操作は取り消すことができません。');
 
 // action: PolicyItemFieldSelect
-define($constpref . '_POLICY_ITEM_FIELD_SELECT_NAME', '選択リスト名');
+define($constpref.'_POLICY_ITEM_FIELD_SELECT_NAME', '選択リスト名');
 
 // action: PolicyItemFieldSelectEdit
-define($constpref . '_POLICY_ITEM_FIELD_SELECT_EDIT_TITLE', '選択リスト編集');
-define($constpref . '_POLICY_ITEM_FIELD_SELECT_EDIT_DESC', 'アイテム項目でリスト選択するための選択値を編集します。使用中の選択値のコード編集及び削除はできません。');
-define($constpref . '_POLICY_ITEM_FIELD_SELECT_LANG_VALUE_CODE', 'コード');
-define($constpref . '_POLICY_ITEM_FIELD_SELECT_LANG_VALUE_NAME', '名称');
+define($constpref.'_POLICY_ITEM_FIELD_SELECT_EDIT_TITLE', '選択リスト編集');
+define($constpref.'_POLICY_ITEM_FIELD_SELECT_EDIT_DESC', 'アイテム項目でリスト選択するための選択値を編集します。使用中の選択値のコード編集及び削除はできません。');
+define($constpref.'_POLICY_ITEM_FIELD_SELECT_LANG_VALUE_CODE', 'コード');
+define($constpref.'_POLICY_ITEM_FIELD_SELECT_LANG_VALUE_NAME', '名称');
 
 // action: PolicyItemFieldSelectDelete
-define($constpref . '_POLICY_ITEM_FIELD_SELECT_DELETE_TITLE', 'アイテム項目選択リスト削除');
-define($constpref . '_POLICY_ITEM_FIELD_SELECT_DELETE_DESC', 'アイテム項目選択リストを削除します。この操作は取り消すことができません。');
+define($constpref.'_POLICY_ITEM_FIELD_SELECT_DELETE_TITLE', 'アイテム項目選択リスト削除');
+define($constpref.'_POLICY_ITEM_FIELD_SELECT_DELETE_DESC', 'アイテム項目選択リストを削除します。この操作は取り消すことができません。');
 
 // action: PolicyItemPublic
-define($constpref . '_POLICY_ITEM_PUBLIC_GENERAL_TITLE', 'アイテム公開時の動作設定');
-define($constpref . '_POLICY_ITEM_PUBLIC_CERTIFY_ITEM_TITLE', '公開アイテムの承認方法');
-define($constpref . '_POLICY_ITEM_PUBLIC_CERTIFY_ITEM_DESC', 'アイテムを公開するためにはそのアイテムの公開を承認する必要があります。ここではこのアイテム公開の承認方法を設定します。');
-define($constpref . '_POLICY_ITEM_PUBLIC_CERTIFY_ITEM_MANUAL', 'モデレータが確認してアイテムの公開を承認する');
-define($constpref . '_POLICY_ITEM_PUBLIC_CERTIFY_ITEM_AUTO', '自動的にアイテムの公開を承認する');
-define($constpref . '_POLICY_ITEM_PUBLIC_DOWNLOAD_FILE_TITLE', '添付ファイルのダウンロード時のファイル形式');
-define($constpref . '_POLICY_ITEM_PUBLIC_DOWNLOAD_FILE_DESC', '添付ファイルをダウンロードする際のファイル形式を指定します。');
-define($constpref . '_POLICY_ITEM_PUBLIC_DOWNLOAD_FILE_ZIP', 'メタ情報と共に ZIP 圧縮する (推奨)');
-define($constpref . '_POLICY_ITEM_PUBLIC_DOWNLOAD_FILE_PLAIN', 'オリジナルのまま');
+define($constpref.'_POLICY_ITEM_PUBLIC_GENERAL_TITLE', 'アイテム公開時の動作設定');
+define($constpref.'_POLICY_ITEM_PUBLIC_CERTIFY_ITEM_TITLE', '公開アイテムの承認方法');
+define($constpref.'_POLICY_ITEM_PUBLIC_CERTIFY_ITEM_DESC', 'アイテムを公開するためにはそのアイテムの公開を承認する必要があります。ここではこのアイテム公開の承認方法を設定します。');
+define($constpref.'_POLICY_ITEM_PUBLIC_CERTIFY_ITEM_MANUAL', 'モデレータが確認してアイテムの公開を承認する');
+define($constpref.'_POLICY_ITEM_PUBLIC_CERTIFY_ITEM_AUTO', '自動的にアイテムの公開を承認する');
+define($constpref.'_POLICY_ITEM_PUBLIC_DOWNLOAD_FILE_TITLE', '添付ファイルのダウンロード時のファイル形式');
+define($constpref.'_POLICY_ITEM_PUBLIC_DOWNLOAD_FILE_DESC', '添付ファイルをダウンロードする際のファイル形式を指定します。');
+define($constpref.'_POLICY_ITEM_PUBLIC_DOWNLOAD_FILE_ZIP', 'メタ情報と共に ZIP 圧縮する (推奨)');
+define($constpref.'_POLICY_ITEM_PUBLIC_DOWNLOAD_FILE_PLAIN', 'オリジナルのまま');
 
 // action: PolicyItemSort
-define($constpref . '_POLICY_ITEM_SORT_LABEL', 'アイテム並び順条件');
+define($constpref.'_POLICY_ITEM_SORT_LABEL', 'アイテム並び順条件');
 
 // action: PolicyItemSortEdit
-define($constpref . '_POLICY_ITEM_SORT_EDIT_TITLE', 'アイテム並び順編集');
-define($constpref . '_POLICY_ITEM_SORT_EDIT_DESC', 'アイテム並び順条件を編集します。各アイテムタイプにおいて利用するソート対象の項目を指定してください。');
-define($constpref . '_POLICY_ITEM_SORT_FIELD', 'ソート対象項目');
+define($constpref.'_POLICY_ITEM_SORT_EDIT_TITLE', 'アイテム並び順編集');
+define($constpref.'_POLICY_ITEM_SORT_EDIT_DESC', 'アイテム並び順条件を編集します。各アイテムタイプにおいて利用するソート対象の項目を指定してください。');
+define($constpref.'_POLICY_ITEM_SORT_FIELD', 'ソート対象項目');
 
 // action: PolicyItemSortDelete
-define($constpref . '_POLICY_ITEM_SORT_ID', 'アイテム並び順ID');
-define($constpref . '_POLICY_ITEM_SORT_DELETE_TITLE', 'アイテム並び順条件削除');
-define($constpref . '_POLICY_ITEM_SORT_DELETE_DESC', 'アイテム並び順条件を削除します。この操作は取り消すことができません。');
+define($constpref.'_POLICY_ITEM_SORT_ID', 'アイテム並び順ID');
+define($constpref.'_POLICY_ITEM_SORT_DELETE_TITLE', 'アイテム並び順条件削除');
+define($constpref.'_POLICY_ITEM_SORT_DELETE_DESC', 'アイテム並び順条件を削除します。この操作は取り消すことができません。');
 
 // action: PolicyItemQuickSearch
-define($constpref . '_POLICY_ITEM_QUICKSEARCH_LABEL', '簡易検索条件名称');
+define($constpref.'_POLICY_ITEM_QUICKSEARCH_LABEL', '簡易検索条件名称');
 
 // action: PolicyItemQuickSearchEdit
-define($constpref . '_POLICY_ITEM_QUICKSEARCH_EDIT_TITLE', '簡易検索条件編集');
-define($constpref . '_POLICY_ITEM_QUICKSEARCH_EDIT_DESC', '簡易検索条件の編集を行います。');
-define($constpref . '_POLICY_ITEM_QUICKSEARCH_CRITERIA_ID', '簡易検索条件ID');
+define($constpref.'_POLICY_ITEM_QUICKSEARCH_EDIT_TITLE', '簡易検索条件編集');
+define($constpref.'_POLICY_ITEM_QUICKSEARCH_EDIT_DESC', '簡易検索条件の編集を行います。');
+define($constpref.'_POLICY_ITEM_QUICKSEARCH_CRITERIA_ID', '簡易検索条件ID');
 
 // action: PolicyItemQuickSearchDelete
-define($constpref . '_POLICY_ITEM_QUICKSEARCH_DELETE_TITLE', '簡易検索条件削除');
-define($constpref . '_POLICY_ITEM_QUICKSEARCH_DELETE_DESC', '簡易検索条件を削除します。この操作は取り消すことができません。');
+define($constpref.'_POLICY_ITEM_QUICKSEARCH_DELETE_TITLE', '簡易検索条件削除');
+define($constpref.'_POLICY_ITEM_QUICKSEARCH_DELETE_DESC', '簡易検索条件を削除します。この操作は取り消すことができません。');
 
 // action: PolicyIndex
-define($constpref . '_POLICY_INDEX_DETAILED_DESCRIPTION', 'インデックス説明編集設定');
-define($constpref . '_POLICY_INDEX_INDEX_UPLOAD_DIR_TITLE', 'ファイルアップロードディレクトリ');
-define($constpref . '_POLICY_INDEX_INDEX_UPLOAD_DIR_DESC', '各インデックスのアイコンを格納するディレクトリをシステムの絶対パスで指定します。このディレクトリは Web サーバプロセスの権限で書き込みができる必要があります。');
+define($constpref.'_POLICY_INDEX_DETAILED_DESCRIPTION', 'インデックス説明編集設定');
+define($constpref.'_POLICY_INDEX_INDEX_UPLOAD_DIR_TITLE', 'ファイルアップロードディレクトリ');
+define($constpref.'_POLICY_INDEX_INDEX_UPLOAD_DIR_DESC', '各インデックスのアイコンを格納するディレクトリをシステムの絶対パスで指定します。このディレクトリは Web サーバプロセスの権限で書き込みができる必要があります。');
 
 // action: Maintenance
-define($constpref . '_MAINTENANCE_USER_TITLE', 'ユーザ管理');
-define($constpref . '_MAINTENANCE_GROUP_TITLE', 'グループ管理');
-define($constpref . '_MAINTENANCE_ITEM_TITLE', 'アイテム管理');
-define($constpref . '_MAINTENANCE_ITEM_DESC', 'アイテムの管理を行います。');
-define($constpref . '_MAINTENANCE_FILESEARCH_TITLE', 'ファイル検索');
-define($constpref . '_MAINTENANCE_FILESEARCH_DESC', 'ファイル検索用のインデックスの管理を行います。');
+define($constpref.'_MAINTENANCE_USER_TITLE', 'ユーザ管理');
+define($constpref.'_MAINTENANCE_GROUP_TITLE', 'グループ管理');
+define($constpref.'_MAINTENANCE_ITEM_TITLE', 'アイテム管理');
+define($constpref.'_MAINTENANCE_ITEM_DESC', 'アイテムの管理を行います。');
+define($constpref.'_MAINTENANCE_FILESEARCH_TITLE', 'ファイル検索');
+define($constpref.'_MAINTENANCE_FILESEARCH_DESC', 'ファイル検索用のインデックスの管理を行います。');
 
 // action: MaintenanceItem
-define($constpref . '_MAINTENANCE_ITEM_DELETE_TITLE', 'アイテム一括削除');
-define($constpref . '_MAINTENANCE_ITEM_DELETE_DESC', 'アイテムの一括削除を行います。対象となるユーザを検索して決定してください。');
-define($constpref . '_MAINTENANCE_ITEM_WITHDRAW_TITLE', '一括公開取り下げ');
-define($constpref . '_MAINTENANCE_ITEM_WITHDRAW_DESC', '公開を取り下げたいアイテムがあるインデックスを選択してください。');
-define($constpref . '_MAINTENANCE_ITEM_TRANSFER_TITLE', 'アイテムの移譲');
-define($constpref . '_MAINTENANCE_ITEM_TRANSFER_DESC', 'アイテムの移譲を行います。移譲元のユーザを検索して決定してください。');
+define($constpref.'_MAINTENANCE_ITEM_DELETE_TITLE', 'アイテム一括削除');
+define($constpref.'_MAINTENANCE_ITEM_DELETE_DESC', 'アイテムの一括削除を行います。対象となるユーザを検索して決定してください。');
+define($constpref.'_MAINTENANCE_ITEM_WITHDRAW_TITLE', '一括公開取り下げ');
+define($constpref.'_MAINTENANCE_ITEM_WITHDRAW_DESC', '公開を取り下げたいアイテムがあるインデックスを選択してください。');
+define($constpref.'_MAINTENANCE_ITEM_TRANSFER_TITLE', 'アイテムの移譲');
+define($constpref.'_MAINTENANCE_ITEM_TRANSFER_DESC', 'アイテムの移譲を行います。移譲元のユーザを検索して決定してください。');
 
 // action: MaintenanceFileSearch
-define($constpref . '_MAINTENANCE_FILESEARCH_PLUGINS_TITLE', '利用可能な検索プラグイン');
-define($constpref . '_MAINTENANCE_FILESEARCH_RESCAN_TITLE', '全ファイルの再スキャン');
-define($constpref . '_MAINTENANCE_FILESEARCH_RESCAN_INFO_TITLE', 'ファイル情報の更新');
-define($constpref . '_MAINTENANCE_FILESEARCH_RESCAN_INFO_DESC', '全てのファイルをスキャンしてファイルの詳細情報(MIME Type，サムネイル画像)を更新します。');
-define($constpref . '_MAINTENANCE_FILESEARCH_RESCAN_INDEX_TITLE', '検索インデックスの更新');
-define($constpref . '_MAINTENANCE_FILESEARCH_RESCAN_INDEX_DESC', '全てのファイルをスキャンして検索用インデックスを再構築します。');
-define($constpref . '_MAINTENANCE_FILESEARCH_LANG_FILECOUNT', '登録済みファイル数');
-define($constpref . '_MAINTENANCE_FILESEARCH_LANG_RESCAN', '再スキャン');
-define($constpref . '_MAINTENANCE_FILESEARCH_LANG_RESCANNING', 'スキャン中');
-
+define($constpref.'_MAINTENANCE_FILESEARCH_PLUGINS_TITLE', '利用可能な検索プラグイン');
+define($constpref.'_MAINTENANCE_FILESEARCH_RESCAN_TITLE', '全ファイルの再スキャン');
+define($constpref.'_MAINTENANCE_FILESEARCH_RESCAN_INFO_TITLE', 'ファイル情報の更新');
+define($constpref.'_MAINTENANCE_FILESEARCH_RESCAN_INFO_DESC', '全てのファイルをスキャンしてファイルの詳細情報(MIME Type，サムネイル画像)を更新します。');
+define($constpref.'_MAINTENANCE_FILESEARCH_RESCAN_INDEX_TITLE', '検索インデックスの更新');
+define($constpref.'_MAINTENANCE_FILESEARCH_RESCAN_INDEX_DESC', '全てのファイルをスキャンして検索用インデックスを再構築します。');
+define($constpref.'_MAINTENANCE_FILESEARCH_LANG_FILECOUNT', '登録済みファイル数');
+define($constpref.'_MAINTENANCE_FILESEARCH_LANG_RESCAN', '再スキャン');
+define($constpref.'_MAINTENANCE_FILESEARCH_LANG_RESCANNING', 'スキャン中');
 
 // User module action: UserList
-define($constpref . '_USER_LANG_LEVEL_INACTIVE', '非有効ユーザ');
-define($constpref . '_USER_LANG_INACTIVATE_USERS_ONLY', '有効化していないユーザのみ');
+define($constpref.'_USER_LANG_LEVEL_INACTIVE', '非有効ユーザ');
+define($constpref.'_USER_LANG_INACTIVATE_USERS_ONLY', '有効化していないユーザのみ');
 
 // User module action: GroupList
-define($constpref . '_USER_LANG_GROUP_NEW', 'XooNIpsグループ新規追加');
+define($constpref.'_USER_LANG_GROUP_NEW', 'XooNIpsグループ新規追加');
 
 // User module action: GroupEdit
-define($constpref . '_USER_LANG_GROUP_EDIT', 'XooNIpsグループ編集');
-define($constpref . '_USER_LANG_GROUP_ADMINS', 'グループ管理者');
-define($constpref . '_USER_LANG_GROUP_ICON', 'グループアイコン');
-define($constpref . '_USER_LANG_GROUP_IS_PUBLIC', 'アイテム公開範囲');
-define($constpref . '_USER_LANG_GROUP_CAN_JOIN', 'ユーザによるグループ参加要求');
-define($constpref . '_USER_LANG_GROUP_IS_HIDDEN', '隠しグループ');
-define($constpref . '_USER_LANG_GROUP_MEMBER_ACCEPT', '参加承認方法');
-define($constpref . '_USER_LANG_GROUP_ITEM_ACCEPT', 'アイテム承認方法');
-define($constpref . '_USER_LANG_GROUP_MAXITEM', '登録可能なアイテムの最大個数');
-define($constpref . '_USER_LANG_GROUP_MAXINDEX', '登録可能なインデックスの最大個数');
-define($constpref . '_USER_LANG_GROUP_MAXDISK', '登録可能なアイテムの最大ディスク容量[MB]');
-define($constpref . '_USER_LANG_ALL', '全体');
-define($constpref . '_USER_LANG_GROUP_ONLY', 'グループのみ');
-define($constpref . '_USER_LANG_PERMIT', '許可');
-define($constpref . '_USER_LANG_NO_PERMIT', '非許可');
-define($constpref . '_USER_LANG_NO', 'いいえ');
-define($constpref . '_USER_LANG_YES', 'はい');
-define($constpref . '_USER_LANG_AUTO', '自動');
-define($constpref . '_USER_LANG_MANUAL', '手動');
-define($constpref . '_USER_LANG_SEARCH', '検索');
-define($constpref . '_USER_MESSAGE_GROUP_CERTIFY_REQUESTING', 'グループ承認要求中のため変更できません。');
-define($constpref . '_USER_MESSAGE_GROUP_OPEN_REQUESTING', 'グループ公開要求中のため変更できません。');
-define($constpref . '_USER_MESSAGE_GROUP_CLOSE_REQUESTING', 'グループ公開取下げ要求中のため変更できません。');
-define($constpref . '_USER_MESSAGE_GROUP_DELETE_REQUESTING', 'グループ削除要求中のため変更できません。');
-define($constpref . '_USER_MESSAGE_UNLIMIT_IFZERO', '0 を入力すると無制限扱いとなります。');
+define($constpref.'_USER_LANG_GROUP_EDIT', 'XooNIpsグループ編集');
+define($constpref.'_USER_LANG_GROUP_ADMINS', 'グループ管理者');
+define($constpref.'_USER_LANG_GROUP_ICON', 'グループアイコン');
+define($constpref.'_USER_LANG_GROUP_IS_PUBLIC', 'アイテム公開範囲');
+define($constpref.'_USER_LANG_GROUP_CAN_JOIN', 'ユーザによるグループ参加要求');
+define($constpref.'_USER_LANG_GROUP_IS_HIDDEN', '隠しグループ');
+define($constpref.'_USER_LANG_GROUP_MEMBER_ACCEPT', '参加承認方法');
+define($constpref.'_USER_LANG_GROUP_ITEM_ACCEPT', 'アイテム承認方法');
+define($constpref.'_USER_LANG_GROUP_MAXITEM', '登録可能なアイテムの最大個数');
+define($constpref.'_USER_LANG_GROUP_MAXINDEX', '登録可能なインデックスの最大個数');
+define($constpref.'_USER_LANG_GROUP_MAXDISK', '登録可能なアイテムの最大ディスク容量[MB]');
+define($constpref.'_USER_LANG_ALL', '全体');
+define($constpref.'_USER_LANG_GROUP_ONLY', 'グループのみ');
+define($constpref.'_USER_LANG_PERMIT', '許可');
+define($constpref.'_USER_LANG_NO_PERMIT', '非許可');
+define($constpref.'_USER_LANG_NO', 'いいえ');
+define($constpref.'_USER_LANG_YES', 'はい');
+define($constpref.'_USER_LANG_AUTO', '自動');
+define($constpref.'_USER_LANG_MANUAL', '手動');
+define($constpref.'_USER_LANG_SEARCH', '検索');
+define($constpref.'_USER_MESSAGE_GROUP_CERTIFY_REQUESTING', 'グループ承認要求中のため変更できません。');
+define($constpref.'_USER_MESSAGE_GROUP_OPEN_REQUESTING', 'グループ公開要求中のため変更できません。');
+define($constpref.'_USER_MESSAGE_GROUP_CLOSE_REQUESTING', 'グループ公開取下げ要求中のため変更できません。');
+define($constpref.'_USER_MESSAGE_GROUP_DELETE_REQUESTING', 'グループ削除要求中のため変更できません。');
+define($constpref.'_USER_MESSAGE_UNLIMIT_IFZERO', '0 を入力すると無制限扱いとなります。');
 
 // User module action: GroupDelete
-define($constpref . '_USER_LANG_GROUP_DELETE', 'XooNIpsグループの削除');
-define($constpref . '_USER_LANG_GROUP_DELETE_ADVICE', 'このXooNIpsグループを削除します。よろしいですか？');
-define($constpref . '_USER_ERROR_GROUP_DELETE_REQUIRED', '既にこのグループは削除承認待ちです。');
-
+define($constpref.'_USER_LANG_GROUP_DELETE', 'XooNIpsグループの削除');
+define($constpref.'_USER_LANG_GROUP_DELETE_ADVICE', 'このXooNIpsグループを削除します。よろしいですか？');
+define($constpref.'_USER_ERROR_GROUP_DELETE_REQUIRED', '既にこのグループは削除承認待ちです。');
 
 // TODO: check unknown parameters
-define($constpref . '_SYSTEM_MSGSIGN_ADMINNAME', '管理者');
-
-
+define($constpref.'_SYSTEM_MSGSIGN_ADMINNAME', '管理者');
 
 // _AM_<MODULENAME>_<STRINGNAME>
 
@@ -467,8 +467,8 @@ define('_AM_XOONIPS_MAINTENANCE_DESC', 'XooNIps を運用する上での様々�
 define('_AM_XOONIPS_ITEM_FIELD_VALUE_ID', 'コード');
 define('_AM_XOONIPS_ITEM_FIELD_VALUE_NAME', '名称');
 define('_AM_XOONIPS_LABEL_CANCEL', 'キャンセル');
-define('_AM_XOONIPS_ERROR_SELECT_NAME_EXISTS', "入力されたアイテム項目選択リスト名称は既に存在します。" );
-define('_AM_XOONIPS_ERROR_VALUE_DELETE', "指定されたコードは使用されているため削除することができません。" );
+define('_AM_XOONIPS_ERROR_SELECT_NAME_EXISTS', '入力されたアイテム項目選択リスト名称は既に存在します。');
+define('_AM_XOONIPS_ERROR_VALUE_DELETE', '指定されたコードは使用されているため削除することができません。');
 
 // site policy settings
 define('_AM_XOONIPS_POLICY_ITEMTYPE_TITLE', 'アイテムタイプ');
@@ -649,4 +649,3 @@ define('_AM_XOONIPS_MAINTENANCE_ITEMTRANSFER_MSG_FAILURE', 'アイテムの移�
 define('_AM_XOONIPS_MAINTENANCE_ITEMTRANSFER_MSG_FAILURE1', '移譲元のインデックスを指定してください。');
 define('_AM_XOONIPS_MAINTENANCE_ITEMTRANSFER_MSG_FAILURE2', '移譲先のインデックスを指定してください。');
 define('_AM_XOONIPS_MAINTENANCE_ITEMTRANSFER_MSG_FAILURE3', '移譲元と移譲先のユーザは異なるものを設定してください。');
-

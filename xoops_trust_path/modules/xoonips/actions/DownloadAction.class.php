@@ -282,7 +282,7 @@ class Xoonips_DownloadAction extends Xoonips_AbstractAction
 
     /**
      * execute.
-     * 
+     *
      * @return Enum
      */
     public function execute()

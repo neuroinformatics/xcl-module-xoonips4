@@ -2,12 +2,11 @@
 
 use Xoonips\Core\StringUtils;
 
-require_once XOOPS_TRUST_PATH . '/modules/xoonips/class/core/BeanFactory.class.php';
+require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/BeanFactory.class.php';
 require_once 'Item.class.php';
 
 class Xoonips_Metadata
 {
-
     private $dirname;
     private $trustDirname;
 
@@ -30,10 +29,10 @@ class Xoonips_Metadata
     private $itemFileHandler;
 
     /**
-     * Constructor
-     * 
+     * Constructor.
+     *
      * @param string $dirname module dirname
-    **/
+     **/
     public function __construct($dirname, $trustDirname, $metadataPrefix)
     {
         $this->dirname = $dirname;
@@ -44,7 +43,7 @@ class Xoonips_Metadata
         $this->valueSetList = $oaipmhSchemaBean->getSchemaValueSetList($this->metadataPrefix);
         $this->linkBean = Xoonips_BeanFactory::getBean('OaipmhSchemaItemtypeLinkBean', $this->dirname, $this->trustDirname);
         $this->itemHandler = Xoonips_Utils::getTrustModuleHandler('Item', $this->dirname, $this->trustDirname);
-        $this->itemFileHandler = Xoonips_Utils::getTrustModuleHandler('ItemFile',$this->dirname, $this->trustDirname);
+        $this->itemFileHandler = Xoonips_Utils::getTrustModuleHandler('ItemFile', $this->dirname, $this->trustDirname);
     }
 
     public function getMetadata($item_type_id, $item_id)
@@ -58,13 +57,14 @@ class Xoonips_Metadata
             $lines[] = '</junii2>';
             $lines[] = '</metadata>';
             // if oai_dc
-        } else if ($this->metadataPrefix == 'oai_dc') {
+        } elseif ($this->metadataPrefix == 'oai_dc') {
             $lines[] = '<metadata>';
             $lines[] = '<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns="http://purl.org/dc/elements/1.1/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">';
             $this->getContents($item_type_id, $item_id, $lines);
             $lines[] = '</oai_dc:dc>';
             $lines[] = '</metadata>';
         }
+
         return implode("\n", $lines);
     }
 
@@ -73,6 +73,7 @@ class Xoonips_Metadata
         if ($metadataPrefix == 'oai_dc' || $metadataPrefix == 'junii2') {
             return true;
         }
+
         return false;
     }
 
@@ -88,7 +89,7 @@ class Xoonips_Metadata
                     $flg = true;
                     $metadata = array();
                     $detail_ids = explode(',', $link['item_field_detail_id']);
-                    $group_ids = explode(',',$link['group_id']);
+                    $group_ids = explode(',', $link['group_id']);
                     foreach ($detail_ids as $index => $detail_id) {
                         $valueset = false;
                         foreach ($this->valueSetList as $obj) {
@@ -103,21 +104,21 @@ class Xoonips_Metadata
                             $item = $itemBean->getItemBasicInfo($item_id);
                             $doi = $item['doi'];
                             if ($detail_id == 'http://') {
-                                $itemObj =& $this->itemHandler->get($item_id);
+                                $itemObj = &$this->itemHandler->get($item_id);
                                 $metadata[] = $itemObj->getUrl();
                             } elseif ($detail_id == 'ID') {
                                 $database_id = Xoonips_Utils::getXooNIpsConfig($this->dirname, XOONIPS_CONFIG_REPOSITORY_NIJC_CODE);
                                 if ($doi == null) {
                                     $metadata[] = "$database_id/$item_type_id.$item_id";
                                 } else {
-                                    $metadata[] = "$database_id:" . XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME . "/$doi";
+                                    $metadata[] = "$database_id:".XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME."/$doi";
                                 }
                             } elseif ($detail_id == 'meta_author') {
-                                $moduleHandler =& xoops_gethandler('module');
-                                $legacyRender =& $moduleHandler->getByDirname('legacyRender');
-                                $configHandler =& xoops_gethandler('config');
-                                $configs =& $configHandler->getConfigsByCat(0, $legacyRender->get('mid'));
-                                $metadata[] = $configs['meta_author'];								
+                                $moduleHandler = &xoops_gethandler('module');
+                                $legacyRender = &$moduleHandler->getByDirname('legacyRender');
+                                $configHandler = &xoops_gethandler('config');
+                                $configs = &$configHandler->getConfigsByCat(0, $legacyRender->get('mid'));
+                                $metadata[] = $configs['meta_author'];
                             } elseif ($detail_id == 'itemtype') {
                                 $itemTypeBean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
                                 $itemTypeInfo = $itemTypeBean->getItemTypeInfo($item_type_id);
@@ -142,7 +143,7 @@ class Xoonips_Metadata
                                         if ($file['mime_type'] != 'application/pdf') {
                                             continue;
                                         }
-                                        $itemFileObj =& $this->itemFileHandler->get($file['file_id']);
+                                        $itemFileObj = &$this->itemFileHandler->get($file['file_id']);
                                         $metadata[] = $itemFileObj->getDownloadUrl(2);
                                     }
                                 }
@@ -172,40 +173,40 @@ class Xoonips_Metadata
                         }
                     }
 
-					#In use more 2 value,all value none contine loop.
-					/*
-					if (count($metadata)>1) {
-						$allnone = false;
-						foreach ($metadata as $value) {
-							if (strlen($value) == 0) {
-								$allnone = true;
-								break;
-							}
-						}
-						if ($allnone == true) continue;
-					}
-					*/
-					//FIXME
+                    //In use more 2 value,all value none contine loop.
+                    /*
+                    if (count($metadata)>1) {
+                        $allnone = false;
+                        foreach ($metadata as $value) {
+                            if (strlen($value) == 0) {
+                                $allnone = true;
+                                break;
+                            }
+                        }
+                        if ($allnone == true) continue;
+                    }
+                    */
+                    //FIXME
                     unset($temp);
                     if (!empty($link['value'])) {
                         $temp = self::convert($metadata, $link['value']);
                         $temp = StringUtils::convertEncoding($temp, 'UTF-8', _CHARSET, 'h');
                     }
                     if ($temp != 'null') {
-                        if (strlen($temp)>0) {
+                        if (strlen($temp) > 0) {
                             if (strcmp($schema['metadata_prefix'], 'oai_dc') == 0 && strcmp($schema['name'], 'type:NIItype') == 0) {
-                                $lines[] = '<type>NIIType:' . StringUtils::xmlSpecialChars($temp, _CHARSET) . '</type>' ;
+                                $lines[] = '<type>NIIType:'.StringUtils::xmlSpecialChars($temp, _CHARSET).'</type>';
                             } else {
-                                $lines[] = '<' . $schema['name'] . '>' . StringUtils::xmlSpecialChars($temp, _CHARSET) . '</' . $schema['name'] . '>' ;
+                                $lines[] = '<'.$schema['name'].'>'.StringUtils::xmlSpecialChars($temp, _CHARSET).'</'.$schema['name'].'>';
                             }
                         } elseif (is_array($metadata)) {
-                            foreach($metadata as $m) {
-                                if(!empty($m)) {
+                            foreach ($metadata as $m) {
+                                if (!empty($m)) {
                                     $m = StringUtils::convertEncoding($m, 'UTF-8', _CHARSET, 'h');
                                     if (strcmp($schema['metadata_prefix'], 'oai_dc') == 0 && strcmp($schema['name'], 'type:NIItype') == 0) {
-                                        $lines[] = '<type>NIIType:' . StringUtils::xmlSpecialChars($m, _CHARSET) . '</type>';
+                                        $lines[] = '<type>NIIType:'.StringUtils::xmlSpecialChars($m, _CHARSET).'</type>';
                                     } else {
-                                        $lines[] = '<' . $schema['name'] . '>' . StringUtils::xmlSpecialChars($m, _CHARSET) . '</' . $schema['name'] . '>' ;
+                                        $lines[] = '<'.$schema['name'].'>'.StringUtils::xmlSpecialChars($m, _CHARSET).'</'.$schema['name'].'>';
                                     }
                                 }
                             }
@@ -230,10 +231,10 @@ class Xoonips_Metadata
                 return false;
             }
             foreach ($matches[0] as $key => $value) {
-                $c = '$metadata['.(int)($matches[1][$key]-1).']';
+                $c = '$metadata['.(int) ($matches[1][$key] - 1).']';
                 $convertString = str_replace($value, $c, $convertString);
             }
-            $convertString = $convertString . ";";
+            $convertString = $convertString.';';
             //FIXME XSS
             eval(" \$ret = $convertString");
         }
@@ -241,6 +242,7 @@ class Xoonips_Metadata
         if ($ret == null) {
             $ret = 'null';
         }
+
         return $ret;
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
-if (!defined('XOOPS_ROOT_PATH')) exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
+}
 
 $mydirname = basename(dirname(dirname(__FILE__)));
 require XOOPS_ROOT_PATH.'/modules/'.$mydirname.'/mytrustdirname.php'; // set $mytrustdirname

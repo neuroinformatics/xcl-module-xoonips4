@@ -1,3 +1,3 @@
 <?php
-$mytrustdirname = 'xoonips';
 
+$mytrustdirname = 'xoonips';

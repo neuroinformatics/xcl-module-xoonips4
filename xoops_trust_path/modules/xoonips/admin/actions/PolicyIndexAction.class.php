@@ -1,25 +1,24 @@
 <?php
 
-require_once XOOPS_TRUST_PATH . '/modules/' . $mytrustdirname . '/admin/class/AbstractConfigAction.class.php';
+require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/admin/class/AbstractConfigAction.class.php';
 
 /**
- * admin policy index action
+ * admin policy index action.
  */
 class Xoonips_Admin_PolicyIndexAction extends Xoonips_Admin_AbstractConfigAction
 {
-
     /**
-     * get page url
+     * get page url.
      *
      * @return string
      */
     protected function _getUrl()
     {
-        return XOOPS_URL . '/modules/' . $this->mAsset->mDirname . '/admin/index.php?action=PolicyIndex';
+        return XOOPS_URL.'/modules/'.$this->mAsset->mDirname.'/admin/index.php?action=PolicyIndex';
     }
 
     /**
-     * get config keys
+     * get config keys.
      *
      * @return array
      */
@@ -29,17 +28,17 @@ class Xoonips_Admin_PolicyIndexAction extends Xoonips_Admin_AbstractConfigAction
     }
 
     /**
-     * get style sheet
+     * get style sheet.
      *
      * @return string
      */
     protected function _getStylesheet()
     {
-        return '/modules/' . $this->mAsset->mDirname . '/admin/index.php/css/admin_style.css';
+        return '/modules/'.$this->mAsset->mDirname.'/admin/index.php/css/admin_style.css';
     }
 
     /**
-     * get action form
+     * get action form.
      *
      * @return {Trustdirname}_AbstractActionForm &
      */
@@ -49,35 +48,33 @@ class Xoonips_Admin_PolicyIndexAction extends Xoonips_Admin_AbstractConfigAction
     }
 
     /**
-     * execute view input
+     * execute view input.
      *
      * @param XCube_RenderTarget &$render
      */
     public function executeViewInput(&$render)
     {
         $dirname = $this->mAsset->mDirname;
-        $constpref = '_AD_' . strtoupper($dirname);
+        $constpref = '_AD_'.strtoupper($dirname);
         // breadcrumbs
         $breadcrumbs = array(
             array(
-                'name' => constant($constpref . '_TITLE'),
+                'name' => constant($constpref.'_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php',
             ),
             array(
-                'name' => constant($constpref . '_POLICY_TITLE'),
+                'name' => constant($constpref.'_POLICY_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=Policy',
             ),
             array(
-                'name' => constant($constpref . '_POLICY_INDEX_TITLE'),
+                'name' => constant($constpref.'_POLICY_INDEX_TITLE'),
             ),
         );
         $render->setTemplateName('policy_index.html');
-        $render->setAttribute('title', constant($constpref . '_POLICY_INDEX_TITLE'));
-        $render->setAttribute('description', constant($constpref . '_POLICY_INDEX_DESC'));
+        $render->setAttribute('title', constant($constpref.'_POLICY_INDEX_TITLE'));
+        $render->setAttribute('description', constant($constpref.'_POLICY_INDEX_DESC'));
         $render->setAttribute('xoops_breadcrumbs', $breadcrumbs);
         $render->setAttribute('actionForm', $this->mActionForm);
         $render->setAttribute('constpref', $constpref);
     }
-
 }
-

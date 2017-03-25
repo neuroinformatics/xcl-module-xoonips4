@@ -1,64 +1,64 @@
 <?php
 
-if (!defined('XOOPS_ROOT_PATH')) exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
+}
 
 /**
  * XooNIps transaction class.
  *
  * Don't call constructor. Use {@link XoonipsTransaction::getInstance()} to get instance.
  */
-class Xoonips_Transaction {
-  var $db;
+class Xoonips_Transaction
+{
+    public $db;
 
   /**
-   * constractor
+   * constractor.
    *
-   * @access public
    * @param object &$db XoopsDatabase
    */
-  function __construct(&$db) {
-    $this->db =& $db;
+  public function __construct(&$db)
+  {
+      $this->db = &$db;
   }
 
   /**
-   * start transaction
-   *
-   * @access public
+   * start transaction.
    */
-  function start() {
-    $this->db->queryF('START TRANSACTION');
+  public function start()
+  {
+      $this->db->queryF('START TRANSACTION');
   }
 
   /**
-   * commit
-   *
-   * @access public
+   * commit.
    */
-  function commit() {
-    $this->db->queryF('COMMIT');
+  public function commit()
+  {
+      $this->db->queryF('COMMIT');
   }
 
   /**
-   * rollback
-   *
-   * @access public
+   * rollback.
    */
-  function rollback() {
-    $this->db->queryF('ROLLBACK');
+  public function rollback()
+  {
+      $this->db->queryF('ROLLBACK');
   }
 
   /**
-   * get object instance
-   * 
-   * @access public
+   * get object instance.
+   *
    * @return object instance of XoonipsTransaction
    */
-  static function &getInstance() {
-    static $singleton = null;
-    if (!isset($singleton)) {
-      $singleton = new Xoonips_Transaction($GLOBALS['xoopsDB']);
-    }
-    return $singleton;
+  public static function &getInstance()
+  {
+      static $singleton = null;
+      if (!isset($singleton)) {
+          $singleton = new self($GLOBALS['xoopsDB']);
+      }
+
+      return $singleton;
   }
 }
-

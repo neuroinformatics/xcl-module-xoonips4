@@ -1,351 +1,351 @@
 <?php
 
-if (!isset($mydirname)) exit();
+if (!isset($mydirname)) {
+    exit();
+}
 
-$constpref = '_AD_' . strtoupper($mydirname);
+$constpref = '_AD_'.strtoupper($mydirname);
 
-if (defined($constpref . '_LOADED')) return;
+if (defined($constpref.'_LOADED')) {
+    return;
+}
 
-define($constpref . '_LOADED', 1);
+define($constpref.'_LOADED', 1);
 
 // action form error
-define($constpref . '_ERROR_REQUIRED', '{0} is required.');
-define($constpref . '_ERROR_MINLENGTH', 'Input {0:toLower} with {1} or more characters.');
-define($constpref . '_ERROR_MAXLENGTH', 'Input {0:toLower} with {1} or less characters.');
-define($constpref . '_ERROR_INTRANGE', 'Input {0:toLower} between {1} and {2} numeric value.');
-define($constpref . '_ERROR_MIN', 'Input {0:toLower} with {1} or more numeric value.');
-define($constpref . '_ERROR_MAX', 'Input {0:toLower} with {1} or less numeric value.');
-define($constpref . '_ERROR_EMAIL', '{0} is an invalid email address.');
-define($constpref . '_ERROR_MASK', '{0} format is invalid.');
-define($constpref . '_ERROR_EXTENSION', 'The file extension of uploaded file {0:toLower} does not match any entry in the allowed list.');
-define($constpref . '_ERROR_MAXFILESIZE', 'The maximum size of uploaded file {0:toLower} is {1} bytes.');
-define($constpref . '_ERROR_OBJECTEXIST', 'Incorrect input on {0:toLower}.');
+define($constpref.'_ERROR_REQUIRED', '{0} is required.');
+define($constpref.'_ERROR_MINLENGTH', 'Input {0:toLower} with {1} or more characters.');
+define($constpref.'_ERROR_MAXLENGTH', 'Input {0:toLower} with {1} or less characters.');
+define($constpref.'_ERROR_INTRANGE', 'Input {0:toLower} between {1} and {2} numeric value.');
+define($constpref.'_ERROR_MIN', 'Input {0:toLower} with {1} or more numeric value.');
+define($constpref.'_ERROR_MAX', 'Input {0:toLower} with {1} or less numeric value.');
+define($constpref.'_ERROR_EMAIL', '{0} is an invalid email address.');
+define($constpref.'_ERROR_MASK', '{0} format is invalid.');
+define($constpref.'_ERROR_EXTENSION', 'The file extension of uploaded file {0:toLower} does not match any entry in the allowed list.');
+define($constpref.'_ERROR_MAXFILESIZE', 'The maximum size of uploaded file {0:toLower} is {1} bytes.');
+define($constpref.'_ERROR_OBJECTEXIST', 'Incorrect input on {0:toLower}.');
 
 // messages
-define($constpref . '_MESSAGE_DBUPDATED', 'Database has been updated.');
-define($constpref . '_MESSAGE_DBDELETED', 'Data has been deleted.');
-define($constpref . '_MESSAGE_EMPTY', 'No Records found.');
-define($constpref . '_MESSAGE_DELETE_CONFIRM', 'Do you really want to delete?');
-define($constpref . '_ERROR_INPUTVALUE', 'Incorrect input on {0}.');
-define($constpref . '_ERROR_INPUTFILE', 'Incorrect input file on {0}.');
-define($constpref . '_ERROR_DUPLICATED', '{0} already exists.');
-define($constpref . '_ERROR_DBUPDATE_FAILED', 'Failed updating database.');
-define($constpref . '_ERROR_DBDELETED_FAILED', 'Failed to delete data.');
+define($constpref.'_MESSAGE_DBUPDATED', 'Database has been updated.');
+define($constpref.'_MESSAGE_DBDELETED', 'Data has been deleted.');
+define($constpref.'_MESSAGE_EMPTY', 'No Records found.');
+define($constpref.'_MESSAGE_DELETE_CONFIRM', 'Do you really want to delete?');
+define($constpref.'_ERROR_INPUTVALUE', 'Incorrect input on {0}.');
+define($constpref.'_ERROR_INPUTFILE', 'Incorrect input file on {0}.');
+define($constpref.'_ERROR_DUPLICATED', '{0} already exists.');
+define($constpref.'_ERROR_DBUPDATE_FAILED', 'Failed updating database.');
+define($constpref.'_ERROR_DBDELETED_FAILED', 'Failed to delete data.');
 
 // labels
-define($constpref . '_LANG_ACTION', 'Action');
-define($constpref . '_LANG_ADDNEW', 'Add New');
-define($constpref . '_LANG_MODIFY', 'Modify');
-define($constpref . '_LANG_DELETE', 'Delete');
-define($constpref . '_LANG_UPDATE', 'Update');
-define($constpref . '_LANG_SELECT', 'Select');
-define($constpref . '_LANG_SAVE', 'Save');
-define($constpref . '_LANG_RELEASE', 'Release');
-define($constpref . '_LANG_MOVE', 'Move');
-define($constpref . '_LANG_SEARCH', 'Search');
-define($constpref . '_LANG_MODIFY_CONTENT', 'Editing contents');
-define($constpref . '_LANG_RELEASE_CONTENT', 'Released contents');
-define($constpref . '_LANG_ITEM_EDITING', '(Editing)');
-define($constpref . '_LANG_ITEM_TYPE', 'Item Type');
-define($constpref . '_LANG_ITEM_FIELD_ID', 'Item field ID');
-define($constpref . '_LANG_ITEM_FIELD_NAME', 'Item field name');
-define($constpref . '_LANG_ITEM_FIELD_XML', 'Item field XML ID');
-define($constpref . '_LANG_ITEM_FIELD_VIEW_TYPE', 'View type');
-define($constpref . '_LANG_ITEM_FIELD_DATA_TYPE', 'Data type');
-define($constpref . '_LANG_ITEM_FIELD_DATA_LENGTH', 'Data length');
-define($constpref . '_LANG_ITEM_FIELD_DATA_SCALE', 'Decimal scale');
-define($constpref . '_LANG_ITEM_FIELD_DEFAULT', 'Default value');
-define($constpref . '_LANG_ITEM_FIELD_LIST', 'Selection list');
-define($constpref . '_LANG_ITEM_FIELD_ESSENTIAL', 'Required');
-define($constpref . '_LANG_ITEM_FIELD_OTHER', 'Other');
-define($constpref . '_LANG_ITEM_FIELD_OTHER_DISPLAY', 'Show field');
-define($constpref . '_LANG_ITEM_FIELD_OTHER_DETAIL_SEARCH', 'Advanced search');
-define($constpref . '_LANG_ITEM_FIELD_OTHER_SCOPE_SEARCH', 'Range search');
-define($constpref . '_LANG_ITEM_FIELD_HIDE', 'Not use');
-define($constpref . '_LANG_FILE_MIMETYPE', 'Mime-Type');
-define($constpref . '_LANG_FILE_EXTENSION', 'Extension');
-define($constpref . '_LANG_FILE_SEARCH_PLUGIN', 'Search Plguin');
-define($constpref . '_LANG_FILE_SEARCH_VERSION', 'Version');
-define($constpref . '_LANG_REQUIRED_MARK', '<span style="font-weight: bold; color: red;">*</span>');
+define($constpref.'_LANG_ACTION', 'Action');
+define($constpref.'_LANG_ADDNEW', 'Add New');
+define($constpref.'_LANG_MODIFY', 'Modify');
+define($constpref.'_LANG_DELETE', 'Delete');
+define($constpref.'_LANG_UPDATE', 'Update');
+define($constpref.'_LANG_SELECT', 'Select');
+define($constpref.'_LANG_SAVE', 'Save');
+define($constpref.'_LANG_RELEASE', 'Release');
+define($constpref.'_LANG_MOVE', 'Move');
+define($constpref.'_LANG_SEARCH', 'Search');
+define($constpref.'_LANG_MODIFY_CONTENT', 'Editing contents');
+define($constpref.'_LANG_RELEASE_CONTENT', 'Released contents');
+define($constpref.'_LANG_ITEM_EDITING', '(Editing)');
+define($constpref.'_LANG_ITEM_TYPE', 'Item Type');
+define($constpref.'_LANG_ITEM_FIELD_ID', 'Item field ID');
+define($constpref.'_LANG_ITEM_FIELD_NAME', 'Item field name');
+define($constpref.'_LANG_ITEM_FIELD_XML', 'Item field XML ID');
+define($constpref.'_LANG_ITEM_FIELD_VIEW_TYPE', 'View type');
+define($constpref.'_LANG_ITEM_FIELD_DATA_TYPE', 'Data type');
+define($constpref.'_LANG_ITEM_FIELD_DATA_LENGTH', 'Data length');
+define($constpref.'_LANG_ITEM_FIELD_DATA_SCALE', 'Decimal scale');
+define($constpref.'_LANG_ITEM_FIELD_DEFAULT', 'Default value');
+define($constpref.'_LANG_ITEM_FIELD_LIST', 'Selection list');
+define($constpref.'_LANG_ITEM_FIELD_ESSENTIAL', 'Required');
+define($constpref.'_LANG_ITEM_FIELD_OTHER', 'Other');
+define($constpref.'_LANG_ITEM_FIELD_OTHER_DISPLAY', 'Show field');
+define($constpref.'_LANG_ITEM_FIELD_OTHER_DETAIL_SEARCH', 'Advanced search');
+define($constpref.'_LANG_ITEM_FIELD_OTHER_SCOPE_SEARCH', 'Range search');
+define($constpref.'_LANG_ITEM_FIELD_HIDE', 'Not use');
+define($constpref.'_LANG_FILE_MIMETYPE', 'Mime-Type');
+define($constpref.'_LANG_FILE_EXTENSION', 'Extension');
+define($constpref.'_LANG_FILE_SEARCH_PLUGIN', 'Search Plguin');
+define($constpref.'_LANG_FILE_SEARCH_VERSION', 'Version');
+define($constpref.'_LANG_REQUIRED_MARK', '<span style="font-weight: bold; color: red;">*</span>');
 
 // action: Index
-define($constpref . '_TITLE', 'XooNIps Configurations');
-define($constpref . '_SYSTEM_TITLE', 'System Configuration');
-define($constpref . '_SYSTEM_DESC', 'System configuration for the XooNIps. The system administrator will change these settins.');
-define($constpref . '_POLICY_TITLE', 'Site Policies');
-define($constpref . '_POLICY_DESC', 'Configurations for the Site Policies. The site manager have to decide these policies before using XooNIps.');
-define($constpref . '_MAINTENANCE_TITLE', 'Maintenance');
-define($constpref . '_MAINTENANCE_DESC', 'There are various operations related to XooNIps database maintenance.');
+define($constpref.'_TITLE', 'XooNIps Configurations');
+define($constpref.'_SYSTEM_TITLE', 'System Configuration');
+define($constpref.'_SYSTEM_DESC', 'System configuration for the XooNIps. The system administrator will change these settins.');
+define($constpref.'_POLICY_TITLE', 'Site Policies');
+define($constpref.'_POLICY_DESC', 'Configurations for the Site Policies. The site manager have to decide these policies before using XooNIps.');
+define($constpref.'_MAINTENANCE_TITLE', 'Maintenance');
+define($constpref.'_MAINTENANCE_DESC', 'There are various operations related to XooNIps database maintenance.');
 
 // action: System
-define($constpref . '_SYSTEM_BASIC_TITLE', 'Basic Configurations');
-define($constpref . '_SYSTEM_BASIC_DESC', 'The XooNIps is required to work at least these settings.');
-define($constpref . '_SYSTEM_MSGSIGN_TITLE', 'Message Signature');
-define($constpref . '_SYSTEM_MSGSIGN_DESC', 'The system signatures will be added to the rear of the notified message.');
-define($constpref . '_SYSTEM_OAIPMH_TITLE', 'OAI-PMH');
-define($constpref . '_SYSTEM_OAIPMH_DESC', 'Configurations for OAI-PMH Repository.');
-define($constpref . '_SYSTEM_PROXY_TITLE', 'Proxy');
-define($constpref . '_SYSTEM_PROXY_DESC', 'Configurations for the proxy server.');
-define($constpref . '_SYSTEM_NOTIFICATION_TITLE', 'Notifications');
-define($constpref . '_SYSTEM_NOTIFICATION_DESC', 'Configurations for the event notifications.');
-define($constpref . '_SYSTEM_AMAZON_TITLE', 'Amazon Web Services');
-define($constpref . '_SYSTEM_AMAZON_DESC', 'Configurations for Amazon Web Services.');
+define($constpref.'_SYSTEM_BASIC_TITLE', 'Basic Configurations');
+define($constpref.'_SYSTEM_BASIC_DESC', 'The XooNIps is required to work at least these settings.');
+define($constpref.'_SYSTEM_MSGSIGN_TITLE', 'Message Signature');
+define($constpref.'_SYSTEM_MSGSIGN_DESC', 'The system signatures will be added to the rear of the notified message.');
+define($constpref.'_SYSTEM_OAIPMH_TITLE', 'OAI-PMH');
+define($constpref.'_SYSTEM_OAIPMH_DESC', 'Configurations for OAI-PMH Repository.');
+define($constpref.'_SYSTEM_PROXY_TITLE', 'Proxy');
+define($constpref.'_SYSTEM_PROXY_DESC', 'Configurations for the proxy server.');
+define($constpref.'_SYSTEM_NOTIFICATION_TITLE', 'Notifications');
+define($constpref.'_SYSTEM_NOTIFICATION_DESC', 'Configurations for the event notifications.');
+define($constpref.'_SYSTEM_AMAZON_TITLE', 'Amazon Web Services');
+define($constpref.'_SYSTEM_AMAZON_DESC', 'Configurations for Amazon Web Services.');
 
 // action: SystemBasic
-define($constpref . '_SYSTEM_BASIC_MODERATOR_GROUP_TITLE', 'Moderator Group');
-define($constpref . '_SYSTEM_BASIC_MODERATOR_GROUP_DESC', 'Choose the XOOPS group for the XooNIps moderators.');
-define($constpref . '_SYSTEM_BASIC_UPLOAD_DIR_TITLE', 'File Upload Directory');
-define($constpref . '_SYSTEM_BASIC_UPLOAD_DIR_DESC', 'Enter absolute path for the file upload direcotry. This direcotry needs write permission for the web server process.');
-define($constpref . '_ERROR_UPLOAD_DIRECTORY', 'The entered file upload directory not exists.');
+define($constpref.'_SYSTEM_BASIC_MODERATOR_GROUP_TITLE', 'Moderator Group');
+define($constpref.'_SYSTEM_BASIC_MODERATOR_GROUP_DESC', 'Choose the XOOPS group for the XooNIps moderators.');
+define($constpref.'_SYSTEM_BASIC_UPLOAD_DIR_TITLE', 'File Upload Directory');
+define($constpref.'_SYSTEM_BASIC_UPLOAD_DIR_DESC', 'Enter absolute path for the file upload direcotry. This direcotry needs write permission for the web server process.');
+define($constpref.'_ERROR_UPLOAD_DIRECTORY', 'The entered file upload directory not exists.');
 
 // action: SystemMessageSign
-define($constpref . '_SYSTEM_MSGSIGN_SIGN_TITLE', 'Signature Template');
-define($constpref . '_SYSTEM_MSGSIGN_SIGN_DESC', 'Replace the signature space of the notice with this content. can use thw following as reserved word, the site name:{X_SITENAME}, the link to the site:{X_SITEURL}, the e-mail address of the administrator:{X_ADMINMAIL}.');
+define($constpref.'_SYSTEM_MSGSIGN_SIGN_TITLE', 'Signature Template');
+define($constpref.'_SYSTEM_MSGSIGN_SIGN_DESC', 'Replace the signature space of the notice with this content. can use thw following as reserved word, the site name:{X_SITENAME}, the link to the site:{X_SITEURL}, the e-mail address of the administrator:{X_ADMINMAIL}.');
 
 // action: SystemOaipmh
-define($constpref . '_SYSTEM_OAIPMH_REPOSITORY_TITLE', 'Repository Configurations');
-define($constpref . '_SYSTEM_OAIPMH_REPOSITORY_NAME_TITLE', 'Repository Name');
-define($constpref . '_SYSTEM_OAIPMH_REPOSITORY_NAME_DESC', '');
-define($constpref . '_SYSTEM_OAIPMH_REPOSITORY_CODE_TITLE', 'Database ID');
-define($constpref . '_SYSTEM_OAIPMH_REPOSITORY_CODE_DESC', '');
-define($constpref . '_SYSTEM_OAIPMH_REPOSITORY_DELETION_TRACK_TITLE', 'Number of days tracking item deletion.');
-define($constpref . '_SYSTEM_OAIPMH_REPOSITORY_DELETION_TRACK_DESC', '');
+define($constpref.'_SYSTEM_OAIPMH_REPOSITORY_TITLE', 'Repository Configurations');
+define($constpref.'_SYSTEM_OAIPMH_REPOSITORY_NAME_TITLE', 'Repository Name');
+define($constpref.'_SYSTEM_OAIPMH_REPOSITORY_NAME_DESC', '');
+define($constpref.'_SYSTEM_OAIPMH_REPOSITORY_CODE_TITLE', 'Database ID');
+define($constpref.'_SYSTEM_OAIPMH_REPOSITORY_CODE_DESC', '');
+define($constpref.'_SYSTEM_OAIPMH_REPOSITORY_DELETION_TRACK_TITLE', 'Number of days tracking item deletion.');
+define($constpref.'_SYSTEM_OAIPMH_REPOSITORY_DELETION_TRACK_DESC', '');
 
 // action: SystemProxy
-define($constpref . '_SYSTEM_PROXY_PROXY_HOST_TITLE', 'Host');
-define($constpref . '_SYSTEM_PROXY_PROXY_HOST_DESC', 'Enter the appropriate host name or IP address of the proxy server.');
-define($constpref . '_SYSTEM_PROXY_PROXY_PORT_TITLE', 'Port');
-define($constpref . '_SYSTEM_PROXY_PROXY_PORT_DESC', 'Enter the appropriate port number of the proxy server.');
-define($constpref . '_SYSTEM_PROXY_PROXY_USER_TITLE', 'User Name');
-define($constpref . '_SYSTEM_PROXY_PROXY_USER_DESC', 'Enter the user name, if required to authenticate the proxy server.');
-define($constpref . '_SYSTEM_PROXY_PROXY_PASS_TITLE', 'Password');
-define($constpref . '_SYSTEM_PROXY_PROXY_PASS_DESC', 'Enter the password for the authentication.');
+define($constpref.'_SYSTEM_PROXY_PROXY_HOST_TITLE', 'Host');
+define($constpref.'_SYSTEM_PROXY_PROXY_HOST_DESC', 'Enter the appropriate host name or IP address of the proxy server.');
+define($constpref.'_SYSTEM_PROXY_PROXY_PORT_TITLE', 'Port');
+define($constpref.'_SYSTEM_PROXY_PROXY_PORT_DESC', 'Enter the appropriate port number of the proxy server.');
+define($constpref.'_SYSTEM_PROXY_PROXY_USER_TITLE', 'User Name');
+define($constpref.'_SYSTEM_PROXY_PROXY_USER_DESC', 'Enter the user name, if required to authenticate the proxy server.');
+define($constpref.'_SYSTEM_PROXY_PROXY_PASS_TITLE', 'Password');
+define($constpref.'_SYSTEM_PROXY_PROXY_PASS_DESC', 'Enter the password for the authentication.');
 
 // action: SystemAmazon
-define($constpref . '_SYSTEM_AMAZON_ACCESS_KEY_TITLE', 'Access key for Amazon Product Advertising API');
-define($constpref . '_SYSTEM_AMAZON_SECRET_ACCESS_KEY_TITLE', 'Secret access key for Amazon Product Advertising API');
+define($constpref.'_SYSTEM_AMAZON_ACCESS_KEY_TITLE', 'Access key for Amazon Product Advertising API');
+define($constpref.'_SYSTEM_AMAZON_SECRET_ACCESS_KEY_TITLE', 'Secret access key for Amazon Product Advertising API');
 
 // action: SystemNotification
-define($constpref . '_SYSTEM_NOTIFICATION_ENABLED', 'Enable Notification');
+define($constpref.'_SYSTEM_NOTIFICATION_ENABLED', 'Enable Notification');
 
 // action: Policy
-define($constpref . '_POLICY_USER_TITLE', 'User Information');
-define($constpref . '_POLICY_USER_DESC', 'Policy settings for the user informations.');
-define($constpref . '_POLICY_GROUP_TITLE', 'Group Information');
-define($constpref . '_POLICY_GROUP_DESC', 'Policy settings for the group informatins.');
-define($constpref . '_POLICY_ITEM_TITLE', 'Item Information');
-define($constpref . '_POLICY_ITEM_DESC', 'Policy settings for the item information.');
-define($constpref . '_POLICY_INDEX_TITLE', 'Index Information');
-define($constpref . '_POLICY_INDEX_DESC', 'Policy settings for the index information.');
+define($constpref.'_POLICY_USER_TITLE', 'User Information');
+define($constpref.'_POLICY_USER_DESC', 'Policy settings for the user informations.');
+define($constpref.'_POLICY_GROUP_TITLE', 'Group Information');
+define($constpref.'_POLICY_GROUP_DESC', 'Policy settings for the group informatins.');
+define($constpref.'_POLICY_ITEM_TITLE', 'Item Information');
+define($constpref.'_POLICY_ITEM_DESC', 'Policy settings for the item information.');
+define($constpref.'_POLICY_INDEX_TITLE', 'Index Information');
+define($constpref.'_POLICY_INDEX_DESC', 'Policy settings for the index information.');
 
 // action: PolicyUser
 // - mode: regist
-define($constpref . '_POLICY_USER_REGIST_TITLE', 'User Registration Policies');
-define($constpref . '_POLICY_USER_REGIST_ACTIVATE_TITLE', 'Activation type');
-define($constpref . '_POLICY_USER_REGIST_ACTIVATE_DESC', 'Select activation type of newly registered users.');
-define($constpref . '_POLICY_USER_REGIST_ACTIVATE_USER', 'Requires activation by user (recommended)');
-define($constpref . '_POLICY_USER_REGIST_ACTIVATE_AUTO', 'Activate automatically');
-define($constpref . '_POLICY_USER_REGIST_ACTIVATE_ADMIN', 'Activation by administrators');
-define($constpref . '_POLICY_USER_REGIST_CERTIFY_TITLE', 'Certification type');
-define($constpref . '_POLICY_USER_REGIST_CERTIFY_DESC', 'The user account have to certify for using XooNIps. Select ceritification type of activated users.');
-define($constpref . '_POLICY_USER_REGIST_CERTIFY_MODERATOR', 'Certification by moderators');
-define($constpref . '_POLICY_USER_REGIST_CERTIFY_AUTO', 'Certify automatically');
-define($constpref . '_POLICY_USER_REGIST_DATELIMIT_TITLE', 'Time limit for user account approval (day)"');
-define($constpref . '_POLICY_USER_REGIST_DATELIMIT_DESC', 'If user account is not certificated before this period, the user account registration procedure will be desmissed. If this value is set to zero, this function will be disabled.');
+define($constpref.'_POLICY_USER_REGIST_TITLE', 'User Registration Policies');
+define($constpref.'_POLICY_USER_REGIST_ACTIVATE_TITLE', 'Activation type');
+define($constpref.'_POLICY_USER_REGIST_ACTIVATE_DESC', 'Select activation type of newly registered users.');
+define($constpref.'_POLICY_USER_REGIST_ACTIVATE_USER', 'Requires activation by user (recommended)');
+define($constpref.'_POLICY_USER_REGIST_ACTIVATE_AUTO', 'Activate automatically');
+define($constpref.'_POLICY_USER_REGIST_ACTIVATE_ADMIN', 'Activation by administrators');
+define($constpref.'_POLICY_USER_REGIST_CERTIFY_TITLE', 'Certification type');
+define($constpref.'_POLICY_USER_REGIST_CERTIFY_DESC', 'The user account have to certify for using XooNIps. Select ceritification type of activated users.');
+define($constpref.'_POLICY_USER_REGIST_CERTIFY_MODERATOR', 'Certification by moderators');
+define($constpref.'_POLICY_USER_REGIST_CERTIFY_AUTO', 'Certify automatically');
+define($constpref.'_POLICY_USER_REGIST_DATELIMIT_TITLE', 'Time limit for user account approval (day)"');
+define($constpref.'_POLICY_USER_REGIST_DATELIMIT_DESC', 'If user account is not certificated before this period, the user account registration procedure will be desmissed. If this value is set to zero, this function will be disabled.');
 // - mode: initval
-define($constpref . '_POLICY_USER_INITVAL_TITLE', 'Initial properties of newly registered users');
-define($constpref . '_POLICY_USER_INITVAL_MAXITEM_TITLE', 'Maximum Private Items');
-define($constpref . '_POLICY_USER_INITVAL_MAXITEM_DESC', 'Set the maximum number of registration items in the private area. If this value is set to zero, this resource is unlimited.');
-define($constpref . '_POLICY_USER_INITVAL_MAXINDEX_TITLE', 'Maximum Private Indexes');
-define($constpref . '_POLICY_USER_INITVAL_MAXINDEX_DESC', 'Set the maximum number of registration indexes in the private area. If this value is set to zero, this resource is unlimited.');
-define($constpref . '_POLICY_USER_INITVAL_MAXDISK_TITLE', 'Maximum Disk Space for Private Items [MB]');
-define($constpref . '_POLICY_USER_INITVAL_MAXDISK_DESC', 'Set the maximum storage size in the private area. The floating-point number will accept in this field. If this value is set to zero, this resource is unlimited');
+define($constpref.'_POLICY_USER_INITVAL_TITLE', 'Initial properties of newly registered users');
+define($constpref.'_POLICY_USER_INITVAL_MAXITEM_TITLE', 'Maximum Private Items');
+define($constpref.'_POLICY_USER_INITVAL_MAXITEM_DESC', 'Set the maximum number of registration items in the private area. If this value is set to zero, this resource is unlimited.');
+define($constpref.'_POLICY_USER_INITVAL_MAXINDEX_TITLE', 'Maximum Private Indexes');
+define($constpref.'_POLICY_USER_INITVAL_MAXINDEX_DESC', 'Set the maximum number of registration indexes in the private area. If this value is set to zero, this resource is unlimited.');
+define($constpref.'_POLICY_USER_INITVAL_MAXDISK_TITLE', 'Maximum Disk Space for Private Items [MB]');
+define($constpref.'_POLICY_USER_INITVAL_MAXDISK_DESC', 'Set the maximum storage size in the private area. The floating-point number will accept in this field. If this value is set to zero, this resource is unlimited');
 
 // action: PolicyUser
 // - mode: general
-define($constpref . '_POLICY_GROUP_GENERAL_TITLE', 'General Group Configurations');
-define($constpref . '_POLICY_GROUP_CONSTRUCT_PERMIT_TITLE', 'Allow group creation by user');
-define($constpref . '_POLICY_GROUP_CONSTRUCT_PERMIT_DESC', '');
-define($constpref . '_POLICY_GROUP_CONSTRUCT_PERMIT_ALLOW', 'Permit');
-define($constpref . '_POLICY_GROUP_CONSTRUCT_PERMIT_DENY', 'Not permit');
-define($constpref . '_POLICY_GROUP_CONSTRUCT_CERTIFY_TITLE', 'The approval method for group creation');
-define($constpref . '_POLICY_GROUP_CONSTRUCT_CERTIFY_DESC', '');
-define($constpref . '_POLICY_GROUP_CONSTRUCT_CERTIFY_MODERATOR', 'Moderator confirmation required');
-define($constpref . '_POLICY_GROUP_CONSTRUCT_CERTIFY_AUTO', 'Approve automatically');
-define($constpref . '_POLICY_GROUP_PUBLISH_CERTIFY_TITLE', 'The approval method for group publication');
-define($constpref . '_POLICY_GROUP_PUBLISH_CERTIFY_DESC', '');
-define($constpref . '_POLICY_GROUP_PUBLISH_CERTIFY_MODERATOR', 'Moderator confirmation required');
-define($constpref . '_POLICY_GROUP_PUBLISH_CERTIFY_AUTO', 'Approve automatically');
+define($constpref.'_POLICY_GROUP_GENERAL_TITLE', 'General Group Configurations');
+define($constpref.'_POLICY_GROUP_CONSTRUCT_PERMIT_TITLE', 'Allow group creation by user');
+define($constpref.'_POLICY_GROUP_CONSTRUCT_PERMIT_DESC', '');
+define($constpref.'_POLICY_GROUP_CONSTRUCT_PERMIT_ALLOW', 'Permit');
+define($constpref.'_POLICY_GROUP_CONSTRUCT_PERMIT_DENY', 'Not permit');
+define($constpref.'_POLICY_GROUP_CONSTRUCT_CERTIFY_TITLE', 'The approval method for group creation');
+define($constpref.'_POLICY_GROUP_CONSTRUCT_CERTIFY_DESC', '');
+define($constpref.'_POLICY_GROUP_CONSTRUCT_CERTIFY_MODERATOR', 'Moderator confirmation required');
+define($constpref.'_POLICY_GROUP_CONSTRUCT_CERTIFY_AUTO', 'Approve automatically');
+define($constpref.'_POLICY_GROUP_PUBLISH_CERTIFY_TITLE', 'The approval method for group publication');
+define($constpref.'_POLICY_GROUP_PUBLISH_CERTIFY_DESC', '');
+define($constpref.'_POLICY_GROUP_PUBLISH_CERTIFY_MODERATOR', 'Moderator confirmation required');
+define($constpref.'_POLICY_GROUP_PUBLISH_CERTIFY_AUTO', 'Approve automatically');
 // - mode: initval
-define($constpref . '_POLICY_GROUP_INITVAL_TITLE', 'Initial properties of newly constructed groups');
-define($constpref . '_POLICY_GROUP_INITVAL_MAXITEM_TITLE', 'Maximum Group Items');
-define($constpref . '_POLICY_GROUP_INITVAL_MAXITEM_DESC', 'Set the maximum number of registration items in the group area. If this value is set to zero, this resource is unlimited.');
-define($constpref . '_POLICY_GROUP_INITVAL_MAXINDEX_TITLE', 'Maximum Group Indexes');
-define($constpref . '_POLICY_GROUP_INITVAL_MAXINDEX_DESC', 'Set the maximum number of registration indexes in the group area. If this value is set to zero, this resource is unlimited.');
-define($constpref . '_POLICY_GROUP_INITVAL_MAXDISK_TITLE', 'Maximum Disk Space for Group Items [MB]');
-define($constpref . '_POLICY_GROUP_INITVAL_MAXDISK_DESC', 'Set the maximum storage size in the group area. The floating-point number will accept in this field. If this value is set to zero, this resource is unlimited');
+define($constpref.'_POLICY_GROUP_INITVAL_TITLE', 'Initial properties of newly constructed groups');
+define($constpref.'_POLICY_GROUP_INITVAL_MAXITEM_TITLE', 'Maximum Group Items');
+define($constpref.'_POLICY_GROUP_INITVAL_MAXITEM_DESC', 'Set the maximum number of registration items in the group area. If this value is set to zero, this resource is unlimited.');
+define($constpref.'_POLICY_GROUP_INITVAL_MAXINDEX_TITLE', 'Maximum Group Indexes');
+define($constpref.'_POLICY_GROUP_INITVAL_MAXINDEX_DESC', 'Set the maximum number of registration indexes in the group area. If this value is set to zero, this resource is unlimited.');
+define($constpref.'_POLICY_GROUP_INITVAL_MAXDISK_TITLE', 'Maximum Disk Space for Group Items [MB]');
+define($constpref.'_POLICY_GROUP_INITVAL_MAXDISK_DESC', 'Set the maximum storage size in the group area. The floating-point number will accept in this field. If this value is set to zero, this resource is unlimited');
 
 // action: PolicyItem
-define($constpref . '_POLICY_ITEM_TYPE_TITLE', 'Item Type');
-define($constpref . '_POLICY_ITEM_TYPE_DESC', 'The Management of item type information is effected.');
-define($constpref . '_POLICY_ITEM_FIELD_GROUP_TITLE', 'Item Field Group');
-define($constpref . '_POLICY_ITEM_FIELD_GROUP_DESC', 'The Management of item field group information is effected.');
-define($constpref . '_POLICY_ITEM_FIELD_TITLE', 'Item Field');
-define($constpref . '_POLICY_ITEM_FIELD_DESC', 'The Management of item field information is effected.');
-define($constpref . '_POLICY_ITEM_FIELD_SELECT_TITLE', 'Selection List for Item Fields');
-define($constpref . '_POLICY_ITEM_FIELD_SELECT_DESC', 'Edit selection list for item fields');
-define($constpref . '_POLICY_ITEM_PUBLIC_TITLE', 'Item Publication');
-define($constpref . '_POLICY_ITEM_PUBLIC_DESC', 'Policy settings for the item publication.');
-define($constpref . '_POLICY_ITEM_SORT_TITLE', 'Item Sorting');
-define($constpref . '_POLICY_ITEM_SORT_DESC', 'Policy settings for the item sorting');
-define($constpref . '_POLICY_ITEM_QUICKSEARCH_TITLE', 'Quick Search Criteria');
-define($constpref . '_POLICY_ITEM_QUICKSEARCH_DESC', 'Policy settings for the quick search criteria');
-define($constpref . '_POLICY_ITEM_OAIPMH_TITLE', 'OAI-PMH Mapping');
-define($constpref . '_POLICY_ITEM_OAIPMH_DESC', 'Assign item type fields corresponding to each schema of OAI-PMH.');
+define($constpref.'_POLICY_ITEM_TYPE_TITLE', 'Item Type');
+define($constpref.'_POLICY_ITEM_TYPE_DESC', 'The Management of item type information is effected.');
+define($constpref.'_POLICY_ITEM_FIELD_GROUP_TITLE', 'Item Field Group');
+define($constpref.'_POLICY_ITEM_FIELD_GROUP_DESC', 'The Management of item field group information is effected.');
+define($constpref.'_POLICY_ITEM_FIELD_TITLE', 'Item Field');
+define($constpref.'_POLICY_ITEM_FIELD_DESC', 'The Management of item field information is effected.');
+define($constpref.'_POLICY_ITEM_FIELD_SELECT_TITLE', 'Selection List for Item Fields');
+define($constpref.'_POLICY_ITEM_FIELD_SELECT_DESC', 'Edit selection list for item fields');
+define($constpref.'_POLICY_ITEM_PUBLIC_TITLE', 'Item Publication');
+define($constpref.'_POLICY_ITEM_PUBLIC_DESC', 'Policy settings for the item publication.');
+define($constpref.'_POLICY_ITEM_SORT_TITLE', 'Item Sorting');
+define($constpref.'_POLICY_ITEM_SORT_DESC', 'Policy settings for the item sorting');
+define($constpref.'_POLICY_ITEM_QUICKSEARCH_TITLE', 'Quick Search Criteria');
+define($constpref.'_POLICY_ITEM_QUICKSEARCH_DESC', 'Policy settings for the quick search criteria');
+define($constpref.'_POLICY_ITEM_OAIPMH_TITLE', 'OAI-PMH Mapping');
+define($constpref.'_POLICY_ITEM_OAIPMH_DESC', 'Assign item type fields corresponding to each schema of OAI-PMH.');
 
 // action: PolicyItemField
-define($constpref . '_POLICY_ITEM_FIELD_DESC_MORE1', 'Contents for change is reflected by releasing it with an item field edit screen.');
-define($constpref . '_POLICY_ITEM_FIELD_DESC_MORE2', 'You can delete only an item field not belonged to item group.');
+define($constpref.'_POLICY_ITEM_FIELD_DESC_MORE1', 'Contents for change is reflected by releasing it with an item field edit screen.');
+define($constpref.'_POLICY_ITEM_FIELD_DESC_MORE2', 'You can delete only an item field not belonged to item group.');
 
 // action: PolicyItemFieldEdit
-define($constpref . '_POLICY_ITEM_FIELD_REGISTER_TITLE', 'Register Item Field');
-define($constpref . '_POLICY_ITEM_FIELD_REGISTER_DESC', 'Register new item field.');
-define($constpref . '_POLICY_ITEM_FIELD_EDIT_TITLE', 'Edit Item Field');
-define($constpref . '_POLICY_ITEM_FIELD_EDIT_DESC', 'Edit item field detail information.');
-define($constpref . '_POLICY_ITEM_FIELD_OTHER_DISPLAY_DESC', 'Can not view besides a moderator, if checked.');
-define($constpref . '_POLICY_ITEM_FIELD_OTHER_DETAIL_SEARCH_DESC', 'The field is searched by advanced search if checked.');
-define($constpref . '_POLICY_ITEM_FIELD_OTHER_SCOPE_SEARCH_DESC', 'The field is searched a range by advanced search if checked.');
+define($constpref.'_POLICY_ITEM_FIELD_REGISTER_TITLE', 'Register Item Field');
+define($constpref.'_POLICY_ITEM_FIELD_REGISTER_DESC', 'Register new item field.');
+define($constpref.'_POLICY_ITEM_FIELD_EDIT_TITLE', 'Edit Item Field');
+define($constpref.'_POLICY_ITEM_FIELD_EDIT_DESC', 'Edit item field detail information.');
+define($constpref.'_POLICY_ITEM_FIELD_OTHER_DISPLAY_DESC', 'Can not view besides a moderator, if checked.');
+define($constpref.'_POLICY_ITEM_FIELD_OTHER_DETAIL_SEARCH_DESC', 'The field is searched by advanced search if checked.');
+define($constpref.'_POLICY_ITEM_FIELD_OTHER_SCOPE_SEARCH_DESC', 'The field is searched a range by advanced search if checked.');
 
 // action: PolicyItemFieldDelete
-define($constpref . '_POLICY_ITEM_FIELD_DELETE_TITLE', 'Delete Item Field');
-define($constpref . '_POLICY_ITEM_FIELD_DELETE_DESC', 'Delete comfirmation. This cannot be undone.');
+define($constpref.'_POLICY_ITEM_FIELD_DELETE_TITLE', 'Delete Item Field');
+define($constpref.'_POLICY_ITEM_FIELD_DELETE_DESC', 'Delete comfirmation. This cannot be undone.');
 
 // action: PolicyItemFieldSelect
-define($constpref . '_POLICY_ITEM_FIELD_SELECT_NAME', 'Selection List Name');
+define($constpref.'_POLICY_ITEM_FIELD_SELECT_NAME', 'Selection List Name');
 
 // action: PolicyItemFieldSelectEdit
-define($constpref . '_POLICY_ITEM_FIELD_SELECT_EDIT_TITLE', 'Edit Selection List');
-define($constpref . '_POLICY_ITEM_FIELD_SELECT_EDIT_DESC', 'Edit selection list for item fields. The used code is not permited to delete or edit.');
-define($constpref . '_POLICY_ITEM_FIELD_SELECT_LANG_VALUE_CODE', 'Code');
-define($constpref . '_POLICY_ITEM_FIELD_SELECT_LANG_VALUE_NAME', 'Name');
+define($constpref.'_POLICY_ITEM_FIELD_SELECT_EDIT_TITLE', 'Edit Selection List');
+define($constpref.'_POLICY_ITEM_FIELD_SELECT_EDIT_DESC', 'Edit selection list for item fields. The used code is not permited to delete or edit.');
+define($constpref.'_POLICY_ITEM_FIELD_SELECT_LANG_VALUE_CODE', 'Code');
+define($constpref.'_POLICY_ITEM_FIELD_SELECT_LANG_VALUE_NAME', 'Name');
 
 // action: PolicyItemFieldSelectDelete
-define($constpref . '_POLICY_ITEM_FIELD_SELECT_DELETE_TITLE', 'Delete Selection List');
-define($constpref . '_POLICY_ITEM_FIELD_SELECT_DELETE_DESC', 'Delete comfirmation. This cannot be undone.');
+define($constpref.'_POLICY_ITEM_FIELD_SELECT_DELETE_TITLE', 'Delete Selection List');
+define($constpref.'_POLICY_ITEM_FIELD_SELECT_DELETE_DESC', 'Delete comfirmation. This cannot be undone.');
 
 // action: PolicyItemPublic
-define($constpref . '_POLICY_ITEM_PUBLIC_GENERAL_TITLE', 'General Item Publication Policies');
-define($constpref . '_POLICY_ITEM_PUBLIC_CERTIFY_ITEM_TITLE', 'Certification type');
-define($constpref . '_POLICY_ITEM_PUBLIC_CERTIFY_ITEM_DESC', 'The certification is neccessary to open the item to the public. Select the certification type of the item publication.');
-define($constpref . '_POLICY_ITEM_PUBLIC_CERTIFY_ITEM_MANUAL', 'Certification by moderators');
-define($constpref . '_POLICY_ITEM_PUBLIC_CERTIFY_ITEM_AUTO', 'Certify automatically');
-define($constpref . '_POLICY_ITEM_PUBLIC_DOWNLOAD_FILE_TITLE', 'Download file type');
-define($constpref . '_POLICY_ITEM_PUBLIC_DOWNLOAD_FILE_DESC', 'Select the download file type of the attachements.');
-define($constpref . '_POLICY_ITEM_PUBLIC_DOWNLOAD_FILE_ZIP', 'Zipped with meta-informations');
-define($constpref . '_POLICY_ITEM_PUBLIC_DOWNLOAD_FILE_PLAIN', 'Original file');
+define($constpref.'_POLICY_ITEM_PUBLIC_GENERAL_TITLE', 'General Item Publication Policies');
+define($constpref.'_POLICY_ITEM_PUBLIC_CERTIFY_ITEM_TITLE', 'Certification type');
+define($constpref.'_POLICY_ITEM_PUBLIC_CERTIFY_ITEM_DESC', 'The certification is neccessary to open the item to the public. Select the certification type of the item publication.');
+define($constpref.'_POLICY_ITEM_PUBLIC_CERTIFY_ITEM_MANUAL', 'Certification by moderators');
+define($constpref.'_POLICY_ITEM_PUBLIC_CERTIFY_ITEM_AUTO', 'Certify automatically');
+define($constpref.'_POLICY_ITEM_PUBLIC_DOWNLOAD_FILE_TITLE', 'Download file type');
+define($constpref.'_POLICY_ITEM_PUBLIC_DOWNLOAD_FILE_DESC', 'Select the download file type of the attachements.');
+define($constpref.'_POLICY_ITEM_PUBLIC_DOWNLOAD_FILE_ZIP', 'Zipped with meta-informations');
+define($constpref.'_POLICY_ITEM_PUBLIC_DOWNLOAD_FILE_PLAIN', 'Original file');
 
 // action: PolicyItemSort
-define($constpref . '_POLICY_ITEM_SORT_LABEL', 'Sort Item Criteria');
+define($constpref.'_POLICY_ITEM_SORT_LABEL', 'Sort Item Criteria');
 
 // action: PolicyItemSortEdit
-define($constpref . '_POLICY_ITEM_SORT_EDIT_TITLE', 'Edit Sort Item');
-define($constpref . '_POLICY_ITEM_SORT_EDIT_DESC', 'Select the each item type field for the item sorting criteria.');
-define($constpref . '_POLICY_ITEM_SORT_FIELD', 'Sorting Field');
+define($constpref.'_POLICY_ITEM_SORT_EDIT_TITLE', 'Edit Sort Item');
+define($constpref.'_POLICY_ITEM_SORT_EDIT_DESC', 'Select the each item type field for the item sorting criteria.');
+define($constpref.'_POLICY_ITEM_SORT_FIELD', 'Sorting Field');
 
 // action: PolicyItemSortDelete
-define($constpref . '_POLICY_ITEM_SORT_ID', 'Item Sort ID');
-define($constpref . '_POLICY_ITEM_SORT_DELETE_TITLE', 'Delete Item Sort Criteria');
-define($constpref . '_POLICY_ITEM_SORT_DELETE_DESC', 'Delete comfirmation. This cannnot be undone.');
-
+define($constpref.'_POLICY_ITEM_SORT_ID', 'Item Sort ID');
+define($constpref.'_POLICY_ITEM_SORT_DELETE_TITLE', 'Delete Item Sort Criteria');
+define($constpref.'_POLICY_ITEM_SORT_DELETE_DESC', 'Delete comfirmation. This cannnot be undone.');
 
 // action: PolicyItemQuickSearch
-define($constpref . '_POLICY_ITEM_QUICKSEARCH_LABEL', 'Quick Serch Name');
+define($constpref.'_POLICY_ITEM_QUICKSEARCH_LABEL', 'Quick Serch Name');
 
 // action: PolicyItemQuickSearchEdit
-define($constpref . '_POLICY_ITEM_QUICKSEARCH_EDIT_TITLE', 'Edit quick search crieria');
-define($constpref . '_POLICY_ITEM_QUICKSEARCH_EDIT_DESC', 'Select quick search target fields.');
-define($constpref . '_POLICY_ITEM_QUICKSEARCH_CRITERIA_ID', 'Quick Search Criteria ID');
+define($constpref.'_POLICY_ITEM_QUICKSEARCH_EDIT_TITLE', 'Edit quick search crieria');
+define($constpref.'_POLICY_ITEM_QUICKSEARCH_EDIT_DESC', 'Select quick search target fields.');
+define($constpref.'_POLICY_ITEM_QUICKSEARCH_CRITERIA_ID', 'Quick Search Criteria ID');
 
 // action: PolicyItemQuickSearchDelete
-define($constpref . '_POLICY_ITEM_QUICKSEARCH_DELETE_TITLE', 'Delete quick search crieria');
-define($constpref . '_POLICY_ITEM_QUICKSEARCH_DELETE_DESC', 'Delete comfirmation. This cannot be undone.');
+define($constpref.'_POLICY_ITEM_QUICKSEARCH_DELETE_TITLE', 'Delete quick search crieria');
+define($constpref.'_POLICY_ITEM_QUICKSEARCH_DELETE_DESC', 'Delete comfirmation. This cannot be undone.');
 
 // action: PolicyIndex
-define($constpref . '_POLICY_INDEX_DETAILED_DESCRIPTION', 'Index Description Setting');
-define($constpref . '_POLICY_INDEX_INDEX_UPLOAD_DIR_TITLE', 'File Upload Directory');
-define($constpref . '_POLICY_INDEX_INDEX_UPLOAD_DIR_DESC', 'Enter absolute path for the file upload direcotry. This direcotry needs write permission for the web server process.');
+define($constpref.'_POLICY_INDEX_DETAILED_DESCRIPTION', 'Index Description Setting');
+define($constpref.'_POLICY_INDEX_INDEX_UPLOAD_DIR_TITLE', 'File Upload Directory');
+define($constpref.'_POLICY_INDEX_INDEX_UPLOAD_DIR_DESC', 'Enter absolute path for the file upload direcotry. This direcotry needs write permission for the web server process.');
 
 // action: Maintenance
-define($constpref . '_MAINTENANCE_USER_TITLE', 'User Management');
-define($constpref . '_MAINTENANCE_GROUP_TITLE', 'Group Management');
-define($constpref . '_MAINTENANCE_ITEM_TITLE', 'Item Management');
-define($constpref . '_MAINTENANCE_ITEM_DESC', 'Management for the registered items.');
-define($constpref . '_MAINTENANCE_FILESEARCH_TITLE', 'File Search');
-define($constpref . '_MAINTENANCE_FILESEARCH_DESC', 'Management for the file search indexes.');
+define($constpref.'_MAINTENANCE_USER_TITLE', 'User Management');
+define($constpref.'_MAINTENANCE_GROUP_TITLE', 'Group Management');
+define($constpref.'_MAINTENANCE_ITEM_TITLE', 'Item Management');
+define($constpref.'_MAINTENANCE_ITEM_DESC', 'Management for the registered items.');
+define($constpref.'_MAINTENANCE_FILESEARCH_TITLE', 'File Search');
+define($constpref.'_MAINTENANCE_FILESEARCH_DESC', 'Management for the file search indexes.');
 
 // action: MaintenanceItem
-define($constpref . '_MAINTENANCE_ITEM_DELETE_TITLE', 'Item Package Deletion');
-define($constpref . '_MAINTENANCE_ITEM_DELETE_DESC', 'Choose user having items which you want to delete.');
-define($constpref . '_MAINTENANCE_ITEM_WITHDRAW_TITLE', 'Item Package Withdrawal');
-define($constpref . '_MAINTENANCE_ITEM_WITHDRAW_DESC', 'Choose indexes which you want to withdraw.');
-define($constpref . '_MAINTENANCE_ITEM_TRANSFER_TITLE', 'Item Package Transfer');
-define($constpref . '_MAINTENANCE_ITEM_TRANSFER_DESC', 'Carry out transfer of items. Choose From User.');
+define($constpref.'_MAINTENANCE_ITEM_DELETE_TITLE', 'Item Package Deletion');
+define($constpref.'_MAINTENANCE_ITEM_DELETE_DESC', 'Choose user having items which you want to delete.');
+define($constpref.'_MAINTENANCE_ITEM_WITHDRAW_TITLE', 'Item Package Withdrawal');
+define($constpref.'_MAINTENANCE_ITEM_WITHDRAW_DESC', 'Choose indexes which you want to withdraw.');
+define($constpref.'_MAINTENANCE_ITEM_TRANSFER_TITLE', 'Item Package Transfer');
+define($constpref.'_MAINTENANCE_ITEM_TRANSFER_DESC', 'Carry out transfer of items. Choose From User.');
 
 // action: MaintenanceFileSearch
-define($constpref . '_MAINTENANCE_FILESEARCH_PLUGINS_TITLE', 'File Search Plugins');
-define($constpref . '_MAINTENANCE_FILESEARCH_RESCAN_TITLE', 'Rescan All Files');
-define($constpref . '_MAINTENANCE_FILESEARCH_RESCAN_INFO_TITLE', 'Update File Information');
-define($constpref . '_MAINTENANCE_FILESEARCH_RESCAN_INFO_DESC', 'Rescan all files for updating file informations (MIME Type and Thumbnail)');
-define($constpref . '_MAINTENANCE_FILESEARCH_RESCAN_INDEX_TITLE', 'Update File Search Index');
-define($constpref . '_MAINTENANCE_FILESEARCH_RESCAN_INDEX_DESC', 'Rescan all files for rebuilding full-text search indexes.');
-define($constpref . '_MAINTENANCE_FILESEARCH_LANG_FILECOUNT', 'Registered Files');
-define($constpref . '_MAINTENANCE_FILESEARCH_LANG_RESCAN', 'Rescan');
-define($constpref . '_MAINTENANCE_FILESEARCH_LANG_RESCANNING', 'Rescanning Now...');
-
+define($constpref.'_MAINTENANCE_FILESEARCH_PLUGINS_TITLE', 'File Search Plugins');
+define($constpref.'_MAINTENANCE_FILESEARCH_RESCAN_TITLE', 'Rescan All Files');
+define($constpref.'_MAINTENANCE_FILESEARCH_RESCAN_INFO_TITLE', 'Update File Information');
+define($constpref.'_MAINTENANCE_FILESEARCH_RESCAN_INFO_DESC', 'Rescan all files for updating file informations (MIME Type and Thumbnail)');
+define($constpref.'_MAINTENANCE_FILESEARCH_RESCAN_INDEX_TITLE', 'Update File Search Index');
+define($constpref.'_MAINTENANCE_FILESEARCH_RESCAN_INDEX_DESC', 'Rescan all files for rebuilding full-text search indexes.');
+define($constpref.'_MAINTENANCE_FILESEARCH_LANG_FILECOUNT', 'Registered Files');
+define($constpref.'_MAINTENANCE_FILESEARCH_LANG_RESCAN', 'Rescan');
+define($constpref.'_MAINTENANCE_FILESEARCH_LANG_RESCANNING', 'Rescanning Now...');
 
 // User module action: UserList
-define($constpref . '_USER_LANG_LEVEL_INACTIVE', 'Inactive Users');
-define($constpref . '_USER_LANG_INACTIVATE_USERS_ONLY', 'Only inactive users');
+define($constpref.'_USER_LANG_LEVEL_INACTIVE', 'Inactive Users');
+define($constpref.'_USER_LANG_INACTIVATE_USERS_ONLY', 'Only inactive users');
 
 // User module action: GroupList
-define($constpref . '_USER_LANG_GROUP_NEW', 'Add a new xoonips group');
+define($constpref.'_USER_LANG_GROUP_NEW', 'Add a new xoonips group');
 
 // User module action: GroupEdit
-define($constpref . '_USER_LANG_GROUP_EDIT', 'Edit XooNIps groups');
-define($constpref . '_USER_LANG_GROUP_ADMINS', 'Group Administrators');
-define($constpref . '_USER_LANG_GROUP_ICON', 'Group Icon');
-define($constpref . '_USER_LANG_GROUP_IS_PUBLIC', 'Group public range');
-define($constpref . '_USER_LANG_GROUP_CAN_JOIN', 'Group Join');
-define($constpref . '_USER_LANG_GROUP_IS_HIDDEN', 'Group Hidden');
-define($constpref . '_USER_LANG_GROUP_MEMBER_ACCEPT', 'Participate approved method');
-define($constpref . '_USER_LANG_GROUP_ITEM_ACCEPT', 'Item approved method');
-define($constpref . '_USER_LANG_GROUP_MAXITEM', 'Maximum number of items');
-define($constpref . '_USER_LANG_GROUP_MAXINDEX', 'Maximum number of indexes');
-define($constpref . '_USER_LANG_GROUP_MAXDISK', 'Maximum size of items[MB]');
-define($constpref . '_USER_LANG_ALL', 'All');
-define($constpref . '_USER_LANG_GROUP_ONLY', 'Group Only');
-define($constpref . '_USER_LANG_PERMIT', 'Permit');
-define($constpref . '_USER_LANG_NO_PERMIT', 'No Permit');
-define($constpref . '_USER_LANG_NO', 'No');
-define($constpref . '_USER_LANG_YES', 'Yes');
-define($constpref . '_USER_LANG_AUTO', 'Auto');
-define($constpref . '_USER_LANG_MANUAL', 'Manual');
-define($constpref . '_USER_LANG_SEARCH', 'Search');
-define($constpref . '_USER_MESSAGE_GROUP_CERTIFY_REQUESTING', 'Can not be changed for the request of group certify.');
-define($constpref . '_USER_MESSAGE_GROUP_OPEN_REQUESTING', 'Can not be changed for the request of group open.');
-define($constpref . '_USER_MESSAGE_GROUP_CLOSE_REQUESTING', 'Can not be changed for the request of group close.');
-define($constpref . '_USER_MESSAGE_GROUP_DELETE_REQUESTING', 'Can not be changed for the request of group delete.');
-define($constpref . '_USER_MESSAGE_UNLIMIT_IFZERO', 'Input 0 if you want to register items unlimited.');
+define($constpref.'_USER_LANG_GROUP_EDIT', 'Edit XooNIps groups');
+define($constpref.'_USER_LANG_GROUP_ADMINS', 'Group Administrators');
+define($constpref.'_USER_LANG_GROUP_ICON', 'Group Icon');
+define($constpref.'_USER_LANG_GROUP_IS_PUBLIC', 'Group public range');
+define($constpref.'_USER_LANG_GROUP_CAN_JOIN', 'Group Join');
+define($constpref.'_USER_LANG_GROUP_IS_HIDDEN', 'Group Hidden');
+define($constpref.'_USER_LANG_GROUP_MEMBER_ACCEPT', 'Participate approved method');
+define($constpref.'_USER_LANG_GROUP_ITEM_ACCEPT', 'Item approved method');
+define($constpref.'_USER_LANG_GROUP_MAXITEM', 'Maximum number of items');
+define($constpref.'_USER_LANG_GROUP_MAXINDEX', 'Maximum number of indexes');
+define($constpref.'_USER_LANG_GROUP_MAXDISK', 'Maximum size of items[MB]');
+define($constpref.'_USER_LANG_ALL', 'All');
+define($constpref.'_USER_LANG_GROUP_ONLY', 'Group Only');
+define($constpref.'_USER_LANG_PERMIT', 'Permit');
+define($constpref.'_USER_LANG_NO_PERMIT', 'No Permit');
+define($constpref.'_USER_LANG_NO', 'No');
+define($constpref.'_USER_LANG_YES', 'Yes');
+define($constpref.'_USER_LANG_AUTO', 'Auto');
+define($constpref.'_USER_LANG_MANUAL', 'Manual');
+define($constpref.'_USER_LANG_SEARCH', 'Search');
+define($constpref.'_USER_MESSAGE_GROUP_CERTIFY_REQUESTING', 'Can not be changed for the request of group certify.');
+define($constpref.'_USER_MESSAGE_GROUP_OPEN_REQUESTING', 'Can not be changed for the request of group open.');
+define($constpref.'_USER_MESSAGE_GROUP_CLOSE_REQUESTING', 'Can not be changed for the request of group close.');
+define($constpref.'_USER_MESSAGE_GROUP_DELETE_REQUESTING', 'Can not be changed for the request of group delete.');
+define($constpref.'_USER_MESSAGE_UNLIMIT_IFZERO', 'Input 0 if you want to register items unlimited.');
 
 // User module action: GroupDelete
-define($constpref . '_USER_LANG_GROUP_DELETE', 'Delete XooNIps group');
-define($constpref . '_USER_LANG_GROUP_DELETE_ADVICE', 'Are you sure you want to delete this XooNIps group?');
-define($constpref . '_USER_ERROR_GROUP_DELETE_REQUIRED', 'This group is already awaiting deletion approval.');
-
+define($constpref.'_USER_LANG_GROUP_DELETE', 'Delete XooNIps group');
+define($constpref.'_USER_LANG_GROUP_DELETE_ADVICE', 'Are you sure you want to delete this XooNIps group?');
+define($constpref.'_USER_ERROR_GROUP_DELETE_REQUIRED', 'This group is already awaiting deletion approval.');
 
 // TODO: check unknown parameters
-define($constpref . '_SYSTEM_MSGSIGN_ADMINNAME', 'Administrator');
-
+define($constpref.'_SYSTEM_MSGSIGN_ADMINNAME', 'Administrator');
 
 // _AM_<MODULENAME>_<STRINGNAME>
 
@@ -654,4 +654,3 @@ define('_AM_XOONIPS_MAINTENANCE_ITEMTRANSFER_MSG_FAILURE', 'Failed to transfer i
 define('_AM_XOONIPS_MAINTENANCE_ITEMTRANSFER_MSG_FAILURE1', 'Choose index for From.');
 define('_AM_XOONIPS_MAINTENANCE_ITEMTRANSFER_MSG_FAILURE2', 'Choose index for To.');
 define('_AM_XOONIPS_MAINTENANCE_ITEMTRANSFER_MSG_FAILURE3', 'From user and To user should choose different.');
-

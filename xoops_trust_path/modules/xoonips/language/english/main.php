@@ -1,46 +1,50 @@
 <?php
 
-if (!isset($mydirname)) exit();
+if (!isset($mydirname)) {
+    exit();
+}
 
-$constpref = '_MD_' . strtoupper($mydirname);
+$constpref = '_MD_'.strtoupper($mydirname);
 
-if (defined($constpref . '_LOADED')) return;
+if (defined($constpref.'_LOADED')) {
+    return;
+}
 
-define($constpref . '_LOADED', 1);
+define($constpref.'_LOADED', 1);
 
 // action form error
-define($constpref . '_ERROR_REQUIRED', '{0} is required.');
-define($constpref . '_ERROR_MINLENGTH', 'Input {0:toLower} with {1} or more characters.');
-define($constpref . '_ERROR_MAXLENGTH', 'Input {0:toLower} with {1} or less characters.');
-define($constpref . '_ERROR_INTRANGE', 'Input {0:toLower} between {1} and {2} numeric value.');
-define($constpref . '_ERROR_MIN', 'Input {0:toLower} with {1} or more numeric value.');
-define($constpref . '_ERROR_MAX', 'Input {0:toLower} with {1} or less numeric value.');
-define($constpref . '_ERROR_EMAIL', '{0} is an invalid email address.');
-define($constpref . '_ERROR_MASK', '{0} format is invalid.');
-define($constpref . '_ERROR_EXTENSION', 'The file extension of uploaded file {0:toLower} does not match any entry in the allowed list.');
-define($constpref . '_ERROR_MAXFILESIZE', 'The maximum size of uploaded file {0:toLower} is {1} bytes.');
-define($constpref . '_ERROR_OBJECTEXIST', 'Incorrect input on {0:toLower}.');
+define($constpref.'_ERROR_REQUIRED', '{0} is required.');
+define($constpref.'_ERROR_MINLENGTH', 'Input {0:toLower} with {1} or more characters.');
+define($constpref.'_ERROR_MAXLENGTH', 'Input {0:toLower} with {1} or less characters.');
+define($constpref.'_ERROR_INTRANGE', 'Input {0:toLower} between {1} and {2} numeric value.');
+define($constpref.'_ERROR_MIN', 'Input {0:toLower} with {1} or more numeric value.');
+define($constpref.'_ERROR_MAX', 'Input {0:toLower} with {1} or less numeric value.');
+define($constpref.'_ERROR_EMAIL', '{0} is an invalid email address.');
+define($constpref.'_ERROR_MASK', '{0} format is invalid.');
+define($constpref.'_ERROR_EXTENSION', 'The file extension of uploaded file {0:toLower} does not match any entry in the allowed list.');
+define($constpref.'_ERROR_MAXFILESIZE', 'The maximum size of uploaded file {0:toLower} is {1} bytes.');
+define($constpref.'_ERROR_OBJECTEXIST', 'Incorrect input on {0:toLower}.');
 
 // messages
-define($constpref . '_MESSAGE_DBUPDATED', 'Database has been updated.');
-define($constpref . '_MSSSAGE_DBDELETED', 'Data has been deleted.');
-define($constpref . '_MESSAGE_EMPTY', 'No Records found.');
-define($constpref . '_MESSAGE_DELETE_CONFIRM', 'Do you really want to delete?');
-define($constpref . '_ERROR_INPUTVALUE', 'Incorrect input on {0}.');
-define($constpref . '_ERROR_INPUTFILE', 'Incorrect input file on {0}.');
-define($constpref . '_ERROR_DUPLICATED', '{0} already exists.');
-define($constpref . '_ERROR_DBUPDATE_FAILED', 'Failed updating database.');
-define($constpref . '_ERROR_DBDELETED_FAILED', 'Failed to delete data.');
+define($constpref.'_MESSAGE_DBUPDATED', 'Database has been updated.');
+define($constpref.'_MSSSAGE_DBDELETED', 'Data has been deleted.');
+define($constpref.'_MESSAGE_EMPTY', 'No Records found.');
+define($constpref.'_MESSAGE_DELETE_CONFIRM', 'Do you really want to delete?');
+define($constpref.'_ERROR_INPUTVALUE', 'Incorrect input on {0}.');
+define($constpref.'_ERROR_INPUTFILE', 'Incorrect input file on {0}.');
+define($constpref.'_ERROR_DUPLICATED', '{0} already exists.');
+define($constpref.'_ERROR_DBUPDATE_FAILED', 'Failed updating database.');
+define($constpref.'_ERROR_DBDELETED_FAILED', 'Failed to delete data.');
 
 // User module action: UserSu
-define($constpref . '_USER_LANG_SU', 'Switch User Account');
-define($constpref . '_USER_LANG_SU_TARGET_USER', 'Switch to');
-define($constpref . '_USER_LANG_SU_PASSWORD', 'Your Password');
-define($constpref . '_USER_MESSAGE_SU_EXPLAIN', 'You can switch to another account temporary.');
-define($constpref . '_USER_MESSAGE_SU_START', 'Switching to another account.');
-define($constpref . '_USER_MESSAGE_SU_END', 'Returning to your account.');
-define($constpref . '_USER_ERROR_SU_NO_ACCOUNT', 'No user account selected.');
-define($constpref . '_USER_ERROR_SU_BAD_PASSWORD', 'Incorrect password!');
+define($constpref.'_USER_LANG_SU', 'Switch User Account');
+define($constpref.'_USER_LANG_SU_TARGET_USER', 'Switch to');
+define($constpref.'_USER_LANG_SU_PASSWORD', 'Your Password');
+define($constpref.'_USER_MESSAGE_SU_EXPLAIN', 'You can switch to another account temporary.');
+define($constpref.'_USER_MESSAGE_SU_START', 'Switching to another account.');
+define($constpref.'_USER_MESSAGE_SU_END', 'Returning to your account.');
+define($constpref.'_USER_ERROR_SU_NO_ACCOUNT', 'No user account selected.');
+define($constpref.'_USER_ERROR_SU_BAD_PASSWORD', 'Incorrect password!');
 
 // _MD_<MODULENAME>_<STRINGNAME>
 
@@ -170,7 +174,6 @@ define('_MD_XOONIPS_ITEM_WARNING_INDEX_NUMBER_LIMIT', 'No more indexes are able 
 define('_MD_XOONIPS_ITEM_WARNING_ITEM_STORAGE_LIMIT', 'Not enough disk space. No more items are able to be registered. Please contact administrator.');
 define('_MD_XOONIPS_ITEM_WARNING_UPLOAD_MAX_FILESIZE', 'because max upload file size is over, file are not able to be upload. Please contact administrator.');
 
-
 define('_MD_XOONIPS_ITEM_NUM_OF_ITEM', 'Number of Items');
 define('_MD_XOONIPS_ITEM_STORAGE_OF_ITEM', 'Storage of Items');
 
@@ -224,11 +227,10 @@ define('_MD_XOONIPS_INDEX_PANKUZU_EDIT_PUBLIC_INDEX_KEYWORD', 'Edit Public Tree'
 define('_MD_XOONIPS_INDEX_PANKUZU_EDIT_GROUP_INDEX_KEYWORD', 'Edit Group Tree');
 define('_MD_XOONIPS_INDEX_PANKUZU_EDIT_PRIVATE_INDEX_KEYWORD', 'Edit Private Tree');
 
-define('_MD_XOONIPS_INDEX_TITLE_CONFLICT', "index name '%s' conflicts" );
-define('_MD_XOONIPS_INDEX_BAD_MOVE', "invalid operation. can't move index." );
+define('_MD_XOONIPS_INDEX_TITLE_CONFLICT', "index name '%s' conflicts");
+define('_MD_XOONIPS_INDEX_BAD_MOVE', "invalid operation. can't move index.");
 define('_MD_XOONIPS_INDEX_DELETE_CONFIRM_MESSAGE', 'is delete?');
 define('_MD_XOONIPS_ERROR_DELETE_NOTEXIST_INDEX', 'The index has already been deleted.');
-
 
 /// following defines for account
 define('_MD_XOONIPS_ACCOUNT_NOTREGISTERED1', 'Not registered?  Click ');
@@ -296,10 +298,10 @@ define('_MD_XOONIPS_GROUP_ITEM_WITHDRAWAL_AUTO_NOTIFYSBJ', 'Item share close is 
 define('_MD_XOONIPS_GROUP_ITEM_WITHDRAWAL_REJECTED_NOTIFYSBJ', 'Item share close is not approved.');
 define('_MD_XOONIPS_ITEM_UPDATE_NOTIFYSBJ', 'Item has been updated.');
 define('_MD_XOONIPS_USER_ITEM_CHANGED_NOTIFYSBJ', 'Owner of item has been changed.');
-define('_MD_XOONIPS_USER_FILE_DOWNLOADED_NOTIFYSBJ', 'Your file has been downloaded' );
-define('_MD_XOONIPS_USER_INDEX_RENAMED_NOTIFYSBJ', 'Your items has been affected(renamed index)' );
-define('_MD_XOONIPS_USER_INDEX_MOVED_NOTIFYSBJ', 'Your items has been affected(moved index)' );
-define('_MD_XOONIPS_USER_INDEX_DELETED_NOTIFYSBJ', 'Your items has been affected(deleted index)' );
+define('_MD_XOONIPS_USER_FILE_DOWNLOADED_NOTIFYSBJ', 'Your file has been downloaded');
+define('_MD_XOONIPS_USER_INDEX_RENAMED_NOTIFYSBJ', 'Your items has been affected(renamed index)');
+define('_MD_XOONIPS_USER_INDEX_MOVED_NOTIFYSBJ', 'Your items has been affected(moved index)');
+define('_MD_XOONIPS_USER_INDEX_DELETED_NOTIFYSBJ', 'Your items has been affected(deleted index)');
 
 define('_MD_XOONIPS_TRANSFER_NOTIFICATION_ITEM_TITLE', 'Title:');
 define('_MD_XOONIPS_TRANSFER_NOTIFICATION_ITEM_DETAIL', 'Detail:');
@@ -508,4 +510,3 @@ define('_MD_XOONIPS_MESSAGE_INDEX_DESCRIPTION_TITLE_ERROR', 'Title is required.'
 define('_MD_XOONIPS_MESSAGE_INDEX_DESCRIPTION_DELETE_SUCCESS', 'Delete description successfully.');
 define('_MD_XOONIPS_MESSAGE_INDEX_DESCRIPTION_DELETE_ERROR', 'Delete description failed.');
 define('_MD_XOONIPS_DELETE_INDEX_DETAILED_DESCRIPTION', 'Delete description ?');
-

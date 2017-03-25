@@ -13,27 +13,27 @@ define('XOONIPS_CONFIG_REPOSITORY_NIJC_CODE', 'repository_nijc_code');
 define('REPOSITORY_RESPONSE_LIMIT_ROW', 100);
 define('REPOSITORY_RESUMPTION_TOKEN_EXPIRE_TERM', 1000);
 
-require_once XOOPS_TRUST_PATH . '/modules/xoonips/class/core/BeanFactory.class.php';
-require_once XOOPS_TRUST_PATH . '/modules/xoonips/class/Enum.class.php';
+require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/BeanFactory.class.php';
+require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/Enum.class.php';
 require_once 'Metadata.class.php';
 
-class Xoonips_Oaipmh {
+class Xoonips_Oaipmh
+{
+    /** root path module directory **/
+    private $dirname;
 
-	/** root path module directory **/
-	private $dirname;
+    /** trust path module directory */
+    private $trustDirname;
 
-	/** trust path module directory */
-	private $trustDirname;
-	
     /** base URL of repository */
     private $baseURL;
 
     /** name of repository */
     private $repositoryName;
-    
+
     /** id of repository */
     private $repositoryId;
-    
+
     /** repository deletion track */
     private $repositoryDeletionTrack;
 
@@ -42,14 +42,14 @@ class Xoonips_Oaipmh {
 
     /** limit row */
     private $limit_row = REPOSITORY_RESPONSE_LIMIT_ROW;
-    
+
     /** expire time */
-	private $expire_term = REPOSITORY_RESUMPTION_TOKEN_EXPIRE_TERM;
+    private $expire_term = REPOSITORY_RESUMPTION_TOKEN_EXPIRE_TERM;
 
     /** Oaipmh Item Status Table */
     private $itemStatusBean;
 
-	/** Item Table */
+    /** Item Table */
     private $itemBean;
 
     /** Metadata generation class */
@@ -62,7 +62,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/
 http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
 <responseDate>%s</responseDate>';
-    
+
     /** identify */
     private $identifyXml = '<Identify>
 <repositoryName>%s</repositoryName>
@@ -79,7 +79,7 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
 <metadataNamespace>http://www.openarchives.org/OAI/2.0/oai_dc/</metadataNamespace>
 </metadataFormat>';
 
-	/** junii2 metadataFormat */
+    /** junii2 metadataFormat */
     private $junii2Xml = '<metadataFormat>
 <metadataPrefix>junii2</metadataPrefix>
 <schema>http://irdb.nii.ac.jp/oai/junii2-3-1.xsd</schema>
@@ -87,217 +87,232 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
 </metadataFormat>';
 
     /**
-     * Constructor
-     * 
+     * Constructor.
+     *
      * @param string $dirname module dirname
      */
-    public function __construct($dirname, $trustDirname) {
-    	$this->dirname = $dirname;
-    	$this->trustDirname = $trustDirname;
-		$this->baseURL = XOOPS_URL . '/modules/' . $this->dirname . '/oai.php';
-		$this->repositoryName = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'repository_name');
-		$this->repositoryId = Xoonips_Utils::getXooNIpsConfig($this->dirname, XOONIPS_CONFIG_REPOSITORY_NIJC_CODE);
-		$this->repositoryDeletionTrack = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'repository_deletion_track');
-		$this->moderator_gid = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'moderator_gid');
+    public function __construct($dirname, $trustDirname)
+    {
+        $this->dirname = $dirname;
+        $this->trustDirname = $trustDirname;
+        $this->baseURL = XOOPS_URL.'/modules/'.$this->dirname.'/oai.php';
+        $this->repositoryName = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'repository_name');
+        $this->repositoryId = Xoonips_Utils::getXooNIpsConfig($this->dirname, XOONIPS_CONFIG_REPOSITORY_NIJC_CODE);
+        $this->repositoryDeletionTrack = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'repository_deletion_track');
+        $this->moderator_gid = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'moderator_gid');
     }
 
     /**
-     * return oai-pmh repository
-     * 
+     * return oai-pmh repository.
+     *
      * @param array $args hash variable for parameters
      *                    array('verb' => 'Ldentify')
-     * @return string xml              
+     *
+     * @return string xml
      */
-    public function exec($args) {
+    public function exec($args)
+    {
         $xml = '';
-		if (!isset($args['verb'])) {
-			$xml = $this->error('badVerb', 'no verb');
-		} elseif ($args['verb'] == 'GetRecord') {
-			$xml = $this->getRecord($args);
-		} elseif ($args['verb'] == 'Identify') {
-			$xml = $this->identify($args);
-		} elseif ($args['verb'] == 'ListIdentifiers') {
-			$xml = $this->listIdentifiers($args);
-		} elseif ($args['verb'] == 'ListMetadataFormats') {
-			$xml = $this->listMetadataFormats($args);
-		} elseif ($args['verb'] == 'ListRecords') {
-			$xml = $this->listRecords($args);
-		} elseif ($args['verb'] == 'ListSets') {
-			$xml = $this->listSets($args);
-		} else {
-			$xml = $this->error('badVerb', 'illegal verb');
-		}
-    	header('Content-Type: application/xml');
-    	echo $this->header() . $this->request($args) . $xml . $this->footer();
-    	
+        if (!isset($args['verb'])) {
+            $xml = $this->error('badVerb', 'no verb');
+        } elseif ($args['verb'] == 'GetRecord') {
+            $xml = $this->getRecord($args);
+        } elseif ($args['verb'] == 'Identify') {
+            $xml = $this->identify($args);
+        } elseif ($args['verb'] == 'ListIdentifiers') {
+            $xml = $this->listIdentifiers($args);
+        } elseif ($args['verb'] == 'ListMetadataFormats') {
+            $xml = $this->listMetadataFormats($args);
+        } elseif ($args['verb'] == 'ListRecords') {
+            $xml = $this->listRecords($args);
+        } elseif ($args['verb'] == 'ListSets') {
+            $xml = $this->listSets($args);
+        } else {
+            $xml = $this->error('badVerb', 'illegal verb');
+        }
+        header('Content-Type: application/xml');
+        echo $this->header().$this->request($args).$xml.$this->footer();
     }
-    
+
     /**
-     * generate <GetRecord>
-     * 
+     * generate <GetRecord>.
+     *
      * @param array $args hash variable for parameters
      *                    array('verb' => 'Ldentify')
+     *
      * @return <GetREcord>
      */
-    private function getRecord($args) {
-    	// parameters check
-    	$error = '';
+    private function getRecord($args)
+    {
+        // parameters check
+        $error = '';
         if (!isset($args['identifier'])) {
             $error = $this->error('badArgument', 'identifier is not specified');
         } elseif (!isset($args['metadataPrefix'])) {
-        	$error = $this->error('badArgument', '');
-        } elseif (!Xoonips_Metadata::supportMetadataFormat($args['metadataPrefix'])) {
-        	$error = $this->error('cannotDisseminateFormat', '');
-        } elseif (isset($args['set']) || isset($args['from']) || isset($args['until'])
-        	|| isset($args['resumptionToken'])) {
             $error = $this->error('badArgument', '');
-       	} elseif (empty($this->repositoryId)) {
-				$error = $this->error('idDoesNotExist', 'it maps to no known item');
-       	}
+        } elseif (!Xoonips_Metadata::supportMetadataFormat($args['metadataPrefix'])) {
+            $error = $this->error('cannotDisseminateFormat', '');
+        } elseif (isset($args['set']) || isset($args['from']) || isset($args['until'])
+            || isset($args['resumptionToken'])) {
+            $error = $this->error('badArgument', '');
+        } elseif (empty($this->repositoryId)) {
+            $error = $this->error('idDoesNotExist', 'it maps to no known item');
+        }
         if ($error != '') {
             return $error;
         }
 
-   		$this->itemStatusBean = Xoonips_BeanFactory::getBean('OaipmhItemStatusBean', $this->dirname, $this->trustDirname);
-   		$this->itemBean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
-   		$this->metadata = new Xoonips_Metadata($this->dirname, $this->trustDirname, $args['metadataPrefix']);
+        $this->itemStatusBean = Xoonips_BeanFactory::getBean('OaipmhItemStatusBean', $this->dirname, $this->trustDirname);
+        $this->itemBean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
+        $this->metadata = new Xoonips_Metadata($this->dirname, $this->trustDirname, $args['metadataPrefix']);
 
         // identifier exist check
-		$parsed = $this->parseIdentifier($this->convertIdentifierFormat($args['identifier']));
-    	if ($parsed !== false) {
-			$identifiers = $this->itemStatusBean->getOpenItem4Oaipmh( 0, 0, null, $parsed['item_id'], 1, $this->repositoryDeletionTrack);
-    	}
-    	if (!$parsed || !$identifiers || count($identifiers) == 0) {
-    		return $this->error('idDoesNotExist', 'it maps to no known item');
-    	}
+        $parsed = $this->parseIdentifier($this->convertIdentifierFormat($args['identifier']));
+        if ($parsed !== false) {
+            $identifiers = $this->itemStatusBean->getOpenItem4Oaipmh(0, 0, null, $parsed['item_id'], 1, $this->repositoryDeletionTrack);
+        }
+        if (!$parsed || !$identifiers || count($identifiers) == 0) {
+            return $this->error('idDoesNotExist', 'it maps to no known item');
+        }
 
-   		$result = false;
-		$indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-		$index_tree_list = $indexBean->getPublicFullPath(true);
-		$identifiers[0]['nijc_code'] = $parsed['nijc_code'];
-		$identifiers[0]['item_type_id'] = $parsed['item_type_id'];
-		list($xml, $result) = $this->record($identifiers[0], $index_tree_list);
-		if ($result) {
-			$xml = "<GetRecord>\n" . $xml . "</GetRecord>\n";
-		}
-		return $xml;
+        $result = false;
+        $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
+        $index_tree_list = $indexBean->getPublicFullPath(true);
+        $identifiers[0]['nijc_code'] = $parsed['nijc_code'];
+        $identifiers[0]['item_type_id'] = $parsed['item_type_id'];
+        list($xml, $result) = $this->record($identifiers[0], $index_tree_list);
+        if ($result) {
+            $xml = "<GetRecord>\n".$xml."</GetRecord>\n";
+        }
+
+        return $xml;
     }
 
     /**
-     * generate <Identify>
-     * 
+     * generate <Identify>.
+     *
      * @param array $args hash variable for parameters
      *                    array('verb' => 'Ldentify')
+     *
      * @return <Identify>
      */
-    private function identify($args) {
-    	// parameters check
-    	if (isset($args['metadataPrefix']) || isset($args['set']) || isset($args['from'])
-    		|| isset($args['until']) || isset($args['identifier']) || isset($args['resumptionToken'])) {
+    private function identify($args)
+    {
+        // parameters check
+        if (isset($args['metadataPrefix']) || isset($args['set']) || isset($args['from'])
+            || isset($args['until']) || isset($args['identifier']) || isset($args['resumptionToken'])) {
             return $this->error('badArgument', '');
         }
 
-		// retrieve admin's e-mail
-		$adminEmails = array();
-		$member_handler =& xoops_gethandler('member');
-		$members = $member_handler->getUsersByGroup($this->moderator_gid, false);
-		foreach ($members as $userid) {
-			$user =& $member_handler->getUser($userid);
-			$adminEmails[] = $user->getVar('email');
-		}
-		$deletedRecord = ($this->repositoryDeletionTrack > 0) ? 'transient' : 'no';
-        $xml = sprintf($this->identifyXml . "\n", $this->repositoryName, $this->baseURL, $deletedRecord, gmdate("Y-m-d\TH:i:s\Z", 0));
+        // retrieve admin's e-mail
+        $adminEmails = array();
+        $member_handler = &xoops_gethandler('member');
+        $members = $member_handler->getUsersByGroup($this->moderator_gid, false);
+        foreach ($members as $userid) {
+            $user = &$member_handler->getUser($userid);
+            $adminEmails[] = $user->getVar('email');
+        }
+        $deletedRecord = ($this->repositoryDeletionTrack > 0) ? 'transient' : 'no';
+        $xml = sprintf($this->identifyXml."\n", $this->repositoryName, $this->baseURL, $deletedRecord, gmdate("Y-m-d\TH:i:s\Z", 0));
         foreach ($adminEmails as $email) {
             $xml .= "<adminEmail>$email</adminEmail>\n";
         }
         $xml .= "</Identify>\n";
+
         return $xml;
     }
 
-	/**
-     * generate <ListIdentifiers>
-     * 
+    /**
+     * generate <ListIdentifiers>.
+     *
      * @param array $args hash variable for parameters
      *                    array('verb' => 'Ldentify')
+     *
      * @return <ListIdentifiers>
      */
-	private function listIdentifiers($args) {
+    private function listIdentifiers($args)
+    {
         //expire RexumpionToken remove
         $this->expireResumptionToken();
-      
-		$this->itemStatusBean = Xoonips_BeanFactory::getBean('OaipmhItemStatusBean', $this->dirname, $this->trustDirname);
-   		$this->itemBean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
-        
-		// parameters check
-		list($error, $metadataPrefix, $result) = $this->checkParameters($args);
-		if ($error != '') {
-			return $error;
-		}
- 
-
-   		list($error, $cursor, $identifiers) = $this->listIdentifiersAndRecords($args, $result);
-        if ($error != '') {
-			return $error;
-		}
-
-		$cnt = count($identifiers);
-		if ($cnt > $cursor + $this->limit_row) {
-			$last_item_id = $identifiers[$cursor + $this->limit_row - 1]['item_id'];
-		}
-		$resumptionToken_xml = $this->resumptionTokenXml($cnt, $cursor, $args, $metadataPrefix, $last_item_id);
-        
-		$indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-		$index_tree_list = $indexBean->getPublicFullPath(true);
-		$headers = array();
-		for ($i = $cursor; $i < ($cursor + $this->limit_row) && $i < $cnt; $i++) {
-			$headers[] = $this->oaipmhHeader($identifiers[$i], $index_tree_list);
-		}
-		$xml = "<ListIdentifiers>\n" . implode("\n", $headers) . $resumptionToken_xml . "</ListIdentifiers>\n";
-        return $xml;
-    }
-
-    /**
-     * generate <ListMetadataFormats>
-     * 
-     * @param array $args hash variable for parameters
-     *                    array('verb' => 'Ldentify')
-     * @return <ListMetadataFormats>
-     */
-    private function listMetadataFormats($args) {
-    	// parameters check
-        if (isset($args['metadataPrefix']) || isset($args['set']) || isset($args['from'])
-    		|| isset($args['until']) || isset($args['resumptionToken'])) {
-            return $this->error('badArgument', '');
-        } elseif (isset($args['identifier']) && empty($this->repositoryId)) {
-			return $this->error('idDoesNotExist', 'it maps to no known item');
-       	}
 
         $this->itemStatusBean = Xoonips_BeanFactory::getBean('OaipmhItemStatusBean', $this->dirname, $this->trustDirname);
-   		$this->itemBean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
+        $this->itemBean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
 
-   		// identifier exist check
-        if (isset($args['identifier'])) {
-	    	$parsed = $this->parseIdentifier($this->convertIdentifierFormat($args['identifier']));
-	    	if ($parsed !== false) {
-				$identifiers = $this->itemStatusBean->getOpenItem4Oaipmh(0, 0, null, $parsed['item_id'], 1, $this->repositoryDeletionTrack);
-	    	}
-			if (!$parsed || !$identifiers || count($identifiers) == 0) {
-				return $this->error('idDoesNotExist', 'it maps to no known item');
-			}
+        // parameters check
+        list($error, $metadataPrefix, $result) = $this->checkParameters($args);
+        if ($error != '') {
+            return $error;
         }
-   		$lines = array($this->junii2Xml, $this->oaidcXml);
-        $xml = "<ListMetadataFormats>\n" . implode("\n", $lines) . "</ListMetadataFormats>\n";
+
+        list($error, $cursor, $identifiers) = $this->listIdentifiersAndRecords($args, $result);
+        if ($error != '') {
+            return $error;
+        }
+
+        $cnt = count($identifiers);
+        if ($cnt > $cursor + $this->limit_row) {
+            $last_item_id = $identifiers[$cursor + $this->limit_row - 1]['item_id'];
+        }
+        $resumptionToken_xml = $this->resumptionTokenXml($cnt, $cursor, $args, $metadataPrefix, $last_item_id);
+
+        $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
+        $index_tree_list = $indexBean->getPublicFullPath(true);
+        $headers = array();
+        for ($i = $cursor; $i < ($cursor + $this->limit_row) && $i < $cnt; ++$i) {
+            $headers[] = $this->oaipmhHeader($identifiers[$i], $index_tree_list);
+        }
+        $xml = "<ListIdentifiers>\n".implode("\n", $headers).$resumptionToken_xml."</ListIdentifiers>\n";
+
         return $xml;
     }
 
     /**
-     * generate <ListRecords>
-     * 
+     * generate <ListMetadataFormats>.
+     *
+     * @param array $args hash variable for parameters
+     *                    array('verb' => 'Ldentify')
+     *
+     * @return <ListMetadataFormats>
+     */
+    private function listMetadataFormats($args)
+    {
+        // parameters check
+        if (isset($args['metadataPrefix']) || isset($args['set']) || isset($args['from'])
+            || isset($args['until']) || isset($args['resumptionToken'])) {
+            return $this->error('badArgument', '');
+        } elseif (isset($args['identifier']) && empty($this->repositoryId)) {
+            return $this->error('idDoesNotExist', 'it maps to no known item');
+        }
+
+        $this->itemStatusBean = Xoonips_BeanFactory::getBean('OaipmhItemStatusBean', $this->dirname, $this->trustDirname);
+        $this->itemBean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
+
+        // identifier exist check
+        if (isset($args['identifier'])) {
+            $parsed = $this->parseIdentifier($this->convertIdentifierFormat($args['identifier']));
+            if ($parsed !== false) {
+                $identifiers = $this->itemStatusBean->getOpenItem4Oaipmh(0, 0, null, $parsed['item_id'], 1, $this->repositoryDeletionTrack);
+            }
+            if (!$parsed || !$identifiers || count($identifiers) == 0) {
+                return $this->error('idDoesNotExist', 'it maps to no known item');
+            }
+        }
+        $lines = array($this->junii2Xml, $this->oaidcXml);
+        $xml = "<ListMetadataFormats>\n".implode("\n", $lines)."</ListMetadataFormats>\n";
+
+        return $xml;
+    }
+
+    /**
+     * generate <ListRecords>.
+     *
      * @param args: hash variable for parameters
      *              array('verb' => 'Ldentify')
+     *
      * @return <ListRecords>
      */
-	private function listRecords($args) {
+    private function listRecords($args)
+    {
         //expire RexumpionToken remove
         $this->expireResumptionToken();
         // parameters check
@@ -319,47 +334,50 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
         if ($cnt > $cursor + $this->limit_row) {
             $last_item_id = $identifiers[$cursor + $this->limit_row - 1]['item_id'];
         }
-        $resumptionToken_xml = $this->resumptionTokenXml($cnt, $cursor, $args,	$metadataPrefix, $last_item_id);
+        $resumptionToken_xml = $this->resumptionTokenXml($cnt, $cursor, $args,    $metadataPrefix, $last_item_id);
 
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         $index_tree_list = $indexBean->getPublicFullPath(true);
 
         $records = array();
-        for ($i = $cursor; $i < ($cursor + $this->limit_row) && $i < $cnt; $i++) {
+        for ($i = $cursor; $i < ($cursor + $this->limit_row) && $i < $cnt; ++$i) {
             list($xml, $result) = $this->record($identifiers[$i], $index_tree_list);
             if ($result) {
                 $records[] = $xml;
             }
         }
-        $xml = "<ListRecords>\n" . implode("\n", $records) . $resumptionToken_xml . "</ListRecords>\n";
+        $xml = "<ListRecords>\n".implode("\n", $records).$resumptionToken_xml."</ListRecords>\n";
+
         return $xml;
     }
 
     /**
-     * generate <ListSets>
-     * 
+     * generate <ListSets>.
+     *
      * @param array $args hash variable for parameters
      *                    array('verb' => 'Ldentify')
+     *
      * @return <ListSets>
      */
-    private function listSets($args) {
+    private function listSets($args)
+    {
         $this->expireResumptionToken();
         // parameters check
         if (isset($args['metadataPrefix']) || isset($args['set']) || isset($args['from'])
-        	|| isset($args['until']) || isset($args['identifier'])) {
+            || isset($args['until']) || isset($args['identifier'])) {
             return $this->error('badArgument', '');
         }
 
         $cursor = 0;
         // get item type list
         $itemTypeBean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
-        $itemtypes = $itemTypeBean->getItemTypeList(); 
+        $itemtypes = $itemTypeBean->getItemTypeList();
         // get index list
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-		$index_list = $indexBean->getPublicFullPath();
+        $index_list = $indexBean->getPublicFullPath();
         // check resumptionToken parameter.
         if (isset($args['resumptionToken'])) {
-   	        $error = '';
+            $error = '';
             $result = $this->getResumptionToken($args['resumptionToken']);
             if (count($result) > 0) {
                 if (isset($result['last_item_id'])) {
@@ -377,320 +395,344 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
                 $error = $this->error('badResumptionToken', '');
             }
             if ($error != '') {
-				return $error;
-        	}
+                return $error;
+            }
         }
 
         // create string by item index and item type
         $xml = '';
         if (!empty($this->repositoryId)) {
-			$set_list = $index_list;
-			// add item type
-			if ($itemtypes) {
-				foreach ($itemtypes as $itemtype) {
-					$set_list[] = $itemtype;
-				}
-			}
+            $set_list = $index_list;
+            // add item type
+            if ($itemtypes) {
+                foreach ($itemtypes as $itemtype) {
+                    $set_list[] = $itemtype;
+                }
+            }
 
-	        $cnt = count($set_list);
-	        $end_index = min($cursor + $this->limit_row, $cnt);
-	        for ($i = $cursor; $i < $end_index; $i++) {
-	            $set = $set_list[$i];
-	            if (isset($set['id_fullpath'])) {
-	                $spec = 'index' . implode(':index', explode(',', $set['id_fullpath']));
-	                $name = $set['fullpath'];
-	            } else {
-	                $spec = $set['name'];
-	                $name = $set['description'];
-	            }
-	        	$spec = StringUtils::convertEncoding($spec, 'UTF-8', _CHARSET, 'h');
-	            $name = StringUtils::convertEncoding($name, 'UTF-8', _CHARSET, 'h');
-	            $name = htmlspecialchars($name, ENT_QUOTES);
-	            $xml .= "    <set>\n"
-	                . "        <setSpec>" . $spec . "</setSpec>\n"
-	                . "        <setName>" . $name . "</setName>\n"
-	                . "    </set>\n";
-	        }
+            $cnt = count($set_list);
+            $end_index = min($cursor + $this->limit_row, $cnt);
+            for ($i = $cursor; $i < $end_index; ++$i) {
+                $set = $set_list[$i];
+                if (isset($set['id_fullpath'])) {
+                    $spec = 'index'.implode(':index', explode(',', $set['id_fullpath']));
+                    $name = $set['fullpath'];
+                } else {
+                    $spec = $set['name'];
+                    $name = $set['description'];
+                }
+                $spec = StringUtils::convertEncoding($spec, 'UTF-8', _CHARSET, 'h');
+                $name = StringUtils::convertEncoding($name, 'UTF-8', _CHARSET, 'h');
+                $name = htmlspecialchars($name, ENT_QUOTES);
+                $xml .= "    <set>\n"
+                    .'        <setSpec>'.$spec."</setSpec>\n"
+                    .'        <setName>'.$name."</setName>\n"
+                    ."    </set>\n";
+            }
         } else {
-        	$cnt = 0;
+            $cnt = 0;
         }
 
         // set or expire resumption token
-		if ($cnt > $cursor + $this->limit_row) {
+        if ($cnt > $cursor + $this->limit_row) {
             $args['item_all_count'] = $cnt;      // set optional value(count).
-		}
-		$resumptionToken_xml = $this->resumptionTokenXml($cnt, $cursor, $args,	'', $end_index);
-        $xml = "<ListSets>\n" . $xml . $resumptionToken_xml . "</ListSets>\n";
+        }
+        $resumptionToken_xml = $this->resumptionTokenXml($cnt, $cursor, $args,    '', $end_index);
+        $xml = "<ListSets>\n".$xml.$resumptionToken_xml."</ListSets>\n";
+
         return $xml;
     }
 
     /**
      * divide $identifier into nijc_code, item_id, item_type_id
-     *   support format: [nijc code]/[item type id].[item id]
-     * 
+     *   support format: [nijc code]/[item type id].[item id].
+     *
      * @param string $identifier id
+     *
      * @return array('nijc_code' => NIJC code, 'item_type_id' => id of itemtype, 'item_id' => id of item)
-     * @return false: failure to divide
+     * @return false:            failure to divide
      */
-    private function parseIdentifier($identifier) {
+    private function parseIdentifier($identifier)
+    {
         if (preg_match("/([^\/]+)\/([0-9]+)\.([0-9]+)/", $identifier, $match) == 0) {
             return false;
         }
+
         return array('nijc_code' => $match[1], 'item_type_id' => $match[2], 'item_id' => $match[3]);
     }
 
     /**
      * divide $identifier $identifier into nijc_code, doi
-     *   support format: [nijc code]:[XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME]/[doi]
-     * 
+     *   support format: [nijc code]:[XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME]/[doi].
+     *
      * @param string $identifier id
+     *
      * @return array('nijc_code' => NIJC code, 'doi' => doi of item
-     * @return false: failure to divide
+     * @return false:            failure to divide
      */
-    private function parseIdentifierDoi($identifier) {
-        if (preg_match("/([^\/]+):" . XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME . "\\/([^<>]+)/", $identifier, $match ) == 0) {
+    private function parseIdentifierDoi($identifier)
+    {
+        if (preg_match("/([^\/]+):".XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME.'\\/([^<>]+)/', $identifier, $match) == 0) {
             return false;
         }
+
         return array('nijc_code' => $match[1], 'doi' => $match[2]);
     }
-    
-    /** 
-     * convert id format from [nijc_code]:[XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME]/[doi] to [nijc_code]/[item type id].[item id]
-     * 
-     * @param string $id id 
-     * @return string converted id 
-     * @return '': nijc_code not equal repository_nijc_code or doi above XOONIPS_CONFIG_DOI_FIELD_PARAM_MAXLEN   
+
+    /**
+     * convert id format from [nijc_code]:[XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME]/[doi] to [nijc_code]/[item type id].[item id].
+     *
+     * @param string $id id
+     *
+     * @return string converted id
+     * @return '':    nijc_code not equal repository_nijc_code or doi above XOONIPS_CONFIG_DOI_FIELD_PARAM_MAXLEN
      */
-    private function convertIdentifierFormat($id) {
+    private function convertIdentifierFormat($id)
+    {
         $parsed = $this->parseIdentifierDoi($id);
-        if ($parsed) { 
+        if ($parsed) {
             if (strlen($parsed['doi']) > XOONIPS_CONFIG_DOI_FIELD_PARAM_MAXLEN) {
-            	return '';
+                return '';
             }
             // check valid support nijc_code.
             if ($parsed['nijc_code'] != $this->repositoryId) {
-            	return '';
+                return '';
             }
 
             $item_info = $this->itemBean->getBydoi($parsed['doi']);
             if ($item_info) {
-                return $parsed['nijc_code'] . '/' . $item_info['item_type_id'] . '.' . $item_info['item_id'];
+                return $parsed['nijc_code'].'/'.$item_info['item_type_id'].'.'.$item_info['item_id'];
             } else {
                 return '';
             }
         }
+
         return $id;
     }
 
     /**
-     * check parameters for ListIdentifiers, ListRecords
-     * 
+     * check parameters for ListIdentifiers, ListRecords.
+     *
      * @param args: hash variable for parameters
      *              array('verb' => 'Ldentify')
+     *
      * @return array $error, $metadataPrefix, record of resumptionToken
      */
-    private function checkParameters($args) {
-    	$error = '';
-    	$metadataPrefix = '';
-    	$result = '';
-    	if (!isset($args['metadataPrefix']) && !isset($args['resumptionToken'])) {
-			$error = $this->error('badArgument', '');
-		} elseif (isset($args['identifier'])) {
-			$error = $this->error('badArgument', '');
-		} elseif (isset($args['metadataPrefix'])) {
-			if (isset($args['resumptionToken'])) {
-				$error = $this->error('badArgument', '');
-			} elseif (isset($args['from']) && isset($args['until'])) {
-				$from_type = $this->typeOfISO8601($args['from']);
-				$until_type = $this->typeOfISO8601($args['until']);
-				if ($from_type != $until_type || $from_type == 0) {
-					$error = $this->error('badArgument', '');
-				}
-			} elseif (isset($args['from']) && $this->typeOfISO8601($args['from']) == 0) {
-				$error = $this->error('badArgument', '');
-			} elseif (isset($args['until']) && $this->typeOfISO8601($args['until']) == 0) {
-				$error = $this->error('badArgument', '');	
-			} elseif (empty($this->repositoryId)) {
-				$error = $this->error('noRecordsMatch', 'database_id is not configured');
-			} elseif (!Xoonips_Metadata::supportMetadataFormat($args['metadataPrefix'])) {
-				$error = $this->error('cannotDisseminateFormat', '');
-			} 
+    private function checkParameters($args)
+    {
+        $error = '';
+        $metadataPrefix = '';
+        $result = '';
+        if (!isset($args['metadataPrefix']) && !isset($args['resumptionToken'])) {
+            $error = $this->error('badArgument', '');
+        } elseif (isset($args['identifier'])) {
+            $error = $this->error('badArgument', '');
+        } elseif (isset($args['metadataPrefix'])) {
+            if (isset($args['resumptionToken'])) {
+                $error = $this->error('badArgument', '');
+            } elseif (isset($args['from']) && isset($args['until'])) {
+                $from_type = $this->typeOfISO8601($args['from']);
+                $until_type = $this->typeOfISO8601($args['until']);
+                if ($from_type != $until_type || $from_type == 0) {
+                    $error = $this->error('badArgument', '');
+                }
+            } elseif (isset($args['from']) && $this->typeOfISO8601($args['from']) == 0) {
+                $error = $this->error('badArgument', '');
+            } elseif (isset($args['until']) && $this->typeOfISO8601($args['until']) == 0) {
+                $error = $this->error('badArgument', '');
+            } elseif (empty($this->repositoryId)) {
+                $error = $this->error('noRecordsMatch', 'database_id is not configured');
+            } elseif (!Xoonips_Metadata::supportMetadataFormat($args['metadataPrefix'])) {
+                $error = $this->error('cannotDisseminateFormat', '');
+            }
             $metadataPrefix = $args['metadataPrefix'];
-		} elseif (isset($args['resumptionToken'])) {
-			if (isset($args['metadataPrefix']) || isset($args['set'])
-				|| isset($args['from']) || isset($args['until'])) {
-				$error = $this->error('badArgument', '');
-        	} else {
-				$result = $this->getResumptionToken($args['resumptionToken']);
-				if (count($result) == 0||$result['args'] == false) {
-					$this->deleteResumptionToken($resumptionToken);
-					$error = $this->error('badResumptionToken', '');
-				} elseif (isset($result['publish_date'])) {
-	        		//expire resumptionToken if repository is modified after resumptionToken has published
-					$identifiers = $this->itemStatusBean->getOpenItem4Oaipmh((int) $result['publish_date'], 0, null, 0, 1, $this->repositoryDeletionTrack);
-					if ($identifiers && count($identifiers) > 0) {
-						$this->deleteResumptionToken($resumptionToken);
-						$error = $this->error('badResumptionToken', 'repository has been modified');
-					}
-				}
-			}
-			$metadataPrefix = $result['metadata_prefix'];
-		}
-		return array($error, $metadataPrefix, $result);
+        } elseif (isset($args['resumptionToken'])) {
+            if (isset($args['metadataPrefix']) || isset($args['set'])
+                || isset($args['from']) || isset($args['until'])) {
+                $error = $this->error('badArgument', '');
+            } else {
+                $result = $this->getResumptionToken($args['resumptionToken']);
+                if (count($result) == 0 || $result['args'] == false) {
+                    $this->deleteResumptionToken($resumptionToken);
+                    $error = $this->error('badResumptionToken', '');
+                } elseif (isset($result['publish_date'])) {
+                    //expire resumptionToken if repository is modified after resumptionToken has published
+                    $identifiers = $this->itemStatusBean->getOpenItem4Oaipmh((int) $result['publish_date'], 0, null, 0, 1, $this->repositoryDeletionTrack);
+                    if ($identifiers && count($identifiers) > 0) {
+                        $this->deleteResumptionToken($resumptionToken);
+                        $error = $this->error('badResumptionToken', 'repository has been modified');
+                    }
+                }
+            }
+            $metadataPrefix = $result['metadata_prefix'];
+        }
+
+        return array($error, $metadataPrefix, $result);
     }
 
     /**
-     * get ISO8601 type
-     * 
+     * get ISO8601 type.
+     *
      * @param string $str ISO8601 format string
+     *
      * @return 0:not ISO8601 1:ISO8601 date 2:ISO8601 datetime
      */
-    private function typeOfISO8601($str) {
-		if (preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/', $str) == 1) {
-			return 1;
-		} elseif (preg_match("/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$/", $str) == 1) {
-			return 2;
-		} else {
-			return 0;
-		}
+    private function typeOfISO8601($str)
+    {
+        if (preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/', $str) == 1) {
+            return 1;
+        } elseif (preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$/', $str) == 1) {
+            return 2;
+        } else {
+            return 0;
+        }
     }
 
     /**
-     * common process for ListIdentifiers, ListRecords
-     * 
-     * @param array $args hash variable for parameters
-     *                    array('verb' => 'Ldentify')
+     * common process for ListIdentifiers, ListRecords.
+     *
+     * @param array $args   hash variable for parameters
+     *                      array('verb' => 'Ldentify')
      * @param array $result record of resumptionToken
+     *
      * @return array $error, $metadataPrefix
      */
-    private function listIdentifiersAndRecords($args, $result) {
-    	$error = '';
-       	$from = 0;
-		$until = 0;
-		$set = null;
-		if (isset($args['resumptionToken'])) {
-			if (isset($result['args']['from'])) {
-				$from = $this->ISO8601toUTC($result['args']['from']);
-			}
-			if (isset($result['args']['until'])) {
-				$until = $this->ISO8601toUTC($result['args']['until']);
-			}
-			if (isset($result['args']['set'])) {
-				$set = $result['args']['set'];
-			}
-			if (isset($result['last_item_id'])) {
-				$last_item_id = $result['last_item_id'];
-			}
-		} else {
-			if (!is_null($args['from'])) {
-				$from = $this->ISO8601toUTC($args['from']);
-			}
-			if (!is_null($args['until'])) {
-				$until = $this->ISO8601toUTC($args['until']);
-			}
-			if (!is_null($args['set'])) {
-				$set = $args['set'];
-			}
-		}	
-		$identifiers = $this->itemStatusBean->getOpenItem4Oaipmh((int) $from, (int) $until, $set, 0, 0, $this->repositoryDeletionTrack);
-		if (!$identifiers || count($identifiers ) == 0) {
-			$error = $this->error('noRecordsMatch', '');
-		}
+    private function listIdentifiersAndRecords($args, $result)
+    {
+        $error = '';
+        $from = 0;
+        $until = 0;
+        $set = null;
+        if (isset($args['resumptionToken'])) {
+            if (isset($result['args']['from'])) {
+                $from = $this->ISO8601toUTC($result['args']['from']);
+            }
+            if (isset($result['args']['until'])) {
+                $until = $this->ISO8601toUTC($result['args']['until']);
+            }
+            if (isset($result['args']['set'])) {
+                $set = $result['args']['set'];
+            }
+            if (isset($result['last_item_id'])) {
+                $last_item_id = $result['last_item_id'];
+            }
+        } else {
+            if (!is_null($args['from'])) {
+                $from = $this->ISO8601toUTC($args['from']);
+            }
+            if (!is_null($args['until'])) {
+                $until = $this->ISO8601toUTC($args['until']);
+            }
+            if (!is_null($args['set'])) {
+                $set = $args['set'];
+            }
+        }
+        $identifiers = $this->itemStatusBean->getOpenItem4Oaipmh((int) $from, (int) $until, $set, 0, 0, $this->repositoryDeletionTrack);
+        if (!$identifiers || count($identifiers) == 0) {
+            $error = $this->error('noRecordsMatch', '');
+        }
 
-		$cursor = 0;
-		if (isset($last_item_id)) {
-			foreach ($identifiers as $key => $value) {
-				if ($last_item_id == $value['item_id']) {
-					$cursor = $key + 1;
-				}
-			}
-		}
-		return array($error, $cursor, $identifiers);
+        $cursor = 0;
+        if (isset($last_item_id)) {
+            foreach ($identifiers as $key => $value) {
+                if ($last_item_id == $value['item_id']) {
+                    $cursor = $key + 1;
+                }
+            }
+        }
+
+        return array($error, $cursor, $identifiers);
     }
 
     /**
-     * generate <header> of item
-     * 
-     * @param string $identifier item_id, item_type_id of item
-     * @param array $index_tree_list list of public indexes
+     * generate <header> of item.
+     *
+     * @param string $identifier      item_id, item_type_id of item
+     * @param array  $index_tree_list list of public indexes
+     *
      * @return string <header>
      */
-	private function oaipmhHeader($identifier, $index_tree_list) {
-		global $xoopsDB;
-		$lines = array();
-		$status = array();
+    private function oaipmhHeader($identifier, $index_tree_list)
+    {
+        global $xoopsDB;
+        $lines = array();
+        $status = array();
 
-		$status = $this->itemStatusBean->select($identifier['item_id']);
-		if ($status) {
-			if ($status[0]['is_deleted'] == 1) {
-				if (time() > ($status[0]['deleted_timestamp'] + 60 * 60 * 24 * $this->repositoryDeletionTrack)) {
-					return '';
-				}
-				$lines[] = "<header status=\"deleted\">";
-			} else {
-				$lines[] = '<header>';
-			}
-			$item = $this->itemBean->getItemBasicInfo($identifier['item_id']);
-			if ($item && $item['doi'] != '' && !empty($this->repositoryId)) {
-				$id = "$this->repositoryId:" . XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME . '/' . $item['doi'];
-			} else {
-				$id = $this->repositoryId . '/' . $identifier['item_type_id'] . '.' . $identifier['item_id'];
-			}
-			$lines[] = "<identifier>$id</identifier>";
-			$datestamp = max($status[0]['created_timestamp'], $status[0]['modified_timestamp'], $status[0]['deleted_timestamp']);
-			$lines[] = '<datestamp>' . gmdate("Y-m-d\TH:i:s\Z", $datestamp) . '</datestamp>';
-			$sql = 'SELECT link.index_id FROM ('
-				. $xoopsDB->prefix($this->dirname . '_index_item_link') . ' as link LEFT JOIN '
-				. $xoopsDB->prefix($this->dirname . '_index') . ' as idx on link.index_id=idx.index_id) '
-				. ' LEFT JOIN ' . $xoopsDB->prefix('groups') . ' as grp on idx.groupid=grp.groupid '
-				. ' WHERE link.item_id=' . intval($identifier['item_id'])
-				. ' AND (link.certify_state=' . XOONIPS_CERTIFIED . ' OR link.certify_state=' . XOONIPS_WITHDRAW_REQUIRED
-				. ') AND (open_level=' . XOONIPS_OL_PUBLIC . ' OR (open_level=' . XOONIPS_OL_GROUP_ONLY 
-				. ' AND (grp.activate=' . Xoonips_Enum::GRP_PUBLIC . ' OR grp.activate=' . Xoonips_Enum::GRP_CLOSE_REQUIRED . ')))';
+        $status = $this->itemStatusBean->select($identifier['item_id']);
+        if ($status) {
+            if ($status[0]['is_deleted'] == 1) {
+                if (time() > ($status[0]['deleted_timestamp'] + 60 * 60 * 24 * $this->repositoryDeletionTrack)) {
+                    return '';
+                }
+                $lines[] = '<header status="deleted">';
+            } else {
+                $lines[] = '<header>';
+            }
+            $item = $this->itemBean->getItemBasicInfo($identifier['item_id']);
+            if ($item && $item['doi'] != '' && !empty($this->repositoryId)) {
+                $id = "$this->repositoryId:".XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME.'/'.$item['doi'];
+            } else {
+                $id = $this->repositoryId.'/'.$identifier['item_type_id'].'.'.$identifier['item_id'];
+            }
+            $lines[] = "<identifier>$id</identifier>";
+            $datestamp = max($status[0]['created_timestamp'], $status[0]['modified_timestamp'], $status[0]['deleted_timestamp']);
+            $lines[] = '<datestamp>'.gmdate("Y-m-d\TH:i:s\Z", $datestamp).'</datestamp>';
+            $sql = 'SELECT link.index_id FROM ('
+                .$xoopsDB->prefix($this->dirname.'_index_item_link').' as link LEFT JOIN '
+                .$xoopsDB->prefix($this->dirname.'_index').' as idx on link.index_id=idx.index_id) '
+                .' LEFT JOIN '.$xoopsDB->prefix('groups').' as grp on idx.groupid=grp.groupid '
+                .' WHERE link.item_id='.intval($identifier['item_id'])
+                .' AND (link.certify_state='.XOONIPS_CERTIFIED.' OR link.certify_state='.XOONIPS_WITHDRAW_REQUIRED
+                .') AND (open_level='.XOONIPS_OL_PUBLIC.' OR (open_level='.XOONIPS_OL_GROUP_ONLY
+                .' AND (grp.activate='.Xoonips_Enum::GRP_PUBLIC.' OR grp.activate='.Xoonips_Enum::GRP_CLOSE_REQUIRED.')))';
 
-			$result = $xoopsDB->query($sql);
-			if ($result) {
-				while (list($xid) = $xoopsDB->fetchRow($result)) {
-					$path = 'index' . implode(':index', explode(',', $index_tree_list[$xid]['id_fullpath']));
-					$path = StringUtils::convertEncoding($path, 'UTF-8', _CHARSET, 'h');
-                    $lines[] = '<setSpec>' . $path . '</setSpec>';
+            $result = $xoopsDB->query($sql);
+            if ($result) {
+                while (list($xid) = $xoopsDB->fetchRow($result)) {
+                    $path = 'index'.implode(':index', explode(',', $index_tree_list[$xid]['id_fullpath']));
+                    $path = StringUtils::convertEncoding($path, 'UTF-8', _CHARSET, 'h');
+                    $lines[] = '<setSpec>'.$path.'</setSpec>';
                 }
             }
             $item_type_name = StringUtils::convertEncoding($identifier['item_type_display'], 'UTF-8', _CHARSET, 'h');
-            $lines[] = '<setSpec>' . $item_type_name . '</setSpec>';
+            $lines[] = '<setSpec>'.$item_type_name.'</setSpec>';
             $lines[] = '</header>';
+
             return implode("\n", $lines);
         }
     }
 
     /**
-     * generate <record> of item
-     * 
-     * @param string $identifier item_id, item_type_id of item
-     * @param array $index_tree_list list of public indexes
-     * @param string $metadataPrefix metadataPrefix
+     * generate <record> of item.
+     *
+     * @param string $identifier      item_id, item_type_id of item
+     * @param array  $index_tree_list list of public indexes
+     * @param string $metadataPrefix  metadataPrefix
+     *
      * @return string <record>
      */
-	private function record($identifier, $index_tree_list) {
-		//return only header if item is deleted
-		if ($identifier['is_deleted'] == 1) {
-			return array("<record>\n" . $this->oaipmhHeader($identifier, $index_tree_list)
-				. "</record>\n", true);
+    private function record($identifier, $index_tree_list)
+    {
+        //return only header if item is deleted
+        if ($identifier['is_deleted'] == 1) {
+            return array("<record>\n".$this->oaipmhHeader($identifier, $index_tree_list)
+                ."</record>\n", true, );
         }
 
-		$item = array();
-		$item = $this->itemBean->getItemBasicInfo($identifier['item_id']);
-		//return error if item_type_id mismatched
-		if ($item['item_type_id'] != $identifier['item_type_id']) {
-			return array($this->error('idDoesNotExist', 'item_type_id not found'), false);
-		}
+        $item = array();
+        $item = $this->itemBean->getItemBasicInfo($identifier['item_id']);
+        //return error if item_type_id mismatched
+        if ($item['item_type_id'] != $identifier['item_type_id']) {
+            return array($this->error('idDoesNotExist', 'item_type_id not found'), false);
+        }
 
-		return array("<record>\n" . $this->oaipmhHeader($identifier, $index_tree_list)
-			. $this->metadata->getMetadata($identifier['item_type_id'], $identifier['item_id'])
-			. "</record>\n", true);
+        return array("<record>\n".$this->oaipmhHeader($identifier, $index_tree_list)
+            .$this->metadata->getMetadata($identifier['item_type_id'], $identifier['item_id'])
+            ."</record>\n", true, );
     }
 
-    private function resumptionTokenXml($cnt, $cursor, $args, $metadataPrefix, $last_item_id) {
+    private function resumptionTokenXml($cnt, $cursor, $args, $metadataPrefix, $last_item_id)
+    {
         // set or expire resumption token
         $resumptionToken_xml = '';
         if ($cnt > $cursor + $this->limit_row) {
@@ -700,135 +742,147 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
             $resumptionToken_xml = "<resumptionToken expirationDate=\"$expire\" completeListSize=\"$cnt\" cursor=\"$cursor\">$resumptionToken</resumptionToken>\n";
         } elseif ($args['resumptionToken']) {
             $result = $this->getResumptionToken($args['resumptionToken']);
-            if($result['expire_date'] < time()){
-              $this->deleteResumptionToken($args['resumptionToken']);
+            if ($result['expire_date'] < time()) {
+                $this->deleteResumptionToken($args['resumptionToken']);
             }
             $resumptionToken_xml = "<resumptionToken completeListSize=\"$cnt\" cursor=\"$cursor\"/>\n";
-        }	
+        }
+
         return $resumptionToken_xml;
     }
 
     /**
-     * delete resumptionToken record before expiretime
-     * 
+     * delete resumptionToken record before expiretime.
+     *
      * @param string $resumptionToken
      */
-    private function deleteResumptionToken($resumptionToken) {
-	    global $xoopsDB;
-            (method_exists('MyTextSanitizer', 'sGetInstance') and $myts =& MyTextSanitizer::sGetInstance()) || $myts =& MyTextSanitizer::getInstance();
-	    $table = $xoopsDB->prefix($this->dirname . '_oaipmh_resumption_token');
-	    $sql = "DELETE FROM $table WHERE resumption_token=\"" . $myts->stripSlashesGPC($resumptionToken). '"';
-	    $result = $xoopsDB->queryF($sql);
-	}
-    
-    private function expireResumptionToken(){
-	    global $xoopsDB;
-	    $table = $xoopsDB->prefix($this->dirname . '_oaipmh_resumption_token');
-        $sql = "DELETE FROM $table WHERE expire_date < UNIX_TIMESTAMP( NOW() )";
-	    $result = $xoopsDB->queryF($sql);
+    private function deleteResumptionToken($resumptionToken)
+    {
+        global $xoopsDB;
+        (method_exists('MyTextSanitizer', 'sGetInstance') and $myts = &MyTextSanitizer::sGetInstance()) || $myts = &MyTextSanitizer::getInstance();
+        $table = $xoopsDB->prefix($this->dirname.'_oaipmh_resumption_token');
+        $sql = "DELETE FROM $table WHERE resumption_token=\"".$myts->stripSlashesGPC($resumptionToken).'"';
+        $result = $xoopsDB->queryF($sql);
     }
 
+    private function expireResumptionToken()
+    {
+        global $xoopsDB;
+        $table = $xoopsDB->prefix($this->dirname.'_oaipmh_resumption_token');
+        $sql = "DELETE FROM $table WHERE expire_date < UNIX_TIMESTAMP( NOW() )";
+        $result = $xoopsDB->queryF($sql);
+    }
 
-	/**
-	 * register resumptionToken record
-	 * 
-	 * @param string $resumption_token
-	 * @param string $metadata_prefix
-	 * @param string $verb
-	 * @param string $args
-	 * @param string $last_item_id
-	 * @param int $expire_date
-	 * @param int $publish_date
-	 */
-	private function setResumptionToken($resumption_token, $metadata_prefix, $verb, $args, $last_item_id, $expire_date, $publish_date = null) {
-	    global $xoopsDB;
-	
-	    if ($publish_date == null) {
-	        $publish_date = time();
-	    }
-            (method_exists('MyTextSanitizer', 'sGetInstance') and $myts =& MyTextSanitizer::sGetInstance()) || $myts =& MyTextSanitizer::getInstance();
-	    $table = $xoopsDB->prefix($this->dirname . '_oaipmh_resumption_token');
-	    $sql = "INSERT INTO $table VALUES ('" . $myts->addSlashes($resumption_token)
-	        . "', '$metadata_prefix', '$verb', '" . $myts->addSlashes(serialize($args))
-	        . "', $last_item_id, " . $this->limit_row . ", $publish_date, $expire_date )";
-	    return $xoopsDB->queryF($sql);
-	}
-
-	/**
-	 * get resumptionToken record
-	 * 
-	 * @param string $resumption_token
-	 */
-    private function getResumptionToken($resumption_token) {
-	    global $xoopsDB;
-            (method_exists('MyTextSanitizer', 'sGetInstance') and $myts =& MyTextSanitizer::sGetInstance()) || $myts =& MyTextSanitizer::getInstance();
-	    $table = $xoopsDB->prefix($this->dirname . '_oaipmh_resumption_token');
-	    $sql = "SELECT resumption_token, metadata_prefix, args, last_item_id, publish_date, expire_date, verb FROM ${table} WHERE resumption_token=\"" . $myts->stripSlashesGPC($resumption_token) . '"';
-	    $result = $xoopsDB->query($sql);
-	    $ret = $xoopsDB->fetchArray($result);
-	    $ret['args'] = unserialize($ret['args']);
-	    return $ret;
-	}
-	
-	private function ISO8601toUTC($str) {
-		if (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})(T([0-9]{2}):([0-9]{2}):([0-9]{2})Z)?/", $str, $match ) == 0) {
-			return 0;
-		}
-		if (!isset($match[5])) {
-			$match[5] = 0;
-			$match[6] = 0;
-			$match[7] = 0;
-		}
-		return gmmktime($match[5], $match[6], $match[7], $match[2], $match[3], $match[1]);
-	}
-	
     /**
-     * return common header
-     * 
+     * register resumptionToken record.
+     *
+     * @param string $resumption_token
+     * @param string $metadata_prefix
+     * @param string $verb
+     * @param string $args
+     * @param string $last_item_id
+     * @param int    $expire_date
+     * @param int    $publish_date
+     */
+    private function setResumptionToken($resumption_token, $metadata_prefix, $verb, $args, $last_item_id, $expire_date, $publish_date = null)
+    {
+        global $xoopsDB;
+
+        if ($publish_date == null) {
+            $publish_date = time();
+        }
+            (method_exists('MyTextSanitizer', 'sGetInstance') and $myts = &MyTextSanitizer::sGetInstance()) || $myts = &MyTextSanitizer::getInstance();
+        $table = $xoopsDB->prefix($this->dirname.'_oaipmh_resumption_token');
+        $sql = "INSERT INTO $table VALUES ('".$myts->addSlashes($resumption_token)
+            ."', '$metadata_prefix', '$verb', '".$myts->addSlashes(serialize($args))
+            ."', $last_item_id, ".$this->limit_row.", $publish_date, $expire_date )";
+
+        return $xoopsDB->queryF($sql);
+    }
+
+    /**
+     * get resumptionToken record.
+     *
+     * @param string $resumption_token
+     */
+    private function getResumptionToken($resumption_token)
+    {
+        global $xoopsDB;
+        (method_exists('MyTextSanitizer', 'sGetInstance') and $myts = &MyTextSanitizer::sGetInstance()) || $myts = &MyTextSanitizer::getInstance();
+        $table = $xoopsDB->prefix($this->dirname.'_oaipmh_resumption_token');
+        $sql = "SELECT resumption_token, metadata_prefix, args, last_item_id, publish_date, expire_date, verb FROM ${table} WHERE resumption_token=\"".$myts->stripSlashesGPC($resumption_token).'"';
+        $result = $xoopsDB->query($sql);
+        $ret = $xoopsDB->fetchArray($result);
+        $ret['args'] = unserialize($ret['args']);
+
+        return $ret;
+    }
+
+    private function ISO8601toUTC($str)
+    {
+        if (preg_match('/([0-9]{4})-([0-9]{2})-([0-9]{2})(T([0-9]{2}):([0-9]{2}):([0-9]{2})Z)?/', $str, $match) == 0) {
+            return 0;
+        }
+        if (!isset($match[5])) {
+            $match[5] = 0;
+            $match[6] = 0;
+            $match[7] = 0;
+        }
+
+        return gmmktime($match[5], $match[6], $match[7], $match[2], $match[3], $match[1]);
+    }
+
+    /**
+     * return common header.
+     *
      * @return common header, <OAI-PMH>, <responseDate>
      */
-    private function header() {
-        return sprintf($this->headerXml . "\n", gmdate("Y-m-d\TH:i:s\Z", time()));
+    private function header()
+    {
+        return sprintf($this->headerXml."\n", gmdate("Y-m-d\TH:i:s\Z", time()));
     }
-    
-	/**
-     * generate <request>tag
-     * 
+
+    /**
+     * generate <request>tag.
+     *
      * @param attrs: hash variable for parameters
      *               array('verb' => 'Ldentify')
+     *
      * @return <request>tag
      */
-    private function request($attrs) {
+    private function request($attrs)
+    {
         $request = '<request';
         foreach ($attrs as $key => $value) {
-        	if (!is_null($value)) {
-	            $request .= " $key=\"" . $value . "\"";
-        	}
+            if (!is_null($value)) {
+                $request .= " $key=\"".$value.'"';
+            }
         }
         $request .= '>';
         $request .= $this->baseURL;
         $request .= "</request>\n";
+
         return $request;
     }
 
     /**
-     * return common footer
-     * 
+     * return common footer.
+     *
      * @return </OAI-PMH>
      */
-    private function footer( ) {
+    private function footer()
+    {
         return '</OAI-PMH>';
     }
 
     /**
-     * return error
-     * 
+     * return error.
+     *
      * @param string $errorcode errorcode
-     * @param string $text error 
+     * @param string $text      error
      */
-    private function error($errorcode, $text) {
+    private function error($errorcode, $text)
+    {
         return "<error code='$errorcode'>$text</error>\n";
     }
-
 }
-

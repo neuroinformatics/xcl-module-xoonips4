@@ -1,46 +1,50 @@
 <?php
 
-if (!isset($mydirname)) exit();
+if (!isset($mydirname)) {
+    exit();
+}
 
-$constpref = '_MD_' . strtoupper($mydirname);
+$constpref = '_MD_'.strtoupper($mydirname);
 
-if (defined($constpref . '_LOADED')) return;
+if (defined($constpref.'_LOADED')) {
+    return;
+}
 
-define($constpref . '_LOADED', 1);
+define($constpref.'_LOADED', 1);
 
 // action form error
-define($constpref . '_ERROR_REQUIRED', '{0}は必ず入力して下さい。');
-define($constpref . '_ERROR_MINLENGTH', '{0}は半角{1}文字以上にして下さい。');
-define($constpref . '_ERROR_MAXLENGTH', '{0}は半角{1}文字以内で入力して下さい。');
-define($constpref . '_ERROR_INTRANGE', '{0}は{1}以上{2}以下の数値を指定して下さい。');
-define($constpref . '_ERROR_MIN', '{0}は{1}以上の数値を指定して下さい。');
-define($constpref . '_ERROR_MAX', '{0}は{1}以下の数値を指定して下さい。');
-define($constpref . '_ERROR_EMAIL', '{0}は不正なメールアドレスです。');
-define($constpref . '_ERROR_MASK', '{0}は入力フォーマットに反しています。');
-define($constpref . '_ERROR_EXTENSION', '許可されたファイル形式ではありません。');
-define($constpref . '_ERROR_MAXFILESIZE', '{0}の最大ファイルサイズは{1}バイトです。');
-define($constpref . '_ERROR_OBJECTEXIST', '{0}の値が不正です。');
+define($constpref.'_ERROR_REQUIRED', '{0}は必ず入力して下さい。');
+define($constpref.'_ERROR_MINLENGTH', '{0}は半角{1}文字以上にして下さい。');
+define($constpref.'_ERROR_MAXLENGTH', '{0}は半角{1}文字以内で入力して下さい。');
+define($constpref.'_ERROR_INTRANGE', '{0}は{1}以上{2}以下の数値を指定して下さい。');
+define($constpref.'_ERROR_MIN', '{0}は{1}以上の数値を指定して下さい。');
+define($constpref.'_ERROR_MAX', '{0}は{1}以下の数値を指定して下さい。');
+define($constpref.'_ERROR_EMAIL', '{0}は不正なメールアドレスです。');
+define($constpref.'_ERROR_MASK', '{0}は入力フォーマットに反しています。');
+define($constpref.'_ERROR_EXTENSION', '許可されたファイル形式ではありません。');
+define($constpref.'_ERROR_MAXFILESIZE', '{0}の最大ファイルサイズは{1}バイトです。');
+define($constpref.'_ERROR_OBJECTEXIST', '{0}の値が不正です。');
 
 // messages
-define($constpref . '_MESSAGE_DBUPDATED', 'データベースを更新しました。');
-define($constpref . '_MESSAGE_DBDELETED', 'データを削除しました。');
-define($constpref . '_MESSAGE_EMPTY', '未登録です。');
-define($constpref . '_MESSAGE_DELETE_CONFIRM', '本当に削除しますか？');
-define($constpref . '_ERROR_INPUTVALUE', '{0}の入力値が不正です。');
-define($constpref . '_ERROR_INPUTFILE', '{0}のファイルが不正です。');
-define($constpref . '_ERROR_DUPLICATED', '{0}は既に存在しています。');
-define($constpref . '_ERROR_DBUPDATE_FAILED', 'データベースの更新に失敗しました。');
-define($constpref . '_ERROR_DBDELETED_FAILED', 'データの削除に失敗しました。');
+define($constpref.'_MESSAGE_DBUPDATED', 'データベースを更新しました。');
+define($constpref.'_MESSAGE_DBDELETED', 'データを削除しました。');
+define($constpref.'_MESSAGE_EMPTY', '未登録です。');
+define($constpref.'_MESSAGE_DELETE_CONFIRM', '本当に削除しますか？');
+define($constpref.'_ERROR_INPUTVALUE', '{0}の入力値が不正です。');
+define($constpref.'_ERROR_INPUTFILE', '{0}のファイルが不正です。');
+define($constpref.'_ERROR_DUPLICATED', '{0}は既に存在しています。');
+define($constpref.'_ERROR_DBUPDATE_FAILED', 'データベースの更新に失敗しました。');
+define($constpref.'_ERROR_DBDELETED_FAILED', 'データの削除に失敗しました。');
 
 // User module action: UserSu
-define($constpref . '_USER_LANG_SU', 'アカウント切り替え');
-define($constpref . '_USER_LANG_SU_TARGET_USER', 'アカウントの切り替え先');
-define($constpref . '_USER_LANG_SU_PASSWORD', 'あなたのパスワード');
-define($constpref . '_USER_MESSAGE_SU_EXPLAIN', '一時的に他ユーザのアカウントで作業することができます。');
-define($constpref . '_USER_MESSAGE_SU_START', 'アカウントを切り替えています。');
-define($constpref . '_USER_MESSAGE_SU_END', '管理者に戻ります。');
-define($constpref . '_USER_ERROR_SU_NO_ACCOUNT', '他ユーザのアカウントが選択されていません。');
-define($constpref . '_USER_ERROR_SU_BAD_PASSWORD', 'パスワードが異なります。');
+define($constpref.'_USER_LANG_SU', 'アカウント切り替え');
+define($constpref.'_USER_LANG_SU_TARGET_USER', 'アカウントの切り替え先');
+define($constpref.'_USER_LANG_SU_PASSWORD', 'あなたのパスワード');
+define($constpref.'_USER_MESSAGE_SU_EXPLAIN', '一時的に他ユーザのアカウントで作業することができます。');
+define($constpref.'_USER_MESSAGE_SU_START', 'アカウントを切り替えています。');
+define($constpref.'_USER_MESSAGE_SU_END', '管理者に戻ります。');
+define($constpref.'_USER_ERROR_SU_NO_ACCOUNT', '他ユーザのアカウントが選択されていません。');
+define($constpref.'_USER_ERROR_SU_BAD_PASSWORD', 'パスワードが異なります。');
 
 // _MD_<MODULENAME>_<STRINGNAME>
 
@@ -194,7 +198,6 @@ define('_MD_XOONIPS_RIGHTS_ALLOW_COMMERCIAL_USE', 'あなたの作品の商用�
 define('_MD_XOONIPS_RIGHTS_ALLOW_MODIFICATIONS', '改変された作品が共有されることを許諾しますか？');
 define('_MD_XOONIPS_RIGHTS_YES_SA', '他の人が同じように共有するなら、許します');
 
-
 define('_MD_XOONIPS_ITEM_LISTING_ITEMTYPE', 'アイテムタイプ一覧');
 define('_MD_XOONIPS_MSG_ITEMTYPE_EMPTY', 'アイテムタイプが登録されていません。');
 
@@ -226,7 +229,7 @@ define('_MD_XOONIPS_INDEX_PANKUZU_EDIT_PRIVATE_INDEX_KEYWORD', 'プライベー�
 
 define('_MD_XOONIPS_INDEX_TITLE_CONFLICT', "インデックス名 '%s' が競合しています。");
 define('_MD_XOONIPS_INDEX_BAD_MOVE', '不正な操作です。インデックスを移動できません。');
-define('_MD_XOONIPS_INDEX_DELETE_CONFIRM_MESSAGE', 'を削除しますか？');//
+define('_MD_XOONIPS_INDEX_DELETE_CONFIRM_MESSAGE', 'を削除しますか？');
 define('_MD_XOONIPS_ERROR_DELETE_NOTEXIST_INDEX', 'インデックスが既に削除されました。');
 
 // following defines for account
@@ -266,8 +269,8 @@ define('_MD_XOONIPS_USER_UNAME_LABEL', 'ユーザ名');
 define('_MD_XOONIPS_LABEL_SELECT', '選択');
 
 // doi( sort id )
-define('_MD_XOONIPS_ITEM_DOI_DUPLICATE_ID', 'IDが重複しています。'); 
-define('_MD_XOONIPS_ITEM_DOI_INVALID_ID', 'IDが不正です。1-{0}桁の英数字の必要があります。'); 
+define('_MD_XOONIPS_ITEM_DOI_DUPLICATE_ID', 'IDが重複しています。');
+define('_MD_XOONIPS_ITEM_DOI_INVALID_ID', 'IDが不正です。1-{0}桁の英数字の必要があります。');
 
 define('_MD_XOONIPS_PAGENAVI_NEXT', 'NEXT');
 define('_MD_XOONIPS_PAGENAVI_PREV', 'PREV');
@@ -295,10 +298,10 @@ define('_MD_XOONIPS_GROUP_ITEM_WITHDRAWAL_AUTO_NOTIFYSBJ', 'グループから�
 define('_MD_XOONIPS_GROUP_ITEM_WITHDRAWAL_REJECTED_NOTIFYSBJ', 'グループからの共有取り下げが承認されませんでした。');
 define('_MD_XOONIPS_ITEM_UPDATE_NOTIFYSBJ', 'アイテムが更新されました。');
 define('_MD_XOONIPS_USER_ITEM_CHANGED_NOTIFYSBJ', 'アイテムの共有者が変更されました。');
-define('_MD_XOONIPS_USER_FILE_DOWNLOADED_NOTIFYSBJ', 'ファイルがダウンロードされました' );
-define('_MD_XOONIPS_USER_INDEX_RENAMED_NOTIFYSBJ', 'インデックスの名前が変更されました' );
-define('_MD_XOONIPS_USER_INDEX_MOVED_NOTIFYSBJ', 'インデックスが移動されました' );
-define('_MD_XOONIPS_USER_INDEX_DELETED_NOTIFYSBJ', 'インデックスが削除されました' );
+define('_MD_XOONIPS_USER_FILE_DOWNLOADED_NOTIFYSBJ', 'ファイルがダウンロードされました');
+define('_MD_XOONIPS_USER_INDEX_RENAMED_NOTIFYSBJ', 'インデックスの名前が変更されました');
+define('_MD_XOONIPS_USER_INDEX_MOVED_NOTIFYSBJ', 'インデックスが移動されました');
+define('_MD_XOONIPS_USER_INDEX_DELETED_NOTIFYSBJ', 'インデックスが削除されました');
 
 define('_MD_XOONIPS_TRANSFER_NOTIFICATION_ITEM_TITLE', 'タイトル：');
 define('_MD_XOONIPS_TRANSFER_NOTIFICATION_ITEM_DETAIL', '詳細：');
@@ -507,4 +510,3 @@ define('_MD_XOONIPS_MESSAGE_INDEX_DESCRIPTION_TITLE_ERROR', 'タイトルは必�
 define('_MD_XOONIPS_MESSAGE_INDEX_DESCRIPTION_DELETE_SUCCESS', '説明を削除しました。');
 define('_MD_XOONIPS_MESSAGE_INDEX_DESCRIPTION_DELETE_ERROR', '説明の削除に失敗しました。');
 define('_MD_XOONIPS_DELETE_INDEX_DETAILED_DESCRIPTION', '説明を削除します。よろしいですか？');
-

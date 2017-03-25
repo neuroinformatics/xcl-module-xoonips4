@@ -1,13 +1,12 @@
 <?php
 
 /**
- * item file object
+ * item file object.
  */
 class Xoonips_ItemFileObject extends XoopsSimpleObject
 {
-
     /**
-     * constructor
+     * constructor.
      */
     public function __construct()
     {
@@ -29,32 +28,33 @@ class Xoonips_ItemFileObject extends XoopsSimpleObject
     }
 
     /**
-     * get url for download
+     * get url for download.
      *
      * @param int format
+     *
      * @return string/bool false if failure
      */
     public function getDownloadUrl($format = 1)
     {
         $item_id = intval($this->get('item_id'));
         $itemHandler = Xoonips_Utils::getModuleHandler('item', $this->mDirname);
-        $itemObj =& $itemHandler->get($item_id);
+        $itemObj = &$itemHandler->get($item_id);
         if (!is_object($itemObj)) {
             return false;
         }
         $doi = $itemObj->get('doi');
         switch ($format) {
             case 1:
-                return XOOPS_URL . '/modules/' . $this->mDirname . '/download.php/' . (empty($doi) ? $item_id : XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME . ':' . $doi) . '/' . $this->get('file_id') . '/' . $this->get('original_file_name');
+                return XOOPS_URL.'/modules/'.$this->mDirname.'/download.php/'.(empty($doi) ? $item_id : XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME.':'.$doi).'/'.$this->get('file_id').'/'.$this->get('original_file_name');
                 break;
             case 2:
-                return XOOPS_URL . '/modules/' . $this->mDirname . '/download.php?' . (empty($doi) ? 'item_id=' . $item_id : XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME . '=' . $doi);
+                return XOOPS_URL.'/modules/'.$this->mDirname.'/download.php?'.(empty($doi) ? 'item_id='.$item_id : XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME.'='.$doi);
                 break;
         }
     }
 
     /**
-     * get file path
+     * get file path.
      *
      * @return string
      */
@@ -62,42 +62,43 @@ class Xoonips_ItemFileObject extends XoopsSimpleObject
     {
         $upload_dir = Xoonips_Utils::getXooNIpsConfig($this->mDirname, 'upload_dir');
         $item_id = $this->get('item_id');
-        return $upload_dir . '/' . (empty($item_id) ? '' : 'item/' . $item_id . '/') . $this->get('file_id');
+
+        return $upload_dir.'/'.(empty($item_id) ? '' : 'item/'.$item_id.'/').$this->get('file_id');
     }
 }
 
 /**
- * item object handler
+ * item object handler.
  */
 class Xoonips_ItemFileHandler extends XoopsObjectGenericHandler
 {
-
     /**
-     * constructor
+     * constructor.
      *
      * @param XoopsDatabase &$db
-     * @param string $dirname
+     * @param string        $dirname
      */
     public function __construct(&$db, $dirname)
     {
-        $this->mTable = $dirname . '_item_file';
+        $this->mTable = $dirname.'_item_file';
         $this->mPrimary = 'file_id';
         $this->mClass = preg_replace('/Handler$/', 'Object', get_class());
         parent::__construct($db);
     }
 
     /**
-     * get objects for download
+     * get objects for download.
      *
-     * @param int $item_id
+     * @param int    $item_id
      * @param string $file_name
+     *
      * @return &object[]
      */
     public function &getObjectsForDownload($item_id, $file_name = '')
     {
         $ret = array();
-        $tableItemFieldDetail = $this->db->prefix($this->mDirname . '_item_field_detail');
-        $tableViewType = $this->db->prefix($this->mDirname . '_view_type');
+        $tableItemFieldDetail = $this->db->prefix($this->mDirname.'_item_field_detail');
+        $tableViewType = $this->db->prefix($this->mDirname.'_view_type');
         $sql = sprintf('SELECT * FROM `%1$s` INNER JOIN `%2$s` ON `%1$s`.`item_field_detail_id`=`%2$s`.`item_field_detail_id` INNER JOIN `%3$s` ON `%2$s`.`view_type_id`=`%3$s`.`view_type_id` WHERE `%1$s`.`item_id`=%4$u AND `%3$s`.`module`=\'ViewTypeFileUpload\'', $this->mTable, $tableItemFieldDetail, $tableViewType, $item_id);
         if (!empty($file_name)) {
             $sql .= sprintf(' AND `%s`.`original_file_name`=%s', $this->mTable, $this->db->quoteString($file_name));
@@ -108,10 +109,11 @@ class Xoonips_ItemFileHandler extends XoopsObjectGenericHandler
                 $obj->mDirname = $this->getDirname();
                 $obj->assignVars($row);
                 $obj->unsetNew();
-                $ret[] =& $obj;
+                $ret[] = &$obj;
                 unset($obj);
             }
         }
+
         return $ret;
     }
 }
