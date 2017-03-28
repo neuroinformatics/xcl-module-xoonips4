@@ -108,4 +108,45 @@ class Xoonips_ItemHandler extends XoopsObjectGenericHandler
 
         return $ret;
     }
+
+    /**
+     * get most viewed item object.
+     *
+     * @param int $limit
+     * @param int $term
+     *
+     * @return $ret
+     */
+    public function &getMostViewedItems($limit, $term)
+    {
+        $ret = array();
+        $tableItemTitle = $this->db->prefix($this->mDirname.'_item_title');
+        $tableIndex = $this->db->prefix($this->mDirname.'_index');
+        $tableIndexItemLink = $this->db->prefix($this->mDirname.'_index_item_link');
+        if ($limit < 1) {
+            return;
+        }
+
+        $sql = sprintf('SELECT * FROM `%1$s` INNER JOIN `%2$s` ON `%1$s`.`item_id` = `%2$s`.`item_id` WHERE `%1$s`.`item_id` IN (SELECT DISTINCT `%4$s`.`item_id` FROM `%4$s` WHERE (`%4$s`.`certify_state` = %6$d OR `%4$s`.`certify_state` = %7$d) AND `%4$s`.`index_id` IN (SELECT `%3$s`.`index_id` FROM `%3$s` WHERE `%3$s`.`open_level` = %5$d)) AND ', $this->mTable, $tableItemTitle, $tableIndex, $tableIndexItemLink, XOONIPS_OL_PUBLIC, XOONIPS_CERTIFIED, XOONIPS_WITHDRAW_REQUIRED);
+        if ($term != 0) {
+            $sql .= sprintf('`%1$s`.`last_update_date` >= %2$d AND ', $this->mTable, $term);
+        }
+        $sql .= sprintf('`%1$s`.`view_count` != 0 ORDER BY `%1$s`.`view_count` DESC limit %2$d', $this->mTable, $limit);
+
+        if ($result = $this->db->query($sql)) {
+            while ($row = $this->db->fetchArray($result)) {
+                $r = array();
+                $r['title'] = $row['title'];
+                $r['view_count'] = $row['view_count'];
+                $obj = new $this->mClass();
+                $obj->mDirname = $this->getDirname();
+                $obj->assignVars($row);
+                $r['url'] = $obj->getUrl();
+                unset($obj);
+                $ret[] = $r;
+            }
+        }
+
+        return $ret;
+    }
 }

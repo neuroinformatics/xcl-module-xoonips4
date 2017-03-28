@@ -35,3 +35,10 @@ define($constpref.'_USER_ADMINMENU', 'Administration Menu');
 // quick search block
 define($constpref.'_SEARCH_QUICK', 'Search');
 define($constpref.'_SEARCH_ADVANCED', 'Advanced');
+
+// ranking block
+define($constpref.'_RANKING_VIEWED_ITEM', 'most accessed items');
+define($constpref.'_RANKING_DOWNLOADED_ITEM', 'most downloaded items');
+
+define($constpref.'_RANKING_EMPTY', 'ranking is empty.');
+define($constpref.'_RANKING_RANK_STR', 'st,nd,rd,th');

@@ -35,3 +35,10 @@ define($constpref.'_USER_ADMINMENU', '管理者メニュー');
 // quick search block
 define($constpref.'_SEARCH_QUICK', '検索');
 define($constpref.'_SEARCH_ADVANCED', '詳細検索');
+
+// ranking block
+define($constpref.'_RANKING_VIEWED_ITEM', '最も多く閲覧されたアイテム');
+define($constpref.'_RANKING_DOWNLOADED_ITEM', '最も多くダウンロードされたアイテム');
+
+define($constpref.'_RANKING_EMPTY', 'ランキングが空です');
+define($constpref.'_RANKING_RANK_STR', '位');

@@ -9,6 +9,9 @@ class Xoonips_ListAction extends Xoonips_ActionBase
 {
     protected function doInit(&$request, &$response)
     {
+        $root = &XCube_Root::getSingleton();
+        $textFilter = &$root->getTextFilter();
+
         global $xoopsUser;
         $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
 
@@ -24,7 +27,7 @@ class Xoonips_ListAction extends Xoonips_ActionBase
         $sess_orderdir = isset($_SESSION[$this->dirname.'_order_dir']) ? $_SESSION[$this->dirname.'_order_dir'] : XOONIPS_ASC;
         $request_vars = array(
             'op' => array('s', ''),
-             'isPrint' => array('s', ''),
+            'isPrint' => array('s', ''),
             'page' => array('i', 1),
             'orderby' => array('s', $sess_orderby),
             'order_dir' => array('i', $sess_orderdir),
@@ -57,10 +60,12 @@ class Xoonips_ListAction extends Xoonips_ActionBase
         $_SESSION[$this->dirname.'_order_by' ] = $orderby;
         $_SESSION[$this->dirname.'_order_dir'] = $order_dir;
 
-        $cri = array('start' => ($page - 1) * $itemcount,
-              'rows' => $itemcount,
-              'orderby' => $orderby,
-              'orderdir' => $order_dir, );
+        $cri = array(
+            'start' => ($page - 1) * $itemcount,
+            'rows' => $itemcount,
+            'orderby' => $orderby,
+            'orderdir' => $order_dir,
+        );
 
         $export_enabled = true;
 
@@ -76,7 +81,7 @@ class Xoonips_ListAction extends Xoonips_ActionBase
             }
 
             $detailed_title = $indexInfo['detailed_title'];
-            $detailed_description = $indexInfo['detailed_description'];
+            $detailed_description = $textFilter->toShowTarea($indexInfo['detailed_description'], 0, 1, 1, 1, 1);
             $icon = sprintf('%s/modules/%s/image.php/index/%u/%s', XOOPS_URL, $this->dirname, $index_id, $indexInfo['icon']);
             $index_upload_dir = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'index_upload_dir');
             $file_path = $index_upload_dir.'/index/'.$index_id;

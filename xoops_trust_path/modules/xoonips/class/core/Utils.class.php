@@ -512,4 +512,141 @@ class Xoonips_Utils
 
         return $xoopsModule->getVar('trust_dirname');
     }
+
+    // php-indent: disable
+    /**
+     * html character entity references.
+     *
+     * @var array strings of html character entity reference
+    */
+    public $_html_char_entity_ref = array(
+        '&quot;',     '&amp;',      '&apos;',     '&lt;',       '&gt;',
+        '&nbsp;',     '&iexcl;',    '&cent;',     '&pound;',    '&curren;',
+        '&yen;',      '&brvbar;',   '&sect;',     '&uml;',      '&copy;',
+        '&ordf;',     '&laquo;',    '&not;',      '&shy;',      '&reg;',
+        '&macr;',     '&deg;',      '&plusmn;',   '&sup2;',     '&sup3;',
+        '&acute;',    '&micro;',    '&para;',     '&middot;',   '&cedil;',
+        '&sup1;',     '&ordm;',     '&raquo;',    '&frac14;',   '&frac12;',
+        '&frac34;',   '&iquest;',   '&Agrave;',   '&Aacute;',   '&Acirc;',
+        '&Atilde;',   '&Auml;',     '&Aring;',    '&AElig;',    '&Ccedil;',
+        '&Egrave;',   '&Eacute;',   '&Ecirc;',    '&Euml;',     '&Igrave;',
+        '&Iacute;',   '&Icirc;',    '&Iuml;',     '&ETH;',      '&Ntilde;',
+        '&Ograve;',   '&Oacute;',   '&Ocirc;',    '&Otilde;',   '&Ouml;',
+        '&times;',    '&Oslash;',   '&Ugrave;',   '&Uacute;',   '&Ucirc;',
+        '&Uuml;',     '&Yacute;',   '&THORN;',    '&szlig;',    '&agrave;',
+        '&aacute;',   '&acirc;',    '&atilde;',   '&auml;',     '&aring;',
+        '&aelig;',    '&ccedil;',   '&egrave;',   '&eacute;',   '&ecirc;',
+        '&euml;',     '&igrave;',   '&iacute;',   '&icirc;',    '&iuml;',
+        '&eth;',      '&ntilde;',   '&ograve;',   '&oacute;',   '&ocirc;',
+        '&otilde;',   '&ouml;',     '&divide;',   '&oslash;',   '&ugrave;',
+        '&uacute;',   '&ucirc;',    '&uuml;',     '&yacute;',   '&thorn;',
+        '&yuml;',     '&OElig;',    '&oelig;',    '&Scaron;',   '&scaron;',
+        '&Yuml;',     '&fnof;',     '&circ;',     '&tilde;',    '&Alpha;',
+        '&Beta;',     '&Gamma;',    '&Delta;',    '&Epsilon;',  '&Zeta;',
+        '&Eta;',      '&Theta;',    '&Iota;',     '&Kappa;',    '&Lambda;',
+        '&Mu;',       '&Nu;',       '&Xi;',       '&Omicron;',  '&Pi;',
+        '&Rho;',      '&Sigma;',    '&Tau;',      '&Upsilon;',  '&Phi;',
+        '&Chi;',      '&Psi;',      '&Omega;',    '&alpha;',    '&beta;',
+        '&gamma;',    '&delta;',    '&epsilon;',  '&zeta;',     '&eta;',
+        '&theta;',    '&iota;',     '&kappa;',    '&lambda;',   '&mu;',
+        '&nu;',       '&xi;',       '&omicron;',  '&pi;',       '&rho;',
+        '&sigmaf;',   '&sigma;',    '&tau;',      '&upsilon;',  '&phi;',
+        '&chi;',      '&psi;',      '&omega;',    '&thetasym;', '&upsih;',
+        '&piv;',      '&ensp;',     '&emsp;',     '&thinsp;',   '&zwnj;',
+        '&zwj;',      '&lrm;',      '&rlm;',      '&ndash;',    '&mdash;',
+        '&lsquo;',    '&rsquo;',    '&sbquo;',    '&ldquo;',    '&rdquo;',
+        '&bdquo;',    '&dagger;',   '&Dagger;',   '&bull;',     '&hellip;',
+        '&permil;',   '&prime;',    '&Prime;',    '&lsaquo;',   '&rsaquo;',
+        '&oline;',    '&frasl;',    '&euro;',     '&image;',    '&weierp;',
+        '&real;',     '&trade;',    '&alefsym;',  '&larr;',     '&uarr;',
+        '&rarr;',     '&darr;',     '&harr;',     '&crarr;',    '&lArr;',
+        '&uArr;',     '&rArr;',     '&dArr;',     '&hArr;',     '&forall;',
+        '&part;',     '&exist;',    '&empty;',    '&nabla;',    '&isin;',
+        '&notin;',    '&ni;',       '&prod;',     '&sum;',      '&minus;',
+        '&lowast;',   '&radic;',    '&prop;',     '&infin;',    '&ang;',
+        '&and;',      '&or;',       '&cap;',      '&cup;',      '&int;',
+        '&there4;',   '&sim;',      '&cong;',     '&asymp;',    '&ne;',
+        '&equiv;',    '&le;',       '&ge;',       '&sub;',      '&sup;',
+        '&nsub;',     '&sube;',     '&supe;',     '&oplus;',    '&otimes;',
+        '&perp;',     '&sdot;',     '&lceil;',    '&rceil;',    '&lfloor;',
+        '&rfloor;',   '&lang;',     '&rang;',     '&loz;',      '&spades;',
+        '&clubs;',    '&hearts;',   '&diams;',
+        );
+
+    /**
+     * escape html special characters
+     * this function will convert text to follow some rules:
+     * - '&' => '&amp;'
+     * - '"' => '&quot;'
+     * - ''' => '&#039;'
+     * - '<' => '&lt;'
+     * - '>' => '&gt;'
+     * - numeric entity reference => (pass)
+     * - character entity reference => (pass)
+     * - '&nbsp;' => '&amp;nbsp;'.
+     *
+     * @param string $text text string
+     *
+     * @return string escaped text string
+     */
+    public function getHtmlSpecialChars($text)
+    {
+        static $s = array(
+            '/&amp;#([xX][0-9a-fA-F]+|[0-9]+);/',
+            '/&amp;([a-zA-Z][0-9a-zA-Z]+);/e',
+            '/&nbsp;/',
+        );
+        static $r = array(
+            '&#\\1;',
+            'in_array( "&$1;", $this->_html_char_entity_ref ) ? "&$1;" : "&amp;$1;"',
+            '&amp;nbsp;',
+        );
+
+        return preg_replace($s, $r, htmlspecialchars($text, ENT_QUOTES));
+    }
+
+    /**
+     * truncate text.
+     *
+     * @param string $text   src
+     * @param int    $length maximum char width
+     * @param string $etc    appending text if $text truncated
+     *
+     * @return string dist
+     */
+    public function getTruncate($text, $length, $etc = '...')
+    {
+        // multi language extension support - strip ml tags
+        if (defined('XOOPS_CUBE_LEGACY')) {
+            // cubeutil module
+            if (isset($GLOBALS['cubeUtilMlang'])) {
+                $text = $GLOBALS['cubeUtilMlang']->obFilter($text);
+            }
+        } else {
+            // sysutil module
+            if (function_exists('sysutil_get_xoops_option')) {
+                if (sysutil_get_xoops_option('sysutil', 'sysutil_use_ml')) {
+                    if (function_exists('sysutil_ml_filter')) {
+                        $text = sysutil_ml_filter($text);
+                    }
+                }
+            }
+        }
+
+        $olen = strlen($text);
+        // trim width
+        if (XOOPS_USE_MULTIBYTES) {
+            $text = mb_strimwidth($text, 0, $length, '', mb_detect_encoding($text));
+        } else {
+            $text = substr($text, 0, $length);
+        }
+        // remove broken html entity from trimed strig
+        $text = preg_replace('/&#[^;]*$/s', '', $text);
+        // append $etc char if text is trimed
+        if ($olen != strlen($text)) {
+            $text .= $etc;
+        }
+
+        return $text;
+    }
 }

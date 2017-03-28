@@ -374,3 +374,6 @@ define('_MI_XOONIPS_CONF_AUTO_ADMIT', 'Auto-approve user-created groups');
 define('_MI_XOONIPS_CONF_MODERATOR_ADMIT', 'Moderator-approve user-created groups');
 define('_MI_XOONIPS_CONF_AUTO_PUBLIC_ADMIT', 'Auto-approve to publish the group');
 define('_MI_XOONIPS_CONF_MODERATOR_PUBLIC_ADMIT', 'Moderator-approve to publish the group');
+
+// ranking
+define('_MI_XOONIPS_RANKING', 'XooNIps Ranking');

@@ -439,6 +439,12 @@ $modversion['blocks'][5]['show_func'] = 'b_xoonips_itemtypes_show';
 $modversion['blocks'][5]['template'] = 'block_itemtypes.html';
 $modversion['blocks'][5]['can_clone'] = true;
 
+$modversion['blocks'][6]['file'] = 'xoonips_blocks.php';
+$modversion['blocks'][6]['name'] = _MI_XOONIPS_RANKING;
+$modversion['blocks'][6]['description'] = 'Ranking';
+$modversion['blocks'][6]['show_func'] = 'b_xoonips_ranking_show';
+$modversion['blocks'][6]['template'] = 'block_ranking.html';
+
 // $modversion['onInstall'] = 'include/oninstall.inc.php';
 // $modversion['onUpdate'] = 'include/onupdate.inc.php';
 // $modversion['onUninstall'] = 'include/onuninstall.inc.php';

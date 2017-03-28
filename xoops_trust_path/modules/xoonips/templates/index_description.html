@@ -80,7 +80,7 @@ function back(back) {
  <tr>
   <td class="head"><{$smarty.const._MD_XOONIPS_INDEX_DETAILED_DESCRIPTION_DESCRIPTION}></td>
   <td class="<{cycle name="oddeven"}>">
-    <textarea id="<{$dirname}>_detailed_description" name="detailed_description" rows="5" cols="50" style="width:400px;"><{$detailed_description|xoops_escape}></textarea>
+    <{xoops_dhtmltarea id="`$dirname`_detailed_description" name="detailed_description" value=$detailed_description }>
   </td>
  </tr>
 </table>

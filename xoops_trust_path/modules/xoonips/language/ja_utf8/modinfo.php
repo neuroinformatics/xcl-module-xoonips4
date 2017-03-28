@@ -374,3 +374,6 @@ define('_MI_XOONIPS_CONF_AUTO_ADMIT', 'ユーザが作成したグループを�
 define('_MI_XOONIPS_CONF_MODERATOR_ADMIT', 'モデレータがグループを承認する');
 define('_MI_XOONIPS_CONF_AUTO_PUBLIC_ADMIT', '自動的にグループの公開を承認する');
 define('_MI_XOONIPS_CONF_MODERATOR_PUBLIC_ADMIT', 'モデレータが確認してグループの公開を承認する');
+
+// ranking
+define('_MI_XOONIPS_RANKING', 'ランキング');

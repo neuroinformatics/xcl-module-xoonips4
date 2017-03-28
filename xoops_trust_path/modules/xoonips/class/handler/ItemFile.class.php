@@ -116,4 +116,45 @@ class Xoonips_ItemFileHandler extends XoopsObjectGenericHandler
 
         return $ret;
     }
+
+    /**
+     * get most downloaded item object.
+     *
+     * @param int $limit
+     * @param int $term
+     *
+     * @return $ret
+     */
+    public function &getMostDownloadedItems($limit, $term)
+    {
+        $ret = array();
+        $tableItem = $this->db->prefix($this->mDirname.'_item');
+        $tableItemTitle = $this->db->prefix($this->mDirname.'_item_title');
+        $tableIndex = $this->db->prefix($this->mDirname.'_index');
+        $tableIndexItemLink = $this->db->prefix($this->mDirname.'_index_item_link');
+        if ($limit < 1) {
+            return;
+        }
+
+        $sql = sprintf('SELECT * FROM `%1$s` INNER JOIN `%2$s` ON `%1$s`.`item_id` = `%2$s`.`item_id` INNER JOIN `%3$s` ON `%1$s`.`item_id` = `%3$s`.`item_id` WHERE `%1$s`.`item_id` IN (SELECT DISTINCT `%5$s`.`item_id` FROM `%5$s` WHERE (`%5$s`.`certify_state` = %7$d OR `%5$s`.`certify_state` = %8$d) AND `%5$s`.`index_id` IN (SELECT `%4$s`.`index_id` FROM `%4$s` WHERE `%4$s`.`open_level` = %6$d)) AND ', $this->mTable, $tableItem, $tableItemTitle, $tableIndex, $tableIndexItemLink, XOONIPS_OL_PUBLIC, XOONIPS_CERTIFIED, XOONIPS_WITHDRAW_REQUIRED);
+        if ($term != 0) {
+            $sql .= sprintf('`%1$s`.`last_update_date` >= %2$d AND ', $tableItem, $term);
+        }
+        $sql .= sprintf('`%1$s`.`download_count` != 0 ORDER BY `%1$s`.`download_count` DESC limit %2$d', $this->mTable, $limit);
+
+        if ($result = $this->db->query($sql)) {
+            while ($row = $this->db->fetchArray($result)) {
+                $r = array();
+                $r['title'] = $row['title'];
+                $r['download_count'] = $row['download_count'];
+                $itemHandler = Xoonips_Utils::getModuleHandler('item', $this->mDirname);
+                $itemObj = &$itemHandler->get($row['item_id']);
+                $r['url'] = $itemObj->getUrl();
+                unset($itemObj);
+                $ret[] = $r;
+            }
+        }
+
+        return $ret;
+    }
 }

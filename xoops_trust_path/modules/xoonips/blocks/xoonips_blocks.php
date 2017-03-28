@@ -20,3 +20,6 @@ require_once dirname(__FILE__).'/xoonips_quicksearch.php';
 
 // load item type list block
 require_once dirname(__FILE__).'/xoonips_itemtypes.php';
+
+// load ranking block
+require_once dirname(__FILE__).'/xoonips_ranking.php';
