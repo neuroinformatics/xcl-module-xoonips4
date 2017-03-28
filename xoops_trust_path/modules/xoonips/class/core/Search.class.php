@@ -697,7 +697,7 @@ class Xoonips_Search_Query
             }
         }
         if ($pop_require) {
-            $pos--;
+            --$pos;
         }
         if ($mean == 'WORD') {
             switch (strtoupper($ret)) {
