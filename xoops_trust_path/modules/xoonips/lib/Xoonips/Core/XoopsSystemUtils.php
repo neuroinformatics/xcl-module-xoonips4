@@ -1,0 +1,203 @@
+<?php
+
+namespace Xoonips\Core;
+
+/**
+ * xoops system utility class.
+ */
+class XoopsSystemUtils
+{
+    /**
+     * set xoops module admin right.
+     *
+     * @param int  $mid
+     * @param int  $gid
+     * @param bool $right
+     *
+     * @return bool
+     */
+    public static function setModuleAdminRight($mid, $gid, $right)
+    {
+        return self::_setRight('module_admin', $mid, $gid, $right);
+    }
+
+    /**
+     * set module read right.
+     *
+     * @param int  $mid
+     * @param int  $gid
+     * @param bool $right
+     *
+     * @return bool
+     */
+    public static function setModuleReadRight($mid, $gid, $right)
+    {
+        return self::_setRight('module_read', $mid, $gid, $right);
+    }
+
+    /**
+     * set block read right.
+     *
+     * @param int  $bid
+     * @param int  $gid
+     * @param bool $right
+     *
+     * @return bool
+     */
+    public static function setBlockReadRight($bid, $gid, $right)
+    {
+        return self::_setRight('block_read', $bid, $gid, $right);
+    }
+
+    /**
+     * set block position.
+     *
+     * @param int  $bid
+     * @param bool $visible
+     * @param int  $side
+     *                      0: sideblock - left
+     *                      1: sideblock - right
+     *                      2: sideblock - left and right
+     *                      3: centerblock - left
+     *                      4: centerblock - right
+     *                      5: centerblock - center
+     *                      6: centerblock - left, right, center
+     * @param int  $weight
+     *
+     * @return bool
+     */
+    public static function setBlockPosition($bid, $visible, $side, $weight)
+    {
+        $blockHandler = &xoops_gethandler('block');
+        $blockObj = &$blockHandler->get($bid);
+        if (!is_object($blockObj)) {
+            return false;
+        }
+        $blockObj->set('visible', $visible ? 1 : 0);
+        $blockObj->set('side', $side);
+        $blockObj->set('weight', $weight);
+
+        return $blockHandler->insert($blockObj);
+    }
+
+    /**
+     * set block show page.
+     *
+     * @param int $bid
+     * @param int $mid
+     *                 -1 : top page
+     *                 0 : all pages
+     *                 >=1 : module id
+     *
+     * @return bool
+     */
+    public static function setBlockShowPage($bid, $mid, $is_show)
+    {
+        $db = &\XoopsDatabaseFactory::getDatabaseConnection();
+        $table = $db->prefix('block_module_link');
+        $sql = sprintf('UPDATE `%s` SET `module_id`=%d WHERE `block_id`=%u', $table, $mid, $bid);
+
+        return $db->query($sql);
+    }
+
+    /**
+     * set start module.
+     *
+     * @param string $dirname
+     *
+     * @return bool
+     */
+    public static function setStartupPageModule($dirname)
+    {
+        if (empty($dirname)) {
+            // top page
+            $dirname = '--';
+        }
+        $configHandler = &xoops_gethandler('config');
+        $criteria = new \CriteriaCompo(new \Criteria('conf_modid', 0));
+        $criteria->add(new \Criteria('conf_catid', XOOPS_CONF));
+        $criteria->add(new \Criteria('conf_name', 'startpage'));
+        $configObjs = &$configHandler->getConfigs($criteria);
+        if (count($configObjs) != 1) {
+            return false;
+        }
+        list($configObj) = $configObjs;
+        $configObj->setConfValueForInput($dirname);
+
+        return $configHandler->insertConfig($configObj);
+    }
+
+    /**
+     * enable xoops notificaiton.
+     *
+     * @param int    $mid
+     * @param string $category
+     * @param string $event
+     *
+     * @return bool false if failure
+     */
+    public static function enableNotification($mid, $category, $event)
+    {
+        $configHandler = &xoops_gethandler('config');
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('conf_name', 'notification_events'));
+        $criteria->add(new \Criteria('conf_modid', $mid));
+        $criteria->add(new \Criteria('conf_catid', 0));
+        $configItems = $configHandler->getConfigs($criteria);
+        if (count($configItems) != 1) {
+            return false;
+        } else {
+            list($configItem) = $configItems;
+            $optionValue = $category.'-'.$event;
+            $optionValues = $configItem->getConfValueForOutput();
+            if (!in_array($optionValue, $optionValues)) {
+                $optionValues[] = $optionValue;
+                $configItem->setConfValueForInput($optionValues);
+                $configItemHandler = &xoops_gethandler('config_item');
+                $configItemHandler->insert($configItem);
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * subscribe user to xoops notificaiton.
+     *
+     * @param int    $mid
+     * @param int    $uid
+     * @param string $category
+     * @param string $event
+     *
+     * @return bool false if failure
+     */
+    public static function subscribeNotification($mid, $uid, $category, $event)
+    {
+        $notificationHandler = &xoops_gethandler('notification');
+        $notificationHandler->subscribe($category, 0, $event, null, $mid, $uid);
+
+        return true;
+    }
+
+    /**
+     * set xoops right.
+     *
+     * @param string $name
+     * @param int    $iid
+     * @param int    $gid
+     * @param bool   $right
+     *
+     * @return bool
+     */
+    private static function _setRight($name, $iid, $gid, $right)
+    {
+        $gpermHandler = &xoops_gethandler('groupperm');
+        if ($right) {
+            $ret = $gpermHandler->addRight($name, $iid, $gid);
+        } else {
+            $ret = $gpermHandler->removeRight($name, $iid, $gid);
+        }
+
+        return $ret;
+    }
+}
