@@ -13,7 +13,7 @@ class ModuleUninstaller
     /**
      * module install log.
      *
-     * @var Installer\InstallLog
+     * @var Installer\ModuleInstallLog
      */
     public $mLog = null;
 
@@ -50,7 +50,7 @@ class ModuleUninstaller
      */
     public function __construct()
     {
-        $this->mLog = new InstallLog();
+        $this->mLog = new ModuleInstallLog();
     }
 
     /**
@@ -180,7 +180,7 @@ class ModuleUninstaller
      */
     protected function _uninstallTemplates()
     {
-        InstallUtils::uninstallAllOfModuleTemplates($this->mXoopsModule, $this->mLog, false);
+        ModuleInstallUtils::uninstallAllOfModuleTemplates($this->mXoopsModule, $this->mLog, false);
     }
 
     /**
@@ -189,7 +189,7 @@ class ModuleUninstaller
     protected function _uninstallBlocks()
     {
         $dirname = $this->mXoopsModule->get('dirname');
-        InstallUtils::uninstallAllOfBlocks($this->mXoopsModule, $this->mLog);
+        ModuleInstallUtils::uninstallAllOfBlocks($this->mXoopsModule, $this->mLog);
         $tplHandler = &xoops_gethandler('tplfile');
         $cri = new \Criteria('tpl_module', $dirname);
         if (!$tplHandler->deleteAll($cri)) {
@@ -202,7 +202,9 @@ class ModuleUninstaller
      */
     protected function _uninstallPreferences()
     {
-        InstallUtils::uninstallAllOfConfigs($this->mXoopsModule, $this->mLog);
+        ModuleInstallUtils::uninstallAllOfConfigs($this->mXoopsModule, $this->mLog);
+        ModuleInstallUtils::deleteAllOfNotifications($this->_mXoopsModule, $this->mLog);
+        ModuleInstallUtils::deleteAllOfComments($this->_mXoopsModule, $this->mLog);
     }
 
     /**

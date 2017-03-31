@@ -13,7 +13,7 @@ class ModuleInstaller
     /**
      * module log.
      *
-     * @var Installer\InstallLog
+     * @var Installer\ModuleInstallLog
      */
     public $mLog = null;
 
@@ -50,7 +50,7 @@ class ModuleInstaller
      */
     public function __construct()
     {
-        $this->mLog = new InstallLog();
+        $this->mLog = new ModuleInstallLog();
     }
 
     /**
@@ -129,7 +129,7 @@ class ModuleInstaller
      */
     protected function _installTables()
     {
-        InstallUtils::installSQLAutomatically($this->mXoopsModule, $this->mLog);
+        ModuleInstallUtils::installSQLAutomatically($this->mXoopsModule, $this->mLog);
     }
 
     /**
@@ -204,7 +204,7 @@ class ModuleInstaller
      */
     protected function _installTemplates()
     {
-        InstallUtils::installAllOfModuleTemplates($this->mXoopsModule, $this->mLog);
+        ModuleInstallUtils::installAllOfModuleTemplates($this->mXoopsModule, $this->mLog);
     }
 
     /**
@@ -212,7 +212,7 @@ class ModuleInstaller
      */
     protected function _installBlocks()
     {
-        InstallUtils::installAllOfBlocks($this->mXoopsModule, $this->mLog);
+        ModuleInstallUtils::installAllOfBlocks($this->mXoopsModule, $this->mLog);
     }
 
     /**
@@ -220,7 +220,7 @@ class ModuleInstaller
      */
     protected function _installPreferences()
     {
-        InstallUtils::installAllOfConfigs($this->mXoopsModule, $this->mLog);
+        ModuleInstallUtils::installAllOfConfigs($this->mXoopsModule, $this->mLog);
     }
 
     /**

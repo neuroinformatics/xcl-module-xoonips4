@@ -13,7 +13,7 @@ class ModuleUpdater
     /**
      * module install log.
      *
-     * @var Installer\InstallLog
+     * @var Installer\ModuleInstallLog
      */
     public $mLog = null;
 
@@ -78,7 +78,7 @@ class ModuleUpdater
      */
     public function __construct()
     {
-        $this->mLog = new InstallLog();
+        $this->mLog = new ModuleInstallLog();
     }
 
     /**
@@ -281,8 +281,8 @@ class ModuleUpdater
      */
     protected function _updateModuleTemplates()
     {
-        InstallUtils::uninstallAllOfModuleTemplates($this->mTargetXoopsModule, $this->mLog);
-        InstallUtils::installAllOfModuleTemplates($this->mTargetXoopsModule, $this->mLog);
+        ModuleInstallUtils::uninstallAllOfModuleTemplates($this->mTargetXoopsModule, $this->mLog);
+        ModuleInstallUtils::installAllOfModuleTemplates($this->mTargetXoopsModule, $this->mLog);
     }
 
     /**
@@ -290,7 +290,7 @@ class ModuleUpdater
      */
     protected function _updateBlocks()
     {
-        InstallUtils::smartUpdateAllOfBlocks($this->mTargetXoopsModule, $this->mLog);
+        ModuleInstallUtils::smartUpdateAllOfBlocks($this->mTargetXoopsModule, $this->mLog);
     }
 
     /**
@@ -298,7 +298,7 @@ class ModuleUpdater
      */
     protected function _updatePreferences()
     {
-        InstallUtils::smartUpdateAllOfConfigs($this->mTargetXoopsModule, $this->mLog);
+        ModuleInstallUtils::smartUpdateAllOfConfigs($this->mTargetXoopsModule, $this->mLog);
     }
 
     /**

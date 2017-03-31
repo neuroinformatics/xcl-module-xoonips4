@@ -3,9 +3,9 @@
 namespace Xoonips\Installer;
 
 /**
- * install log class.
+ * module install log class.
  */
-class InstallLog
+class ModuleInstallLog
 {
     const LOGTYPE_REPORT = 'report';
     const LOGTYPE_WARNING = 'warning';

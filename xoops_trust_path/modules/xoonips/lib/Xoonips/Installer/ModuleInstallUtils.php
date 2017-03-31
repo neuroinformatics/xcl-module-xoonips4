@@ -6,15 +6,15 @@ use Xoonips\Core\LanguageManager;
 use Xoonips\Core\XCubeUtils;
 
 /**
- * install utilities class.
+ * module install utilities class.
  */
-class InstallUtils
+class ModuleInstallUtils
 {
     /**
      * install sql automatically.
      *
-     * @param \XoopsModule         &$module
-     * @param Installer\InstallLog &$log
+     * @param \XoopsModule               &$module
+     * @param Installer\ModuleInstallLog &$log
      *
      * @return bool
      */
@@ -62,14 +62,15 @@ class InstallUtils
     /**
      * DB query.
      *
-     * @param string               $query
-     * @param \XoopsModule         &$module
-     * @param Installer\InstallLog &$log
+     * @param string                     $query
+     * @param \XoopsModule               &$module
+     * @param Installer\ModuleInstallLog &$log
      *
      * @return bool
      */
     public static function DBquery($query, &$module, &$log)
     {
+        $ret = true;
         $dirname = $module->get('dirname');
         $langman = new LanguageManager($dirname, 'install');
         require_once XOOPS_MODULE_PATH.'/legacy/admin/class/Legacy_SQLScanner.class.php';
@@ -80,17 +81,16 @@ class InstallUtils
         $scanner->parse();
         $sqls = $scanner->getSQL();
         $db = &\XoopsDatabaseFactory::getDatabaseConnection();
-        $successFlag = true;
         foreach ($sqls as $sql) {
             if ($db->query($sql)) {
                 $log->addReport(XCubeUtils::formatString($langman->get('INSTALL_MSG_SQL_SUCCESS'), $sql));
             } else {
                 $log->addError(XCubeUtils::formatString($langman->get('INSTALL_MSG_SQL_ERROR'), $sql));
-                $successFlag = false;
+                $ret = false;
             }
         }
 
-        return $successFlag;
+        return $ret;
     }
 
     /**
@@ -150,8 +150,8 @@ class InstallUtils
     /**
      * install all of module templates.
      *
-     * @param \XoopsModule         &$module
-     * @param Installer\InstallLog &$log
+     * @param \XoopsModule               &$module
+     * @param Installer\ModuleInstallLog &$log
      */
     public static function installAllOfModuleTemplates(&$module, &$log)
     {
@@ -166,9 +166,9 @@ class InstallUtils
     /**
      * install module template.
      *
-     * @param \XoopsModule         &$module
-     * @param string[]             $template
-     * @param Installer\InstallLog &$log
+     * @param \XoopsModule               &$module
+     * @param string[]                   $template
+     * @param Installer\ModuleInstallLog &$log
      *
      * @return bool
      */
@@ -207,9 +207,9 @@ class InstallUtils
     /**
      * uninstall all of module templates.
      *
-     * @param \XoopsModule         &$module
-     * @param Installer\InstallLog &$log
-     * @param bool                 $defaultOnly
+     * @param \XoopsModule               &$module
+     * @param Installer\ModuleInstallLog &$log
+     * @param bool                       $defaultOnly
      */
     public static function uninstallAllOfModuleTemplates(&$module, &$log, $defaultOnly = true)
     {
@@ -231,8 +231,8 @@ class InstallUtils
     /**
      * install all of blocks.
      *
-     * @param \XoopsModule         &$module
-     * @param Installer\InstallLog &$log
+     * @param \XoopsModule               &$module
+     * @param Installer\ModuleInstallLog &$log
      *
      * @return bool
      */
@@ -285,10 +285,10 @@ class InstallUtils
     /**
      * install block.
      *
-     * @param \XoopsModule        &$module
-     * @param \XoopsBlock         &$blockObj
-     * @param string[]            &$block
-     * @param Instller\InstallLog &$log
+     * @param \XoopsModule              &$module
+     * @param \XoopsBlock               &$blockObj
+     * @param string[]                  &$block
+     * @param Instller\ModuleInstallLog &$log
      *
      * @return bool
      */
@@ -346,9 +346,9 @@ class InstallUtils
     /**
      * install block template.
      *
-     * @param \XoopsBlock          &$block
-     * @param \XoopsModule         &$module
-     * @param Installer\InstallLog &$log
+     * @param \XoopsBlock                &$block
+     * @param \XoopsModule               &$module
+     * @param Installer\ModuleInstallLog &$log
      *
      * @return bool
      */
@@ -363,12 +363,12 @@ class InstallUtils
         $info = &$module->getInfo('blocks');
         $filename = self::replaceDirname($info[$block->get('func_num')]['template'], $dirname, $trustDirname);
         $tplHandler = &xoops_gethandler('tplfile');
-        $cri = new \CriteriaCompo();
-        $cri->add(new \Criteria('tpl_type', 'block'));
-        $cri->add(new \Criteria('tpl_tplset', 'default'));
-        $cri->add(new \Criteria('tpl_module', $dirname));
-        $cri->add(new \Criteria('tpl_file', $filename['public']));
-        $tpls = &$tplHandler->getObjects($cri);
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('tpl_type', 'block'));
+        $criteria->add(new \Criteria('tpl_tplset', 'default'));
+        $criteria->add(new \Criteria('tpl_module', $dirname));
+        $criteria->add(new \Criteria('tpl_file', $filename['public']));
+        $tpls = &$tplHandler->getObjects($criteria);
         if (count($tpls) > 0) {
             $tplFile = &$tpls[0];
         } else {
@@ -397,48 +397,51 @@ class InstallUtils
     /**
      * uninstall all of blocks.
      *
-     * @param \XoopsModule         &$module
-     * @param Installer\InstallLog &$log
+     * @param \XoopsModule               &$module
+     * @param Installer\ModuleInstallLog &$log
      *
      * @return bool
      */
     public static function uninstallAllOfBlocks(&$module, &$log)
     {
+        $ret = true;
         $dirname = $module->get('dirname');
         $langman = new LanguageManager($dirname, 'install');
-        $successFlag = true;
         $blockHandler = &xoops_gethandler('block');
         $gpermHandler = &xoops_gethandler('groupperm');
-        $cri = new \Criteria('mid', $module->get('mid'));
-        $blocks = &$blockHandler->getObjectsDirectly($cri);
+        $criteria = new \Criteria('mid', $module->get('mid'));
+        $blocks = &$blockHandler->getObjectsDirectly($criteria);
         foreach ($blocks as $block) {
             if ($blockHandler->delete($block)) {
                 $log->addReport(XCubeUtils::formatString($langman->get('INSTALL_MSG_BLOCK_UNINSTALLED'), $block->get('name')));
             } else {
                 $log->addWarning(XCubeUtils::formatString($langman->get('INSTALL_ERROR_BLOCK_UNINSTALLED'), $block->get('name')));
-                $successFlag = false;
+                $ret = false;
             }
-            $cri = new \CriteriaCompo();
-            $cri->add(new \Criteria('gperm_name', 'block_read'));
-            $cri->add(new \Criteria('gperm_itemid', $block->get('bid')));
-            $cri->add(new \Criteria('gperm_modid', 1));
-            if (!$gpermHandler->deleteAll($cri)) {
+            $criteria = new \CriteriaCompo();
+            $criteria->add(new \Criteria('gperm_name', 'block_read'));
+            $criteria->add(new \Criteria('gperm_itemid', $block->get('bid')));
+            $criteria->add(new \Criteria('gperm_modid', 1));
+            if (!$gpermHandler->deleteAll($criteria)) {
                 $log->addWarning(XCubeUtils::formatString($langman->get('INSTALL_ERROR_BLOCK_PERM_DELETE'), $block->get('name')));
-                $successFlag = false;
+                $ret = false;
             }
         }
 
-        return $successFlag;
+        return $ret;
     }
 
     /**
      * smart update all of blocks.
      *
-     * @param \XoopsModule         &$module
-     * @param Installer\InstallLog &$log
+     * @param \XoopsModule               &$module
+     * @param Installer\ModuleInstallLog &$log
+     *
+     * @return bool
      */
     public static function smartUpdateAllOfBlocks(&$module, &$log)
     {
+        $ret = true;
         $dirname = $module->get('dirname');
         $fileReader = new \Legacy_ModinfoX2FileReader($dirname);
         $dbReader = new \Legacy_ModinfoX2DBReader($dirname);
@@ -462,23 +465,25 @@ class InstallUtils
                 break;
             }
         }
+
+        return $ret;
     }
 
     /**
      * update block template by info.
      *
-     * @param \Legacy_BlockInformation &$info
-     * @param \XoopsModule             &$module
-     * @param Installer\InstallLog     &$log
+     * @param \Legacy_BlockInformation   &$info
+     * @param \XoopsModule               &$module
+     * @param Installer\ModuleInstallLog &$log
      */
     public static function updateBlockTemplateByInfo(&$info, &$module, &$log)
     {
         $dirname = $module->get('dirname');
         $blockHandler = &xoops_getmodulehandler('newblocks', 'legacy');
-        $cri = new \CriteriaCompo();
-        $cri->add(new \Criteria('dirname', $dirname));
-        $cri->add(new \Criteria('func_num', $info->mFuncNum));
-        $blocks = &$blockHandler->getObjects($cri);
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('dirname', $dirname));
+        $criteria->add(new \Criteria('func_num', $info->mFuncNum));
+        $blocks = &$blockHandler->getObjects($criteria);
         foreach ($blocks as $block) {
             self::uninstallBlockTemplate($block, $module, $log, true);
             self::installBlockTemplate($block, $module, $log);
@@ -488,9 +493,9 @@ class InstallUtils
     /**
      * update block by info.
      *
-     * @param \Legacy_BlockInformation &$info
-     * @param \XoopsModule             &$module
-     * @param Installer\InstallLog     &$log
+     * @param \Legacy_BlockInformation   &$info
+     * @param \XoopsModule               &$module
+     * @param Installer\ModuleInstallLog &$log
      */
     public static function updateBlockByInfo(&$info, &$module, &$log)
     {
@@ -498,10 +503,10 @@ class InstallUtils
         $trustDirname = $module->getInfo('trust_dirname');
         $langman = new LanguageManager($dirname, 'install');
         $blockHandler = &xoops_getmodulehandler('newblocks', 'legacy');
-        $cri = new \CriteriaCompo();
-        $cri->add(new \Criteria('dirname', $dirname));
-        $cri->add(new \Criteria('func_num', $info->mFuncNum));
-        $blocks = &$blockHandler->getObjects($cri);
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('dirname', $dirname));
+        $criteria->add(new \Criteria('func_num', $info->mFuncNum));
+        $blocks = &$blockHandler->getObjects($criteria);
         foreach ($blocks as $block) {
             $filename = self::replaceDirname($info->mTemplate, $dirname, $trustDirname);
             $block->set('options', $info->mOptions);
@@ -523,9 +528,9 @@ class InstallUtils
     /**
      * install block by info.
      *
-     * @param \Legacy_BlockInformation &$info
-     * @param \XoopsModule             &$module
-     * @param Installer\InstallLog     &$log
+     * @param \Legacy_BlockInformation   &$info
+     * @param \XoopsModule               &$module
+     * @param Installer\ModuleInstallLog &$log
      *
      * @return bool
      */
@@ -563,41 +568,41 @@ class InstallUtils
     /**
      * uninstall block by func number.
      *
-     * @param int                  $func_num
-     * @param \XoopsModule         &$module
-     * @param Installer\InstallLog &$log
+     * @param int                        $func_num
+     * @param \XoopsModule               &$module
+     * @param Installer\ModuleInstallLog &$log
      *
      * @return bool
      */
     public static function uninstallBlockByFuncNum($func_num, &$module, &$log)
     {
+        $ret = true;
         $dirname = $module->get('dirname');
         $langman = new LanguageManager($dirname, 'install');
         $blockHandler = &xoops_getmodulehandler('newblocks', 'legacy');
-        $cri = new \CriteriaCompo();
-        $cri->add(new \Criteria('dirname', $dirname));
-        $cri->add(new \Criteria('func_num', $func_num));
-        $blocks = &$blockHandler->getObjects($cri);
-        $successFlag = true;
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('dirname', $dirname));
+        $criteria->add(new \Criteria('func_num', $func_num));
+        $blocks = &$blockHandler->getObjects($criteria);
         foreach ($blocks as $block) {
             if ($blockHandler->delete($block)) {
                 $log->addReport(XCubeUtils::formatString($langman->get('INSTALL_MSG_BLOCK_UNINSTALLED'), $block->get('name')));
             } else {
                 $log->addError(XCubeUtils::formatString($langman->get('INSTALL_ERROR_BLOCK_UNINSTALLED'), $block->get('name')));
-                $successFlag = false;
+                $ret = false;
             }
         }
 
-        return $successFlag;
+        return $ret;
     }
 
     /**
      * uninstall block template.
      *
-     * @param \XoopsBlock          &$block
-     * @param \XoopsModule         &$module
-     * @param Installer\InstallLog &$log
-     * @param bool                 $defaultOnly
+     * @param \XoopsBlock                &$block
+     * @param \XoopsModule               &$module
+     * @param Installer\ModuleInstallLog &$log
+     * @param bool                       $defaultOnly
      *
      * @return bool
      */
@@ -622,48 +627,25 @@ class InstallUtils
     /**
      * install all of configs.
      *
-     * @param \XoopsModule         &$module
-     * @param Installer\InstallLog &$log
+     * @param \XoopsModule               &$module
+     * @param Installer\ModuleInstallLog &$log
      *
      * @return bool
      */
     public static function installAllOfConfigs(&$module, &$log)
     {
+        $ret = true;
         $dirname = $module->get('dirname');
         $langman = new LanguageManager($dirname, 'install');
-        $successFlag = true;
-        $configHandler = &xoops_gethandler('config');
         $fileReader = new \Legacy_ModinfoX2FileReader($dirname);
-        $preferences = $fileReader->loadPreferenceInformations();
-        foreach ($preferences->mPreferences as $info) {
-            $config = &$configHandler->createConfig();
-            $config->set('conf_modid', $module->get('mid'));
-            $config->set('conf_catid', 0);
-            $config->set('conf_name', $info->mName);
-            $config->set('conf_title', $info->mTitle);
-            $config->set('conf_desc', $info->mDescription);
-            $config->set('conf_formtype', $info->mFormType);
-            $config->set('conf_valuetype', $info->mValueType);
-            $config->setConfValueForInput($info->mDefault);
-            $config->set('conf_order', $info->mOrder);
-            if (count($info->mOption->mOptions) > 0) {
-                foreach ($info->mOption->mOptions as $opt) {
-                    $option = $configHandler->createConfigOption();
-                    $option->set('confop_name', $opt->mName);
-                    $option->set('confop_value', $opt->mValue);
-                    $config->setConfOptions($option);
-                    unset($option);
-                }
-            }
-            if ($configHandler->insertConfig($config)) {
-                $log->addReport(XCubeUtils::formatString($langman->get('INSTALL_MSG_CONFIG_ADDED'), $config->get('conf_name')));
-            } else {
-                $log->addError(XCubeUtils::formatString($langman->get('INSTALL_ERROR_CONFIG_ADDED'), $config->get('conf_name')));
-                $successFlag = false;
+        $configs = $fileReader->loadPreferenceInformations();
+        foreach (array($configs->mPreferences, $configs->mComments, $configs->mNotifications) as $infos) {
+            foreach ($infos as $info) {
+                $ret &= self::installConfigByInfo($info, $module, $log);
             }
         }
 
-        return $successFlag;
+        return $ret;
     }
 
     /**
@@ -671,7 +653,7 @@ class InstallUtils
      *
      * @param \Legacy_PreferenceInformation &$info
      * @param \XoopsModule                  &$module
-     * @param Installer\InstallLog          &$log
+     * @param Installer\ModuleInstallLog    &$log
      */
     public static function installConfigByInfo(&$info, &$module, &$log)
     {
@@ -707,53 +689,53 @@ class InstallUtils
     /**
      * uninstall all of configs.
      *
-     * @param \XoopsModule         &$module
-     * @param Installer\InstallLog &$log
+     * @param \XoopsModule               &$module
+     * @param Installer\ModuleInstallLog &$log
      *
      * @return bool
      */
     public static function uninstallAllOfConfigs(&$module, &$log)
     {
+        $ret = true;
         $dirname = $module->get('dirname');
         $langman = new LanguageManager($dirname, 'install');
         if ($module->get('hasconfig') == 0) {
-            return true;
+            return $ret;
         }
         $configHandler = &xoops_gethandler('config');
         $configs = &$configHandler->getConfigs(new \Criteria('conf_modid', $module->get('mid')));
         if (count($configs) == 0) {
-            return true;
+            return $ret;
         }
-        $sucessFlag = true;
         foreach ($configs as $config) {
             if ($configHandler->deleteConfig($config)) {
                 $log->addReport(XCubeUtils::formatString($langman->get('INSTALL_MSG_CONFIG_DELETED'), $config->get('conf_name')));
             } else {
                 $log->addWarning(XCubeUtils::formatString($langman->get('INSTALL_ERROR_CONFIG_DELETED'), $config->get('conf_name')));
-                $sucessFlag = false;
+                $ret = false;
             }
         }
 
-        return $sucessFlag;
+        return $ret;
     }
 
     /**
      * uninstall config by order.
      *
-     * @param int                  $order
-     * @param \XoopsModule         &$module
-     * @param Installer\InstallLog &$log
+     * @param int                        $order
+     * @param \XoopsModule               &$module
+     * @param Installer\ModuleInstallLog &$log
      */
     public static function uninstallConfigByOrder($order, &$module, &$log)
     {
         $dirname = $module->get('dirname');
         $langman = new LanguageManager($dirname, 'install');
         $configHandler = &xoops_gethandler('config');
-        $cri = new \CriteriaCompo();
-        $cri->add(new \Criteria('conf_modid', $module->get('mid')));
-        $cri->add(new \Criteria('conf_catid', 0));
-        $cri->add(new \Criteria('conf_order', $order));
-        $configs = $configHandler->getConfigs($cri);
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('conf_modid', $module->get('mid')));
+        $criteria->add(new \Criteria('conf_catid', 0));
+        $criteria->add(new \Criteria('conf_order', $order));
+        $configs = $configHandler->getConfigs($criteria);
         foreach ($configs as $config) {
             if ($configHandler->deleteConfig($config)) {
                 $log->addReport(XCubeUtils::formatString($langman->get('INSTALL_MSG_CONFIG_DELETED'), $config->get('conf_name')));
@@ -766,8 +748,8 @@ class InstallUtils
     /**
      * smart update all of configs.
      *
-     * @param \XoopsModule         &$module
-     * @param Installer\InstallLog &$log
+     * @param \XoopsModule               &$module
+     * @param Installer\ModuleInstallLog &$log
      */
     public static function smartUpdateAllOfConfigs(&$module, &$log)
     {
@@ -777,22 +759,24 @@ class InstallUtils
         $dbReader = new \Legacy_ModinfoX2DBReader($dirname);
         $configs = &$dbReader->loadPreferenceInformations();
         $configs->update($fileReader->loadPreferenceInformations());
-        foreach ($configs->mPreferences as $config) {
-            switch ($config->mStatus) {
-            case LEGACY_INSTALLINFO_STATUS_UPDATED:
-                self::updateConfigByInfo($config, $module, $log);
-                break;
-            case LEGACY_INSTALLINFO_STATUS_ORDER_UPDATED:
-                self::updateConfigOrderByInfo($config, $module, $log);
-                break;
-            case LEGACY_INSTALLINFO_STATUS_NEW:
-                self::installConfigByInfo($config, $module, $log);
-                break;
-            case LEGACY_INSTALLINFO_STATUS_DELETED:
-                self::uninstallConfigByOrder($config->mOrder, $module, $log);
-                break;
-            default:
-                break;
+        foreach (array($configs->mPreferences, $configs->mComments, $configs->mNotifications) as $infos) {
+            foreach ($infos as $info) {
+                switch ($info->mStatus) {
+                case LEGACY_INSTALLINFO_STATUS_UPDATED:
+                    self::updateConfigByInfo($info, $module, $log);
+                    break;
+                case LEGACY_INSTALLINFO_STATUS_ORDER_UPDATED:
+                    self::updateConfigOrderByInfo($info, $module, $log);
+                    break;
+                case LEGACY_INSTALLINFO_STATUS_NEW:
+                    self::installConfigByInfo($info, $module, $log);
+                    break;
+                case LEGACY_INSTALLINFO_STATUS_DELETED:
+                    self::uninstallConfigByOrder($info->mOrder, $module, $log);
+                    break;
+                default:
+                    break;
+                }
             }
         }
     }
@@ -802,7 +786,7 @@ class InstallUtils
      *
      * @param \Legacy_PreferenceInformation &$info
      * @param \XoopsModule                  &$module
-     * @param Installer\InstallLog          &$log
+     * @param Installer\ModuleInstallLog    &$log
      *
      * @return bool
      */
@@ -811,11 +795,11 @@ class InstallUtils
         $dirname = $module->get('dirname');
         $langman = new LanguageManager($dirname, 'install');
         $configHandler = &xoops_gethandler('config');
-        $cri = new \CriteriaCompo();
-        $cri->add(new \Criteria('conf_modid', $module->get('mid')));
-        $cri->add(new \Criteria('conf_catid', 0));
-        $cri->add(new \Criteria('conf_name', $info->mName));
-        $configs = &$configHandler->getConfigs($cri);
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('conf_modid', $module->get('mid')));
+        $criteria->add(new \Criteria('conf_catid', 0));
+        $criteria->add(new \Criteria('conf_name', $info->mName));
+        $configs = &$configHandler->getConfigs($criteria);
         if (!(count($configs) > 0 && is_object($configs[0]))) {
             $log->addError($langman->get('INSTALL_ERROR_CONFIG_NOT_FOUND'));
 
@@ -864,7 +848,7 @@ class InstallUtils
      *
      * @param \Legacy_PreferenceInformation &$info
      * @param \XoopsModule                  &$module
-     * @param Installer\InstallLog          &$log
+     * @param Installer\ModuleInstallLog    &$log
      *
      * @return bool
      */
@@ -873,11 +857,11 @@ class InstallUtils
         $dirname = $module->get('dirname');
         $langman = new LanguageManager($dirname, 'install');
         $configHandler = &xoops_gethandler('config');
-        $cri = new \CriteriaCompo();
-        $cri->add(new \Criteria('conf_modid', $module->get('mid')));
-        $cri->add(new \Criteria('conf_catid', 0));
-        $cri->add(new \Criteria('conf_name', $info->mName));
-        $configs = &$configHandler->getConfigs($cri);
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('conf_modid', $module->get('mid')));
+        $criteria->add(new \Criteria('conf_catid', 0));
+        $criteria->add(new \Criteria('conf_name', $info->mName));
+        $configs = &$configHandler->getConfigs($criteria);
         if (!(count($configs) > 0 && is_object($configs[0]))) {
             $log->addError($langman->get('INSTALL_ERROR_CONFIG_NOT_FOUND'));
 
@@ -892,5 +876,31 @@ class InstallUtils
         }
 
         return true;
+    }
+
+    /**
+     * delete all of notifications.
+     *
+     * @param \XoopsModule               &$module
+     * @param Installer\ModuleInstallLog &$log
+     */
+    public static function deleteAllOfNotifications(&$module, &$log)
+    {
+        $handler = &xoops_gethandler('notification');
+        $criteria = new Criteria('not_modid', $module->get('mid'));
+        $handler->deleteAll($criteria);
+    }
+
+    /**
+     * delete all of comments.
+     *
+     * @param \XoopsModule               &$module
+     * @param Installer\ModuleInstallLog &$log
+     */
+    public static function deleteAllOfComments(&$module, &$log)
+    {
+        $handler = &xoops_gethandler('comment');
+        $criteria = new Criteria('com_modid', $module->get('mid'));
+        $handler->deleteAll($criteria);
     }
 }
