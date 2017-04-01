@@ -50,6 +50,30 @@ class XoopsSystemUtils
     }
 
     /**
+     * get block id.
+     *
+     * @param string $dirname
+     * @param string $show_func
+     *
+     * @return int
+     */
+    public static function getBlockId($dirname, $show_func)
+    {
+        $ret = false;
+        $db = &\XoopsDatabaseFactory::getDatabaseConnection();
+        $table = $db->prefix('newblocks');
+        $sql = sprintf('SELECT bid FROM `%s` WHERE `dirname`=%s AND `show_func`=%s', $table, $db->quoteString($dirname), $db->quoteString($show_func));
+        if ($res = $db->query($sql)) {
+            if ($row = $db->fetchArray($res)) {
+                $ret = intval($row['bid']);
+            }
+            $db->freeRecordSet($res);
+        }
+
+        return $ret;
+    }
+
+    /**
      * set block position.
      *
      * @param int  $bid

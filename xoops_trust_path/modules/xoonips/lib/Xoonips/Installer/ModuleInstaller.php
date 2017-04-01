@@ -39,11 +39,18 @@ class ModuleInstaller
     protected $mLangMan = null;
 
     /**
-     * custom hooks.
+     * custom pre-install hooks.
      *
      * @var array
      */
-    protected $mHooks = array();
+    protected $mPreInstallHooks = array();
+
+    /**
+     * custom post-install hooks.
+     *
+     * @var array
+     */
+    protected $mPostInstallHooks = array();
 
     /**
      * constructor.
@@ -83,6 +90,12 @@ class ModuleInstaller
         $dirname = $this->mXoopsModule->get('dirname');
         $this->mLangMan = new LanguageManager($dirname, 'install');
         $this->mLangMan->load();
+        $this->_executePreInstallHooks();
+        if (!$this->mForceMode && $this->mLog->hasError()) {
+            $this->_processReport();
+
+            return false;
+        }
         $this->_installTables();
         if (!$this->mForceMode && $this->mLog->hasError()) {
             $this->_processReport();
@@ -113,7 +126,7 @@ class ModuleInstaller
 
             return false;
         }
-        $this->_executeHooks();
+        $this->_executePostInstallHooks();
         if (!$this->mForceMode && $this->mLog->hasError()) {
             $this->_processReport();
 
@@ -224,11 +237,26 @@ class ModuleInstaller
     }
 
     /**
-     * execute hooks.
+     * execute pre-install hooks.
      */
-    protected function _executeHooks()
+    protected function _executePreInstallHooks()
     {
-        foreach ($this->mHooks as $func) {
+        foreach ($this->mPreInstallHooks as $func) {
+            if (is_callable(array($this, $func))) {
+                $this->$func();
+                if (!$this->mForceMode && $this->mLog->hasError()) {
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * execute post-install hooks.
+     */
+    protected function _executePostInstallHooks()
+    {
+        foreach ($this->mPostInstallHooks as $func) {
             if (is_callable(array($this, $func))) {
                 $this->$func();
                 if (!$this->mForceMode && $this->mLog->hasError()) {

@@ -119,37 +119,37 @@ class XoopsUtils
      */
     public static function getXoopsConfig($key, $catId = XOOPS_CONF)
     {
-        $configHandler = &xoops_gethandler('config');
-        $configArr = $configHandler->getConfigsByCat($catId);
-        if (defined('XOOPS_CUBE_LEGACY')) {
-            switch ($catId) {
-            case XOOPS_CONF:
-                static $keysMap = array(
-                    'user' => array('avatar_minposts', 'maxuname', 'sslloginlink', 'sslpost_name', 'use_ssl', 'usercookie'),
-                    'legacyRender' => array('banners'),
-                );
-                foreach ($keysMap as $dirname => $keys) {
-                    foreach ($keys as $key) {
-                        $configArr[$key] = self::getModuleConfig($dirname, $key);
+        $cat = 'xoops:'.$catId;
+        if (!array_key_exists($cat, self::$mConfigs)) {
+            $configHandler = &xoops_gethandler('config');
+            self::$mConfigs[$cat] = $configHandler->getConfigsByCat($catId);
+            if (defined('XOOPS_CUBE_LEGACY')) {
+                switch ($catId) {
+                case XOOPS_CONF:
+                    static $maps = array(
+                        'user' => array('avatar_minposts', 'maxuname', 'sslloginlink', 'sslpost_name', 'use_ssl', 'usercookie'),
+                        'legacyRender' => array('banners'),
+                    );
+                    foreach ($maps as $dirname => $mkeys) {
+                        foreach ($mkeys as $mkey) {
+                            self::$mConfigs[$cat][$mkey] = self::getModuleConfig($dirname, $mkey);
+                        }
                     }
+                    break;
+                case XOOPS_CONF_USER:
+                case XOOPS_CONF_METAFOOTER:
+                    static $dirnames = array(XOOPS_CONF_USER => 'user', XOOPS_CONF_METAFOOTER => 'legacyRender');
+                    $dirname = $dirnames[$catId];
+                    if (!array_key_exists($dirname, self::$mConfigs)) {
+                        self::$mConfigs[$dirname] = $configHandler->getConfigsByDirname($dirname);
+                    }
+                    self::$mConfigs[$cat] = self::$mConfig[$dirname];
+                    break;
                 }
-                break;
-            case XOOPS_CONF_USER:
-            case XOOPS_CONF_METAFOOTER:
-                static $configDirname = array(
-                    XOOPS_CONF_USER => 'user',
-                    XOOPS_CONF_METAFOOTER => 'legacyRender',
-                );
-                $dirname = $configDirname[$catId];
-                if (!array_key_exists($dirname, self::$mConfigs)) {
-                    self::$mConfigs[$dirname] = $configHandler->getConfigsByDirname($dirname);
-                }
-                $configArr = self::$mConfigs[$dirname];
-                break;
             }
         }
 
-        return array_key_exists($key, $configArr) ? $configArr[$key] : null;
+        return array_key_exists($key, self::$mConfigs[$cat]) ? self::$mConfigs[$cat][$key] : null;
     }
 
     /**

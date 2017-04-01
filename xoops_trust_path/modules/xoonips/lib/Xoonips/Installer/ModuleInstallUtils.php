@@ -887,7 +887,7 @@ class ModuleInstallUtils
     public static function deleteAllOfNotifications(&$module, &$log)
     {
         $handler = &xoops_gethandler('notification');
-        $criteria = new Criteria('not_modid', $module->get('mid'));
+        $criteria = new \Criteria('not_modid', $module->get('mid'));
         $handler->deleteAll($criteria);
     }
 
@@ -900,7 +900,7 @@ class ModuleInstallUtils
     public static function deleteAllOfComments(&$module, &$log)
     {
         $handler = &xoops_gethandler('comment');
-        $criteria = new Criteria('com_modid', $module->get('mid'));
+        $criteria = new \Criteria('com_modid', $module->get('mid'));
         $handler->deleteAll($criteria);
     }
 }

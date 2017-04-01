@@ -39,11 +39,18 @@ class ModuleUninstaller
     protected $mLangMan = null;
 
     /**
-     * custom hooks.
+     * custom pre-uninstall hooks.
      *
      * @var array
      */
-    protected $mHooks = array();
+    protected $mPreUninstallHooks = array();
+
+    /**
+     * custom post-uninstall hooks.
+     *
+     * @var array
+     */
+    protected $mPostUninstallHooks = array();
 
     /**
      * constructor.
@@ -83,7 +90,7 @@ class ModuleUninstaller
         $dirname = $this->mXoopsModule->get('dirname');
         $this->mLangMan = new LanguageManager($dirname, 'install');
         $this->mLangMan->load();
-        $this->_executeHooks();
+        $this->_executePreUninstallHooks();
         if (!$this->mForceMode && $this->mLog->hasError()) {
             $this->_processReport();
 
@@ -120,6 +127,18 @@ class ModuleUninstaller
 
                 return false;
             }
+            $this->_processScript();
+            if (!$this->mForceMode && $this->mLog->hasError()) {
+                $this->_processReport();
+
+                return false;
+            }
+        }
+        $this->_executePostUninstallHooks();
+        if (!$this->mForceMode && $this->mLog->hasError()) {
+            $this->_processReport();
+
+            return false;
         }
         $this->_processReport();
 
@@ -127,11 +146,26 @@ class ModuleUninstaller
     }
 
     /**
-     * execute hooks.
+     * execute pre-uninstall hooks.
      */
-    protected function _executeHooks()
+    protected function _executePreUninstallHooks()
     {
-        foreach ($this->mHooks as $func) {
+        foreach ($this->mPreUninstallHooks as $func) {
+            if (is_callable(array($this, $func))) {
+                $this->$func();
+                if (!$this->mForceMode && $this->mLog->hasError()) {
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * execute post-uninstall hooks.
+     */
+    protected function _executePostUninstallHooks()
+    {
+        foreach ($this->mPostUninstallHooks as $func) {
             if (is_callable(array($this, $func))) {
                 $this->$func();
                 if (!$this->mForceMode && $this->mLog->hasError()) {
@@ -203,8 +237,31 @@ class ModuleUninstaller
     protected function _uninstallPreferences()
     {
         ModuleInstallUtils::uninstallAllOfConfigs($this->mXoopsModule, $this->mLog);
-        ModuleInstallUtils::deleteAllOfNotifications($this->_mXoopsModule, $this->mLog);
-        ModuleInstallUtils::deleteAllOfComments($this->_mXoopsModule, $this->mLog);
+        ModuleInstallUtils::deleteAllOfNotifications($this->mXoopsModule, $this->mLog);
+        ModuleInstallUtils::deleteAllOfComments($this->mXoopsModule, $this->mLog);
+    }
+
+    /**
+     * process script.
+     */
+    protected function _processScript()
+    {
+        $installScript = trim($this->mXoopsModule->getInfo('onUninstall'));
+        if ($installScript != false) {
+            require_once XOOPS_MODULE_PATH.'/'.$this->mXoopsModule->get('dirname').'/'.$installScript;
+            $funcName = 'xoops_module_uninstall_'.$this->mXoopsModule->get('dirname');
+            if (!preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $funcName)) {
+                $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_FAILED_TO_EXECUTE_CALLBACK'), $funcName));
+
+                return;
+            }
+            if (function_exists($funcName)) {
+                $result = $funcName($this->mXoopsModule, new \XCube_Ref($this->mLog));
+                if (!$result) {
+                    $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_FAILED_TO_EXECUTE_CALLBACK'), $funcName));
+                }
+            }
+        }
     }
 
     /**

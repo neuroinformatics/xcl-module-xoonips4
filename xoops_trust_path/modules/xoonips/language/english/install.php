@@ -47,6 +47,7 @@ $langman->set('INSTALL_ERROR_CONFIG_DELETED', 'Config "{0}" could not deleted.')
 $langman->set('INSTALL_MSG_CONFIG_UPDATED', 'Config "{0}" is updated.');
 $langman->set('INSTALL_ERROR_CONFIG_UPDATED', 'Config "{0}" could not updated.');
 $langman->set('INSTALL_ERROR_CONFIG_NOT_FOUND', 'Config is not found.');
+$langman->set('INSTALL_ERROR_FAILED_TO_EXECUTE_CALLBACK', 'Failed to execute "{0}" callback.');
 $langman->set('INSTALL_MSG_MODULE_INFORMATION_DELETED', 'Module information is deleted.');
 $langman->set('INSTALL_ERROR_MODULE_INFORMATION_DELETED', 'Module information could not deleted.');
 $langman->set('INSTALL_MSG_TABLE_DOROPPED', 'Table "{0}" is doropped.');
