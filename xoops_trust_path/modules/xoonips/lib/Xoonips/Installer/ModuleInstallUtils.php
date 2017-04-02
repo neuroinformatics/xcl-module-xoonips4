@@ -240,7 +240,9 @@ class ModuleInstallUtils
     {
         $blocks = &$module->getInfo('blocks');
         if (is_array($blocks) && count($blocks) > 0) {
+            $num = 1;
             foreach ($blocks as $block) {
+                $block['func_num'] = $num++; // override func_num
                 $newBlock = &self::createBlockByInfo($module, $block);
                 self::installBlock($module, $newBlock, $block, $log);
             }

@@ -223,6 +223,42 @@ class FileUtils
     }
 
     /**
+     * make directory recursivery.
+     *
+     * @param string $fpath
+     *
+     * @return bool false if failure
+     */
+    public static function makeDirectory($fpath)
+    {
+        // normalize file path
+        $fpath = rtrim(str_replace('\\', '/', trim($fpath)), '/');
+        if (substr($fpath, 0, 1) != '/') {
+            // not absolute path
+            return false;
+        }
+        $dpath = '';
+        foreach (explode('/', $fpath) as $dirname) {
+            if ($dirname == '') {
+                // continue if '//' directry spearator found
+                continue;
+            }
+            if ($dirname == '.' || $dirname == '..') {
+                // error if '.' or '..' directory name found.
+                return false;
+            }
+            $dpath .= '/'.$dirname;
+            if (!is_dir($dpath)) {
+                if (@mkdir($dpath) === false) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * make temporary directory, this directory will delete on exit.
      *
      * @param string $dir

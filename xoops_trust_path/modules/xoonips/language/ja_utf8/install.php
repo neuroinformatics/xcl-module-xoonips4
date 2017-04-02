@@ -40,6 +40,7 @@ $langman->set('INSTALL_MSG_BLOCK_UPDATED', 'ブロック『{0}』をアップデ
 $langman->set('INSTALL_ERROR_BLOCK_UPDATED', 'ブロック『{0}』がアップデートできませんでした。');
 $langman->set('INSTALL_ERROR_BLOCK_INSTALLED', 'ブロック『{0}』がインストールできませんでした。');
 $langman->set('INSTALL_MSG_BLOCK_TPL_UNINSTALLED', 'ブロックテンプレート『{0}』をアンインストールしました。');
+$langman->set('INSTALL_ERROR_BLOCK_TPL_UNINSTALLED', 'ブロックテンプレート『{0}』をアンインストールできませんでした。');
 $langman->set('INSTALL_MSG_CONFIG_ADDED', '一般設定『{0}』を追加しました。');
 $langman->set('INSTALL_ERROR_CONFIG_ADDED', '一般設定『{0}』が追加できませんでした。');
 $langman->set('INSTALL_MSG_CONFIG_DELETED', '一般設定『{0}』を削除しました。');
@@ -54,7 +55,10 @@ $langman->set('INSTALL_MSG_TABLE_DOROPPED', 'テーブル『{0}』を削除し�
 $langman->set('INSTALL_ERROR_TABLE_DOROPPED', 'テーブル『{0}』が削除できませんでした。');
 $langman->set('INSTALL_MSG_TABLE_UPDATED', 'テーブル『{0}』をアップデートしました。');
 $langman->set('INSTALL_ERROR_TABLE_UPDATED', 'テーブル『{0}』がアップデートできませんでした。');
-$langman->set('INSTALL_ERROR_BLOCK_TPL_DELETED', 'ブロックテンプレート『{0}』が削除できませんでした。');
+$langman->set('INSTALL_MSG_TABLE_ALTERED', 'テーブル『{0}』を変更しました。');
+$langman->set('INSTALL_ERROR_TABLE_ALTERED', 'テーブル『{0}』が変更できませんでした。');
+$langman->set('INSTALL_MSG_DATA_INSERTED', 'テーブル『{0}』にデータを追加しました。');
+$langman->set('INSTALL_ERROR_DATA_INSERTED', 'テーブル『{0}』にデータを追加できませんでした。');
 $langman->set('INSTALL_MSG_MODULE_UNINSTALLED', 'モジュール『{0}』をアンインストールしました。');
 $langman->set('INSTALL_ERROR_MODULE_UNINSTALLED', 'モジュール『{0}』がアンインストールできませんでした。');
 $langman->set('INSTALL_MSG_UPDATE_STARTED', 'モジュールのアップデートを開始します。');

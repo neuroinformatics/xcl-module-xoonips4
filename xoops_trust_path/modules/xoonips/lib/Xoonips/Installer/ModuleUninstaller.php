@@ -227,7 +227,7 @@ class ModuleUninstaller
         $tplHandler = &xoops_gethandler('tplfile');
         $cri = new \Criteria('tpl_module', $dirname);
         if (!$tplHandler->deleteAll($cri)) {
-            $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_BLOCK_TPL_DELETED'), $tplHandler->db->error()));
+            $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_BLOCK_TPL_UNINSTALLED'), $tplHandler->db->error()));
         }
     }
 

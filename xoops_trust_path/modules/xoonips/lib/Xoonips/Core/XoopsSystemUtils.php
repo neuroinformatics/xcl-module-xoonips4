@@ -8,6 +8,40 @@ namespace Xoonips\Core;
 class XoopsSystemUtils
 {
     /**
+     * fix invalid xoops group permissions
+     *  - refer: http://www.xugj.org/modules/d3forum/index.php?topic_id=791.
+     *
+     * @return bool false if failure
+     */
+    public static function fixGroupPermissions()
+    {
+        global $xoopsDB;
+        // get invalid group ids
+        $table = $xoopsDB->prefix('group_permission');
+        $table2 = $xoopsDB->prefix('groups');
+        $sql = sprintf('SELECT DISTINCT `gperm_groupid` FROM `%s` LEFT JOIN `%s` ON `%s`.`gperm_groupid`=`%s`.`groupid` WHERE `gperm_modid`=1 AND `groupid` IS NULL', $table, $table2, $table, $table2);
+        $result = $xoopsDB->query($sql);
+        if (!$result) {
+            return false;
+        }
+        $gids = array();
+        while ($myrow = $xoopsDB->fetchArray($result)) {
+            $gids[] = $myrow['gperm_groupid'];
+        }
+        $xoopsDB->freeRecordSet($result);
+        // remove all invalid group id entries
+        if (count($gids) != 0) {
+            $sql = sprintf('DELETE FROM `%s` WHERE `gperm_groupid` IN (%s) AND `gperm_modid`=1', $table, implode(',', $gids));
+            $result = $xoopsDB->query($sql);
+            if (!$result) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * set xoops module admin right.
      *
      * @param int  $mid

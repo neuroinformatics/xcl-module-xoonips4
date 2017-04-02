@@ -5,7 +5,7 @@ use Xoonips\Core\XoopsSystemUtils;
 use Xoonips\Installer\ModuleUninstaller;
 
 /**
- * Xoonips_Uninstaller.
+ * uninstaller class.
  */
 class Xoonips_Uninstaller extends ModuleUninstaller
 {
@@ -21,10 +21,8 @@ class Xoonips_Uninstaller extends ModuleUninstaller
 
     /**
      * delete extend tables.
-     *
-     * @return bool
      */
-    public function onUninstallDropExtendTables()
+    protected function onUninstallDropExtendTables()
     {
         $this->mLog->addReport('Drop Item Extend tables.');
         $dirname = $this->mXoopsModule->get('dirname');
@@ -39,21 +37,17 @@ class Xoonips_Uninstaller extends ModuleUninstaller
         foreach ($tables as $table) {
             $sql = 'DROP TABLE `'.$table.'`';
             if ($db->query($sql)) {
-               $this->mLog->addReport(XCubeUtils::formatString($this->mLangMan->get('INSTALL_MSG_TABLE_DOROPPED'), $table));
+                $this->mLog->addReport(XCubeUtils::formatString($this->mLangMan->get('INSTALL_MSG_TABLE_DOROPPED'), $table));
             } else {
-               $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_TABLE_DOROPPED'), $table));
+                $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_TABLE_DOROPPED'), $table));
             }
         }
-
-        return true;
     }
 
     /**
      * restore blocks.
-     *
-     * @return bool
      */
-    public function onUninstallRestoreBlocks()
+    protected function onUninstallRestoreBlocks()
     {
         $this->mLog->addReport('Restore original usermenu and login blocks.');
         // show original 'usermenu' and 'login' blocks
@@ -72,7 +66,5 @@ class Xoonips_Uninstaller extends ModuleUninstaller
                 XoopsSystemUtils::setBlockPosition($bid, true, 0, 0);
             }
         }
-
-        return true;
     }
 }
