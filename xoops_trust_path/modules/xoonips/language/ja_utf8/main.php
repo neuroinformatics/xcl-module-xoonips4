@@ -308,7 +308,7 @@ define('_MD_XOONIPS_TRANSFER_NOTIFICATION_ITEM_DETAIL', '詳細：');
 define('_MD_XOONIPS_TRANSFER_NOTIFICATION_ITEM_DETAIL_FORBIDDEN', '（プライベートアイテムのため閲覧できません。）');
 
 //edit index sub
-define('_MD_XOONIPS_EDIT_INDEX_SUB_PAGE_TITLE',  'インデックス新規登録');
+define('_MD_XOONIPS_EDIT_INDEX_SUB_PAGE_TITLE', 'インデックス新規登録');
 define('_MD_XOONIPS_EDIT_INDEX_SUB_BUTTON_MOVE', '移動');
 
 define('_MD_XOONIPS_MSG_DBDELETED', 'データを削除しました。');

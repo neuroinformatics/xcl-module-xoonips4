@@ -334,7 +334,7 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
         if ($cnt > $cursor + $this->limit_row) {
             $last_item_id = $identifiers[$cursor + $this->limit_row - 1]['item_id'];
         }
-        $resumptionToken_xml = $this->resumptionTokenXml($cnt, $cursor, $args,    $metadataPrefix, $last_item_id);
+        $resumptionToken_xml = $this->resumptionTokenXml($cnt, $cursor, $args, $metadataPrefix, $last_item_id);
 
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         $index_tree_list = $indexBean->getPublicFullPath(true);
@@ -437,7 +437,7 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
         if ($cnt > $cursor + $this->limit_row) {
             $args['item_all_count'] = $cnt;      // set optional value(count).
         }
-        $resumptionToken_xml = $this->resumptionTokenXml($cnt, $cursor, $args,    '', $end_index);
+        $resumptionToken_xml = $this->resumptionTokenXml($cnt, $cursor, $args, '', $end_index);
         $xml = "<ListSets>\n".$xml.$resumptionToken_xml."</ListSets>\n";
 
         return $xml;

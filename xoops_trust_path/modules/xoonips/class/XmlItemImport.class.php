@@ -1102,7 +1102,7 @@ abstract class XmlItemImportUpdate_Base
 
               return $this->set_err_msg(400, $xml_err, __LINE__);
           }
-          $sxml->registerXPathNamespace('namespace',  self::itemns);
+          $sxml->registerXPathNamespace('namespace', self::itemns);
 
       // get item_type_name and item_id from item_type_name attribute.
       $item_id = -1;
