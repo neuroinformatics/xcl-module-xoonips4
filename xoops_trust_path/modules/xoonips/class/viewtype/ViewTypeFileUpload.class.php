@@ -279,6 +279,7 @@ class Xoonips_ViewTypeFileUpload extends Xoonips_ViewType
 
         return array(implode(',', $original_file_name), implode(',', $mime_type));
     }
+
     /**
      * get entity data.
      *

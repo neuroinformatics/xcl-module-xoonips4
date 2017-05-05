@@ -481,6 +481,7 @@ class Xoonips_Search_Query_Component extends Xoonips_Search_Query_Element_Base
             $this->add($ele, $condition);
         }
     }
+
     /**
      * add element.
      *
@@ -645,7 +646,7 @@ class Xoonips_Search_Query
         $continue = true;
         $pop_require = false;
         for ($pos = $this->lex_pos; $continue && $pos < $this->lex_strlen; ++$pos) {
-            $c = $this->lex_str{$pos};
+            $c = $this->lex_str[$pos];
             if ($in_quote) {
                 if ($in_escape) {
                     if ($c == '"' || $c == '\\') {

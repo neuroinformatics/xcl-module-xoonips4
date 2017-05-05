@@ -288,7 +288,6 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
 
     protected function doExport(&$request, &$response)
     {
-
         // get requests
         $items = array();
         $items[] = $request->getParameter('item_id');

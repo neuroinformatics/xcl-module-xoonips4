@@ -415,6 +415,7 @@ abstract class Xoonips_Field
     {
         return $this->getInputView($this->viewType->getEditViewWithData($this, $value, $groupLoopId), $cnt);
     }
+
     /**
      * get edit view with data for moderator.
      *

@@ -364,7 +364,6 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
      */
     public function copyById($itemtypeId, &$map, $update = false, $import = false, $copy = false)
     {
-
         // get copy information
         $itemtypeObj = $this->getItemType($itemtypeId);
         if (!$itemtypeObj) {
@@ -384,7 +383,6 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
      */
     public function copyByObj($itemtypeObj, &$map, $update, $import, $copy)
     {
-
         // insert copy
         $itemtypeObj['name'] = $copy ? $itemtypeObj['name'].'_'._AM_XOONIPS_LABEL_COPY : $itemtypeObj['name'];
         $itemtypeObj['released'] = $import ? $itemtypeObj['released'] : 0;

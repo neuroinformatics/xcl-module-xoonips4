@@ -57,7 +57,7 @@ class Xoonips_ListAction extends Xoonips_ActionBase
             exit();
         }
 
-        $_SESSION[$this->dirname.'_order_by' ] = $orderby;
+        $_SESSION[$this->dirname.'_order_by'] = $orderby;
         $_SESSION[$this->dirname.'_order_dir'] = $order_dir;
 
         $cri = array(

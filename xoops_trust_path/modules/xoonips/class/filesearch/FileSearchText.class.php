@@ -16,6 +16,7 @@ class Xoonips_FileSearchText extends Xoonips_FileSearchBase
         $this->is_xml = false;
         $this->is_file = true;
     }
+
     /**
      * get definition of Text file search.
      *

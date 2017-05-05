@@ -8,6 +8,7 @@ require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/BeanBase.class.php';
 class Xoonips_ItemUsersLinkBean extends Xoonips_BeanBase
 {
     private static $cache = array();
+
     /**
      * Constructor.
      **/

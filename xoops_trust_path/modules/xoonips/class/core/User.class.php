@@ -1230,7 +1230,6 @@ class Xoonips_User
 
     public function addGroupOperationFlag($groups, $uid, &$newflag)
     {
-
         //new button flag
         $newflag = false;
         $configVal = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'group_making');

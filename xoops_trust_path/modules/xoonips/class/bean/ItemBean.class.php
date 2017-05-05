@@ -128,9 +128,9 @@ class Xoonips_ItemBean extends Xoonips_BeanBase
   /**
    * update the View Count by id.
    *
-   * @param  int $id:item_id
+   * @param int $id:item_id
    *
-   * @return  bool true:success,false:failed
+   * @return bool true:success,false:failed
    */
   public function updateViewCount($id)
   {
@@ -147,9 +147,9 @@ class Xoonips_ItemBean extends Xoonips_BeanBase
   /**
    * delete by id.
    *
-   * @param  int $id:item_id
+   * @param int $id:item_id
    *
-   * @return  bool true:success,false:failed
+   * @return bool true:success,false:failed
    */
   public function delete($id)
   {
@@ -181,10 +181,10 @@ class Xoonips_ItemBean extends Xoonips_BeanBase
   /**
    * check title.
    *
-   * @param  var $name:name
-   *          var $title:title
+   * @param var $name:name
+   *                       var $title:title
    *
-   * @return  bool
+   * @return bool
    */
   public function checkItemtype($itemtypeid)
   {
@@ -202,10 +202,10 @@ class Xoonips_ItemBean extends Xoonips_BeanBase
   /**
    * check item field.
    *
-   * @param  var $name:name
-   *         var $title:title
+   * @param var $name:name
+   *                       var $title:title
    *
-   * @return  bool
+   * @return bool
    */
   public function checkItemfield($itemfieldid)
   {
@@ -227,10 +227,10 @@ class Xoonips_ItemBean extends Xoonips_BeanBase
   /**
    * check item group.
    *
-   * @param  var $name:name
-   *          var $title:title
+   * @param var $name:name
+   *                       var $title:title
    *
-   * @return  bool
+   * @return bool
    */
   public function checkItemgroup($itemgroupid)
   {

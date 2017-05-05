@@ -37,6 +37,7 @@ abstract class XmlItemImportUpdate_Base
     protected $users_bean;
 
     const itemns = 'http://xoonips.sourceforge.jp/xoonips/item/';
+
     public function __construct()
     {
         $this->dirname = $this->trustDirname = 'xoonips';
@@ -138,11 +139,13 @@ abstract class XmlItemImportUpdate_Base
   {
       return StringUtils::convertEncoding($str, 'UTF-8', _CHARSET, 'h');
   }
+
   ////////////////////////////////////////////////////////
+
   /**
    * @param int $xml_file_id
    * @param int $file_id
-   * @param int  $item_id
+   * @param int $item_id
    *
    * @return int 1:Success,
    */
@@ -164,16 +167,17 @@ abstract class XmlItemImportUpdate_Base
   }
 
    ////////////////////////////////////////////////////////
+
   /**
    * abstruct function for xoonips_item_extend.
    *
-   * @param int $item_id
-   * @param int $group_id
-   * @param string  $tableName
-   * @param mixed   $value
-   * @param int $occurence_number
+   * @param int    $item_id
+   * @param int    $group_id
+   * @param string $tableName
+   * @param mixed  $value
+   * @param int    $occurence_number
    *
-   * @return  bool true:success,false:failed
+   * @return bool true:success,false:failed
    */
   abstract protected function db_extend($item_id, $group_id, $tableName, $value, $occurence_number);
 
@@ -199,7 +203,7 @@ abstract class XmlItemImportUpdate_Base
    *
    * @param array $item_group_arr
    * @param array $xml_item_detail
-   * @param int $item_id
+   * @param int   $item_id
    */
   protected function extend(&$item_group_arr, &$xml_item_detail, $item_id)
   {
@@ -274,10 +278,10 @@ abstract class XmlItemImportUpdate_Base
   /**
    * abstruct function.
    *
-   * @param int $item_id
-   * @param int $item_field_detail_id
-   * @param string  $title_value
-   * @param int     $title_id
+   * @param int    $item_id
+   * @param int    $item_field_detail_id
+   * @param string $title_value
+   * @param int    $title_id
    *
    * @return bool true:Success,false:Fail
    */
@@ -291,7 +295,7 @@ abstract class XmlItemImportUpdate_Base
    *
    * @param array $item_group_arr
    * @param array $item_detail
-   * @param int $item_id
+   * @param int   $item_id
    */
   protected function title(&$item_group_arr, &$item_detail, $item_id)
   {
@@ -325,8 +329,8 @@ abstract class XmlItemImportUpdate_Base
   /**
    * abstruct uploadfile info.
    *
-   * @param int $file_id
-   * @param array   $file
+   * @param int   $file_id
+   * @param array $file
    *
    * @return bool true:Success,false:Fail
    */
@@ -335,9 +339,9 @@ abstract class XmlItemImportUpdate_Base
   /**
    * $file check.
    *
-   * @param array $file
+   * @param array  $file
    * @param string $illegalname if error occured key name substute this variable
-   * @param int $file_id
+   * @param int    $file_id
    *
    * @return booelan true:Success,false:Fail
    */
@@ -373,7 +377,7 @@ abstract class XmlItemImportUpdate_Base
    *
    * @param array $item_group_arr
    * @param array $xml_item_detail
-   * @param int $item_id
+   * @param int   $item_id
    */
   protected function file(&$item_group_arr, &$xml_item_detail, $item_id)
   {
@@ -430,10 +434,10 @@ abstract class XmlItemImportUpdate_Base
    *
    * @param int $indexId
    * @param int $item_id
-   * @param int $certify_state  if = 0 then not change
+   * @param int $certify_state if = 0 then not change
    * @param int $item_link_id
    *
-   * @return  bool true:success,false:failed
+   * @return bool true:success,false:failed
    */
   abstract protected function db_index_item_link($indexId, $item_id, $certify_state, &$item_link_id);
 
@@ -442,7 +446,7 @@ abstract class XmlItemImportUpdate_Base
    *
    * @param array $item_group_arr
    * @param array $item_detail
-   * @param int $item_id
+   * @param int   $item_id
    *
    * @return int 200:Success,Other:Fail
    */
@@ -742,18 +746,19 @@ abstract class XmlItemImportUpdate_Base
    * Insert or Update users_link.
    *
    * @param array $item_group_arr
-   * @param int $item_detail
-   * @param int $item_id
+   * @param int   $item_detail
+   * @param int   $item_id
    *
    * @return int
    */
   abstract protected function users_link(&$item_group_arr, &$item_detail, $item_id);
 
   ////////////////////////////////////////////////////////
+
   /**
    * check xml exist in xoonips_item_field_detail.
    *
-   * @param type $xml_tag tagname
+   * @param type $xml_tag      tagname
    * @param type $item_details
    *
    * @return bool true/false
@@ -947,8 +952,8 @@ abstract class XmlItemImportUpdate_Base
    * Get ItemTypeName and item_id on a xml tree.
    *
    * @param object $sxml
-   * @param type $sxml
-   * @param type $item_id
+   * @param type   $sxml
+   * @param type   $item_id
    *
    * @return type
    */
@@ -1086,9 +1091,9 @@ abstract class XmlItemImportUpdate_Base
    * This mainly use REST API.
    *
    * @param string $fname
-   * @param int $uid_chk
-   * @param array $index_chk
-   * @param bool $transact_flg
+   * @param int    $uid_chk
+   * @param array  $index_chk
+   * @param bool   $transact_flg
    *
    * @return int 200 or 206:Success,other return code:Fail
    */
@@ -1304,8 +1309,8 @@ class XmlItemImport extends XmlItemImportUpdate_Base
   /**
    * abstruct uploadfile info.
    *
-   * @param int $file_id
-   * @param array   $file
+   * @param int   $file_id
+   * @param array $file
    *
    * @return bool true:Success,false:Fail
    */
@@ -1319,10 +1324,10 @@ class XmlItemImport extends XmlItemImportUpdate_Base
    *
    * @param int $indexId
    * @param int $item_id
-   * @param int $certify_state  if = 0 then not change
+   * @param int $certify_state if = 0 then not change
    * @param int $item_link_id
    *
-   * @return  bool true:success,false:failed
+   * @return bool true:success,false:failed
    */
   protected function db_index_item_link($indexId, $item_id, $certify_state, &$item_link_id)
   {
@@ -1332,9 +1337,9 @@ class XmlItemImport extends XmlItemImportUpdate_Base
   /**
    * $file check.
    *
-   * @param array $file
+   * @param array  $file
    * @param string $illegalname if error occured key name substute this variable
-   * @param int $file_id
+   * @param int    $file_id
    *
    * @return booelan true:Success,false:Fail
    */
@@ -1412,13 +1417,13 @@ class XmlItemImport extends XmlItemImportUpdate_Base
   /**
    * function for xoonips_item_extend.
    *
-   * @param int $item_id
-   * @param int $group_id
-   * @param string  $tableName
-   * @param mixed   $value
-   * @param int $occurence_number
+   * @param int    $item_id
+   * @param int    $group_id
+   * @param string $tableName
+   * @param mixed  $value
+   * @param int    $occurence_number
    *
-   * @return  bool true:success,false:failed
+   * @return bool true:success,false:failed
    */
   protected function db_extend($item_id, $group_id, $tableName, $value, $occurence_number)
   {
@@ -1428,12 +1433,12 @@ class XmlItemImport extends XmlItemImportUpdate_Base
   /**
    * function for xoonips_item_extend2.
    *
-   * @param int $item_id
-   * @param int $group_id
-   * @param string  $tableName
-   * @param int $occurence_number
+   * @param int    $item_id
+   * @param int    $group_id
+   * @param string $tableName
+   * @param int    $occurence_number
    *
-   * @return  bool true:success,false:failed
+   * @return bool true:success,false:failed
    */
   protected function db_extend2($item_id, $group_id, $tableName, $occurence_number)
   {
@@ -1527,8 +1532,8 @@ class XmlItemImport extends XmlItemImportUpdate_Base
    * Insert users_link.
    *
    * @param array $item_group_arr
-   * @param int $item_detail
-   * @param int $item_id
+   * @param int   $item_detail
+   * @param int   $item_id
    *
    * @return int
    */
@@ -1557,6 +1562,7 @@ class XmlItemImport extends XmlItemImportUpdate_Base
       'creation_date' => time(),
     );
   }
+
   /**
    * check get item_id from DB
    * - Use only update.
@@ -1644,8 +1650,8 @@ class XmlItemUpdate extends XmlItemImportUpdate_Base
   /**
    * abstruct uploadfile info.
    *
-   * @param int $file_id
-   * @param array   $file
+   * @param int   $file_id
+   * @param array $file
    *
    * @return bool true:Success,false:Fail
    */
@@ -1657,15 +1663,16 @@ class XmlItemUpdate extends XmlItemImportUpdate_Base
 
       return $this->item_file_bean->insertFile($file);
   }
+
   /**
    * xoonips_index_item_link db function.
    *
    * @param int $indexId
    * @param int $item_id
-   * @param int $certify_state  if = 0 then not change
+   * @param int $certify_state if = 0 then not change
    * @param int $item_link_id
    *
-   * @return  bool true:success,false:failed
+   * @return bool true:success,false:failed
    */
   protected function db_index_item_link($indexId, $item_id, $certify_state, &$item_link_id)
   {
@@ -1683,9 +1690,9 @@ class XmlItemUpdate extends XmlItemImportUpdate_Base
   /**
    * $file check.Update no check.
    *
-   * @param array $file
+   * @param array  $file
    * @param string $illegalname if error occured key name substute this variable
-   * @param int $file_id
+   * @param int    $file_id
    *
    * @return booelan true:Success,false:Fail
    */
@@ -1717,6 +1724,7 @@ class XmlItemUpdate extends XmlItemImportUpdate_Base
   {
       return true;
   }
+
   /**
    * Instance xoonips_item_related_to.
    *
@@ -1736,13 +1744,13 @@ class XmlItemUpdate extends XmlItemImportUpdate_Base
   /**
    * function for xoonips_item_extend.
    *
-   * @param int $item_id
-   * @param int $group_id
-   * @param string  $tableName
-   * @param mixed   $value
-   * @param int $occurrence_number
+   * @param int    $item_id
+   * @param int    $group_id
+   * @param string $tableName
+   * @param mixed  $value
+   * @param int    $occurrence_number
    *
-   * @return  bool true:success,false:failed
+   * @return bool true:success,false:failed
    */
   protected function db_extend($item_id, $group_id, $tableName, $value, $occurrence_number)
   {
@@ -1844,8 +1852,8 @@ class XmlItemUpdate extends XmlItemImportUpdate_Base
    * Update users_link.
    *
    * @param array $item_group_arr
-   * @param int $item_detail
-   * @param int $item_id
+   * @param int   $item_detail
+   * @param int   $item_id
    *
    * @return int
    */

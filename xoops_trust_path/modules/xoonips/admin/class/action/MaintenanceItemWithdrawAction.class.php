@@ -8,7 +8,6 @@ class Xoonips_MaintenanceItemWithdrawAction extends Xoonips_MaintenanceItemCommo
 {
     protected function doInit(&$request, &$response)
     {
-
         //title
         $title = _AM_XOONIPS_MAINTENANCE_ITEMWITHDRAW_TITLE;
         $description = _AM_XOONIPS_MAINTENANCE_ITEMWITHDRAW_DESC;
@@ -58,7 +57,6 @@ class Xoonips_MaintenanceItemWithdrawAction extends Xoonips_MaintenanceItemCommo
 
     protected function doConfirm(&$request, &$response)
     {
-
         //title
         $title = _AM_XOONIPS_MAINTENANCE_ITEMWITHDRAW_CONFIRM_TITLE;
         $description = _AM_XOONIPS_MAINTENANCE_ITEMWITHDRAW_CONFIRM_DESC;
@@ -123,7 +121,6 @@ class Xoonips_MaintenanceItemWithdrawAction extends Xoonips_MaintenanceItemCommo
 
     protected function doExecute(&$request, &$response)
     {
-
         //title
         $title = _AM_XOONIPS_MAINTENANCE_ITEMWITHDRAW_EXECUTE_TITLE;
         $description = _AM_XOONIPS_MAINTENANCE_ITEMWITHDRAW_MSG_SUCCESS;

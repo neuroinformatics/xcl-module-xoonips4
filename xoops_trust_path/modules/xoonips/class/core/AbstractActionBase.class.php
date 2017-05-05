@@ -29,12 +29,12 @@ abstract class Xoonips_AbstractActionBase
     public function doAction(&$request, &$response, $paramFlg = false)
     {
         global $xoopsDB;
-/**
- * modify for one file hack
- * support if $paramFlg = true
- * xxxx.php?op=yyy&action=zzz
- * => doZzz('yyy').
- **/
+        /**
+         * modify for one file hack
+         * support if $paramFlg = true
+         * xxxx.php?op=yyy&action=zzz
+         * => doZzz('yyy').
+         **/
         // operation
         $method = '';
         $op = $request->getParameter('op');

@@ -596,7 +596,6 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
     public function createExtendTable($detailObj)
     {
         foreach ($detailObj as $detail) {
-
             // view type to confirm create item extend table, except (id, title, keyword, file upload, create date,
             // last update, create user, change log, index, relation item, preview)
             $viewtypeObj = Xoonips_ViewTypeFactory::getInstance($this->dirname, $this->trustDirname)->getViewType($detail['view_type_id']);
@@ -777,7 +776,6 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
      */
     public function copyByObj($detailObj, &$map, $update, $import)
     {
-
         // insert copy
         foreach ($detailObj as $detail) {
             $detail['released'] = $import ? $detail['released'] : 0;

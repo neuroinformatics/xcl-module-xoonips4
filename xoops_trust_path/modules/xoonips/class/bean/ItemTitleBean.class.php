@@ -100,10 +100,10 @@ class Xoonips_ItemTitleBean extends Xoonips_BeanBase
   /**
    * insert item_title.
    *
-   * @param type $item_id
-   * @param type $item_field_detail_id
+   * @param type   $item_id
+   * @param type   $item_field_detail_id
    * @param stirng $title
-   * @param int $title_id
+   * @param int    $title_id
    *
    * @return bool true:Success,falase:Fail
    */
@@ -127,10 +127,10 @@ class Xoonips_ItemTitleBean extends Xoonips_BeanBase
   /**
    * update item_title.
    *
-   * @param int $item_id
-   * @param int $item_field_detail_id
-   * @param string  $title
-   * @param int $title_id
+   * @param int    $item_id
+   * @param int    $item_field_detail_id
+   * @param string $title
+   * @param int    $title_id
    *
    * @return bool true:Success,falase:Fail
    */

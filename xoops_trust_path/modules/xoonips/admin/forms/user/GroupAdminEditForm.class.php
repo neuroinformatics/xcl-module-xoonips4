@@ -260,6 +260,7 @@ class Xoonips_GroupAdminEditForm extends XCube_ActionForm
             $this->addErrorMessage(XCube_Utils::formatString(constant($constpref.'_ERROR_INPUTVALUE'), _AD_USER_LANG_GROUP_TYPE));
         }
     }
+
     /**
      * load.
      *

@@ -39,7 +39,7 @@ class IndexObjectHandler extends AbstractObjectHandler
             $obj->set('creation_date', $now);
         }
         $obj->set('last_update_date', $now);
+
         return parent::_update($obj, $force, $isReplace);
     }
-
 }

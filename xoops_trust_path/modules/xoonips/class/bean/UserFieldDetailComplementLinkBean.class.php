@@ -162,7 +162,6 @@ class Xoonips_UserFieldDetailComplementLinkBean extends Xoonips_BeanBase
      */
     public function copyByObj($complementObj, &$map, $update, $import)
     {
-
         // insert copy
         foreach ($complementObj as $complement) {
             $complement['user_detail_id'] = $map['detail'][$complement['user_detail_id']];

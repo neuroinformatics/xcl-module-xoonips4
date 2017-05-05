@@ -220,7 +220,7 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
                 $$key = $default;
             }
         }
-        $_SESSION[$this->dirname.'_order_by' ] = $orderby;
+        $_SESSION[$this->dirname.'_order_by'] = $orderby;
         $_SESSION[$this->dirname.'_order_dir'] = $order_dir;
         $cri = array('start' => ($page - 1) * $itemcount,
               'rows' => $itemcount,
@@ -324,7 +324,6 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
 
     protected function doExport(&$request, &$response)
     {
-
         // fetch search_parameter
         $search_parameter = $request->getParameter('search_parameter');
         $search_itemtype = $request->getParameter('search_itemtype');

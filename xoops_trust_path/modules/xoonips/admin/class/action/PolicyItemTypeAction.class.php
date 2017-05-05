@@ -17,7 +17,6 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 {
     protected function doInit(&$request, &$response)
     {
-
         //title
         $title = _AM_XOONIPS_POLICY_ITEMTYPE_TITLE;
         $description = _AM_XOONIPS_POLICY_ITEMTYPE_DESC;
@@ -128,7 +127,6 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
     protected function doRegister(&$request, &$response)
     {
-
         //title
         $title = _AM_XOONIPS_POLICY_ITEMTYPE_REGIST_TITLE;
         $description = _AM_XOONIPS_POLICY_ITEMTYPE_REGIST_DESC;
@@ -162,7 +160,6 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
     protected function doRegistersave(&$request, &$response)
     {
-
         //title
         $title = _AM_XOONIPS_POLICY_ITEMTYPE_REGIST_TITLE;
         $description = _AM_XOONIPS_POLICY_ITEMTYPE_REGIST_DESC;
@@ -329,7 +326,6 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
     protected function doEdit(&$request, &$response)
     {
-
         //title
         $title = _AM_XOONIPS_POLICY_ITEMTYPE_EDIT_TITLE;
         $description = _AM_XOONIPS_POLICY_ITEMTYPE_MODIFY_DESC;
@@ -404,7 +400,6 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
     protected function doEditsave(&$request, &$response)
     {
-
         //title
         $title = _AM_XOONIPS_POLICY_ITEMTYPE_EDIT_TITLE;
         $description = _AM_XOONIPS_POLICY_ITEMTYPE_MODIFY_DESC;
@@ -558,7 +553,6 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
     protected function doSorteditsave(&$request, &$response)
     {
-
         //title
         $title = _AM_XOONIPS_POLICY_ITEMTYPE_EDIT_TITLE;
         $description = _AM_XOONIPS_POLICY_ITEMTYPE_MODIFY_DESC;
@@ -716,7 +710,6 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
     protected function doCopy(&$request, &$response)
     {
-
         // get requests
         $itemtypeid = $request->getParameter('itemtypeid');
 
@@ -761,7 +754,6 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
     protected function doImport(&$request, &$response)
     {
-
         //title
         $title = _AM_XOONIPS_POLICY_ITEMTYPE_IMPORT_TITLE;
         $description = _AM_XOONIPS_POLICY_ITEMTYPE_IMPORT_DESC;
@@ -1001,7 +993,6 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
     protected function doDelete(&$request, &$response)
     {
-
         // get requests
         $itemtypeid = $request->getParameter('itemtypeid');
 
@@ -1028,7 +1019,6 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
     protected function doRelease(&$request, &$response)
     {
-
         //title
         $title = _AM_XOONIPS_POLICY_ITEMTYPE_EDIT_TITLE;
         $description = _AM_XOONIPS_POLICY_ITEMTYPE_MODIFY_DESC;
@@ -1203,7 +1193,6 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
     protected function doExport(&$request, &$response)
     {
-
         // get requests
         $itemtypeid = $request->getParameter('itemtypeid');
 
@@ -1352,8 +1341,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
     protected function doExports(&$request, &$response)
     {
-
-                //get Export aItemType XML Elment Data
+        //get Export aItemType XML Elment Data
                 //itemtype
                 $itemTypeBean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
 
@@ -1482,7 +1470,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
                     $zipClass->add($templatefile, $fname.'.tpl');
                 }
                 if ($iconSet) {
-                    $zipClass->add($imgdst, $itemTypeObj ['icon']);
+                    $zipClass->add($imgdst, $itemTypeObj['icon']);
                 }
                 $zipClass->close();
             } else {
@@ -1493,7 +1481,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
             unlink($templatefile);
             unlink($imgdst);
             rmdir($itemtypedir);
-            $itemtypes [] = $itemtype;
+            $itemtypes[] = $itemtype;
         }
         $time = date('YmdHis');
         $export = "export_itemtype_all_${time}.zip";
@@ -1536,7 +1524,6 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
      **/
     private function makeExportItemTypeXML($itemTypeObj, $groupObj, $valueSetObj, $complementObj, $sortObj, $oaipmhObj)
     {
-
         //get detail
         $detailBean = Xoonips_BeanFactory::getBean('ItemFieldDetailBean', $this->dirname, $this->trustDirname);
         $xml = '';
@@ -1709,7 +1696,6 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
     protected function doComplement(&$request, &$response)
     {
-
         // get requests
         $itemtypeid = $request->getParameter('itemtypeid');
         $base_itemtypeid = $request->getParameter('base_itemtypeid');
@@ -1848,7 +1834,6 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
     protected function doComplementsave(&$request, &$response)
     {
-
         // check token ticket
         if (!$this->validateToken($this->modulePrefix('admin_policy_itemtype_relation'))) {
             return false;
@@ -2210,7 +2195,6 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
     private function deleteAll($itemtypeid)
     {
-
         // delete item_type
         $itemtypeBean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
         if (!$itemtypeBean->delete($itemtypeid)) {
@@ -2416,7 +2400,6 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
     protected function doGroupregister(&$request, &$response)
     {
-
         // get requests
         $itemtypeid = $request->getParameter('itemtypeid');
         $base_itemtypeid = $request->getParameter('base_itemtypeid');
@@ -2460,7 +2443,6 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
     protected function doGroupregistersave(&$request, &$response)
     {
-
         // get requests
         $itemtypeid = $request->getParameter('itemtypeid');
         $base_itemtypeid = $request->getParameter('base_itemtypeid');

@@ -10,7 +10,6 @@ class Xoonips_MaintenanceItemDeleteAction extends Xoonips_MaintenanceItemCommonA
 {
     protected function doInit(&$request, &$response)
     {
-
         //title
         $title = _AM_XOONIPS_MAINTENANCE_ITEMDELETE_TITLE;
         $description = _AM_XOONIPS_MAINTENANCE_ITEMDELETE_DESC;
@@ -38,7 +37,6 @@ class Xoonips_MaintenanceItemDeleteAction extends Xoonips_MaintenanceItemCommonA
 
     protected function doIndex(&$request, &$response)
     {
-
         //title
         $title = _AM_XOONIPS_MAINTENANCE_ITEMDELETE_TITLE;
         $description = _AM_XOONIPS_MAINTENANCE_ITEMDELETE_INDEX_DESC;
@@ -89,7 +87,6 @@ class Xoonips_MaintenanceItemDeleteAction extends Xoonips_MaintenanceItemCommonA
 
     protected function doConfirm(&$request, &$response)
     {
-
         //title
         $title = _AM_XOONIPS_MAINTENANCE_ITEMDELETE_CONFIRM_TITLE;
         $description = _AM_XOONIPS_MAINTENANCE_ITEMDELETE_CONFIRM_DESC;
@@ -159,7 +156,6 @@ class Xoonips_MaintenanceItemDeleteAction extends Xoonips_MaintenanceItemCommonA
 
     protected function doExecute(&$request, &$response)
     {
-
         //title
         $title = _AM_XOONIPS_MAINTENANCE_ITEMDELETE_EXECUTE_TITLE;
         $description = _AM_XOONIPS_MAINTENANCE_ITEMDELETE_MSG_SUCCESS;

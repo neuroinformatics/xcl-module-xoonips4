@@ -207,7 +207,6 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
             $response->setErrors($errors);
             $response->setForward('confirm_error');
         } else {
-
             // item limit check
             global $xoopsUser;
             $uid = $xoopsUser->getVar('uid');

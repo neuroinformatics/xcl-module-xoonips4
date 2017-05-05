@@ -9,6 +9,7 @@ require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/Enum.class.php';
 class Xoonips_IndexItemLinkBean extends Xoonips_BeanBase
 {
     private static $cache = array();
+
     /**
      * Constructor.
      **/
@@ -444,9 +445,9 @@ class Xoonips_IndexItemLinkBean extends Xoonips_BeanBase
   /**
    * updateIndexid.
    *
-   * @param  int $indexId:index_id,$itemId:item_id,$certifyState:certify_state
+   * @param int $indexId:index_id,$itemId:item_id,$certifyState:certify_state
    *
-   * @return  bool true:success,false:failed
+   * @return bool true:success,false:failed
    */
   public function updateIndexid($indexId, $itemId, $certifyState, $indexItemLinkId)
   {

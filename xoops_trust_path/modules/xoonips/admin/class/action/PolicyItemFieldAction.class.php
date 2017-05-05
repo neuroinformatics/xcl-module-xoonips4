@@ -10,7 +10,6 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
 {
     protected function doRegister(&$request, &$response)
     {
-
         // get requests
         $changeop = $request->getParameter('changeop');
         $name = $request->getParameter('name');
@@ -94,7 +93,6 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
 
     protected function doRegistersave(&$request, &$response)
     {
-
         // get requests
         $changeop = $request->getParameter('changeop');
         $name = $request->getParameter('name');
@@ -289,7 +287,6 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
 
     protected function doEdit(&$request, &$response)
     {
-
         // get requests
         $base_detailid = $request->getParameter('detailid');
         $detailid = $request->getParameter('detailid');
@@ -444,7 +441,6 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
 
     protected function doEditsave(&$request, &$response)
     {
-
         // get requests
         $base_detailid = $request->getParameter('base_detailid');
         $detailid = $request->getParameter('detailid');
@@ -637,7 +633,6 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
 
     protected function doRelease(&$request, &$response)
     {
-
         //title
         $title = _AM_XOONIPS_POLICY_ITEMTYPE_DETAIL_EDIT_TITLE;
         $description = _AM_XOONIPS_POLICY_ITEMTYPE_DETAIL_MODIFY_DESC;

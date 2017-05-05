@@ -10,10 +10,12 @@ class Xoonips_Response
     private $viewData;
     private $systemError = false;
     private $dirname = 'xoonips';
+
     public function setDirname($v)
     {
         $this->dirname = $v;
     }
+
     public function setForward($v)
     {
         $this->forward = $v;

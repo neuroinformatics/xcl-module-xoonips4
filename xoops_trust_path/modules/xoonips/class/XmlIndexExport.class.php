@@ -7,8 +7,8 @@ class XmlIndexExport
   /**
    * Public/Private/Group Index Search common sub routine.
    *
-   * @param array $top_arr elminate top
-   * @param array $indexes all elemnt fot this index
+   * @param array $top_arr        elminate top
+   * @param array $indexes        all elemnt fot this index
    * @param array $index_path_arr indexpath chage array
    *
    * @return array success,empty array fail
@@ -58,7 +58,7 @@ class XmlIndexExport
   /**
    * Walk Private Index.
    *
-   * @param int $uid
+   * @param int   $uid
    * @param array $index_path_arr
    *
    * @return array

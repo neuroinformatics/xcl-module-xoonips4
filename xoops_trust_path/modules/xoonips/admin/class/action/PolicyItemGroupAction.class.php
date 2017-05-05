@@ -10,7 +10,6 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
 {
     protected function doInit(&$request, &$response)
     {
-
         //title
         $title = _AM_XOONIPS_POLICY_ITEMFIELDGROUP_TITLE;
         $description = _AM_XOONIPS_POLICY_ITEMFIELDGROUP_DESC;
@@ -126,7 +125,6 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
 
     protected function doRegister(&$request, &$response)
     {
-
         // get requests
         $name = $request->getParameter('name');
         $xml = $request->getParameter('xml');
@@ -164,7 +162,6 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
 
     protected function doRegistersave(&$request, &$response)
     {
-
         // get requests
         $name = $request->getParameter('name');
         $xml = $request->getParameter('xml');
@@ -295,7 +292,6 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
 
     protected function doEdit(&$request, &$response)
     {
-
         // get requests
         $base_groupid = $request->getParameter('groupid');
         $groupid = $request->getParameter('groupid');
@@ -388,7 +384,6 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
 
     protected function doEditsave(&$request, &$response)
     {
-
         // get requests
         $base_groupid = $request->getParameter('base_groupid');
         $groupid = $request->getParameter('groupid');
@@ -516,7 +511,6 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
 
     protected function doSorteditsave(&$request, &$response)
     {
-
         // get requests
         $base_groupid = $request->getParameter('base_groupid');
         $groupid = $request->getParameter('groupid');
@@ -573,7 +567,6 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
 
     protected function doRelease(&$request, &$response)
     {
-
         //title
         $title = _AM_XOONIPS_POLICY_ITEMTYPE_GROUP_EDIT_TITLE;
         $description = _AM_XOONIPS_POLICY_ITEMTYPE_GROUP_MODIFY_DESC;
@@ -606,7 +599,6 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
 
     protected function doDelete(&$request, &$response)
     {
-
         // get requests
         $groupid = $request->getParameter('groupid');
 
@@ -656,7 +648,6 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
 
     protected function doDetailregister(&$request, &$response)
     {
-
         // get requests
         $groupid = $request->getParameter('base_groupid');
         $changeop = $request->getParameter('changeop');
@@ -698,7 +689,6 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
 
     protected function doDetailregistersave(&$request, &$response)
     {
-
         // get requests
         $groupid = $request->getParameter('groupid');
         $changeop = $request->getParameter('changeop');

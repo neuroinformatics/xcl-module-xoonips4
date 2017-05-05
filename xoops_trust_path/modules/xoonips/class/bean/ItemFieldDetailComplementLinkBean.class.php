@@ -140,7 +140,6 @@ class Xoonips_ItemFieldDetailComplementLinkBean extends Xoonips_BeanBase
 
     public function deleteDetailLink($itemtypeid, $complementid, $baseid, $groupid = 0)
     {
-
         // delete item_field_detail_complement_link
         $sql = "delete from $this->table where item_type_id=$itemtypeid".
             " and complement_id=$complementid and base_item_field_detail_id=$baseid".
@@ -272,7 +271,6 @@ class Xoonips_ItemFieldDetailComplementLinkBean extends Xoonips_BeanBase
      */
     public function copyById($itemId, &$map, $update = false, $import = false, $type = false)
     {
-
         // get copy information
         if ($type) {
             $complementObj = $this->getFieldDetailComplementByItemtypeId($itemId);
@@ -296,7 +294,6 @@ class Xoonips_ItemFieldDetailComplementLinkBean extends Xoonips_BeanBase
      */
     public function copyByObj($complementObj, &$map, $update, $import, $type = false)
     {
-
         // insert copy
         foreach ($complementObj as $complement) {
             $complement['released'] = $import ? $complement['released'] : 0;

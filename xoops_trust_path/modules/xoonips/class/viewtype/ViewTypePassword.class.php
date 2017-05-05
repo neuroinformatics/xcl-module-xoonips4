@@ -158,6 +158,7 @@ class Xoonips_ViewTypePassword extends Xoonips_ViewType
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }
+
     public function getDetailDisplayView($field, $value, $display)
     {
     }
@@ -170,6 +171,7 @@ class Xoonips_ViewTypePassword extends Xoonips_ViewType
 
         return true;
     }
+
     public function mustCheck(&$errors, $field, $value, $fieldName)
     {
         return true;

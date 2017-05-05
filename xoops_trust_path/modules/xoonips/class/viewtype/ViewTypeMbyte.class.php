@@ -29,14 +29,17 @@ class Xoonips_ViewTypeMbyte extends Xoonips_ViewTypeText
     {
         return $this->getRegistryViewWithData($field, $value, $groupLoopId);
     }
+
     public function getSearchInputView($field, $value, $groupLoopId)
     {
         return $this->getRegistryViewWithData($field, $value, $groupLoopId);
     }
+
     public function getEditViewWithDataForModerator($field, &$data, $groupLoopId)
     {
         return $this->getEditViewWithData($field, $data, $groupLoopId);
     }
+
     public function getDetailDisplayView($field, $value, $display)
     {
         $this->getXoopsTpl()->assign('viewType', 'detail');

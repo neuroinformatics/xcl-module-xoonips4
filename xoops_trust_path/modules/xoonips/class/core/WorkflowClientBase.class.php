@@ -11,7 +11,9 @@ abstract class Xoonips_WorkflowClientBase
     protected $trustDirname;
 
     abstract protected function doCertify($id, $comment);
+
     abstract protected function doProgress($id);
+
     abstract protected function doRefuse($id, $comment);
 
     public function __construct($dataname, $dirname, $trustDirname)

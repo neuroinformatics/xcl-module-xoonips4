@@ -5,6 +5,7 @@ require_once 'Error.class.php';
 class Xoonips_Errors
 {
     private $errors = array();
+
     public function __construct()
     {
     }

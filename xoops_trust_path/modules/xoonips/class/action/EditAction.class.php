@@ -707,7 +707,6 @@ class Xoonips_EditAction extends Xoonips_ActionBase
     // do update
     private function updateItemUsers($itemId, $uids, &$messages)
     {
-
         // get item basic
         $bean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
         $result = $bean->getItemBasicInfo($itemId);

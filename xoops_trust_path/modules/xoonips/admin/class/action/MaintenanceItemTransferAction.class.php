@@ -8,7 +8,6 @@ class Xoonips_MaintenanceItemTransferAction extends Xoonips_MaintenanceItemCommo
 {
     protected function doInit(&$request, &$response)
     {
-
         //title
         $title = _AM_XOONIPS_MAINTENANCE_ITEMTRANSFER_TITLE;
         $description = _AM_XOONIPS_MAINTENANCE_ITEMTRANSFER_DESC;
@@ -39,7 +38,6 @@ class Xoonips_MaintenanceItemTransferAction extends Xoonips_MaintenanceItemCommo
 
     protected function doIndex(&$request, &$response)
     {
-
         //title
         $title = _AM_XOONIPS_MAINTENANCE_ITEMTRANSFER_TITLE;
 
@@ -214,7 +212,6 @@ class Xoonips_MaintenanceItemTransferAction extends Xoonips_MaintenanceItemCommo
 
     protected function doExecute(&$request, &$response)
     {
-
         //title
         $title = _AM_XOONIPS_MAINTENANCE_ITEMTRANSFER_EXECUTE_TITLE;
         $description = _AM_XOONIPS_MAINTENANCE_ITEMTRANSFER_MSG_SUCCESS;

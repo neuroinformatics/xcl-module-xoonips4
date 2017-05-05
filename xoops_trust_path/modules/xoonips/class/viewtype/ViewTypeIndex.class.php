@@ -281,6 +281,7 @@ class Xoonips_ViewTypeIndex extends Xoonips_ViewType
 
         return $ret;
     }
+
     /**
      * get default value block view.
      *
@@ -307,6 +308,7 @@ class Xoonips_ViewTypeIndex extends Xoonips_ViewType
     {
         return false;
     }
+
     /**
      * is index.
      *

@@ -464,7 +464,6 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function copyById($itemgroupId, &$map, $update = false, $import = false)
     {
-
         // get copy information
         $groupObj = $this->getItemGroup($itemgroupId);
         if (!$groupObj) {
@@ -484,7 +483,6 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function copyByObj($groupObj, &$map, $update, $import)
     {
-
         // insert copy
         foreach ($groupObj as $group) {
             $group['released'] = $import ? $group['released'] : 0;

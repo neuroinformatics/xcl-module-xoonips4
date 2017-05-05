@@ -17,7 +17,9 @@ abstract class Xoonips_ViewType
     private $template;
 
     abstract protected function getInputView($field, $value, $groupLoopId);
+
     abstract protected function getDisplayView($field, $value, $groupLoopId);
+
     abstract protected function getDetailDisplayView($field, $value, $display);
 
     public function setId($v)

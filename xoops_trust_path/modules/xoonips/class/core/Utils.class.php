@@ -299,7 +299,6 @@ class Xoonips_Utils
     {
         $cc_version = '40';
         static $cc_condition_map = array(
-
             '00' => 'BY\-NC\-ND',
             '01' => 'BY\-NC\-SA',
             '02' => 'BY\-NC',
@@ -518,7 +517,7 @@ class Xoonips_Utils
      * html character entity references.
      *
      * @var array strings of html character entity reference
-    */
+     */
     public $_html_char_entity_ref = array(
         '&quot;',     '&amp;',      '&apos;',     '&lt;',       '&gt;',
         '&nbsp;',     '&iexcl;',    '&cent;',     '&pound;',    '&curren;',
