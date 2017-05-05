@@ -39,6 +39,13 @@ class ModuleUninstaller
     protected $mLangMan = null;
 
     /**
+     * time limit.
+     *
+     * @var int
+     */
+    protected $mTimeLimit = -1;
+
+    /**
      * custom pre-uninstall hooks.
      *
      * @var array
@@ -90,6 +97,9 @@ class ModuleUninstaller
         $dirname = $this->mXoopsModule->get('dirname');
         $this->mLangMan = new LanguageManager($dirname, 'install');
         $this->mLangMan->load();
+        if ($this->mTimeLimit >= 0) {
+            set_time_limit($this->mTimeLimit);
+        }
         $this->_executePreUninstallHooks();
         if (!$this->mForceMode && $this->mLog->hasError()) {
             $this->_processReport();
@@ -156,6 +166,11 @@ class ModuleUninstaller
                 if (!$this->mForceMode && $this->mLog->hasError()) {
                     break;
                 }
+            } else {
+                $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_FAILED_TO_EXECUTE_CALLBACK'), get_class($this).'::'.$func));
+                if (!$this->mForceMode) {
+                    break;
+                }
             }
         }
     }
@@ -169,6 +184,11 @@ class ModuleUninstaller
             if (is_callable(array($this, $func))) {
                 $this->$func();
                 if (!$this->mForceMode && $this->mLog->hasError()) {
+                    break;
+                }
+            } else {
+                $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_FAILED_TO_EXECUTE_CALLBACK'), get_class($this).'::'.$func));
+                if (!$this->mForceMode) {
                     break;
                 }
             }

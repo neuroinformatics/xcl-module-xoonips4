@@ -705,9 +705,6 @@ class ModuleInstallUtils
         $ret = true;
         $dirname = $module->get('dirname');
         $langman = new LanguageManager($dirname, 'install');
-        if ($module->get('hasconfig') == 0) {
-            return $ret;
-        }
         $configHandler = &xoops_gethandler('config');
         $configs = &$configHandler->getConfigs(new \Criteria('conf_modid', $module->get('mid')));
         if (count($configs) == 0) {
