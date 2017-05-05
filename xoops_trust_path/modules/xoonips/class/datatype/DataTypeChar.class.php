@@ -8,11 +8,6 @@ class Xoonips_DataTypeChar extends Xoonips_DataType
     {
     }
 
-    public function getSql($id, $len)
-    {
-        echo "create table tbl_$id length=$len";
-    }
-
     public function inputCheck(&$errors, $field, $value, $fieldName)
     {
         $ret = true;

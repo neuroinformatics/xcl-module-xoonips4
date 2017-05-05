@@ -4,10 +4,6 @@ require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/datatype/DataT
 
 class Xoonips_DataTypeDate extends Xoonips_DataType
 {
-    public function getSql($id, $len)
-    {
-    }
-
     public function inputCheck(&$errors, $field, $value, $fieldName)
     {
         $char = '([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})';

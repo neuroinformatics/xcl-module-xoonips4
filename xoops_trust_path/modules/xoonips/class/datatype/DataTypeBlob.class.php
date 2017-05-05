@@ -10,11 +10,6 @@ class Xoonips_DataTypeBlob extends Xoonips_DataType
         $this->setName('String');
     }
 
-    public function getSql($id, $len)
-    {
-        echo "create table tbl_$id length=$len";
-    }
-
     public function inputCheck(&$errors, $field, $value, $fieldName)
     {
         $ret = true;

@@ -7,9 +7,10 @@ abstract class Xoonips_DataType
     private $module;
     protected $trustDirname;
 
-    abstract protected function getSql($id, $len);
     abstract protected function inputCheck(&$errors, $field, $value, $fieldName);
+
     abstract protected function getValueSql($field);
+
     abstract protected function valueAttrCheck($field, &$errors);
 
     public function setId($v)
