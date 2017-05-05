@@ -85,7 +85,7 @@ class ModuleInstallUtils
             if ($db->query($sql)) {
                 $log->addReport(XCubeUtils::formatString($langman->get('INSTALL_MSG_SQL_SUCCESS'), $sql));
             } else {
-                $log->addError(XCubeUtils::formatString($langman->get('INSTALL_MSG_SQL_ERROR'), $sql));
+                $log->addError(XCubeUtils::formatString($langman->get('INSTALL_ERROR_SQL_FAILURE'), $sql));
                 $ret = false;
             }
         }
@@ -243,7 +243,7 @@ class ModuleInstallUtils
             $num = 1;
             foreach ($blocks as $block) {
                 $block['func_num'] = $num++; // override func_num
-                $newBlock = &self::createBlockByInfo($module, $block);
+                $newBlock = &self::createBlockByInfo($module, $block, $block['func_num']);
                 self::installBlock($module, $newBlock, $block, $log);
             }
         }
@@ -256,18 +256,22 @@ class ModuleInstallUtils
      *
      * @param \XoopsModule &$module
      * @param string[]     $block
+     * @param int          $func_num
      *
      * @return \XoopsBlock
      */
-    public static function &createBlockByInfo(&$module, $block)
+    public static function &createBlockByInfo(&$module, $block, $func_num)
     {
         $dirname = $module->get('dirname');
         $visible = isset($block['visible']) ? $block['visible'] : (isset($block['visible_any']) ? $block['visible_any'] : 0);
         $filename = isset($block['template']) ? self::replaceDirname($block['template'], $dirname) : null;
+        $options = isset($block['options']) ? $block['options'] : null;
+        $showFunc = isset($block['class']) ? 'cl::'.$block['class'] : $block['show_func'];
+        $funcNum = isset($block['func_num']) ? intval($block['func_num']) : $func_num;
         $blockHandler = &xoops_gethandler('block');
         $blockObj = &$blockHandler->create();
         $blockObj->set('mid', $module->get('mid'));
-        $blockObj->set('options', isset($block['options']) ? $block['options'] : null);
+        $blockObj->set('options', $options);
         $blockObj->set('name', $block['name']);
         $blockObj->set('title', $block['name']);
         $blockObj->set('block_type', 'M');
@@ -275,11 +279,11 @@ class ModuleInstallUtils
         $blockObj->set('isactive', 1);
         $blockObj->set('dirname', $dirname);
         $blockObj->set('func_file', $block['file']);
-        $blockObj->set('show_func', 'cl::'.$block['class']);
+        $blockObj->set('show_func', $showFunc);
         $blockObj->set('template', $filename['public']);
         $blockObj->set('last_modified', time());
         $blockObj->set('visible', $visible);
-        $blockObj->set('func_num', intval($block['func_num']));
+        $blockObj->set('func_num', $func_num);
 
         return $blockObj;
     }

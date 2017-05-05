@@ -15,24 +15,24 @@ class XoopsSystemUtils
      */
     public static function fixGroupPermissions()
     {
-        global $xoopsDB;
+        $db = &\XoopsDatabaseFactory::getDatabaseConnection();
         // get invalid group ids
-        $table = $xoopsDB->prefix('group_permission');
-        $table2 = $xoopsDB->prefix('groups');
+        $table = $db->prefix('group_permission');
+        $table2 = $db->prefix('groups');
         $sql = sprintf('SELECT DISTINCT `gperm_groupid` FROM `%s` LEFT JOIN `%s` ON `%s`.`gperm_groupid`=`%s`.`groupid` WHERE `gperm_modid`=1 AND `groupid` IS NULL', $table, $table2, $table, $table2);
-        $result = $xoopsDB->query($sql);
+        $result = $db->query($sql);
         if (!$result) {
             return false;
         }
         $gids = array();
-        while ($myrow = $xoopsDB->fetchArray($result)) {
+        while ($myrow = $db->fetchArray($result)) {
             $gids[] = $myrow['gperm_groupid'];
         }
-        $xoopsDB->freeRecordSet($result);
+        $db->freeRecordSet($result);
         // remove all invalid group id entries
         if (count($gids) != 0) {
             $sql = sprintf('DELETE FROM `%s` WHERE `gperm_groupid` IN (%s) AND `gperm_modid`=1', $table, implode(',', $gids));
-            $result = $xoopsDB->query($sql);
+            $result = $db->query($sql);
             if (!$result) {
                 return false;
             }
@@ -153,9 +153,32 @@ class XoopsSystemUtils
     {
         $db = &\XoopsDatabaseFactory::getDatabaseConnection();
         $table = $db->prefix('block_module_link');
-        $sql = sprintf('UPDATE `%s` SET `module_id`=%d WHERE `block_id`=%u', $table, $mid, $bid);
+        // check current status
+        $sql = sprintf('SELECT `block_id`,`module_id` FROM `%s` WHERE `block_id`=%u AND `module_id`=%d', $table, $bid, $mid);
+        if (!$result = $db->query($sql)) {
+            return false;
+        }
+        $count = $db->getRowsNum($result);
+        $db->freeRecordSet($result);
+        if ($count == 0) {
+            // not exists
+            if ($is_show) {
+                $sql = sprintf('INSERT INTO `%s` (`block_id`,`module_id`) VALUES ( %u, %d )', $table, $bid, $mid);
+                if (!$result = $db->query($sql)) {
+                    return false;
+                }
+            }
+        } else {
+            // already exists
+            if (!$is_show) {
+                $sql = sprintf('DELETE FROM `%s` WHERE `block_id`=%u AND `module_id`=%d', $table, $bid, $mid);
+                if (!$result = $db->query($sql)) {
+                    return false;
+                }
+            }
+        }
 
-        return $db->query($sql);
+        return true;
     }
 
     /**

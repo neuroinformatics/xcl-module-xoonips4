@@ -147,16 +147,14 @@ class ModuleInstaller
 
     /**
      * install module information.
-     *
-     * @return bool
      */
     protected function _installModule()
     {
         $moduleHandler = &xoops_gethandler('module');
         if (!$moduleHandler->insert($this->mXoopsModule)) {
-            $this->mLog->addError($this->mLangMan->get('INSTALL_ERROR_MODULE_INSTALLED'));
+            $this->mLog->addError($this->mLangMan->get('INSTALL_ERROR_MODULE_INFORMATION_INSTALLED'));
 
-            return false;
+            return;
         }
         $gpermHandler = &xoops_gethandler('groupperm');
         if ($this->mXoopsModule->getInfo('hasAdmin')) {
@@ -190,8 +188,7 @@ class ModuleInstaller
                 }
             }
         }
-
-        return true;
+        $this->mLog->addReport($this->mLangMan->get('INSTALL_MSG_MODULE_INFORMATION_INSTALLED'));
     }
 
     /**
@@ -276,7 +273,7 @@ class ModuleInstaller
         } elseif (is_object($this->mXoopsModule)) {
             $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_MODULE_INSTALLED'), $this->mXoopsModule->getInfo('name')));
         } else {
-            $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_MODULE_INSTALLED'), 'something'));
+            $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_MODULE_INSTALLED'), '(unknown)'));
         }
     }
 }

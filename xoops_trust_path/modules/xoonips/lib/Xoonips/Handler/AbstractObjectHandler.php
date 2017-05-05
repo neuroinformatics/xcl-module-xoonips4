@@ -408,7 +408,7 @@ abstract class AbstractObjectHandler extends AbstractHandler
             $value = $obj->get($key);
             $field = '`'.$key.'`';
             if (is_null($value)) {
-                if (!($isNew && $this->mIsAutoIncrement && !$isArrayPrimaryKey && key == $this->mPrimaryKey)) {
+                if (!($isNew && $this->mIsAutoIncrement && !$isArrayPrimaryKey && $key == $this->mPrimaryKey)) {
                     if ($info[$key]['required']) {
                         trigger_error('`'.$this->mTable.'`.`'.$key.'` column is required.', E_USER_ERROR);
 

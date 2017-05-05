@@ -73,36 +73,6 @@ class ConfigObjectHandler extends AbstractObjectHandler
     }
 
     /**
-     * insert configs.
-     *
-     * @param array $values
-     * @param bool  $force
-     *
-     * @return bool
-     */
-    public function insertConfigs($values, $force = false)
-    {
-        foreach ($values as $name => $value) {
-            $oldValue = $this->getConfig($name);
-            if (is_null($oldValue)) {
-                $obj = $this->create();
-                $obj->set('name', $name);
-                $obj->set('value', $value);
-                if (!$this->insert($obj, $force)) {
-                    return false;
-                }
-                $this->mObjects[$name] = $obj;
-            } else {
-                if (!$this->setConfig($name, $value, $force)) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    /**
      * load configs.
      *
      * @return bool
