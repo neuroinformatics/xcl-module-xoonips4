@@ -39,6 +39,13 @@ class ModuleInstaller
     protected $mLangMan = null;
 
     /**
+     * time limit.
+     *
+     * @var int
+     */
+    protected $mTimeLimit = -1;
+
+    /**
      * custom pre-install hooks.
      *
      * @var array
@@ -90,6 +97,9 @@ class ModuleInstaller
         $dirname = $this->mXoopsModule->get('dirname');
         $this->mLangMan = new LanguageManager($dirname, 'install');
         $this->mLangMan->load();
+        if ($this->mTimeLimit >= 0) {
+            set_time_limit($this->mTimeLimit);
+        }
         $this->_executePreInstallHooks();
         if (!$this->mForceMode && $this->mLog->hasError()) {
             $this->_processReport();
@@ -244,6 +254,9 @@ class ModuleInstaller
                 if (!$this->mForceMode && $this->mLog->hasError()) {
                     break;
                 }
+            } else {
+                $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_FAILED_TO_EXECUTE_CALLBACK'), get_class($this).'::'.$func));
+                break;
             }
         }
     }
@@ -259,6 +272,9 @@ class ModuleInstaller
                 if (!$this->mForceMode && $this->mLog->hasError()) {
                     break;
                 }
+            } else {
+                $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_FAILED_TO_EXECUTE_CALLBACK'), get_class($this).'::'.$func));
+                break;
             }
         }
     }

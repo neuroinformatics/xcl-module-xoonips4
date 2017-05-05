@@ -22,8 +22,8 @@ class Xoonips_Installer extends ModuleInstaller
     public function __construct()
     {
         parent::__construct();
-        $this->mPreInstallHooks[] = 'onInstallSetTimeLimit';
-        $this->mPreInstallHooks[] = 'onInstallFixGroupPermissions';
+        $this->mTimeLimit = 240;
+        $this->mPreInstallHooks[] = 'onInstallFixXoopsTable';
         $this->mPreInstallHooks[] = 'onInstallHideSystemBlocks';
         $this->mPostInstallHooks[] = 'onInstallAlterTables';
         $this->mPostInstallHooks[] = 'onInstallInsertDataConfig';
@@ -47,20 +47,13 @@ class Xoonips_Installer extends ModuleInstaller
     }
 
     /**
-     * set time limit.
+     * fix xoops table.
      */
-    protected function onInstallSetTimeLimit()
+    protected function onInstallFixXoopsTable()
     {
-        set_time_limit(240);
-    }
-
-    /**
-     * fix group permissions.
-     */
-    protected function onInstallFixGroupPermissions()
-    {
-        $this->mLog->addReport('Fix Group Permissions.');
+        $this->mLog->addReport('Fix Xoops Tables.');
         XoopsSystemUtils::fixGroupPermissions();
+        XoopsSystemUtils::fixModuleConfigs();
     }
 
     /**

@@ -19,7 +19,7 @@ class XoopsSystemUtils
         // get invalid group ids
         $table = $db->prefix('group_permission');
         $table2 = $db->prefix('groups');
-        $sql = sprintf('SELECT DISTINCT `gperm_groupid` FROM `%s` LEFT JOIN `%s` ON `%s`.`gperm_groupid`=`%s`.`groupid` WHERE `gperm_modid`=1 AND `groupid` IS NULL', $table, $table2, $table, $table2);
+        $sql = sprintf('SELECT DISTINCT `gperm_groupid` FROM `%1$s` LEFT JOIN `%2$s` ON `%1$s`.`gperm_groupid`=`%2$s`.`groupid` WHERE `%1$s`.`gperm_modid`=1 AND `%2$s`.`groupid` IS NULL', $table, $table2);
         $result = $db->query($sql);
         if (!$result) {
             return false;
@@ -35,6 +35,41 @@ class XoopsSystemUtils
             $result = $db->query($sql);
             if (!$result) {
                 return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * fix invalid module configs.
+     *
+     * @return bool false if failure
+     */
+    public static function fixModuleConfigs()
+    {
+        $db = &\XoopsDatabaseFactory::getDatabaseConnection();
+        // get invalid module ids
+        $table = $db->prefix('config');
+        $table2 = $db->prefix('modules');
+        $sql = sprintf('SELECT DISTINCT `%1$s`.`conf_modid` FROM `%s` LEFT JOIN `%2$s` ON `%1$s`.`conf_modid`=`%2$s`.`mid` WHERE `%1$s`.`conf_modid` != 0 AND `%2$s`.`mid` IS NULL', $table, $table2);
+        $result = $db->query($sql);
+        if (!$result) {
+            return false;
+        }
+        $mids = array();
+        while ($myrow = $db->fetchArray($result)) {
+            $mids[] = $myrow['conf_modid'];
+        }
+        $db->freeRecordSet($result);
+        // remove all invalid config entries
+        $configHandler = &xoops_gethandler('config');
+        foreach ($mids as $mid) {
+            $configs = &$configHandler->getConfigs(new \Criteria('conf_modid', $mid));
+            foreach ($configs as $config) {
+                if ($configHandler->deleteConfig($config) === false) {
+                    return false;
+                }
             }
         }
 
