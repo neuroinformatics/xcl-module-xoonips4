@@ -7,6 +7,18 @@ namespace Xoonips\Core;
  */
 class XoopsSystemUtils
 {
+    const BLOCK_SIDE_HIDE = -1;
+    const BLOCK_SIDE_LEFT = 0;
+    const BLOCK_SIDE_RIGHT = 1;
+    const BLOCK_SIDE_BOTH = 2;
+    const BLOCK_SIDE_CENTER_LEFT = 3;
+    const BLOCK_SIDE_CENTER_RIGHT = 4;
+    const BLOCK_SIDE_CENTER_CENTER = 5;
+    const BLOCK_SIDE_CENTER_ALL = 6;
+
+    const BLOCK_PAGE_TOP = -1;
+    const BLOCK_PAGE_ALL = 0;
+
     /**
      * fix invalid xoops group permissions
      *  - refer: http://www.xugj.org/modules/d3forum/index.php?topic_id=791.
@@ -77,45 +89,42 @@ class XoopsSystemUtils
     }
 
     /**
-     * set xoops module admin right.
+     * set module admin rights.
      *
-     * @param int  $mid
-     * @param int  $gid
-     * @param bool $right
+     * @param int   $mid
+     * @param array $gids
      *
      * @return bool
      */
-    public static function setModuleAdminRight($mid, $gid, $right)
+    public static function setModuleAdminRights($mid, $gids)
     {
-        return self::_setRight('module_admin', $mid, $gid, $right);
+        return self::_setRights('module_admin', $mid, $gids);
     }
 
     /**
-     * set module read right.
+     * set module read rights.
      *
-     * @param int  $mid
-     * @param int  $gid
-     * @param bool $right
+     * @param int   $mid
+     * @param array $gids
      *
      * @return bool
      */
-    public static function setModuleReadRight($mid, $gid, $right)
+    public static function setModuleReadRights($mid, $gids)
     {
-        return self::_setRight('module_read', $mid, $gid, $right);
+        return self::_setRights('module_read', $mid, $gids);
     }
 
     /**
-     * set block read right.
+     * set block read rights.
      *
-     * @param int  $bid
-     * @param int  $gid
-     * @param bool $right
+     * @param int   $bid
+     * @param array $gids
      *
      * @return bool
      */
-    public static function setBlockReadRight($bid, $gid, $right)
+    public static function setBlockReadRights($bid, $gids)
     {
-        return self::_setRight('block_read', $bid, $gid, $right);
+        return self::_setRights('block_read', $bid, $gids);
     }
 
     /**
@@ -143,73 +152,34 @@ class XoopsSystemUtils
     }
 
     /**
-     * set block position.
+     * set block information.
      *
-     * @param int  $bid
-     * @param bool $visible
-     * @param int  $side
-     *                      0: sideblock - left
-     *                      1: sideblock - right
-     *                      2: sideblock - left and right
-     *                      3: centerblock - left
-     *                      4: centerblock - right
-     *                      5: centerblock - center
-     *                      6: centerblock - left, right, center
-     * @param int  $weight
-     *
-     * @return bool
-     */
-    public static function setBlockPosition($bid, $visible, $side, $weight)
-    {
-        $blockHandler = &xoops_gethandler('block');
-        $blockObj = &$blockHandler->get($bid);
-        if (!is_object($blockObj)) {
-            return false;
-        }
-        $blockObj->set('visible', $visible ? 1 : 0);
-        $blockObj->set('side', $side);
-        $blockObj->set('weight', $weight);
-
-        return $blockHandler->insert($blockObj);
-    }
-
-    /**
-     * set block show page.
-     *
-     * @param int $bid
-     * @param int $mid
-     *                 -1 : top page
-     *                 0 : all pages
-     *                 >=1 : module id
+     * @param int   $bid
+     * @param int   $side
+     *                      -1: hide
+     *                      0:  sideblock - left
+     *                      1:  sideblock - right
+     *                      2:  sideblock - left and right
+     *                      3:  centerblock - left
+     *                      4:  centerblock - right
+     *                      5:  centerblock - center
+     *                      6:  centerblock - left, right, center
+     * @param int   $weight
+     * @param array $pages
+     *                      -1:  top page
+     *                      0:   all pages
+     *                      >=1: module id
      *
      * @return bool
      */
-    public static function setBlockShowPage($bid, $mid, $is_show)
+    public static function setBlockInfo($bid, $side, $weight, $pages)
     {
-        $db = &\XoopsDatabaseFactory::getDatabaseConnection();
-        $table = $db->prefix('block_module_link');
-        // check current status
-        $sql = sprintf('SELECT `block_id`,`module_id` FROM `%s` WHERE `block_id`=%u AND `module_id`=%d', $table, $bid, $mid);
-        if (!$result = $db->query($sql)) {
+        if (self::_setBlockPosition($bid, $side, $weight) === false) {
             return false;
         }
-        $count = $db->getRowsNum($result);
-        $db->freeRecordSet($result);
-        if ($count == 0) {
-            // not exists
-            if ($is_show) {
-                $sql = sprintf('INSERT INTO `%s` (`block_id`,`module_id`) VALUES ( %u, %d )', $table, $bid, $mid);
-                if (!$result = $db->query($sql)) {
-                    return false;
-                }
-            }
-        } else {
-            // already exists
-            if (!$is_show) {
-                $sql = sprintf('DELETE FROM `%s` WHERE `block_id`=%u AND `module_id`=%d', $table, $bid, $mid);
-                if (!$result = $db->query($sql)) {
-                    return false;
-                }
+        if ($pages !== false) {
+            if (self::_setBlockShowPages($bid, $pages) === false) {
+                return false;
             }
         }
 
@@ -296,24 +266,114 @@ class XoopsSystemUtils
     }
 
     /**
-     * set xoops right.
+     * set block position.
      *
-     * @param string $name
-     * @param int    $iid
-     * @param int    $gid
-     * @param bool   $right
+     * @param int $bid
+     * @param int $side
+     *                    -1: hide
+     *                    0:  sideblock - left
+     *                    1:  sideblock - right
+     *                    2:  sideblock - left and right
+     *                    3:  centerblock - left
+     *                    4:  centerblock - right
+     *                    5:  centerblock - center
+     *                    6:  centerblock - left, right, center
+     * @param int $weight
      *
      * @return bool
      */
-    private static function _setRight($name, $iid, $gid, $right)
+    private static function _setBlockPosition($bid, $side, $weight)
     {
-        $gpermHandler = &xoops_gethandler('groupperm');
-        if ($right) {
-            $ret = $gpermHandler->addRight($name, $iid, $gid);
-        } else {
-            $ret = $gpermHandler->removeRight($name, $iid, $gid);
+        $visible = ($side < 0) ? 0 : 1;
+        $side = ($visible == 0) ? 0 : $side;
+        $blockHandler = &xoops_gethandler('block');
+        $blockObj = &$blockHandler->get($bid);
+        if (!is_object($blockObj)) {
+            return false;
+        }
+        $blockObj->set('visible', $visible);
+        $blockObj->set('side', $side);
+        if ($weight !== false) {
+            $blockObj->set('weight', $weight);
         }
 
-        return $ret;
+        return $blockHandler->insert($blockObj);
+    }
+
+    /**
+     * set block show pages.
+     *
+     * @param int   $bid
+     * @param array $pages
+     *                     -1:  top page
+     *                     0:   all pages
+     *                     >=1: module id
+     *
+     * @return bool
+     */
+    private static function _setBlockShowPages($bid, $pages)
+    {
+        $db = &\XoopsDatabaseFactory::getDatabaseConnection();
+        if (in_array(self::BLOCK_PAGE_ALL, $pages)) {
+            // set only 0 if '0:all pages' found in pages.
+            $pages = array(self::BLOCK_PAGE_ALL);
+        }
+        $table = $db->prefix('block_module_link');
+        $sql = sprintf('SELECT `module_id` FROM `%s` WHERE `block_id`=%u AND `module_id` IN (%s)', $table, $bid, implode(',', $pages));
+        $result = $db->query($sql);
+        if (!$result) {
+            return false;
+        }
+        $existPages = array();
+        while ($myrow = $db->fetchArray($result)) {
+            $existPages[] = $myrow['module_id'];
+        }
+        $db->freeRecordSet($result);
+        $addPages = array_diff($pages, $existPages);
+        foreach ($addPages as $page) {
+            $sql = sprintf('INSERT INTO `%s` (`block_id`,`module_id`) VALUES ( %u, %d )', $table, $bid, $page);
+            if (!$result = $db->query($sql)) {
+                return false;
+            }
+        }
+        $delPages = array_diff($existPages, $pages);
+        if (!empty($delPages)) {
+            $sql = sprintf('DELETE FROM `%s` WHERE `block_id`=%u AND `module_id` IN (%s)', $table, $bid, implode(',', $delPages));
+            if (!$result = $db->query($sql)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * set xoops rights.
+     *
+     * @param string $name
+     * @param int    $iid
+     * @param array  $gids
+     *
+     * @return bool
+     */
+    private static function _setRights($name, $iid, $gids)
+    {
+        $gpermHandler = &xoops_gethandler('groupperm');
+        $memberHandler = &xoops_gethandler('member');
+        $groupNames = &$memberHandler->getGroupList();
+        $allGids = array_keys($groupNames);
+        $delGids = array_diff($allGids, $gids);
+        foreach ($gids as $gid) {
+            if (!$gpermHandler->addRight($name, $iid, $gid)) {
+                return false;
+            }
+        }
+        foreach ($delGids as $gid) {
+            if (!$gpermHandler->removeRight($name, $iid, $gid)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

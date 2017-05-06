@@ -24,7 +24,6 @@ class Xoonips_Uninstaller extends ModuleUninstaller
      */
     protected function onUninstallDropExtendTables()
     {
-        $this->mLog->addReport('Drop Item Extend tables.');
         $dirname = $this->mXoopsModule->get('dirname');
         $db = &\XoopsDatabaseFactory::getDatabaseConnection();
         $sql = 'SHOW TABLES LIKE \''.$db->prefix($dirname.'_item_extend').'%\'';
@@ -53,17 +52,45 @@ class Xoonips_Uninstaller extends ModuleUninstaller
         // show original 'usermenu' and 'login' blocks
         $blocks = array();
         if (defined('XOOPS_CUBE_LEGACY')) {
-            $blocks[] = array('legacy', 'b_legacy_usermenu_show');
-            $blocks[] = array('user', 'b_user_login_show');
+            $blocks['legacy'] = array(
+               'b_legacy_usermenu_show' => array(
+                    'side' => XoopsSystemUtils::BLOCK_SIDE_RIGHT,
+                    'weight' => 0,
+                    'pages' => array(XoopsSystemUtils::BLOCK_PAGE_ALL),
+                    'gids' => array(XOOPS_GROUP_ADMIN, XOOPS_GROUP_USERS),
+               ),
+            );
+            $blocks['user'] = array(
+                'b_user_login_show' => array(
+                    'side' => XoopsSystemUtils::BLOCK_SIDE_LEFT,
+                    'weight' => 0,
+                    'pages' => array(XoopsSystemUtils::BLOCK_PAGE_ALL),
+                    'gids' => array(XOOPS_GROUP_ADMIN, XOOPS_GROUP_USERS, XOOPS_GROUP_ANONYMOUS),
+                ),
+            );
         } else {
-            $blocks[] = array('system', 'b_system_user_show');
-            $blocks[] = array('system', 'b_system_login_show');
+            $blocks['system'] = array(
+                'b_system_user_show' => array(
+                    'side' => XoopsSystemUtils::BLOCK_SIDE_RIGHT,
+                    'weight' => 0,
+                    'pages' => array(XoopsSystemUtils::BLOCK_PAGE_ALL),
+                    'gids' => array(XOOPS_GROUP_ADMIN, XOOPS_GROUP_USERS),
+                ),
+                'b_system_login_show' => array(
+                    'side' => XoopsSystemUtils::BLOCK_SIDE_LEFT,
+                    'weight' => 0,
+                    'pages' => array(XoopsSystemUtils::BLOCK_PAGE_ALL),
+                    'gids' => array(XOOPS_GROUP_ADMIN, XOOPS_GROUP_USERS, XOOPS_GROUP_ANONYMOUS),
+                ),
+            );
         }
-        foreach ($blocks as $block) {
-            list($dirname, $show_func) = $block;
-            $bid = XoopsSystemUtils::getBlockId($dirname, $show_func);
-            if ($bid !== false) {
-                XoopsSystemUtils::setBlockPosition($bid, true, 0, 0);
+        foreach ($blocks as $dirname => $perms) {
+            foreach ($perms as $show_func => $perm) {
+                $bid = XoopsSystemUtils::getBlockId($dirname, $show_func);
+                if ($bid !== false) {
+                    XoopsSystemUtils::setBlockInfo($bid, $perm['side'], $perm['weight'], $perm['pages']);
+                    XoopsSystemUtils::setBlockReadRights($bid, $perm['gids']);
+                }
             }
         }
     }

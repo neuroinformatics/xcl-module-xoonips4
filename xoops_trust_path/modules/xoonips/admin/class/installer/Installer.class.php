@@ -77,7 +77,7 @@ class Xoonips_Installer extends ModuleInstaller
             list($dirname, $show_func) = $block;
             $bid = XoopsSystemUtils::getBlockId($dirname, $show_func);
             if ($bid !== false) {
-                XoopsSystemUtils::setBlockPosition($bid, false, 0, 0);
+                XoopsSystemUtils::setBlockInfo($bid, XoopsSystemUtils::BLOCK_SIDE_HIDE, false, false);
             }
         }
     }
@@ -808,63 +808,45 @@ SQL;
      */
     protected function onInstallSetupPermissions()
     {
-        $mid = $this->mXoopsModule->get('mid');
         $dirname = $this->mXoopsModule->get('dirname');
-        $memberHandler = &xoops_gethandler('member');
-        $groupNames = &$memberHandler->getGroupList();
-        $allGids = array_keys($groupNames);
-        $gids = array(XOOPS_GROUP_ADMIN, XOOPS_GROUP_USERS, XOOPS_GROUP_ANONYMOUS);
-
         // set gourps permission
         $this->mLog->addReport('Setup Groups Permission.');
-        foreach ($allGids as $gid) {
-            // set module access permission to only well-known three groups.
-            $right = in_array($gid, $gids) ? true : false;
-            XoopsSystemUtils::setModuleReadRight($mid, $gid, $right);
-        }
-
-        // set blocks permission
-        $this->mLog->addReport('Setup Blocks Permission.');
         $perms = array(
             'b_xoonips_quick_search_show' => array(
-                'rights' => array(true, true, true, false),
-                'positions' => array(true, 0, 10, true),
+                'side' => XoopsSystemUtils::BLOCK_SIDE_LEFT,
+                'weight' => 10,
+                'pages' => array(XoopsSystemUtils::BLOCK_PAGE_ALL),
+                'gids' => array(XOOPS_GROUP_ADMIN, XOOPS_GROUP_USERS, XOOPS_GROUP_ANONYMOUS),
             ),
             'b_xoonips_tree_show' => array(
-                'rights' => array(true, true, true, false),
-                'positions' => array(true, 0, 20, true),
+                'side' => XoopsSystemUtils::BLOCK_SIDE_LEFT,
+                'weight' => 20,
+                'pages' => array(XoopsSystemUtils::BLOCK_PAGE_ALL),
+                'gids' => array(XOOPS_GROUP_ADMIN, XOOPS_GROUP_USERS, XOOPS_GROUP_ANONYMOUS),
             ),
             'b_xoonips_login_show' => array(
-                'rights' => array(true, true, true, false),
-                'positions' => array(true, 0, 0, true),
+                'side' => XoopsSystemUtils::BLOCK_SIDE_LEFT,
+                'weight' => 0,
+                'pages' => array(XoopsSystemUtils::BLOCK_PAGE_ALL),
+                'gids' => array(XOOPS_GROUP_ADMIN, XOOPS_GROUP_USERS, XOOPS_GROUP_ANONYMOUS),
             ),
             'b_xoonips_user_show' => array(
-                'rights' => array(true, true, false, false),
-                'positions' => array(true, 1, 0, true),
+                'side' => XoopsSystemUtils::BLOCK_SIDE_RIGHT,
+                'weight' => 0,
+                'pages' => array(XoopsSystemUtils::BLOCK_PAGE_ALL),
+                'gids' => array(XOOPS_GROUP_ADMIN, XOOPS_GROUP_USERS),
             ),
             'b_xoonips_itemtypes_show' => array(
-                'rights' => array(true, true, true, false),
-                'positions' => array(true, 5, 20, false),
+                'side' => XoopsSystemUtils::BLOCK_SIDE_CENTER_CENTER,
+                'weight' => 20,
+                'pages' => array(XoopsSystemUtils::BLOCK_PAGE_TOP),
+                'gids' => array(XOOPS_GROUP_ADMIN, XOOPS_GROUP_USERS, XOOPS_GROUP_ANONYMOUS),
             ),
         );
         foreach ($perms as $show_func => $perm) {
             $bid = XoopsSystemUtils::getBlockId($dirname, $show_func);
-            // rights
-            list($adminRight, $userRight, $guestRight, $otherRight) = $perm['rights'];
-            XoopsSystemUtils::setBlockReadRight($bid, XOOPS_GROUP_ADMIN, $adminRight);
-            XoopsSystemUtils::setBlockReadRight($bid, XOOPS_GROUP_USERS, $userRight);
-            XoopsSystemUtils::setBlockReadRight($bid, XOOPS_GROUP_ANONYMOUS, $guestRight);
-            foreach ($allGids as $gid) {
-                if (!in_array($gid, $gids)) {
-                    XoopsSystemUtils::setBlockReadRight($bid, $gid, $otherRight);
-                }
-            }
-            // positions
-            list($visible, $side, $weight, $showAllPages) = $perm['positions'];
-            $showTopPage = !$showAllPages;
-            XoopsSystemUtils::setBlockPosition($bid, $visible, $side, $weight);
-            XoopsSystemUtils::setBlockShowPage($bid, 0, $showAllPages);
-            XoopsSystemUtils::setBlockShowPage($bid, -1, $showTopPage);
+            XoopsSystemUtils::setBlockInfo($bid, $perm['side'], $perm['weight'], $perm['pages']);
+            XoopsSystemUtils::setBlockReadRights($bid, $perm['gids']);
         }
     }
 
