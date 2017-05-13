@@ -1,6 +1,7 @@
 <?php
 
 use Xoonips\Core\FileUtils;
+use Xoonips\Core\Functions;
 
 require_once XOONIPS_TRUST_PATH.'/class/user/ActionBase.class.php';
 require_once XOONIPS_TRUST_PATH.'/class/core/User.class.php';
@@ -17,7 +18,7 @@ class Xoonips_GroupRegisterAction extends Xoonips_UserActionBase
         $userbean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
         $isModerator = $userbean->isModerator($uid);
         $isGroupManager = $userbean->isGroupAdmin($uid);
-        $configVal = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'group_making');
+        $configVal = Functions::getXoonipsConfig($this->dirname, 'group_making');
 
         //right check
         if (!$isModerator && $configVal != 'on') {

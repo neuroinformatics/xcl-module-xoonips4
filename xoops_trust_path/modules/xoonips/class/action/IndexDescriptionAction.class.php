@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 require_once dirname(dirname(__FILE__)).'/core/ActionBase.class.php';
 
 class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
@@ -44,7 +46,7 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
 
         // get icon
         $thumbnail = sprintf('%s/modules/%s/image.php/index/%u/%s', XOOPS_URL, $this->dirname, $indexId, $index['icon']);
-        $index_upload_dir = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'index_upload_dir');
+        $index_upload_dir = Functions::getXoonipsConfig($this->dirname, 'index_upload_dir');
 
         $file_path = $index_upload_dir.'/index/'.$indexId;
         $showThumbnail = 0;
@@ -109,7 +111,7 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         $index = $indexBean->getIndex($index_id);
 
-        $index_upload_dir = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'index_upload_dir');
+        $index_upload_dir = Functions::getXoonipsConfig($this->dirname, 'index_upload_dir');
         $upload_path = $index_upload_dir.'/index';
 
         //get upload icon information
@@ -224,7 +226,7 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
             return true;
         }
 
-        $index_upload_dir = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'index_upload_dir');
+        $index_upload_dir = Functions::getXoonipsConfig($this->dirname, 'index_upload_dir');
         $uploadfile = $index_upload_dir.'/index/'.$index_id;
         if (file_exists($uploadfile)) {
             unlink($uploadfile);

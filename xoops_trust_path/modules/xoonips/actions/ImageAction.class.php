@@ -1,6 +1,7 @@
 <?php
 
 use Xoonips\Core\CacheUtils;
+use Xoonips\Core\Functions;
 use Xoonips\Core\ImageUtils;
 
 require_once dirname(dirname(__FILE__)).'/class/core/BeanFactory.class.php';
@@ -82,7 +83,7 @@ class Xoonips_ImageAction extends Xoonips_AbstractAction
         }
         if (preg_match('/^index\/(\d+)\/.+$/', $fname, $matches)) {
             // index icon mode
-            $index_upload_dir = Xoonips_Utils::getXooNIpsConfig($dirname, 'index_upload_dir');
+            $index_upload_dir = Functions::getXoonipsConfig($dirname, 'index_upload_dir');
             $fpath = sprintf('%s/index/%u', $index_upload_dir, $matches[1]);
             $this->mImageFilePath = $fpath;
             $this->mImageFileName = basename($fpath);
@@ -93,7 +94,7 @@ class Xoonips_ImageAction extends Xoonips_AbstractAction
             // preview image
             $mode = $matches[1];
             $fileId = $matches[2];
-            $upload_dir = Xoonips_Utils::getXooNIpsConfig($dirname, 'upload_dir');
+            $upload_dir = Functions::getXoonipsConfig($dirname, 'upload_dir');
             $fileBean = Xoonips_BeanFactory::getBean('ItemFileBean', $dirname, $trustDirname);
             $fileInfo = $fileBean->getFile($fileId);
             if (!$fileInfo) {

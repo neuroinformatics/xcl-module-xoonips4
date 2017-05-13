@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 require_once XOONIPS_TRUST_PATH.'/class/core/Workflow.class.php';
 require_once XOONIPS_TRUST_PATH.'/class/core/WorkflowClientBase.class.php';
 require_once XOONIPS_TRUST_PATH.'/class/core/BeanFactory.class.php';
@@ -18,7 +20,7 @@ class Xoonips_WorkflowClientUser extends Xoonips_WorkflowClientBase
             return;
         }
         $myxoopsConfig = Xoonips_Utils::getXoopsConfigs(XOOPS_CONF);
-        $user_certify_date = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'user_certify_date');
+        $user_certify_date = Functions::getXoonipsConfig($this->dirname, 'user_certify_date');
         $deleteUserInfo = new XoopsUser($uid);
         if ($user_certify_date > 0) {
             $time = (time() - $user['user_regdate']) / (24 * 60 * 60);

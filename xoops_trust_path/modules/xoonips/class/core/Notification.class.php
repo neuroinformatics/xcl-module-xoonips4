@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 require_once XOOPS_ROOT_PATH.'/kernel/notification.php';
 require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/Enum.class.php';
 require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Workflow.class.php';
@@ -15,7 +17,7 @@ function createMessageSignTemplate($resource_type, $resource_name, &$template_so
         return false;
     }
     $parameter = explode(',', $resource_name);
-    $template_source = Xoonips_Utils::getXooNIpsConfig($parameter[0], 'message_sign');
+    $template_source = Functions::getXoonipsConfig($parameter[0], 'message_sign');
     preg_replace('/{X_SITENAME}/', '<{$X_SITENAME}>', $template_source);
     preg_replace('/{X_SITEURL}/', '<{$X_SITEURL}>', $template_source);
     preg_replace('/{X_ADMINMAIL}/', '<{$X_ADMINMAIL}>', $template_source);

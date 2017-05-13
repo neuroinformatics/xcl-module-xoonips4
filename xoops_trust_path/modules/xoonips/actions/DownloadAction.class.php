@@ -2,6 +2,7 @@
 
 use Xoonips\Core\CacheUtils;
 use Xoonips\Core\FileUtils;
+use Xoonips\Core\Functions;
 use Xoonips\Core\StringUtils;
 use Xoonips\Core\ZipFile;
 
@@ -262,7 +263,7 @@ class Xoonips_DownloadAction extends Xoonips_AbstractAction
         $itemtypeName = $itemtypeBean->getItemTypeName($this->mItemObj->get('item_type_id'));
         XCube_DelegateUtils::call('Module.Xoonips.FileDownload.Prepare', $this->mItemObj->get('item_id'), $itemtypeName, $this->mItemFileObj->gets(), new XCube_Ref($this->mFilePath));
         // check compress
-        $download_file_compression = Xoonips_Utils::getXooNIpsConfig($dirname, 'download_file_compression');
+        $download_file_compression = Functions::getXoonipsConfig($dirname, 'download_file_compression');
         if ($download_file_compression == 'on') {
             if ($this->_createZipFile() === false) {
                 $this->mErrorCode = 500;

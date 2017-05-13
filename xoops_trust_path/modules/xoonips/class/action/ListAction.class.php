@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 require_once dirname(dirname(__FILE__)).'/core/ActionBase.class.php';
 require_once dirname(dirname(__FILE__)).'/core/Item.class.php';
 require_once dirname(dirname(dirname(__FILE__))).'/include/itemtypetemplate.inc.php';
@@ -83,7 +85,7 @@ class Xoonips_ListAction extends Xoonips_ActionBase
             $detailed_title = $indexInfo['detailed_title'];
             $detailed_description = $textFilter->toShowTarea($indexInfo['detailed_description'], 0, 1, 1, 1, 1);
             $icon = sprintf('%s/modules/%s/image.php/index/%u/%s', XOOPS_URL, $this->dirname, $index_id, $indexInfo['icon']);
-            $index_upload_dir = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'index_upload_dir');
+            $index_upload_dir = Functions::getXoonipsConfig($this->dirname, 'index_upload_dir');
             $file_path = $index_upload_dir.'/index/'.$index_id;
             if (file_exists($file_path)) {
                 $response->setViewDataByKey('icon', $icon);

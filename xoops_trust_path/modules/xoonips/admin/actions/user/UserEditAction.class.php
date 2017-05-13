@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 require_once XOOPS_MODULE_PATH.'/user/admin/actions/UserEditAction.class.php';
 require_once XOONIPS_TRUST_PATH.'/class/core/BeanFactory.class.php';
 require_once XOONIPS_TRUST_PATH.'/class/core/Workflow.class.php';
@@ -21,7 +23,7 @@ class Xoonips_UserEditAction extends User_UserEditAction
     {
         parent::_setupObject();
         if ($this->mObject == null && $this->isEnableCreate()) {
-            $certify_user = Xoonips_Utils::getXoonipsConfig($this->mDirname, 'certify_user');
+            $certify_user = Functions::getXoonipsConfig($this->mDirname, 'certify_user');
             if ($certify_user == 'auto') {
                 $this->mObject->set('level', 2);
             }
@@ -61,7 +63,7 @@ class Xoonips_UserEditAction extends User_UserEditAction
     {
         $root = &XCube_Root::getSingleton();
         $xoopsDB = &$root->mController->getDB();
-        $certify_user = Xoonips_Utils::getXoonipsConfig($dirname, 'certify_user');
+        $certify_user = Functions::getXoonipsConfig($dirname, 'certify_user');
         $notification = new Xoonips_UserNotification($xoopsDB, $dirname, $trustDirname);
         $groupsUsersLink = Xoonips_BeanFactory::getBean('GroupsUsersLinkBean', $dirname, $trustDirname);
         $moderatorUids = $groupsUsersLink->getModeratorUserIds();

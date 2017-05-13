@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 class Xoonips_Utils
 {
     /**
@@ -132,37 +134,6 @@ class Xoonips_Utils
     }
 
     /**
-     * get xoonips config.
-     *
-     * @param string $dirnmae
-     * @param string $key
-     *
-     * @return mixed
-     */
-    public static function getXooNIpsConfig($dirname, $key)
-    {
-        $handler = self::getModuleHandler('config', $dirname);
-
-        return $handler->getConfig($key);
-    }
-
-    /**
-     * set xoonips config.
-     *
-     * @param string $dirnmae
-     * @param string $key
-     * @param mixed  $value
-     *
-     * @return bool
-     */
-    public static function setXooNIpsConfig($dirname, $key, $value)
-    {
-        $handler = self::getModuleHandler('config', $dirname);
-
-        return $handler->setConfig($key, $value);
-    }
-
-    /**
      * check whether user exists.
      *
      * @param int    $userId
@@ -258,7 +229,7 @@ class Xoonips_Utils
             'sitename' => $myxoopsConfig['sitename'],
             'adminmail' => $myxoopsConfig['adminmail'],
             'siteurl' => XOOPS_URL.'/',
-            'message_sign' => self::getXooNIpsConfig($dirname, 'message_sign'),
+            'message_sign' => Functions::getXoonipsConfig($dirname, 'message_sign'),
         );
 
         return $config_values;
@@ -374,7 +345,7 @@ class Xoonips_Utils
             return true; //moderator can always export
         }
 
-        $export_enabled = self::getXooNIpsConfig($dirname, 'export_enabled');
+        $export_enabled = Functions::getXoonipsConfig($dirname, 'export_enabled');
 
         return $export_enabled == 'on';
     }

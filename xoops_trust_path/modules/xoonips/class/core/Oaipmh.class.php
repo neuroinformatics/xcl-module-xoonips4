@@ -1,5 +1,6 @@
 <?php
 
+use Xoonips\Core\Functions;
 use Xoonips\Core\StringUtils;
 
 define('XOONIPS_METADATA_CATEGORY_ID', 'ID');
@@ -96,10 +97,10 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
         $this->dirname = $dirname;
         $this->trustDirname = $trustDirname;
         $this->baseURL = XOOPS_URL.'/modules/'.$this->dirname.'/oai.php';
-        $this->repositoryName = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'repository_name');
-        $this->repositoryId = Xoonips_Utils::getXooNIpsConfig($this->dirname, XOONIPS_CONFIG_REPOSITORY_NIJC_CODE);
-        $this->repositoryDeletionTrack = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'repository_deletion_track');
-        $this->moderator_gid = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'moderator_gid');
+        $this->repositoryName = Functions::getXoonipsConfig($this->dirname, 'repository_name');
+        $this->repositoryId = Functions::getXoonipsConfig($this->dirname, XOONIPS_CONFIG_REPOSITORY_NIJC_CODE);
+        $this->repositoryDeletionTrack = Functions::getXoonipsConfig($this->dirname, 'repository_deletion_track');
+        $this->moderator_gid = Functions::getXoonipsConfig($this->dirname, 'moderator_gid');
     }
 
     /**

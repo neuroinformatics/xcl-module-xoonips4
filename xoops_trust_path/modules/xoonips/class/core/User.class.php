@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 require_once XOONIPS_TRUST_PATH.'/class/core/FieldGroup.class.php';
 require_once XOONIPS_TRUST_PATH.'/class/core/ComplementFactory.class.php';
 require_once XOONIPS_TRUST_PATH.'/class/core/Errors.class.php';
@@ -727,7 +729,7 @@ class Xoonips_User
 
     public function doGroupRegistry($group, $uids, &$message)
     {
-        $configVal = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'group_making_certify');
+        $configVal = Functions::getXoonipsConfig($this->dirname, 'group_making_certify');
 
         //insert group
         if ($group['is_hidden'] == '') {
@@ -823,7 +825,7 @@ class Xoonips_User
     public function doGroupEdit($groupPublic, $group, $uids, &$message)
     {
         $myxoopsConfigUser = Xoonips_Utils::getXoopsConfigs(XOOPS_CONF_USER);
-        $configVal = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'group_publish_certify');
+        $configVal = Functions::getXoonipsConfig($this->dirname, 'group_publish_certify');
         $groupId = $group['groupid'];
 
         //get activate
@@ -1232,7 +1234,7 @@ class Xoonips_User
     {
         //new button flag
         $newflag = false;
-        $configVal = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'group_making');
+        $configVal = Functions::getXoonipsConfig($this->dirname, 'group_making');
         $userbean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
         $isModerator = $userbean->isModerator($uid);
         if ($isModerator || $configVal == 'on') {
@@ -1324,7 +1326,7 @@ class Xoonips_User
         }
         // delete group,index
         $groupsBean = Xoonips_BeanFactory::getBean('GroupsBean', $this->dirname, $this->trustDirname);
-        $configVal = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'group_making_certify');
+        $configVal = Functions::getXoonipsConfig($this->dirname, 'group_making_certify');
         $group_handler = &xoops_gethandler('group');
         $xoopsGroup = $group_handler->get($groupId);
         if ($configVal == 'off') {

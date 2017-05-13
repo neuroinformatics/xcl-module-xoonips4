@@ -41,7 +41,7 @@ class ItemFileObject extends AbstractObject
      */
     public function getFilePath()
     {
-        $upload_dir = Functions::getXoonipsConfig('upload_dir');
+        $upload_dir = Functions::getXoonipsConfig($this->mDirname, 'upload_dir');
         $itemId = $this->get('item_id');
         $fileId = $this->get('file_id');
         if ($itemId == 0) {

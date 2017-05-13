@@ -1,6 +1,7 @@
 <?php
 
 use Xoonips\Core\FileUtils;
+use Xoonips\Core\Functions;
 
 require_once dirname(dirname(__FILE__)).'/core/Item.class.php';
 require_once dirname(dirname(__FILE__)).'/core/ItemField.class.php';
@@ -608,7 +609,7 @@ class Xoonips_EditAction extends Xoonips_ActionBase
             $transaction->commit();
 
             // delete temp files
-            $tmp = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'upload_dir');
+            $tmp = Functions::getXoonipsConfig($this->dirname, 'upload_dir');
             $item_dir = $tmp.'/item/'.$itemId;
             if (is_dir($item_dir)) {
                 FileUtils::deleteDirectory($item_dir);

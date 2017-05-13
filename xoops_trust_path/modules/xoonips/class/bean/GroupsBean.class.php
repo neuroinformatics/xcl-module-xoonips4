@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/BeanBase.class.php';
 require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/Enum.class.php';
 
@@ -203,7 +205,7 @@ class Xoonips_GroupsBean extends Xoonips_BeanBase
      */
     public function getModeratorGroupId()
     {
-        $moderator_gid = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'moderator_gid');
+        $moderator_gid = Functions::getXoonipsConfig($this->dirname, 'moderator_gid');
         $group = $this->getGroup($moderator_gid);
         if ($group === false) {
             return 1;
@@ -429,9 +431,9 @@ class Xoonips_GroupsBean extends Xoonips_BeanBase
         $groupInfo = $this->getGroup($groupId);
 
         return array(
-            'itemNumberLimit' => (!isset($groupInfo['item_number_limit'])) ? Xoonips_Utils::getXooNIpsConfig($this->dirname, 'group_item_number_limit') : $groupInfo['item_number_limit'],
-            'indexNumberLimit' => (!isset($groupInfo['index_number_limit'])) ? Xoonips_Utils::getXooNIpsConfig($this->dirname, 'group_index_number_limit') : $groupInfo['index_number_limit'],
-            'itemStorageLimit' => (!isset($groupInfo['item_storage_limit'])) ? Xoonips_Utils::getXooNIpsConfig($this->dirname, 'group_item_storage_limit') : $groupInfo['item_storage_limit'],
+            'itemNumberLimit' => (!isset($groupInfo['item_number_limit'])) ? Functions::getXoonipsConfig($this->dirname, 'group_item_number_limit') : $groupInfo['item_number_limit'],
+            'indexNumberLimit' => (!isset($groupInfo['index_number_limit'])) ? Functions::getXoonipsConfig($this->dirname, 'group_index_number_limit') : $groupInfo['index_number_limit'],
+            'itemStorageLimit' => (!isset($groupInfo['item_storage_limit'])) ? Functions::getXoonipsConfig($this->dirname, 'group_item_storage_limit') : $groupInfo['item_storage_limit'],
         );
     }
 

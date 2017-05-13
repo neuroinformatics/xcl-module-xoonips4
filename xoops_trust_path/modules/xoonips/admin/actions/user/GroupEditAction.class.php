@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 require_once XOOPS_MODULE_PATH.'/user/admin/actions/GroupEditAction.class.php';
 require_once XOONIPS_TRUST_PATH.'/admin/forms/user/GroupAdminEditForm.class.php';
 require_once XOONIPS_TRUST_PATH.'/class/core/User.class.php';
@@ -196,9 +198,9 @@ class Xoonips_GroupEditAction extends User_GroupEditAction
             'group_type' => 'User',
         );
         if ($isExtended) {
-            $ret['item_number_limit'] = Xoonips_Utils::getXooNIpsConfig($this->mDirname, 'group_item_number_limit');
-            $ret['index_number_limit'] = Xoonips_Utils::getXooNIpsConfig($this->mDirname, 'group_index_number_limit');
-            $ret['item_storage_limit'] = Xoonips_Utils::getXooNIpsConfig($this->mDirname, 'group_item_storage_limit');
+            $ret['item_number_limit'] = Functions::getXoonipsConfig($this->mDirname, 'group_item_number_limit');
+            $ret['index_number_limit'] = Functions::getXoonipsConfig($this->mDirname, 'group_index_number_limit');
+            $ret['item_storage_limit'] = Functions::getXoonipsConfig($this->mDirname, 'group_item_storage_limit');
             $ret['group_type'] = Xoonips_Enum::GROUP_TYPE;
         }
 

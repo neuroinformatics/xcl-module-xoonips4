@@ -1,5 +1,6 @@
 <?php
 
+use Xoonips\Core\Functions;
 use Xoonips\Core\StringUtils;
 
 require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/BeanFactory.class.php';
@@ -107,7 +108,7 @@ class Xoonips_Metadata
                                 $itemObj = &$this->itemHandler->get($item_id);
                                 $metadata[] = $itemObj->getUrl();
                             } elseif ($detail_id == 'ID') {
-                                $database_id = Xoonips_Utils::getXooNIpsConfig($this->dirname, XOONIPS_CONFIG_REPOSITORY_NIJC_CODE);
+                                $database_id = Functions::getXoonipsConfig($this->dirname, XOONIPS_CONFIG_REPOSITORY_NIJC_CODE);
                                 if ($doi == null) {
                                     $metadata[] = "$database_id/$item_type_id.$item_id";
                                 } else {

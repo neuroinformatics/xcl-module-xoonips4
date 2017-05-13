@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/ComplementFactory.class.php';
 require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Errors.class.php';
 require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Search.class.php';
@@ -1483,7 +1485,7 @@ class Xoonips_Item
     private function moveXoonipsItemFile($sqlStrings, $itemId)
     {
         $strings = $sqlStrings[$this->dirname.'_item_file'];
-        $uploadDir = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'upload_dir');
+        $uploadDir = Functions::getXoonipsConfig($this->dirname, 'upload_dir');
         if (is_dir($uploadDir) && !is_dir($uploadDir.'/item/')) {
             mkdir($uploadDir.'/item/');
         }

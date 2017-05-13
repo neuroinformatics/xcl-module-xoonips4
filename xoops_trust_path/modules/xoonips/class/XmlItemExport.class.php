@@ -2,6 +2,7 @@
 
 use Xoonips\Core\CacheUtils;
 use Xoonips\Core\FileUtils;
+use Xoonips\Core\Functions;
 use Xoonips\Core\StringUtils;
 use Xoonips\Core\ZipFile;
 
@@ -498,7 +499,7 @@ class XmlItemExport
       global $xoopsUser;
       $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
 
-      $upload_dir = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'upload_dir');
+      $upload_dir = Functions::getXoonipsConfig($this->dirname, 'upload_dir');
       $tmpitem = $upload_dir.'/item';
 
         // create temporary directry

@@ -1,6 +1,7 @@
 <?php
 
 use Xoonips\Core\FileUtils;
+use Xoonips\Core\Functions;
 use Xoonips\Core\StringUtils;
 
 /*
@@ -153,7 +154,7 @@ abstract class XmlItemImportUpdate_Base
   {
       if (!empty($this->tmp_file_arr[$xml_file_id])) {
           $tmp_filename = $this->tmp_file_arr[$xml_file_id];
-          $uploadDir = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'upload_dir').'/item/'.$item_id.'/';
+          $uploadDir = Functions::getXoonipsConfig($this->dirname, 'upload_dir').'/item/'.$item_id.'/';
           if (file_exists($uploadDir) == false) {
               mkdir($uploadDir, 0757, true);
           }
@@ -1356,7 +1357,7 @@ class XmlItemImport extends XmlItemImportUpdate_Base
           }
       }
       if (preg_match('/^(file|http|https|ftp):\\/\\/(.+)$/', $file['original_file_name'], $matches)) {
-          $uploadDir = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'upload_dir');
+          $uploadDir = Functions::getXoonipsConfig($this->dirname, 'upload_dir');
           $fpath = '';
           if ($matches[1] == 'file') {
               // local file

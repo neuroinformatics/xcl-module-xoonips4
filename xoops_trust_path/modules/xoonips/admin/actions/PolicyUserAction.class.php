@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/AbstractEditAction.class.php';
 
 /**
@@ -125,7 +127,7 @@ class Xoonips_Admin_PolicyUserAction extends Xoonips_AbstractEditAction
         $ret['activate_user'] = Xoonips_Utils::getModuleConfig('user', 'activation_type');
         foreach ($this->_mConfigKeys as $mode => $keys) {
             foreach ($keys as $key) {
-                $value = Xoonips_Utils::getXooNIpsConfig($this->mAsset->mDirname, $key);
+                $value = Functions::getXoonipsConfig($this->mAsset->mDirname, $key);
                 if ($key == 'private_item_storage_limit') {
                     $value /= (1024 * 1024);
                 }
@@ -157,7 +159,7 @@ class Xoonips_Admin_PolicyUserAction extends Xoonips_AbstractEditAction
                     if ($key == 'private_item_storage_limit') {
                         $value *= (1024 * 1024);
                     }
-                    if (!Xoonips_Utils::setXooNIpsConfig($this->mAsset->mDirname, $key, $value)) {
+                    if (!Functions::setXoonipsConfig($this->mAsset->mDirname, $key, $value)) {
                         return false;
                     }
                 }

@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/BeanFactory.class.php';
 require_once XOOPS_ROOT_PATH.'/class/xml/saxparser.php';
 require_once XOOPS_ROOT_PATH.'/class/snoopy.php';
@@ -96,10 +98,10 @@ class Xoonips_WebServiceBase extends SaxParser
         $this->snoopy = new Snoopy();
 
         // get proxy config
-        $this->snoopy->proxy_host = Xoonips_Utils::getXooNIpsConfig($dirname, 'proxy_host');
-        $this->snoopy->proxy_port = Xoonips_Utils::getXooNIpsConfig($dirname, 'proxy_port');
-        $this->snoopy->proxy_user = Xoonips_Utils::getXooNIpsConfig($dirname, 'proxy_user');
-        $this->snoopy->proxy_pass = Xoonips_Utils::getXooNIpsConfig($dirname, 'proxy_pass');
+        $this->snoopy->proxy_host = Functions::getXoonipsConfig($dirname, 'proxy_host');
+        $this->snoopy->proxy_port = Functions::getXoonipsConfig($dirname, 'proxy_port');
+        $this->snoopy->proxy_user = Functions::getXoonipsConfig($dirname, 'proxy_user');
+        $this->snoopy->proxy_pass = Functions::getXoonipsConfig($dirname, 'proxy_pass');
     }
 
     /**

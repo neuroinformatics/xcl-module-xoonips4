@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 require_once dirname(dirname(dirname(__FILE__))).'/class/AbstractEditAction.class.php';
 
 /**
@@ -125,7 +127,7 @@ class Xoonips_Admin_PolicyGroupAction extends Xoonips_AbstractEditAction
         $ret['mode'] = '';
         foreach ($this->_mConfigKeys as $mode => $keys) {
             foreach ($keys as $key) {
-                $value = Xoonips_Utils::getXooNIpsConfig($this->mAsset->mDirname, $key);
+                $value = Functions::getXoonipsConfig($this->mAsset->mDirname, $key);
                 if ($key == 'group_item_storage_limit') {
                     $value /= (1024 * 1024);
                 }
@@ -152,7 +154,7 @@ class Xoonips_Admin_PolicyGroupAction extends Xoonips_AbstractEditAction
                     if ($key == 'group_item_storage_limit') {
                         $value *= (1024 * 1024);
                     }
-                    if (!Xoonips_Utils::setXooNIpsConfig($this->mAsset->mDirname, $key, $value)) {
+                    if (!Functions::setXoonipsConfig($this->mAsset->mDirname, $key, $value)) {
                         return false;
                     }
                 }

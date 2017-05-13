@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 require_once dirname(dirname(dirname(__FILE__))).'/class/AbstractEditAction.class.php';
 
 /**
@@ -46,7 +48,7 @@ class Xoonips_Admin_AbstractConfigAction extends Xoonips_AbstractEditAction
         $keys = $this->getConfigKeys();
         $this->mObject = array();
         foreach ($keys as $key) {
-            $this->mObject[$key] = Xoonips_Utils::getXooNIpsConfig($this->mAsset->mDirname, $key);
+            $this->mObject[$key] = Functions::getXoonipsConfig($this->mAsset->mDirname, $key);
         }
     }
 
@@ -59,7 +61,7 @@ class Xoonips_Admin_AbstractConfigAction extends Xoonips_AbstractEditAction
     {
         $keys = $this->getConfigKeys();
         foreach ($keys as $key) {
-            if (!Xoonips_Utils::setXooNIpsConfig($this->mAsset->mDirname, $key, $this->mObject[$key])) {
+            if (!Functions::setXoonipsConfig($this->mAsset->mDirname, $key, $this->mObject[$key])) {
                 return false;
             }
         }

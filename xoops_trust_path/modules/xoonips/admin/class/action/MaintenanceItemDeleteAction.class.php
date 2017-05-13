@@ -1,6 +1,7 @@
 <?php
 
 use Xoonips\Core\FileUtils;
+use Xoonips\Core\Functions;
 
 require_once dirname(__FILE__).'/MaintenanceItemCommonAction.class.php';
 require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/BeanFactory.class.php';
@@ -272,7 +273,7 @@ class Xoonips_MaintenanceItemDeleteAction extends Xoonips_MaintenanceItemCommonA
         $this->transaction->commit();
 
         // delete temp files
-                $tmp = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'upload_dir');
+                $tmp = Functions::getXoonipsConfig($this->dirname, 'upload_dir');
         $item_dir = $tmp.'/item/'.$item_id;
         if (is_dir($item_dir)) {
             FileUtils::deleteDirectory($item_dir);

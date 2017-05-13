@@ -2,6 +2,7 @@
 
 use Xoonips\Core\CacheUtils;
 use Xoonips\Core\FileUtils;
+use Xoonips\Core\Functions;
 use Xoonips\Core\StringUtils;
 use Xoonips\Core\UnzipFile;
 use Xoonips\Core\ZipFile;
@@ -821,7 +822,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         }
 
         // create temporary directry
-        $tmp = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'upload_dir');
+        $tmp = Functions::getXoonipsConfig($this->dirname, 'upload_dir');
         $time = date('YmdHis');
         $uploaddir = "${tmp}/itemtypes-import-${time}";
         if (!mkdir($uploaddir, 0755)) {

@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 require_once XOONIPS_TRUST_PATH.'/class/core/BeanBase.class.php';
 require_once XOONIPS_TRUST_PATH.'/class/core/DataTypeFactory.class.php';
 require_once dirname(dirname(__FILE__)).'/core/ItemFieldManagerFactory.class.php';
@@ -613,8 +615,8 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
     public function getPrivateItemLimit($uid)
     {
         return array(
-                    'itemNumber' => Xoonips_Utils::getXooNIpsConfig($this->dirname, 'private_item_number_limit'),
-                    'itemStorage' => Xoonips_Utils::getXooNIpsConfig($this->dirname, 'private_item_storage_limit'),
+                    'itemNumber' => Functions::getXoonipsConfig($this->dirname, 'private_item_number_limit'),
+                    'itemStorage' => Functions::getXoonipsConfig($this->dirname, 'private_item_storage_limit'),
                 );
     }
 
@@ -879,7 +881,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
         $notification = new Xoonips_Notification($this->db, $this->dirname, $this->trustDirname);
         $groupsLinkBean = Xoonips_BeanFactory::getBean('GroupsUsersLinkBean', $this->dirname, $this->trustDirname);
 
-        $certify = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'certify_item');
+        $certify = Functions::getXoonipsConfig($this->dirname, 'certify_item');
         if ($certify_item != null) {
             $certify = $certify_item;
         }

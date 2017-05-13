@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/core/BeanFactory.class.php';
 require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/viewtype/ViewType.class.php';
 require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/include/itemtypetemplate.inc.php';
@@ -151,7 +153,7 @@ class Xoonips_ViewTypeRelatedTo extends Xoonips_ViewType
         $table = $field->getTableName();
         $column = $field->getColumnName();
         $itemBean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
-        $database_id = Xoonips_Utils::getXooNIpsConfig($this->dirname, XOONIPS_CONFIG_REPOSITORY_NIJC_CODE);
+        $database_id = Functions::getXoonipsConfig($this->dirname, XOONIPS_CONFIG_REPOSITORY_NIJC_CODE);
         $fields = array();
         foreach ($data[$table] as $value) {
             $item = $itemBean->getItemBasicInfo($value[$column]);

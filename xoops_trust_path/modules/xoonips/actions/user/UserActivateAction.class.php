@@ -1,5 +1,6 @@
 <?php
 
+use Xoonips\Core\Functions;
 
 if (!defined('XOOPS_ROOT_PATH')) {
     exit();
@@ -60,8 +61,8 @@ class Xoonips_UserActivateAction extends Xoonips_UserAbstractEditAction
         $root = &XCube_Root::getSingleton();
         $root->getLanguageManager()->loadModuleAdminMessageCatalog(XCUBE_CORE_USER_MODULE_NAME);
 
-        $certify_user = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'certify_user');
-        $user_certify_date = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'user_certify_date');
+        $certify_user = Functions::getXoonipsConfig($this->dirname, 'certify_user');
+        $user_certify_date = Functions::getXoonipsConfig($this->dirname, 'user_certify_date');
 
         $myxoopsConfigUser = Xoonips_Utils::getXoopsConfigs(XOOPS_CONF_USER);
         $result = array();

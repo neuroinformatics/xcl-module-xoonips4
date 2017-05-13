@@ -49,4 +49,20 @@ class Functions
 
         return $cHandler->getConfig($name);
     }
+
+    /**
+     * set xoonips config.
+     *
+     * @param string $dirname
+     * @param string $name
+     * @param string $value
+     *
+     * @return bool
+     */
+    public static function setXoonipsConfig($dirname, $name, $value)
+    {
+        $cHandler = &self::getXoonipsHandler('ConfigObject', $dirname);
+
+        return $cHandler->setConfig($name, $value);
+    }
 }

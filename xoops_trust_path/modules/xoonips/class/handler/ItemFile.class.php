@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 /**
  * item file object.
  */
@@ -60,7 +62,7 @@ class Xoonips_ItemFileObject extends XoopsSimpleObject
      */
     public function getFilePath()
     {
-        $upload_dir = Xoonips_Utils::getXooNIpsConfig($this->mDirname, 'upload_dir');
+        $upload_dir = Functions::getXoonipsConfig($this->mDirname, 'upload_dir');
         $item_id = $this->get('item_id');
 
         return $upload_dir.'/'.(empty($item_id) ? '' : 'item/'.$item_id.'/').$this->get('file_id');

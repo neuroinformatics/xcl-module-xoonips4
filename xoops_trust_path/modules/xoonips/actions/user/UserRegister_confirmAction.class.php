@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 require_once XOOPS_MODULE_PATH.'/user/actions/UserRegister_confirmAction.class.php';
 require_once XOONIPS_TRUST_PATH.'/class/core/Workflow.class.php';
 require_once XOONIPS_TRUST_PATH.'/class/user/Notification.class.php';
@@ -23,7 +25,7 @@ class Xoonips_UserRegister_confirmAction extends User_UserRegister_confirmAction
         }
 
         // get xoonips module configs
-        $certify_user = Xoonips_Utils::getXooNIpsConfig($this->mDirname, 'certify_user');
+        $certify_user = Functions::getXoonipsConfig($this->mDirname, 'certify_user');
         $is_certify_auto = ($certify_user == 'auto');
 
         $memberHandler = &xoops_gethandler('member');

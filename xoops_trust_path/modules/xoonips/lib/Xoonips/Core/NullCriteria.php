@@ -32,7 +32,7 @@ class NullCriteria extends \CriteriaElement
      */
     public function render()
     {
-        $clause = (!empty($this->mPrefix) ? $this->mPrefix.'.' : '').$this->mColumn;
+        $clause = (!empty($this->mPrefix) ? '`'.$this->mPrefix.'`.' : '').'`'.$this->mColumn.'`';
         $clause .= ' IS '.($this->mIsNull ? '' : 'NOT ').'NULL';
 
         return $clause;

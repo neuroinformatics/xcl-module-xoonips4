@@ -1,6 +1,7 @@
 <?php
 
 use Xoonips\Core\FileUtils;
+use Xoonips\Core\Functions;
 use Xoonips\Core\UnzipFile;
 
 require_once dirname(dirname(__FILE__)).'/core/ActionBase.class.php';
@@ -190,7 +191,7 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
         }
 
         // create temporary directry
-        $upload_dir = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'upload_dir');
+        $upload_dir = Functions::getXoonipsConfig($this->dirname, 'upload_dir');
         $tmpdir1 = FileUtils::makeTempDirectory($upload_dir, 'im1');
         if ($tmpdir1 === false) {
             die('failed to create temporary directry');
@@ -509,7 +510,7 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
         $result = $bean->getItemBasicInfo($itemId);
         $itemtypeId = $result['item_type_id'];
         $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
-        $certify = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'certify_item');
+        $certify = Functions::getXoonipsConfig($this->dirname, 'certify_item');
         $ret = $item->doIndexEdit($itemId, $checkedIndexes, $certify_msg, $certify);
 
         return $ret;

@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 require_once dirname(dirname(__FILE__)).'/core/ActionBase.class.php';
 
 class Xoonips_EditIndexAction extends Xoonips_ActionBase
@@ -28,7 +30,7 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
         if ($index['open_level'] == XOONIPS_OL_PRIVATE) {
             $breadcrumbsName = _MD_XOONIPS_INDEX_PANKUZU_EDIT_PRIVATE_INDEX_KEYWORD;
             $limitLabel = _MD_XOONIPS_INDEX_NUMBER_OF_PRIVATE_INDEX_LABEL;
-            $indexNumberLimit = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'private_index_number_limit');
+            $indexNumberLimit = Functions::getXoonipsConfig($this->dirname, 'private_index_number_limit');
             $indexCount = $indexBean->countUserIndexes($index['uid']);
             //if group index
         } elseif ($index['open_level'] == XOONIPS_OL_GROUP_ONLY) {
@@ -539,7 +541,7 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
             return true;
             // if private index
         } elseif ($rootIndex['open_level'] == XOONIPS_OL_PRIVATE) {
-            $indexNumberLimit = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'private_index_number_limit');
+            $indexNumberLimit = Functions::getXoonipsConfig($this->dirname, 'private_index_number_limit');
             $indexCount = $indexBean->countUserIndexes($rootIndex['uid']);
             //if group index
         } elseif ($rootIndex['open_level'] == XOONIPS_OL_GROUP_ONLY) {

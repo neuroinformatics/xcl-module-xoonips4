@@ -1,6 +1,7 @@
 <?php
 
 use Xoonips\Core\FileUtils;
+use Xoonips\Core\Functions;
 use Xoonips\Core\StringUtils;
 
 require_once __DIR__.'/BeanFactory.class.php';
@@ -89,7 +90,7 @@ class Xoonips_File
         $file_id = '';
         $this->fileBean->insertUploadFile($fileInfo, $file_id);
 
-        $uploadDir = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'upload_dir');
+        $uploadDir = Functions::getXoonipsConfig($this->dirname, 'upload_dir');
         $uploadfile = $uploadDir.'/'.(int) $file_id;
 
         if (move_uploaded_file($file['tmp_name'], $uploadfile)) {
@@ -192,7 +193,7 @@ class Xoonips_File
       // get file path
     public function getFilePath($opTp, $file_id)
     {
-        $uploadDir = Xoonips_Utils::getXooNIpsConfig($this->dirname, 'upload_dir');
+        $uploadDir = Functions::getXoonipsConfig($this->dirname, 'upload_dir');
         $fileInfo = $this->fileBean->getFile($file_id);
         if (isset($fileInfo['item_id']) && empty($fileInfo['item_id'])) {
             $file_path = $uploadDir.'/'.(int) $file_id;
