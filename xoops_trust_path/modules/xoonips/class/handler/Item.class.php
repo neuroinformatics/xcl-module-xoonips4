@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\XoopsUtils;
+
 /**
  * item object.
  */
@@ -38,7 +40,7 @@ class Xoonips_ItemObject extends XoopsSimpleObject
      */
     public function isReadable($uid)
     {
-        $trustDirname = Xoonips_Utils::getTrustDirnameByDirname($this->mDirname);
+        $trustDirname = XoopsUtils::getTrustDirnameByDirname($this->mDirname);
         $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->mDirname, $trustDirname);
 
         return $itemBean->canView($this->get('item_id'), $uid);
@@ -51,7 +53,7 @@ class Xoonips_ItemObject extends XoopsSimpleObject
      */
     public function isDownloadLimit()
     {
-        $trustDirname = Xoonips_Utils::getTrustDirnameByDirname($this->mDirname);
+        $trustDirname = XoopsUtils::getTrustDirnameByDirname($this->mDirname);
         $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->mDirname, $trustDirname);
 
         return !$itemBean->getDownloadLimit($this->get('item_id'), $this->get('item_type_id'));
@@ -64,7 +66,7 @@ class Xoonips_ItemObject extends XoopsSimpleObject
      */
     public function isDownloadNotify()
     {
-        $trustDirname = Xoonips_Utils::getTrustDirnameByDirname($this->mDirname);
+        $trustDirname = XoopsUtils::getTrustDirnameByDirname($this->mDirname);
         $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->mDirname, $trustDirname);
 
         return $itemBean->getDownloadNotify($this->get('item_id'), $this->get('item_type_id'));

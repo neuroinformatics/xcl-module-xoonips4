@@ -1,9 +1,5 @@
 <?php
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
-
 require_once XOOPS_ROOT_PATH.'/core/XCube_PageNavigator.class.php';
 
 class Xoonips_UserAbstractListAction extends Xoonips_UserAction

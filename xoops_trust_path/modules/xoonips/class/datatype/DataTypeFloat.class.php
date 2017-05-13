@@ -1,6 +1,6 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/datatype/DataType.class.php';
+require_once __DIR__.'/DataType.class.php';
 
 class Xoonips_DataTypeFloat extends Xoonips_DataType
 {

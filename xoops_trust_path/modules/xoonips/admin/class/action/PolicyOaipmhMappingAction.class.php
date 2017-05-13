@@ -1,7 +1,7 @@
 <?php
 
-require_once XOONIPS_TRUST_PATH.'/class/core/ActionBase.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/ItemFieldManagerFactory.class.php';
+require_once dirname(dirname(dirname(__DIR__))).'/class/core/ActionBase.class.php';
+require_once dirname(dirname(dirname(__DIR__))).'/class/core/ItemFieldManagerFactory.class.php';
 
 class Xoonips_PolicyOaipmhMappingAction extends Xoonips_ActionBase
 {

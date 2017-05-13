@@ -3,9 +3,8 @@
 use Xoonips\Core\FileUtils;
 use Xoonips\Core\Functions;
 
-require_once dirname(__FILE__).'/MaintenanceItemCommonAction.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/BeanFactory.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Transaction.class.php';
+require_once __DIR__.'/MaintenanceItemCommonAction.class.php';
+require_once dirname(dirname(dirname(__DIR__))).'/class/core/Transaction.class.php';
 
 class Xoonips_MaintenanceItemDeleteAction extends Xoonips_MaintenanceItemCommonAction
 {

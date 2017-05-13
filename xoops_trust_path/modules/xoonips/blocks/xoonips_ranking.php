@@ -1,8 +1,7 @@
 <?php
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+use Xoonips\Core\Functions;
+use Xoonips\Core\StringUtils;
 
 // xoonips ranking block
 function b_xoonips_ranking_show($options)
@@ -13,7 +12,6 @@ function b_xoonips_ranking_show($options)
     if (!is_object($module)) {
         exit('Access Denied');
     }
-    $trustDirname = $module->getVar('trust_dirname');
 
     $etc = '...';
     // decide maximum string length by block position
@@ -79,12 +77,12 @@ function b_xoonips_ranking_show($options)
     // ranking viewed item
     if ($config['visible'][0]) {
         $items = array();
-        $itemHandler = Xoonips_Utils::getTrustModuleHandler('Item', $dirname, $trustDirname);
+        $itemHandler = &Functions::getXoonipsHandler('Item', $dirname);
         $itemObjs = $itemHandler->getMostViewedItems($config['num_rows'], $term);
         $i = 0;
         foreach ($itemObjs as $itemObj) {
-            $title = Xoonips_Utils::getHtmlSpecialChars($itemObj['title']);
-            $title = Xoonips_Utils::getTruncate($title, $maxlen, $etc);
+            $title = StringUtils::htmlSpecialChars($itemObj['title']);
+            $title = StringUtils::truncate($title, $maxlen, $etc);
             $items[] = array(
                 'title' => $title,
                 'url' => $itemObj['url'],
@@ -104,12 +102,12 @@ function b_xoonips_ranking_show($options)
     // ranking downloaded item
     if ($config['visible'][1]) {
         $items = array();
-        $itemFileHandler = Xoonips_Utils::getTrustModuleHandler('ItemFile', $dirname, $trustDirname);
+        $itemFileHandler = &Functions::getXoonipsHandler('ItemFile', $dirname);
         $itemFileObjs = $itemFileHandler->getMostDownloadedItems($config['num_rows'], $term);
         $i = 0;
         foreach ($itemFileObjs as $itemFileObj) {
-            $title = Xoonips_Utils::getHtmlSpecialChars($itemFileObj['title']);
-            $title = Xoonips_Utils::getTruncate($title, $maxlen, $etc);
+            $title = StringUtils::htmlSpecialChars($itemFileObj['title']);
+            $title = StringUtils::truncate($title, $maxlen, $etc);
             $items[] = array(
                 'title' => $title,
                 'url' => $itemFileObj['url'],

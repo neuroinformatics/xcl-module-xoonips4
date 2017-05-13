@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(dirname(__FILE__)).'/class/AbstractTemplateAction.class.php';
+require_once dirname(__DIR__).'/class/AbstractTemplateAction.class.php';
 
 /**
  * javascript action.

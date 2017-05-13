@@ -1,7 +1,5 @@
 <?php
 
-require_once dirname(dirname(__FILE__)).'/Enum.class.php';
-
 abstract class Xoonips_Field
 {
     protected $id;

@@ -3,10 +3,8 @@
 use Xoonips\Core\Functions;
 
 require_once XOOPS_MODULE_PATH.'/user/admin/actions/UserEditAction.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/BeanFactory.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/Workflow.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/user/Notification.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/Enum.class.php';
+require_once dirname(dirname(dirname(__DIR__))).'/class/core/Workflow.class.php';
+require_once dirname(dirname(dirname(__DIR__))).'/class/user/Notification.class.php';
 
 class Xoonips_UserEditAction extends User_UserEditAction
 {
@@ -67,7 +65,7 @@ class Xoonips_UserEditAction extends User_UserEditAction
         $notification = new Xoonips_UserNotification($xoopsDB, $dirname, $trustDirname);
         $groupsUsersLink = Xoonips_BeanFactory::getBean('GroupsUsersLinkBean', $dirname, $trustDirname);
         $moderatorUids = $groupsUsersLink->getModeratorUserIds();
-        $xoopsUserHandler = &Xoonips_Utils::getXoopsHandler('user');
+        $xoopsUserHandler = &xoops_gethandler('user');
         $xoopsUser = &$xoopsUserHandler->get($uid);
         $level = $xoopsUser->get('level');
         $uname = $xoopsUser->get('uname');

@@ -1,10 +1,9 @@
 <?php
 
 require_once XOOPS_ROOT_PATH.'/core/XCube_PageNavigator.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/ActionBase.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/bean/ItemFieldDetailBean.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/Transaction.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/BeanFactory.class.php';
+require_once dirname(dirname(dirname(__DIR__))).'/class/core/ActionBase.class.php';
+require_once dirname(dirname(dirname(__DIR__))).'/class/bean/ItemFieldDetailBean.class.php';
+require_once dirname(dirname(dirname(__DIR__))).'/class/core/Transaction.class.php';
 
 class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
 {

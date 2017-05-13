@@ -1,7 +1,6 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/core/BeanFactory.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/viewtype/ViewType.class.php';
+require_once __DIR__.'/ViewType.class.php';
 
 class Xoonips_ViewTypeCreateUser extends Xoonips_ViewType
 {
@@ -222,7 +221,7 @@ class Xoonips_ViewTypeCreateUser extends Xoonips_ViewType
             $sqlStrings[$tableName] = &$tableData;
         }
         if ($value != '') {
-            require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/DataTypeVarchar.class.php';
+            require_once dirname(__DIR__).'/core/DataTypeVarchar.class.php';
             $dataType = new Xoonips_DataTypeVarchar();
             $query1 = $this->search->getSearchSql('name', $value, _CHARSET, $dataType, $isExact);
             $query2 = $this->search->getSearchSql('uname', $value, _CHARSET, $dataType, $isExact);

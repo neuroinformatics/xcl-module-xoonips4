@@ -1,16 +1,11 @@
 <?php
 
 use Xoonips\Core\Functions;
+use Xoonips\Core\XoopsUtils;
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
-
-require_once XOONIPS_TRUST_PATH.'/class/user/AbstractEditAction.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/user/Notification.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/BeanFactory.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/Workflow.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/Enum.class.php';
+require_once dirname(dirname(__DIR__)).'/class/user/AbstractEditAction.class.php';
+require_once dirname(dirname(__DIR__)).'/class/user/Notification.class.php';
+require_once dirname(dirname(__DIR__)).'/class/core/Workflow.class.php';
 
 class Xoonips_UserActivateAction extends Xoonips_UserAbstractEditAction
 {
@@ -63,8 +58,8 @@ class Xoonips_UserActivateAction extends Xoonips_UserAbstractEditAction
 
         $certify_user = Functions::getXoonipsConfig($this->dirname, 'certify_user');
         $user_certify_date = Functions::getXoonipsConfig($this->dirname, 'user_certify_date');
+        $activation_type = XoopsUtils::getXoopsConfig('activation_type', XOOPS_CONF_USER);
 
-        $myxoopsConfigUser = Xoonips_Utils::getXoopsConfigs(XOOPS_CONF_USER);
         $result = array();
         $dataname = Xoonips_Enum::WORKFLOW_USER;
 
@@ -116,10 +111,10 @@ class Xoonips_UserActivateAction extends Xoonips_UserAbstractEditAction
                 XCube_DelegateUtils::call('Module.Xoonips.Event.User.CertifyRequest', new XoopsUser($uid));
                 $sendToUsers = Xoonips_Workflow::getCurrentApproverUserIds($this->dirname, $dataname, $uid);
                 $notification->accountCertifyRequest($uid, $sendToUsers);
-                if ($myxoopsConfigUser['activation_type'] == 2) {
+                if ($activation_type == 2) {
                     // activate by xoops admin & certify manual
                     $controller->executeRedirect(XOOPS_URL.'/user.php', 5, _MD_XOONIPS_MESSAGE_ACTIVATED_ADMIN_CERTIFY);
-                } elseif ($myxoopsConfigUser['activation_type'] <= 1) {
+                } elseif ($activation_type <= 1) {
                     // activate by xoops by user & certify manual
                     $controller->executeRedirect(XOOPS_URL.'/user.php', 5, _MD_XOONIPS_MESSAGE_ACTIVATED_USER_CERTIFY);
                 }
@@ -145,9 +140,10 @@ class Xoonips_UserActivateAction extends Xoonips_UserAbstractEditAction
             $sendToUsers = array_merge($sendToUsers, Xoonips_Workflow::getAllApproverUserIds($this->dirname, $dataname, $uid));
             $notification->accountCertifiedAuto($uid, $sendToUsers);
 
-            if ($myxoopsConfigUser['activation_type'] == 2) {
+            if ($activation_type == 2) {
                 // activate xoops account by xoops administrator
-                $myxoopsConfig = Xoonips_Utils::getXoopsConfigs(XOOPS_CONF);
+                $sitename = XoopsUtils::getXoopsConfig('sitename');
+                $adminmail = XoopsUtils::getXoopsConfig('adminmail');
                 // send e-mail to the registered address
                 // notify a completion of certification to the certified user by e-mail
                 $xoopsMailer = &getMailer();
@@ -164,12 +160,12 @@ class Xoonips_UserActivateAction extends Xoonips_UserAbstractEditAction
                     $certifyUser = '';
                 }
                 $xoopsMailer->assign('CERTIFY_USER', $certifyUser);
-                $xoopsMailer->assign('SITENAME', $myxoopsConfig['sitename']);
+                $xoopsMailer->assign('SITENAME', $sitename);
                 $xoopsMailer->assign('SITEURL', XOOPS_URL.'/');
-                $xoopsMailer->assign('ADMINMAIL', $myxoopsConfig['adminmail']);
+                $xoopsMailer->assign('ADMINMAIL', $adminmail);
                 $xoopsMailer->setToUsers(new XoopsUser($uid));
-                $xoopsMailer->setFromEmail($myxoopsConfig['adminmail']);
-                $xoopsMailer->setFromName($myxoopsConfig['sitename']);
+                $xoopsMailer->setFromEmail($adminmail);
+                $xoopsMailer->setFromName($sitename);
                 $xoopsMailer->setSubject(_MD_XOONIPS_MESSAGE_ACCOUNT_CERTIFIED_AUTO_NOTIFYSBJ);
                 if ($xoopsMailer->send()) {
                     $controller->executeRedirect(XOOPS_URL.'/user.php', 5, _MD_XOONIPS_MESSAGE_CERTIFY_MAILOK);

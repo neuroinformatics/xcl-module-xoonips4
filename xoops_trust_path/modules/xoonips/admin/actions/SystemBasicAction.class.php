@@ -1,6 +1,6 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/admin/class/AbstractConfigAction.class.php';
+require_once dirname(__DIR__).'/class/AbstractConfigAction.class.php';
 
 /**
  * admin system basic action.
@@ -76,7 +76,7 @@ class Xoonips_Admin_SystemBasicAction extends Xoonips_Admin_AbstractConfigAction
      */
     private function _getGroups()
     {
-        $memberHandler = &Xoonips_Utils::getXoopsHandler('member');
+        $memberHandler = &xoops_gethandler('member');
         $criteria = new CriteriaCompo();
         $criteria->add(new Criteria('groupid', array(XOOPS_GROUP_USERS, XOOPS_GROUP_ANONYMOUS), 'NOT IN'));
         $groups = &$memberHandler->getGroupList($criteria);

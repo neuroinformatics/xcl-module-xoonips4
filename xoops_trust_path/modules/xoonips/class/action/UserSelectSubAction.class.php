@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(dirname(__FILE__)).'/core/AbstractActionBase.class.php';
+require_once dirname(__DIR__).'/core/AbstractActionBase.class.php';
 require_once XOOPS_ROOT_PATH.'/core/XCube_PageNavigator.class.php';
 
 class Xoonips_UserSelectSubAction extends Xoonips_AbstractActionBase

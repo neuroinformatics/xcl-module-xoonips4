@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(dirname(__FILE__)).'/class/AbstractConfigAction.class.php';
+require_once dirname(__DIR__).'/class/AbstractConfigAction.class.php';
 
 /**
  * admin policy item public action.

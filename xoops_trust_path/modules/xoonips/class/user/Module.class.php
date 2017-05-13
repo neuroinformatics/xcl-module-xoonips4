@@ -35,7 +35,7 @@ class Xoonips_UserModule extends User_Module
         if (!$this->mAdminFlag) {
             return parent::getRenderSystemName();
         }
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
+        $trustDirname = basename(dirname(dirname(__DIR__)));
         $adminRenderSystem = ucfirst($trustDirname).'_UserAdminRenderSystem';
         if ($isFirst) {
             // register self admin render system at once

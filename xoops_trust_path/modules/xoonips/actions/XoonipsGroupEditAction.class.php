@@ -2,10 +2,9 @@
 
 use Xoonips\Core\FileUtils;
 
-require_once XOONIPS_TRUST_PATH.'/class/user/ActionBase.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/User.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/File.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/Enum.class.php';
+require_once dirname(__DIR__).'/class/user/ActionBase.class.php';
+require_once dirname(__DIR__).'/class/core/User.class.php';
+require_once dirname(__DIR__).'/class/core/File.class.php';
 
 class Xoonips_GroupEditAction extends Xoonips_UserActionBase
 {

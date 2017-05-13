@@ -2,12 +2,12 @@
 
 use Xoonips\Core\Functions;
 
-require_once XOONIPS_TRUST_PATH.'/class/core/BeanBase.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/DataTypeFactory.class.php';
-require_once dirname(dirname(__FILE__)).'/core/ItemFieldManagerFactory.class.php';
-require_once dirname(dirname(__FILE__)).'/core/ItemFieldManager.class.php';
-require_once dirname(dirname(__FILE__)).'/core/Notification.class.php';
-require_once dirname(dirname(__FILE__)).'/core/ItemEntity.class.php';
+require_once dirname(__DIR__).'/core/BeanBase.class.php';
+require_once dirname(__DIR__).'/core/DataTypeFactory.class.php';
+require_once dirname(__DIR__).'/core/ItemFieldManagerFactory.class.php';
+require_once dirname(__DIR__).'/core/ItemFieldManager.class.php';
+require_once dirname(__DIR__).'/core/Notification.class.php';
+require_once dirname(__DIR__).'/core/ItemEntity.class.php';
 
 /**
  * @brief operate xoonips_item_virtual_table
@@ -176,7 +176,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
      */
     public function canView($item_id, $uid)
     {
-        $iul_handler = Xoonips_Utils::getModuleHandler('ItemUsersLink', $this->dirname);
+        $iul_handler = &Functions::getXoonipsHandler('ItemUsersLink', $this->dirname);
         if ($iul_handler->isOwner($item_id, $uid)) {
             return true;
         }
@@ -254,7 +254,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
             $sql = "SELECT DISTINCT item_id FROM $itemTable WHERE item_id IN ( ".$this->getCsvStr($item_ids).' )';
             $criteria['order'] = ' item_id ';
         } else {
-            $sortHandler = Xoonips_Utils::getModuleHandler('ItemSort', $this->dirname);
+            $sortHandler = &Functions::getXoonipsHandler('ItemSort', $this->dirname);
             $sortObj = &$sortHandler->get($criteria['orderby']);
             $sortFields = $sortHandler->getSortFields($sortObj);
             $itemtypeDetailBean = Xoonips_BeanFactory::getBean('ItemFieldDetailBean', $this->dirname, $this->trustDirname);

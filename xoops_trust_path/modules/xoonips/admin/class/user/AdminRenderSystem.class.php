@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(dirname(__FILE__)).'/AdminRenderSystem.class.php';
+require_once dirname(__DIR__).'/AdminRenderSystem.class.php';
 
 /**
  * user admin render system.
@@ -33,7 +33,7 @@ class Xoonips_UserAdminRenderSystem extends Xoonips_AdminRenderSystem
         if (strpos($file, '..') !== false || strpos($prefix, '..' !== false)) {
             return $ret;
         }
-        $trustDirname = basename(dirname(dirname(dirname(dirname(__FILE__)))));
+        $trustDirname = basename(dirname(dirname(dirname(__DIR__))));
         if (file_exists($path = sprintf('%s/modules/%s/admin/templates/user/%s', XOOPS_TRUST_PATH, $trustDirname, $prefix.$file))) {
             $ret['file'] = $file;
             $ret['path'] = $path;

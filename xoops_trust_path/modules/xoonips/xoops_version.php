@@ -1,9 +1,5 @@
 <?php
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
-
 require_once __DIR__.'/include/common.inc.php';
 
 Xoonips_Utils::loadModinfoMessage('xoonips');
@@ -11,31 +7,29 @@ Xoonips_Utils::loadModinfoMessage('xoonips');
 $modversion['name'] = _MI_XOONIPS_NAME;
 $modversion['version'] = 4.20;
 $modversion['description'] = _MI_XOONIPS_DESC;
-$modversion['credits'] =
-  'RIKEN, Japan (http://www.riken.jp/)';
-$modversion['author'] =
-  'The XooNIps Project (http://sourceforge.jp/projects/xoonips/)';
+$modversion['credits'] = 'Neuroinformatics Japan Center, RIKEN BSI (https://nijc.brain.riken.jp/)';
+$modversion['author'] = 'The XooNIps Project (http://xoonips.osdn.jp/)';
 $modversion['help'] = 'help.html';
 $modversion['license'] = 'GPL see LICENSE';
 $modversion['official'] = 0;
 $modversion['image'] = 'module_icon.php';
-$modversion['dirname'] = $myDirName;
-$modversion['trust_dirname'] = 'xoonips';
+$modversion['dirname'] = $mydirname;
+$modversion['trust_dirname'] = $mytrustdirname;
 $modversion['legacy_installer'] = array(
     'installer' => array(
         'class' => 'Installer',
         'namespace' => 'Xoonips',
-        'filepath' => XOONIPS_TRUST_PATH.'/admin/class/installer/Installer.class.php',
+        'filepath' => __DIR__.'/admin/class/installer/Installer.class.php',
     ),
     'uninstaller' => array(
         'class' => 'Uninstaller',
         'namespace' => 'Xoonips',
-        'filepath' => XOONIPS_TRUST_PATH.'/admin/class/installer/Uninstaller.class.php',
+        'filepath' => __DIR__.'/admin/class/installer/Uninstaller.class.php',
     ),
     'updater' => array(
         'class' => 'Updater',
         'namespace' => 'Xoonips',
-        'filepath' => XOONIPS_TRUST_PATH.'/admin/class/installer/Updater.class.php',
+        'filepath' => __DIR__.'/admin/class/installer/Updater.class.php',
     ),
 );
 $modversion['disable_legacy_2nd_installer'] = false;

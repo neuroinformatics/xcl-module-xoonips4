@@ -1,6 +1,6 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/FieldGroup.class.php';
+require_once __DIR__.'/FieldGroup.class.php';
 
 class Xoonips_ItemFieldGroup extends Xoonips_FieldGroup
 {

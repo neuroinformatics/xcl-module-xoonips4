@@ -1,8 +1,9 @@
 <?php
 
+use Xoonips\Core\Functions;
 use Xoonips\Core\StringUtils;
 
-require_once dirname(dirname(__FILE__)).'/class/core/Item.class.php';
+require_once dirname(__DIR__).'/class/core/Item.class.php';
 
 function xoonips_search($keywords, $andor, $limit, $offset, $userid)
 {
@@ -37,7 +38,7 @@ function xoonips_search($keywords, $andor, $limit, $offset, $userid)
     if ($andor == 'exact') {
         $isExact = true;
     }
-    $chandler = Xoonips_Utils::getModuleHandler('ItemQuickSearchCondition', $dirname);
+    $chandler = &Functions::getXoonipsHandler('ItemQuickSearchCondition', $dirname);
     $cobj = &$chandler->get(1);
     $fieldIds = $chandler->getItemFieldIds($cobj);
     if (count($fieldIds) == 0) {

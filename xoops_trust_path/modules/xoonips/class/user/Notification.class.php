@@ -1,7 +1,9 @@
 <?php
 
+use Xoonips\Core\XoopsUtils;
+
 require_once XOOPS_ROOT_PATH.'/kernel/notification.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Workflow.class.php';
+require_once dirname(__DIR__).'/core/Workflow.class.php';
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -159,14 +161,14 @@ class Xoonips_UserNotification extends XoopsNotificationHandler
         } else {
             $userInfo = $userBean->getUserBasicInfo($user_id);
         }
-        $tags = array('USER_UNAME' => $userInfo['uname'],
-                'USER_EMAIL' => $userInfo['email'],
-                'USER_CERTIFY_URL' => XOOPS_URL.'/modules/'.Xoonips_Workflow::getDirname(),
-                'USER_DETAIL_URL' => XOOPS_URL.'/userinfo.php?uid='.$userInfo['uid'],
-            );
-        $myxoopsConfig = Xoonips_Utils::getXoopsConfigs(XOOPS_CONF);
-        $tags['SITENAME'] = $myxoopsConfig['sitename'];
-        $tags['ADMINMAIL'] = $myxoopsConfig['adminmail'];
+        $tags = array(
+            'USER_UNAME' => $userInfo['uname'],
+            'USER_EMAIL' => $userInfo['email'],
+            'USER_CERTIFY_URL' => XOOPS_URL.'/modules/'.Xoonips_Workflow::getDirname(),
+            'USER_DETAIL_URL' => XOOPS_URL.'/userinfo.php?uid='.$userInfo['uid'],
+        );
+        $tags['SITENAME'] = XoopsUtils::getXoopsConfig('sitename');
+        $tags['ADMINMAIL'] = XoopsUtils::getXoopsConfig('adminmail');
         $tags['SITEURL'] = XOOPS_URL.'/';
         if (isset($_SESSION['xoopsUserId'])) {
             $certifyUserInfo = $userBean->getUserBasicInfo($_SESSION['xoopsUserId']);
@@ -188,14 +190,13 @@ class Xoonips_UserNotification extends XoopsNotificationHandler
             $groupInfo = $groupsBean->getGroup($group_id);
         }
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
-        $myxoopsConfig = Xoonips_Utils::getXoopsConfigs(XOOPS_CONF);
         $tags = array(
             'GROUP_NAME' => $groupInfo['name'],
             'GROUP_DESCRIPTION' => $groupInfo['description'],
             'GROUP_CERTIFY_URL' => XOOPS_URL.'/modules/'.Xoonips_Workflow::getDirname(),
             'GROUP_DETAIL_URL' => XOOPS_URL.'/modules/user/index.php?action=groupInfo&groupid='.$group_id,
-            'SITENAME' => $myxoopsConfig['sitename'],
-            'ADMINMAIL' => $myxoopsConfig['adminmail'],
+            'SITENAME' => XoopsUtils::getXoopsConfig('sitename'),
+            'ADMINMAIL' => XoopsUtils::getXoopsConfig('adminmail'),
             'SITEURL' => XOOPS_URL.'/',
             'INDEX_PATH' => '/'.$groupInfo['name'],
             'GROUP_ID' => $group_id,

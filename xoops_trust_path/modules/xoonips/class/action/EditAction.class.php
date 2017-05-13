@@ -3,11 +3,11 @@
 use Xoonips\Core\FileUtils;
 use Xoonips\Core\Functions;
 
-require_once dirname(dirname(__FILE__)).'/core/Item.class.php';
-require_once dirname(dirname(__FILE__)).'/core/ItemField.class.php';
-require_once dirname(dirname(__FILE__)).'/core/ActionBase.class.php';
-require_once dirname(dirname(dirname(__FILE__))).'/include/itemtypetemplate.inc.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/ViewTypeFactory.class.php';
+require_once dirname(__DIR__).'/core/Item.class.php';
+require_once dirname(__DIR__).'/core/ItemField.class.php';
+require_once dirname(__DIR__).'/core/ActionBase.class.php';
+require_once dirname(dirname(__DIR__)).'/include/itemtypetemplate.inc.php';
+require_once dirname(__DIR__).'/core/ViewTypeFactory.class.php';
 
 class Xoonips_EditAction extends Xoonips_ActionBase
 {

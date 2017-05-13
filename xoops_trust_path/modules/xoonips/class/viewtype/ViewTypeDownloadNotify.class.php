@@ -1,6 +1,6 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/viewtype/ViewTypeRadioBox.class.php';
+require_once __DIR__.'/ViewTypeRadioBox.class.php';
 
 class Xoonips_ViewTypeDownloadNotify extends Xoonips_ViewTypeRadioBox
 {

@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__).'/Search.class.php';
+require_once __DIR__.'/Search.class.php';
 
 /**
  * view type factory class.

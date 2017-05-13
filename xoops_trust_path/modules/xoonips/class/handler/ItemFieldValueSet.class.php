@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 /**
  * item field value set handler.
  */
@@ -128,7 +130,7 @@ class Xoonips_ItemFieldValueSetHandler extends XoopsObjectHandler
      */
     public function deleteByName($name, $force = false)
     {
-        $handler = Xoonips_Utils::getModuleHandler('ItemField', $this->mDirname);
+        $handler = &Functions::getXoonipsHandler('ItemField', $this->mDirname);
         $names = $handler->getUsedSelectNames();
         if (in_array($name, $names)) {
             return false;
@@ -185,7 +187,7 @@ class Xoonips_ItemFieldValueSetHandler extends XoopsObjectHandler
             } // duplicated id
             $ids[] = $value['title_id'];
         }
-        $handler = Xoonips_Utils::getModuleHandler('ItemField', $this->mDirname);
+        $handler = &Functions::getXoonipsHandler('ItemField', $this->mDirname);
         $names = $handler->getUsedSelectNames();
         if (in_array($name, $names)) {
             $curValues = $this->getValueSet($name);

@@ -29,8 +29,8 @@ class ItemTypeSearchConditionObject extends AbstractObject
     public function getItemFieldDetailObjects()
     {
         $ret = array();
-        $itscdHandler = Functions::getXoonipsHandler('ItemTypeSearchConditionDetailObject', $this->mDirname);
-        $ifdHandler = Functions::getXoonipsHandler('ItemFieldDetailObject', $this->mDirname);
+        $itscdHandler = &Functions::getXoonipsHandler('ItemTypeSearchConditionDetailObject', $this->mDirname);
+        $ifdHandler = &Functions::getXoonipsHandler('ItemFieldDetailObject', $this->mDirname);
         $cid = $this->get('condition_id');
         $criteria = new \Criteria('condition_id', $cid);
         $itscdObjs = $itscdHandler->getObjects($criteria);
@@ -55,7 +55,7 @@ class ItemTypeSearchConditionObject extends AbstractObject
      */
     public function updateItemFieldDetailIds($fids)
     {
-        $itscdHandler = Functions::getXoonipsHandler('ItemTypeSearchConditionDetailObject', $this->mDirname);
+        $itscdHandler = &Functions::getXoonipsHandler('ItemTypeSearchConditionDetailObject', $this->mDirname);
         $cid = $this->get('condition_id');
         $criteria = new \Criteria('condition_id', $cid);
         if ($itscdHandler->deleteAll($criteria) == false) {

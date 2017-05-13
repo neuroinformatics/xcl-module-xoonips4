@@ -1,11 +1,6 @@
 <?php
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
-
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/BeanFactory.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Request.class.php';
+require_once dirname(__DIR__).'/class/core/Request.class.php';
 
 // xoonips index tree block
 function b_xoonips_tree_show($options)

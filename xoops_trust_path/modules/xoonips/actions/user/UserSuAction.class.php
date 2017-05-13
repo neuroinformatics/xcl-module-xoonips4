@@ -1,8 +1,6 @@
 <?php
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+use Xoonips\Core\XoopsUtils;
 
 class Xoonips_UserSuAction extends Xoonips_UserAction
 {
@@ -22,7 +20,7 @@ class Xoonips_UserSuAction extends Xoonips_UserAction
         $this->mConstPref = '_MD_'.strtoupper($this->dirname);
         $this->mSessionUid = $this->trustDirname.'_old_uid';
         $this->mOriginalUid = isset($_SESSION[$this->mSessionUid]) ? intval($_SESSION[$this->mSessionUid]) : 0;
-        if ($this->mOriginalUid > 0 && !Xoonips_Utils::userExists($this->mOriginalUid)) {
+        if ($this->mOriginalUid > 0 && !XoopsUtils::userExists($this->mOriginalUid)) {
             $controller->executeForward(XOOPS_URL.'/');
         }
         $this->mTargetUid = intval(XCube_Root::getSingleton()->mContext->mRequest->getRequest('uid'));
@@ -37,7 +35,7 @@ class Xoonips_UserSuAction extends Xoonips_UserAction
     {
         if ($this->mOriginalUid == 0) {
             $uid = $xoopsUser->get('uid');
-            if (!Xoonips_Utils::isAdmin($uid, $this->dirname)) {
+            if (!XoopsUtils::isAdmin($uid, $this->dirname)) {
                 return false;
             }
         }

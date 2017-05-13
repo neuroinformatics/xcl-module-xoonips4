@@ -3,9 +3,8 @@
 use Xoonips\Core\Functions;
 
 require_once XOOPS_MODULE_PATH.'/user/actions/UserRegister_confirmAction.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/Workflow.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/user/Notification.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/Enum.class.php';
+require_once dirname(dirname(__DIR__)).'/class/core/Workflow.class.php';
+require_once dirname(dirname(__DIR__)).'/class/user/Notification.class.php';
 
 class Xoonips_UserRegister_confirmAction extends User_UserRegister_confirmAction
 {

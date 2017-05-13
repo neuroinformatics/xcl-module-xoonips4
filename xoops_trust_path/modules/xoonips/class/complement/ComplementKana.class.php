@@ -2,7 +2,7 @@
 
 use Xoonips\Core\StringUtils;
 
-require_once dirname(__FILE__).'/Complement.class.php';
+require_once __DIR__.'/Complement.class.php';
 
 /**
  * kana comlement class.

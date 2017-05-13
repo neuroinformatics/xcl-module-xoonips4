@@ -1,7 +1,7 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/core/Request.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/core/Response.class.php';
+require_once dirname(__DIR__).'/class/core/Request.class.php';
+require_once dirname(__DIR__).'/class/core/Response.class.php';
 
 /**
  * user preload base class.
@@ -105,7 +105,7 @@ class Xoonips_UserPreloadBase extends XCube_ActionFilter
         $root->mLanguageManager->loadModuleMessageCatalog(XCUBE_CORE_USER_MODULE_NAME);
         $root->mLanguageManager->loadModuleMessageCatalog($this->mDirname);
         $root->mController->executeHeader();
-        require_once XOONIPS_TRUST_PATH.'/class/user/ActionFrame.class.php';
+        require_once dirname(__DIR__).'/class/user/ActionFrame.class.php';
         $moduleRunner = new Xoonips_UserActionFrame(false);
         $moduleRunner->setDirname($this->mDirname, $this->mTrustDirname);
         $moduleRunner->setActionName($actionName);
@@ -151,7 +151,7 @@ class Xoonips_UserPreloadFunctions
             $actionMap['join_success'] = 'redirect_header';
             $actionMap['leave_success'] = 'redirect_header';
             $actionMap['delete_success'] = 'redirect_header';
-            require_once XOONIPS_TRUST_PATH.'/actions/XoonipsGroupListAction.class.php';
+            require_once dirname(__DIR__).'/actions/XoonipsGroupListAction.class.php';
             //do action
             $action = new Xoonips_GroupListAction('xoonips');
             $action->doAction($request, $response, true);
@@ -171,7 +171,7 @@ class Xoonips_UserPreloadFunctions
             }
             // set action map
             $actionMap['init_success'] = 'xoonips_user_groupinfo.html';
-            require_once XOONIPS_TRUST_PATH.'/actions/XoonipsGroupInfoAction.class.php';
+            require_once dirname(__DIR__).'/actions/XoonipsGroupInfoAction.class.php';
             //do action
             $action = new Xoonips_GroupInfoAction('xoonips');
             $action->doAction($request, $response, true);
@@ -194,7 +194,7 @@ class Xoonips_UserPreloadFunctions
             $actionMap['search_success'] = 'xoonips_user_groupregister.html';
             $actionMap['input_error'] = 'xoonips_user_groupregister.html';
             $actionMap['register_success'] = 'redirect_header';
-            require_once XOONIPS_TRUST_PATH.'/actions/XoonipsGroupRegisterAction.class.php';
+            require_once dirname(__DIR__).'/actions/XoonipsGroupRegisterAction.class.php';
             //do action
             $action = new Xoonips_GroupRegisterAction('xoonips');
             $action->doAction($request, $response, true);
@@ -217,7 +217,7 @@ class Xoonips_UserPreloadFunctions
             $actionMap['search_success'] = 'xoonips_user_groupedit.html';
             $actionMap['input_error'] = 'xoonips_user_groupedit.html';
             $actionMap['update_success'] = 'redirect_header';
-            require_once XOONIPS_TRUST_PATH.'/actions/XoonipsGroupEditAction.class.php';
+            require_once dirname(__DIR__).'/actions/XoonipsGroupEditAction.class.php';
             //do action
             $action = new Xoonips_GroupEditAction('xoonips');
             $action->doAction($request, $response, true);
@@ -240,7 +240,7 @@ class Xoonips_UserPreloadFunctions
             $actionMap['search_success'] = 'xoonips_user_groupmember.html';
             $actionMap['input_error'] = 'xoonips_user_groupmember.html';
             $actionMap['update_success'] = 'redirect_header';
-            require_once XOONIPS_TRUST_PATH.'/actions/XoonipsGroupMemberAction.class.php';
+            require_once dirname(__DIR__).'/actions/XoonipsGroupMemberAction.class.php';
             //do action
             $action = new Xoonips_GroupMemberAction('xoonips');
             $action->doAction($request, $response, true);
@@ -263,7 +263,7 @@ class Xoonips_UserPreloadFunctions
             $actionMap['init_success'] = 'xoonips_user_search.html';
             $actionMap['success'] = 'xoonips_user_list.html';
             $actionMap['input_error'] = 'xoonips_user_search.html';
-            require_once XOONIPS_TRUST_PATH.'/actions/XoonipsUserSearchAction.class.php';
+            require_once dirname(__DIR__).'/actions/XoonipsUserSearchAction.class.php';
             //do action
             $action = new Xoonips_UserSearchAction('xoonips');
             $action->doAction($request, $response, true);
@@ -285,7 +285,7 @@ class Xoonips_UserPreloadFunctions
      */
     public static function checkLogin(&$xoopsUser)
     {
-        $trustDirname = basename(dirname(dirname(__FILE__)));
+        $trustDirname = basename(dirname(__DIR__));
         if (is_object($xoopsUser)) {
             return;
         }
@@ -328,7 +328,7 @@ class Xoonips_UserPreloadFunctions
      */
     public static function logout(&$successFlag, $xoopsUser)
     {
-        $trustDirname = basename(dirname(dirname(__FILE__)));
+        $trustDirname = basename(dirname(__DIR__));
         if (isset($_SESSION[$trustDirname.'_old_uid'])) {
             header('Location:'.XOOPS_URL.'/user.php?op=su');
             exit();

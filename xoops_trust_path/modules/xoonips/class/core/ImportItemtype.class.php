@@ -1,7 +1,8 @@
 <?php
 
-require_once XOONIPS_TRUST_PATH.'/class/core/BeanFactory.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/Errors.class.php';
+use Xoonips\Core\Functions;
+
+require_once __DIR__.'/Errors.class.php';
 
 class Xoonips_ImportItemType
 {
@@ -435,7 +436,7 @@ class Xoonips_ImportItemType
         }
 
         // item sort
-        $sortHandler = Xoonips_Utils::getTrustModuleHandler('ItemSort', $this->dirname, $this->trustDirname);
+        $sortHandler = &Functions::getXoonipsHandler('ItemSort', $this->dirname);
         $sortTitles = $sortHandler->getSortTitles();
         $sortIds = array_flip($sortTitles);
         $sObjs = array();

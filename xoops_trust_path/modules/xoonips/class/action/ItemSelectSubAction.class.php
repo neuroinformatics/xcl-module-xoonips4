@@ -1,7 +1,9 @@
 <?php
 
-require_once dirname(dirname(__FILE__)).'/core/ActionBase.class.php';
-require_once dirname(dirname(dirname(__FILE__))).'/include/itemtypetemplate.inc.php';
+use Xoonips\Core\Functions;
+
+require_once dirname(__DIR__).'/core/ActionBase.class.php';
+require_once dirname(dirname(__DIR__)).'/include/itemtypetemplate.inc.php';
 
 class Xoonips_ItemSelectSubAction extends Xoonips_ActionBase
 {
@@ -40,7 +42,7 @@ class Xoonips_ItemSelectSubAction extends Xoonips_ActionBase
 
         // get order by select
         $defalut_orderby = '0';
-        $sortHandler = Xoonips_Utils::getModuleHandler('ItemSort', $this->dirname);
+        $sortHandler = &Functions::getXoonipsHandler('ItemSort', $this->dirname);
         $sortTitles = $sortHandler->getSortTitles();
         $sortIds = array_keys($sortTitles);
         if (!empty($sortIds)) {

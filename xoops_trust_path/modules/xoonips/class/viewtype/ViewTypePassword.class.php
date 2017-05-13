@@ -1,6 +1,8 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/viewtype/ViewType.class.php';
+use Xoonips\Core\XoopsUtils;
+
+require_once __DIR__.'/ViewType.class.php';
 
 class Xoonips_ViewTypePassword extends Xoonips_ViewType
 {
@@ -22,7 +24,7 @@ class Xoonips_ViewTypePassword extends Xoonips_ViewType
 
     public function inputCheck(&$errors, $field, $value, $fieldName)
     {
-        $myxoopsConfigUser = Xoonips_Utils::getXoopsConfigs(XOOPS_CONF_USER);
+        $minpass = XoopsUtils::getXoopsConfig('minpass', XOOPS_CONF_USER);
         $parameters = array();
         $value[0] = trim($value[0]);
         $value[1] = trim($value[1]);
@@ -38,16 +40,16 @@ class Xoonips_ViewTypePassword extends Xoonips_ViewType
             }
         } elseif ($value[0] != $value[1]) {
             $errors->addError('_MD_'.strtoupper($this->trustDirname).'_ERROR_PASSWORD', $fieldName, $parameters);
-        } elseif (strlen($value[0]) < $myxoopsConfigUser['minpass']) {
+        } elseif (strlen($value[0]) < $minpass) {
             $parameters[] = $field->getName();
-            $parameters[] = $myxoopsConfigUser['minpass'];
+            $parameters[] = $minpass;
             $errors->addError('_MD_'.strtoupper($this->trustDirname).'_ERROR_MINLENGTH', $fieldName, $parameters);
         }
     }
 
     public function editCheck(&$errors, $field, $value, $fieldName, $uid)
     {
-        $myxoopsConfigUser = Xoonips_Utils::getXoopsConfigs(XOOPS_CONF_USER);
+        $minpass = XoopsUtils::getXoopsConfig('minpass', XOOPS_CONF_USER);
         $parameters = array();
         $value[0] = trim($value[0]);
         $value[1] = trim($value[1]);
@@ -57,9 +59,9 @@ class Xoonips_ViewTypePassword extends Xoonips_ViewType
 
         if ($value[0] != $value[1]) {
             $errors->addError('_MD_'.strtoupper($this->trustDirname).'_ERROR_PASSWORD', $fieldName, $parameters);
-        } elseif (strlen($value[0]) < $myxoopsConfigUser['minpass']) {
+        } elseif (strlen($value[0]) < $minpass) {
             $parameters[] = $field->getName();
-            $parameters[] = $myxoopsConfigUser['minpass'];
+            $parameters[] = $minpass;
             $errors->addError('_MD_'.strtoupper($this->trustDirname).'_ERROR_MINLENGTH', $fieldName, $parameters);
         }
     }

@@ -9,7 +9,7 @@ use Xoonips\Core\StringUtils;
  * and open the template in the editor.
  */
 
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/File.class.php';
+require_once __DIR__.'/core/File.class.php';
 
 abstract class XmlItemImportUpdate_Base
 {
@@ -806,13 +806,13 @@ abstract class XmlItemImportUpdate_Base
                   }
                   $rc = $this->$type($item_group_arr, $item_detail, $item_id);
                   switch ($rc) {
-            case 200:
-              break;
-            case 206:
-              break;
-            default:
-              return $rc;
-          }
+                  case 200:
+                      break;
+                  case 206:
+                      break;
+                  default:
+                      return $rc;
+                  }
               }
           }
       }

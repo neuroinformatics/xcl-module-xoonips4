@@ -2,8 +2,8 @@
 
 use Xoonips\Core\StringUtils;
 
-require_once dirname(__FILE__).'/Complement.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/webservice/AmazonService.class.php';
+require_once __DIR__.'/Complement.class.php';
+require_once dirname(__DIR__).'/webservice/AmazonService.class.php';
 
 /**
  * isbn comlement class.

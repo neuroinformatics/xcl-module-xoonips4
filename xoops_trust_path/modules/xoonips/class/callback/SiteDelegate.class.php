@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\XoopsUtils;
+
 class Xoonips_SiteDelegate
 {
     /**
@@ -9,8 +11,8 @@ class Xoonips_SiteDelegate
      */
     public static function jQueryAddFunction(&$jQuery)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         static $isFirst = true;
         if ($isFirst) {
             // load javascript only first module
@@ -38,8 +40,8 @@ class Xoonips_SiteDelegate
      */
     public static function checkLoginSuccess(&$xoopsUser)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         foreach ($dirnames as $dirname) {
             $log = Xoonips_BeanFactory::getBean('EventLogBean', $dirname, $trustDirname);
             $log->recordLoginSuccessEvent($xoopsUser->get('uid'));
@@ -53,8 +55,8 @@ class Xoonips_SiteDelegate
      */
     public static function checkLoginFail(&$xoopsUser)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $uname = xoops_getrequest('uname');
         foreach ($dirnames as $dirname) {
             $log = Xoonips_BeanFactory::getBean('EventLogBean', $dirname, $trustDirname);
@@ -69,8 +71,8 @@ class Xoonips_SiteDelegate
      */
     public static function logoutSuccess(&$xoopsUser)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $uid = $xoopsUser->get('uid');
         foreach ($dirnames as $dirname) {
             $log = Xoonips_BeanFactory::getBean('EventLogBean', $dirname, $trustDirname);
@@ -91,8 +93,8 @@ class Xoonips_SiteDelegate
      */
     public static function recountPost(&$posts, $xoopsUser)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $uid = $xoopsUser->get('uid');
         foreach ($dirnames as $dirname) {
             $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $dirname, $trustDirname);

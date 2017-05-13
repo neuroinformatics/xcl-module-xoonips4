@@ -1,6 +1,6 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/viewtype/ViewType.class.php';
+require_once __DIR__.'/ViewType.class.php';
 
 class Xoonips_ViewTypeIsbn extends Xoonips_ViewType
 {

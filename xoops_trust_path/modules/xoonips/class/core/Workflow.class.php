@@ -20,7 +20,7 @@ class Xoonips_Workflow
         $cache = false;
         if (defined('LEGACY_WORKFLOW_DIRNAME')) {
             $dirname = LEGACY_WORKFLOW_DIRNAME;
-            $trustDirname = Xoonips_Utils::getTrustDirnameByDirname($dirname);
+            $trustDirname = XoopsUtils::getTrustDirnameByDirname($dirname);
             if ($trustDirname !== null) {
                 $dirname = $trustDirname;
             }

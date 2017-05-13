@@ -2,8 +2,6 @@
 
 use Xoonips\Core\StringUtils;
 
-require_once dirname(dirname(__FILE__)).'/Enum.class.php';
-
 /**
  * search class.
  */

@@ -1,9 +1,8 @@
 <?php
 
-require_once XOONIPS_TRUST_PATH.'/class/core/Workflow.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/WorkflowClientBase.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/WorkflowClientFactory.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/BeanFactory.class.php';
+require_once dirname(__DIR__).'/core/Workflow.class.php';
+require_once dirname(__DIR__).'/core/WorkflowClientBase.class.php';
+require_once dirname(__DIR__).'/core/WorkflowClientFactory.class.php';
 
 class Xoonips_WorkflowClientPublicItemsWithdrawal extends Xoonips_WorkflowClientBase
 {

@@ -1,11 +1,11 @@
 <?php
 
 use Xoonips\Core\Functions;
+use Xoonips\Core\XoopsUtils;
 
-require_once XOONIPS_TRUST_PATH.'/class/core/Workflow.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/WorkflowClientBase.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/BeanFactory.class.php';
-require_once dirname(dirname(__FILE__)).'/core/User.class.php';
+require_once dirname(__DIR__).'/core/Workflow.class.php';
+require_once dirname(__DIR__).'/core/WorkflowClientBase.class.php';
+require_once dirname(__DIR__).'/core/User.class.php';
 
 class Xoonips_WorkflowClientUser extends Xoonips_WorkflowClientBase
 {
@@ -19,7 +19,8 @@ class Xoonips_WorkflowClientUser extends Xoonips_WorkflowClientBase
         if (!$user) {
             return;
         }
-        $myxoopsConfig = Xoonips_Utils::getXoopsConfigs(XOOPS_CONF);
+        $sitename = XoopsUtils::getXoopsConfig('sitename');
+        $adminmail = XoopsUtils::getXoopsConfig('adminmail');
         $user_certify_date = Functions::getXoonipsConfig($this->dirname, 'user_certify_date');
         $deleteUserInfo = new XoopsUser($uid);
         if ($user_certify_date > 0) {
@@ -40,12 +41,12 @@ class Xoonips_WorkflowClientUser extends Xoonips_WorkflowClientBase
                 $xoopsMailer->setTemplateDir(Xoonips_Utils::mailTemplateDir($this->dirname, $this->trustDirname));
                 $xoopsMailer->setTemplate('user_certify_timeout.tpl');
                 $xoopsMailer->assign('USERNAME', $user['uname']);
-                $xoopsMailer->assign('SITENAME', $myxoopsConfig['sitename']);
-                $xoopsMailer->assign('ADMINMAIL', $myxoopsConfig['adminmail']);
+                $xoopsMailer->assign('SITENAME', $sitename);
+                $xoopsMailer->assign('ADMINMAIL', $adminmail);
                 $xoopsMailer->assign('SITEURL', XOOPS_URL.'/');
                 $xoopsMailer->setToUsers($deleteUserInfo);
-                $xoopsMailer->setFromEmail($myxoopsConfig['adminmail']);
-                $xoopsMailer->setFromName($myxoopsConfig['sitename']);
+                $xoopsMailer->setFromEmail($adminmail);
+                $xoopsMailer->setFromName($sitename);
                 $xoopsMailer->setSubject(_MD_XOONIPS_MESSAGE_ACTIVATE_TIMEOUT);
                 $xoopsMailer->send();
                 Xoonips_Workflow::deleteItem($this->dirname, $this->dataname, $uid);
@@ -77,12 +78,12 @@ class Xoonips_WorkflowClientUser extends Xoonips_WorkflowClientBase
             $certifyUser = '';
         }
         $xoopsMailer->assign('CERTIFY_USER', $certifyUser);
-        $xoopsMailer->assign('SITENAME', $myxoopsConfig['sitename']);
+        $xoopsMailer->assign('SITENAME', $sitename);
         $xoopsMailer->assign('SITEURL', XOOPS_URL.'/');
-        $xoopsMailer->assign('ADMINMAIL', $myxoopsConfig['adminmail']);
+        $xoopsMailer->assign('ADMINMAIL', $adminmail);
         $xoopsMailer->setToUsers(new XoopsUser($uid));
-        $xoopsMailer->setFromEmail($myxoopsConfig['adminmail']);
-        $xoopsMailer->setFromName($myxoopsConfig['sitename']);
+        $xoopsMailer->setFromEmail($adminmail);
+        $xoopsMailer->setFromName($sitename);
         $xoopsMailer->setSubject(_MD_XOONIPS_MESSAGE_ACCOUNT_CERTIFIED_NOTIFYSBJ);
         $xoopsMailer->send();
     }
@@ -115,13 +116,14 @@ class Xoonips_WorkflowClientUser extends Xoonips_WorkflowClientBase
 
         // notify a uncertified to the user by e-mail
 
-        $myxoopsConfig = Xoonips_Utils::getXoopsConfigs(XOOPS_CONF);
+        $sitename = XoopsUtils::getXoopsConfig('sitename');
+        $adminmail = XoopsUtils::getXoopsConfig('adminmail');
         $xoopsMailer = &getMailer();
         $xoopsMailer->useMail();
         $xoopsMailer->setTemplateDir(Xoonips_Utils::mailTemplateDir($this->dirname, $this->trustDirname));
         $xoopsMailer->setTemplate('user_account_uncertified_notify.tpl');
-        $xoopsMailer->assign('SITENAME', $myxoopsConfig['sitename']);
-        $xoopsMailer->assign('ADMINMAIL', $myxoopsConfig['adminmail']);
+        $xoopsMailer->assign('SITENAME', $sitename);
+        $xoopsMailer->assign('ADMINMAIL', $adminmail);
         $xoopsMailer->assign('SITEURL', XOOPS_URL.'/');
         $xoopsMailer->assign('USER_UNAME', $user['uname']);
         $xoopsMailer->assign('USER_EMAIL', $user['email']);
@@ -133,8 +135,8 @@ class Xoonips_WorkflowClientUser extends Xoonips_WorkflowClientBase
         }
         $xoopsMailer->assign('CERTIFY_USER', $certifyUser);
         $xoopsMailer->setToEmails(array($user['email']));
-        $xoopsMailer->setFromEmail($myxoopsConfig['adminmail']);
-        $xoopsMailer->setFromName($myxoopsConfig['sitename']);
+        $xoopsMailer->setFromEmail($adminmail);
+        $xoopsMailer->setFromName($sitename);
         $xoopsMailer->setSubject(_MD_XOONIPS_MESSAGE_ACCOUNT_REJECTED_NOTIFYSBJ);
         $xoopsMailer->send();
     }

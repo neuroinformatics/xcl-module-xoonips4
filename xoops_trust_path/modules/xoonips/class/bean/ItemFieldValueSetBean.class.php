@@ -1,6 +1,6 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/BeanBase.class.php';
+require_once dirname(__DIR__).'/core/BeanBase.class.php';
 
 /**
  * @brief operate xoonips_item_field_value_set table

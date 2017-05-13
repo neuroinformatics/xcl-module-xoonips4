@@ -11,7 +11,7 @@ use Xoonips\Core\ZipFile;
  * and open the template in the editor.
  */
 
-require_once XOONIPS_TRUST_PATH.'/class/bean/ItemBean.class.php';
+require_once __DIR__.'/bean/ItemBean.class.php';
 
 define('contentsURI', 'http://xoonips.sourceforge.jp/xoonips/item/');
 define('contentsxmlns', 'xmlns:C');

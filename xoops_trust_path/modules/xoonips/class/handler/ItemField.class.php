@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 /**
  * item field object.
  */
@@ -45,7 +47,7 @@ class Xoonips_ItemFieldObject extends XoopsSimpleObject
         if ($this->get('released') == 0) {
             return true;
         }
-        $handler = Xoonips_Utils::getModuleHandler('ItemField', $this->mDirname);
+        $handler = &Functions::getXoonipsHandler('ItemField', $this->mDirname);
         $criteria = new Criteria('update_id', $this->get('item_field_detail_id'));
         $objs = $handler->getObjects($criteria);
         if (count($objs) > 0) {
@@ -75,13 +77,13 @@ class Xoonips_ItemFieldObject extends XoopsSimpleObject
         }
         $fieldId = $this->get('item_field_detail_id');
         // false if field id exists in the field group
-        $gflHandler = Xoonips_Utils::getModuleHandler('ItemFieldGroupFieldLink', $this->mDirname);
+        $gflHandler = &Functions::getXoonipsHandler('ItemFieldGroupFieldLink', $this->mDirname);
         $criteria = new Criteria('item_field_detail_id', $fieldId);
         if ($gflHandler->getCount($criteria) > 0) {
             return false;
         }
         // false if detail id exists in the item sort condition
-        $isHandler = Xoonips_Utils::getModuleHandler('ItemSort', $this->mDirname);
+        $isHandler = &Functions::getXoonipsHandler('ItemSort', $this->mDirname);
         if ($isHandler->hasSortField($fieldId)) {
             return false;
         }
@@ -152,7 +154,7 @@ class Xoonips_ItemFieldHandler extends XoopsObjectGenericHandler
             return false;
         }
         if ($is_new) {
-            $vtHandler = Xoonips_Utils::getModuleHandler('ViewType', $this->mDirname);
+            $vtHandler = &Functions::getXoonipsHandler('ViewType', $this->mDirname);
             $tinfo = $vtHandler->getTableInfo($obj->get('view_type_id'));
             if ($tinfo === false) {
                 $pid = $obj->get($this->mPrimary);
@@ -195,7 +197,7 @@ class Xoonips_ItemFieldHandler extends XoopsObjectGenericHandler
             return false;
         }
         // delete quick search condition
-        $qsHandler = Xoonips_Utils::getModuleHandler('ItemQuickSearchCondition', $this->mDirname);
+        $qsHandler = &Functions::getXoonipsHandler('ItemQuickSearchCondition', $this->mDirname);
         if (!$qsHandler->deleteItemFieldId($fieldId, $force)) {
             return false;
         }
@@ -302,7 +304,7 @@ class Xoonips_ItemFieldHandler extends XoopsObjectGenericHandler
     private function _getDataTypeIdsForQuickSearch()
     {
         $names = array('varchar', 'text');
-        $handler = Xoonips_Utils::getModuleHandler('DataType', $this->mDirname);
+        $handler = &Functions::getXoonipsHandler('DataType', $this->mDirname);
         $criteria = new Criteria('name', $names, 'IN');
         $objs = &$handler->getObjects($criteria, null, null, true);
 
@@ -317,7 +319,7 @@ class Xoonips_ItemFieldHandler extends XoopsObjectGenericHandler
     private function _getViewTypeIdsForQuickSearch()
     {
         $names = array('change_log', 'preview', 'file_upload', 'rights');
-        $handler = Xoonips_Utils::getModuleHandler('ViewType', $this->mDirname);
+        $handler = &Functions::getXoonipsHandler('ViewType', $this->mDirname);
         $criteria = new Criteria('name', $names, 'NOT IN');
         $objs = &$handler->getObjects($criteria, null, null, true);
 

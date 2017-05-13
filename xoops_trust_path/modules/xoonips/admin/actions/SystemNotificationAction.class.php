@@ -1,6 +1,6 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/AbstractEditAction.class.php';
+require_once dirname(dirname(__DIR__)).'/class/AbstractEditAction.class.php';
 
 /**
  * admin system notification action.
@@ -122,10 +122,10 @@ class Xoonips_Admin_SystemNotificationAction extends Xoonips_AbstractEditAction
     {
         $root = &XCube_Root::getSingleton();
         $root->mLanguageManager->loadPageTypeMessageCatalog('notification');
-        $moduleHandler = &Xoonips_Utils::getXoopsHandler('module');
+        $moduleHandler = &xoops_gethandler('module');
         $moduleObj = &$moduleHandler->getByDirname($this->mAsset->mDirname);
         $mid = $moduleObj->get('mid');
-        $configHandler = &Xoonips_Utils::getXoopsHandler('config');
+        $configHandler = &xoops_gethandler('config');
         $criteria = new CriteriaCompo();
         $criteria->add(new Criteria('conf_modid', $mid));
         $criteria->add(new Criteria('conf_catid', 0));
@@ -154,7 +154,7 @@ class Xoonips_Admin_SystemNotificationAction extends Xoonips_AbstractEditAction
      */
     protected function setNotificationConfigs($configs)
     {
-        $configHandler = &Xoonips_Utils::getXoopsHandler('config');
+        $configHandler = &xoops_gethandler('config');
         foreach ($configs as $config) {
             if (!$configHandler->insertConfig($config)) {
                 return false;

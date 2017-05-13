@@ -1,12 +1,6 @@
 <?php
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
-
-require_once XOONIPS_TRUST_PATH.'/class/core/BeanFactory.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/Workflow.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/Enum.class.php';
+require_once dirname(__DIR__).'/class/core/Workflow.class.php';
 
 // xoonips usermenu block
 function b_xoonips_user_show($options)

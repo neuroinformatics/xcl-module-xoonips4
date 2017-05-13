@@ -1,8 +1,8 @@
 <?php
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
+if (!defined('XOOPS_TRUST_PATH')) {
+    die('set XOOPS_TRUST_PATH into mainfile.php');
 }
-
-$myDirName = basename(dirname(__FILE__));
-require XOOPS_TRUST_PATH.'/modules/xoonips/xoops_version.php';
+$mydirname = basename(__DIR__);
+require __DIR__.'/mytrustdirname.php'; // set $mytrustdirname
+require XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/'.basename(__FILE__);

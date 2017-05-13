@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__).'/AbstractEditAction.class.php';
+require_once __DIR__.'/AbstractEditAction.class.php';
 
 /**
  * abstract delete action.

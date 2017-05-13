@@ -1,7 +1,5 @@
 <?php
 
-require_once dirname(dirname(__FILE__)).'/Enum.class.php';
-
 abstract class Xoonips_WorkflowClientBase
 {
     protected $notification = false;
@@ -29,10 +27,10 @@ abstract class Xoonips_WorkflowClientBase
             Xoonips_Enum::WORKFLOW_GROUP_CLOSE,
         );
         if (in_array($dataname, $userWorkflows)) {
-            require_once XOOPS_TRUST_PATH.'/modules/'.$trustDirname.'/class/user/Notification.class.php';
+            require_once dirname(__DIR__).'/user/Notification.class.php';
             $className = ucfirst($trustDirname).'_UserNotification';
         } else {
-            require_once XOOPS_TRUST_PATH.'/modules/'.$trustDirname.'/class/core/Notification.class.php';
+            require_once __DIR__.'/Notification.class.php';
             $className = ucfirst($trustDirname).'_Notification';
         }
 

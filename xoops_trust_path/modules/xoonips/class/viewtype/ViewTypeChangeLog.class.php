@@ -1,7 +1,6 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/core/BeanFactory.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/viewtype/ViewType.class.php';
+require_once __DIR__.'/ViewType.class.php';
 
 class Xoonips_ViewTypeChangeLog extends Xoonips_ViewType
 {

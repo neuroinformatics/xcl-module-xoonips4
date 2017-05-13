@@ -1,8 +1,7 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/AbstractActionBase.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/BeanFactory.class.php';
-require_once 'Notification.class.php';
+require_once __DIR__.'/AbstractActionBase.class.php';
+require_once __DIR__.'/Notification.class.php';
 
 abstract class Xoonips_ActionBase extends Xoonips_AbstractActionBase
 {

@@ -1,6 +1,7 @@
 <?php
 
 use Xoonips\Core\CacheUtils;
+use Xoonips\Core\Functions;
 use Xoonips\Core\XoopsUtils;
 
 /**
@@ -60,7 +61,7 @@ class Xoonips_ImportDownloadAction extends Xoonips_AbstractAction
             return $this->_getFrameViewStatus('ERROR');
         }
         $importId = $this->_getId();
-        $handler = Xoonips_Utils::getModuleHandler('itemImportLog', $dirname);
+        $handler = &Functions::getXoonipsHandler('ItemImportLog', $dirname);
         $this->mObject = &$handler->get($importId);
         if (!is_object($this->mObject)) {
             return $this->_getFrameViewStatus('ERROR');

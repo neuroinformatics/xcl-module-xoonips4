@@ -1,7 +1,8 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/BeanFactory.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Request.class.php';
+use Xoonips\Core\Functions;
+
+require_once dirname(__DIR__).'/core/Request.class.php';
 
 class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
 {
@@ -178,7 +179,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
         $trustDirname = $module->getVar('trust_dirname');
 
         global $xoopsUser;
-        $indexHandler = Xoonips_Utils::getTrustModuleHandler('index', $dirname, $trustDirname);
+        $indexHandler = &Functions::getXoonipsHandler('Index', $dirname);
 
         $request = new Xoonips_Request();
         $itemBean = Xoonips_BeanFactory::getBean('ItemBean', $dirname, $trustDirname);

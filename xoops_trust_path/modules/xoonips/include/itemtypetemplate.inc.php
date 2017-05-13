@@ -1,7 +1,5 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/BeanFactory.class.php';
-
 // put this function somewhere in your application
 function createItemTypeTemplate($resource_type, $resource_name, &$template_source, &$template_timestamp, &$smarty_obj)
 {

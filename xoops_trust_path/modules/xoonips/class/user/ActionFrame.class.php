@@ -1,5 +1,6 @@
 <?php
 
+
 require_once XOOPS_MODULE_PATH.'/user/class/ActionFrame.class.php';
 
 class Xoonips_UserActionFrame extends User_ActionFrame
@@ -44,7 +45,7 @@ class Xoonips_UserActionFrame extends User_ActionFrame
             // override legacy module adapter for admin render system replacement
             $handler = &xoops_gethandler('module');
             $module = &$handler->getByDirname('user');
-            require_once dirname(__FILE__).'/Module.class.php';
+            require_once __DIR__.'/Module.class.php';
             $cname = ucfirst($this->mTrustDirname).'_UserModule';
             $obj = new $cname($module);
             $controller->mRoot->mContext->mModule = &$obj;
@@ -60,7 +61,7 @@ class Xoonips_UserAction extends User_Action
     //TODO $dirname set
     public $viewData = null;
     public $dirname = 'xoonips';
-    public $trustDirname = XOONIPS_TRUST_DIRNAME;
+    public $trustDirname = 'xoonips';
 
     public function setAttributes(&$render)
     {

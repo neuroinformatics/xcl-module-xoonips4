@@ -1,7 +1,7 @@
 <?php
 
-require_once dirname(dirname(dirname(__FILE__))).'/class/AbstractListAction.class.php';
-require_once dirname(dirname(__FILE__)).'/forms/PolicyItemFieldFilterForm.class.php';
+require_once dirname(dirname(__DIR__)).'/class/AbstractListAction.class.php';
+require_once dirname(__DIR__).'/forms/PolicyItemFieldFilterForm.class.php';
 
 /**
  * policy item field action.

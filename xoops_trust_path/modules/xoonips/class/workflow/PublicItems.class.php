@@ -1,9 +1,8 @@
 <?php
 
-require_once XOONIPS_TRUST_PATH.'/class/core/Workflow.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/WorkflowClientBase.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/BeanFactory.class.php';
-require_once dirname(dirname(__FILE__)).'/core/Item.class.php';
+require_once dirname(__DIR__).'/core/Workflow.class.php';
+require_once dirname(__DIR__).'/core/WorkflowClientBase.class.php';
+require_once dirname(__DIR__).'/core/Item.class.php';
 
 class Xoonips_WorkflowClientPublicItems extends Xoonips_WorkflowClientBase
 {

@@ -2,7 +2,6 @@
 
 use Xoonips\Core\Functions;
 
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/BeanFactory.class.php';
 require_once XOOPS_ROOT_PATH.'/class/xml/saxparser.php';
 require_once XOOPS_ROOT_PATH.'/class/snoopy.php';
 

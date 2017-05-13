@@ -1,8 +1,9 @@
 <?php
 
 use Xoonips\Core\Functions;
+use Xoonips\Core\XoopsUtils;
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/AbstractEditAction.class.php';
+require_once dirname(dirname(__DIR__)).'/class/AbstractEditAction.class.php';
 
 /**
  * admin policy user action.
@@ -124,7 +125,7 @@ class Xoonips_Admin_PolicyUserAction extends Xoonips_AbstractEditAction
     {
         $ret = array();
         $ret['mode'] = '';
-        $ret['activate_user'] = Xoonips_Utils::getModuleConfig('user', 'activation_type');
+        $ret['activate_user'] = XoopsUtils::getModuleConfig('user', 'activation_type');
         foreach ($this->_mConfigKeys as $mode => $keys) {
             foreach ($keys as $key) {
                 $value = Functions::getXoonipsConfig($this->mAsset->mDirname, $key);
@@ -150,7 +151,7 @@ class Xoonips_Admin_PolicyUserAction extends Xoonips_AbstractEditAction
         foreach ($this->_mConfigKeys as $mode => $keys) {
             if ($mode == $policies['mode']) {
                 if ($mode == 'regist') {
-                    if (!Xoonips_Utils::setModuleConfig('user', 'activation_type', $policies['activate_user'])) {
+                    if (!XoopsUtils::setModuleConfig('user', 'activation_type', $policies['activate_user'])) {
                         return false;
                     }
                 }

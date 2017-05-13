@@ -1,6 +1,6 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/File.class.php';
+require_once dirname(dirname(__DIR__)).'/class/core/File.class.php';
 
 /**
  * admin maintenance file search action.

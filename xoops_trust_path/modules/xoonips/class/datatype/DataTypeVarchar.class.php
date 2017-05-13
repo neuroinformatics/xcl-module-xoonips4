@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__.'/DataType.class.php';
+
 class Xoonips_DataTypeVarchar extends Xoonips_DataType
 {
     public function __construct()

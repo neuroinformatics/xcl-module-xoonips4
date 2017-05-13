@@ -1,9 +1,5 @@
 <?php
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
-
 // debug mode
 define('XOONIPS_DEBUG_MODE', false);
 

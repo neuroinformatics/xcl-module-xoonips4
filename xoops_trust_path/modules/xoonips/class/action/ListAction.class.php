@@ -2,10 +2,10 @@
 
 use Xoonips\Core\Functions;
 
-require_once dirname(dirname(__FILE__)).'/core/ActionBase.class.php';
-require_once dirname(dirname(__FILE__)).'/core/Item.class.php';
-require_once dirname(dirname(dirname(__FILE__))).'/include/itemtypetemplate.inc.php';
-require_once dirname(dirname(__FILE__)).'/XmlItemExport.class.php';
+require_once dirname(__DIR__).'/core/ActionBase.class.php';
+require_once dirname(__DIR__).'/core/Item.class.php';
+require_once dirname(dirname(__DIR__)).'/include/itemtypetemplate.inc.php';
+require_once dirname(__DIR__).'/XmlItemExport.class.php';
 
 class Xoonips_ListAction extends Xoonips_ActionBase
 {
@@ -19,7 +19,7 @@ class Xoonips_ListAction extends Xoonips_ActionBase
 
         // get order by select
         $defalut_orderby = '0';
-        $sortHandler = Xoonips_Utils::getModuleHandler('ItemSort', $this->dirname);
+        $sortHandler = &Functions::getXoonipsHandler('ItemSort', $this->dirname);
         $sortTitles = $sortHandler->getSortTitles();
         $sortIds = array_keys($sortTitles);
         if (!empty($sortIds)) {

@@ -1,8 +1,7 @@
 <?php
 
-require_once 'Transaction.class.php';
-require_once 'Errors.class.php';
-require_once 'Utils.class.php';
+require_once __DIR__.'/Transaction.class.php';
+require_once __DIR__.'/Errors.class.php';
 require_once XOOPS_ROOT_PATH.'/class/token.php';
 
 abstract class Xoonips_AbstractActionBase

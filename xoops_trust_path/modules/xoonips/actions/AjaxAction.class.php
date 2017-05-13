@@ -2,7 +2,7 @@
 
 use Xoonips\Core\CacheUtils;
 
-require_once dirname(dirname(__FILE__)).'/class/AbstractAjaxMethod.class.php';
+require_once dirname(__DIR__).'/class/AbstractAjaxMethod.class.php';
 
 /**
  * ajax action.

@@ -1,7 +1,6 @@
 <?php
 
-require_once dirname(dirname(__FILE__)).'/core/WebServiceBase.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/BeanFactory.class.php';
+require_once dirname(__DIR__).'/core/WebServiceBase.class.php';
 
 /**
  * The Amazon Product Advertising API data handling class.
@@ -66,27 +65,27 @@ class Xoonips_AmazonService extends Xoonips_WebServiceBase
         }
         $char = substr($isbn, 3, 1);
         switch ($char) {
-            case '0':
-            case '1':
-                // us
-                $this->fetch_url = 'http://webservices.amazon.com/onca/xml';
-                break;
-            case '2':
-                // france
-                $this->fetch_url = 'http://webservices.amazon.fr/onca/xml';
-                break;
-            case '3':
-                // german
-                $this->fetch_url = 'http://webservices.amazon.de/onca/xml';
-                break;
-            case '4':
-                // japan
-                $this->fetch_url = 'http://webservices.amazon.co.jp/onca/xml';
-                break;
-            default:
-                // us
-                $this->fetch_url = 'http://webservices.amazon.com/onca/xml';
-                break;
+        case '0':
+        case '1':
+            // us
+            $this->fetch_url = 'http://webservices.amazon.com/onca/xml';
+            break;
+        case '2':
+            // france
+            $this->fetch_url = 'http://webservices.amazon.fr/onca/xml';
+            break;
+        case '3':
+            // german
+            $this->fetch_url = 'http://webservices.amazon.de/onca/xml';
+            break;
+        case '4':
+            // japan
+            $this->fetch_url = 'http://webservices.amazon.co.jp/onca/xml';
+            break;
+        default:
+            // us
+            $this->fetch_url = 'http://webservices.amazon.com/onca/xml';
+            break;
         }
         $this->fetch_arguments['ItemId'] = $this->encodeUrl($isbn);
 
@@ -126,18 +125,18 @@ class Xoonips_AmazonService extends Xoonips_WebServiceBase
     public function parserStartElement($attribs)
     {
         switch ($this->parser_xpath) {
-            case '/ItemLookupResponse/Items/Item':
-                $this->data[$this->isbn] = array(
-                    'ASIN' => '',
-                    'EAN' => '',
-                    'ISBN' => '',
-                    'DetailPageURL' => '',
-                    'Author' => array(),
-                    'PublicationDate' => '',
-                    'Publisher' => '',
-                    'Title' => '',
-                );
-                break;
+        case '/ItemLookupResponse/Items/Item':
+            $this->data[$this->isbn] = array(
+                'ASIN' => '',
+                'EAN' => '',
+                'ISBN' => '',
+                'DetailPageURL' => '',
+                'Author' => array(),
+                'PublicationDate' => '',
+                'Publisher' => '',
+                'Title' => '',
+            );
+            break;
         }
     }
 
@@ -149,38 +148,38 @@ class Xoonips_AmazonService extends Xoonips_WebServiceBase
     public function parserCharacterData($cdata)
     {
         switch ($this->parser_xpath) {
-            case '/ItemLookupResponse/Items/Item/ASIN':
-                // ASIN
-                $this->data[$this->isbn]['ASIN'] .= $cdata;
-                break;
-            case '/ItemLookupResponse/Items/Item/DetailPageURL':
-                // DetailPageURL
-                $this->data[$this->isbn]['DetailPageURL'] .= $cdata;
-                break;
-            case '/ItemLookupResponse/Items/Item/ItemAttributes/Author':
-                // Author
-                $this->data[$this->isbn]['Author'][] .= $cdata;
-                break;
-            case '/ItemLookupResponse/Items/Item/ItemAttributes/EAN':
-                // EAN
-                $this->data[$this->isbn]['EAN'] .= $cdata;
-                break;
-            case '/ItemLookupResponse/Items/Item/ItemAttributes/ISBN':
-                // ISBN
-                $this->data[$this->isbn]['ISBN'] .= $cdata;
-                break;
-            case '/ItemLookupResponse/Items/Item/ItemAttributes/PublicationDate':
-                // PublicationDate
-                $this->data[$this->isbn]['PublicationDate'] .= $cdata;
-                break;
-            case '/ItemLookupResponse/Items/Item/ItemAttributes/Publisher':
-                // Publisher
-                $this->data[$this->isbn]['Publisher'] .= $cdata;
-                break;
-            case '/ItemLookupResponse/Items/Item/ItemAttributes/Title':
-                // Title
-                $this->data[$this->isbn]['Title'] .= $cdata;
-                break;
+        case '/ItemLookupResponse/Items/Item/ASIN':
+            // ASIN
+            $this->data[$this->isbn]['ASIN'] .= $cdata;
+            break;
+        case '/ItemLookupResponse/Items/Item/DetailPageURL':
+            // DetailPageURL
+            $this->data[$this->isbn]['DetailPageURL'] .= $cdata;
+            break;
+        case '/ItemLookupResponse/Items/Item/ItemAttributes/Author':
+            // Author
+            $this->data[$this->isbn]['Author'][] .= $cdata;
+            break;
+        case '/ItemLookupResponse/Items/Item/ItemAttributes/EAN':
+            // EAN
+            $this->data[$this->isbn]['EAN'] .= $cdata;
+            break;
+        case '/ItemLookupResponse/Items/Item/ItemAttributes/ISBN':
+            // ISBN
+            $this->data[$this->isbn]['ISBN'] .= $cdata;
+            break;
+        case '/ItemLookupResponse/Items/Item/ItemAttributes/PublicationDate':
+            // PublicationDate
+            $this->data[$this->isbn]['PublicationDate'] .= $cdata;
+            break;
+        case '/ItemLookupResponse/Items/Item/ItemAttributes/Publisher':
+            // Publisher
+            $this->data[$this->isbn]['Publisher'] .= $cdata;
+            break;
+        case '/ItemLookupResponse/Items/Item/ItemAttributes/Title':
+            // Title
+            $this->data[$this->isbn]['Title'] .= $cdata;
+            break;
         }
     }
 

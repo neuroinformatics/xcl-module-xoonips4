@@ -1,6 +1,9 @@
 <?php
 
-require_once dirname(dirname(__FILE__)).'/core/ViewTypeFactory.class.php';
+use Xoonips\Core\Functions;
+use Xoonips\Core\XoopsUtils;
+
+require_once dirname(__DIR__).'/core/ViewTypeFactory.class.php';
 
 class Xoonips_GetViewTypeInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
 {
@@ -11,14 +14,14 @@ class Xoonips_GetViewTypeInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
      */
     public function execute()
     {
-        if (($uid = Legacy_Utils::getUid()) == XOONIPS_UID_GUEST) {
+        if (($uid = XoopsUtils::getUid()) == XOONIPS_UID_GUEST) {
             return false;
         }
-        if (!Xoonips_Utils::isAdmin($uid, $this->mDirname)) {
+        if (!XoopsUtils::isAdmin($uid, $this->mDirname)) {
             return false;
         } // permission error
         $vtId = intval($this->mRequest->getRequest('viewTypeId'));
-        $vtHandler = Xoonips_Utils::getModuleHandler('ViewType', $this->mDirname);
+        $vtHandler = &Functions::getXoonipsHandler('ViewType', $this->mDirname);
         $vtObj = $vtHandler->get($vtId);
         if (!is_object($vtObj)) {
             return false;

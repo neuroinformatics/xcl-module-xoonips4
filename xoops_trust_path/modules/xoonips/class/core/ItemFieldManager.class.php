@@ -1,9 +1,9 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/ViewTypeFactory.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/DataTypeFactory.class.php';
-require_once 'ItemFieldGroup.class.php';
-require_once 'ItemField.class.php';
+require_once __DIR__.'/ViewTypeFactory.class.php';
+require_once __DIR__.'/DataTypeFactory.class.php';
+require_once __DIR__.'/ItemFieldGroup.class.php';
+require_once __DIR__.'/ItemField.class.php';
 
 class Xoonips_ItemFieldManager
 {

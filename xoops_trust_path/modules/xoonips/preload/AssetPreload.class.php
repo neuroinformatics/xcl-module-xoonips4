@@ -1,12 +1,8 @@
 <?php
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
-
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/include/common.inc.php';
-require_once XOONIPS_TRUST_PATH.'/class/Enum.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/BeanFactory.class.php';
+require_once dirname(__DIR__).'/include/common.inc.php';
+require_once dirname(__DIR__).'/class/Enum.class.php';
+require_once dirname(__DIR__).'/class/core/BeanFactory.class.php';
 
 /**
  * asset preload base class.
@@ -63,13 +59,13 @@ class Xoonips_AssetPreloadBase extends XCube_ActionFilter
         $this->mRoot->mDelegateManager->add('Legacy_Utils.CreateModule', 'Xoonips_AssetPreloadBase::getModule');
 
         // Legacy_WorkflowClient delegates
-        $file = XOOPS_TRUST_PATH.'/modules/'.$this->mTrustDirname.'/class/callback/ClientDelegate.class.php';
+        $file = dirname(__DIR__).'/class/callback/ClientDelegate.class.php';
         $this->mRoot->mDelegateManager->add('Legacy_WorkflowClient.GetClientList', 'Xoonips_WorkflowClientDelegate::getClientList', $file);
         $this->mRoot->mDelegateManager->add('Legacy_WorkflowClient.UpdateStatus', 'Xoonips_WorkflowClientDelegate::updateStatus', $file);
         $this->mRoot->mDelegateManager->add('Xworkflow_WorkflowClient.GetTargetGroupId', 'Xoonips_WorkflowClientDelegate::getTargetGroupId', $file);
 
         // Site delegates
-        $file = XOOPS_TRUST_PATH.'/modules/'.$this->mTrustDirname.'/class/callback/SiteDelegate.class.php';
+        $file = dirname(__DIR__).'/class/callback/SiteDelegate.class.php';
         $this->mRoot->mDelegateManager->add('Site.JQuery.AddFunction', 'Xoonips_SiteDelegate::jQueryAddFunction', $file);
         $this->mRoot->mDelegateManager->add('Site.CheckLogin.Success', 'Xoonips_SiteDelegate::checkLoginSuccess', $file);
         $this->mRoot->mDelegateManager->add('Site.CheckLogin.Fail', 'Xoonips_SiteDelegate::checkLoginFail', $file);
@@ -77,7 +73,7 @@ class Xoonips_AssetPreloadBase extends XCube_ActionFilter
         $this->mRoot->mDelegateManager->add('User_UserViewAction.GetUserPosts', 'Xoonips_SiteDelegate::recountPost', $file);
 
         // Module.Xoonips.Event delegetes
-        $file = XOONIPS_TRUST_PATH.'/class/callback/EventDelegate.class.php';
+        $file = dirname(__DIR__).'/class/callback/EventDelegate.class.php';
         $this->mRoot->mDelegateManager->add('Module.Xoonips.Event.User.CertifyRequest', 'Xoonips_EventDelegate::userCertifyRequest', $file);
         $this->mRoot->mDelegateManager->add('Module.Xoonips.Event.User.Certify', 'Xoonips_EventDelegate::userCertify', $file);
         $this->mRoot->mDelegateManager->add('Module.Xoonips.Event.User.Reject', 'Xoonips_EventDelegate::userReject', $file);
@@ -117,8 +113,8 @@ class Xoonips_AssetPreloadBase extends XCube_ActionFilter
      */
     public static function getManager(&$obj, $dirname)
     {
-        $mytrustdirname = basename(dirname(dirname(__FILE__)));
-        require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/AssetManager.class.php';
+        $mytrustdirname = basename(dirname(__DIR__));
+        require_once dirname(__DIR__).'/class/AssetManager.class.php';
         $obj = Xoonips_AssetManager::getInstance($dirname, $mytrustdirname);
     }
 
@@ -130,8 +126,8 @@ class Xoonips_AssetPreloadBase extends XCube_ActionFilter
      */
     public static function getModule(&$obj, $module)
     {
-        $mytrustdirname = basename(dirname(dirname(__FILE__)));
-        require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/Module.class.php';
+        $mytrustdirname = basename(dirname(__DIR__));
+        require_once dirname(__DIR__).'/class/Module.class.php';
         if ($module->getInfo('trust_dirname') == $mytrustdirname) {
             $obj = new Xoonips_Module($module);
         }
@@ -145,11 +141,11 @@ class Xoonips_AssetPreloadBase extends XCube_ActionFilter
      */
     public static function getBlock(&$obj, $block)
     {
-        $mytrustdirname = basename(dirname(dirname(__FILE__)));
+        $mytrustdirname = basename(dirname(__DIR__));
         $moduleHandler = &xoops_gethandler('module');
         $module = &$moduleHandler->get($block->get('mid'));
         if (is_object($module) && $module->getInfo('trust_dirname') == $mytrustdirname) {
-            require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/blocks/'.$block->get('func_file');
+            require_once dirname(__DIR__).'/blocks/'.$block->get('func_file');
             $className = 'Xoonips_'.substr($block->get('show_func'), 4);
             $obj = new $className($block);
         }

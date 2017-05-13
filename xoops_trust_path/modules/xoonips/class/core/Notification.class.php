@@ -1,10 +1,10 @@
 <?php
 
 use Xoonips\Core\Functions;
+use Xoonips\Core\XoopsUtils;
 
 require_once XOOPS_ROOT_PATH.'/kernel/notification.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/Enum.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Workflow.class.php';
+require_once __DIR__.'/Workflow.class.php';
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -53,9 +53,7 @@ class Xoonips_Notification extends XoopsNotificationHandler
         }
         $category_info = &notificationCategoryInfo($category, $module_id);
         $event_info = &notificationEventInfo($category, $event, $module_id);
-        if (!in_array(notificationGenerateConfig(
-            $category_info, $event_info, 'option_name'),
-            $mod_config['notification_events']) && empty($event_info['invisible'])) {
+        if (!in_array(notificationGenerateConfig($category_info, $event_info, 'option_name'), $mod_config['notification_events']) && empty($event_info['invisible'])) {
             return false;
         }
 
@@ -167,7 +165,6 @@ class Xoonips_Notification extends XoopsNotificationHandler
      */
     private function getItemTags($item_id)
     {
-        $myxoopsConfig = Xoonips_Utils::convertMsgSign($this->dirname, $this->trustDirname);
         $itemBasicBean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
         $item_basic = $itemBasicBean->getItemBasicInfo($item_id);
         if ($item_basic === false) {
@@ -244,11 +241,11 @@ class Xoonips_Notification extends XoopsNotificationHandler
             $force_compile = $xoopsTpl->force_compile;
             $xoopsTpl->force_compile = true;
         }
+        $sitename = XoopsUtils::getXoopsConfig('sitename');
+        $adminmail = XoopsUtils::getXoopsConfig('adminmail');
         $xoopsTpl->default_template_handler_func = 'createMessageSignTemplate';
-        //$myxoopsConfig = Xoonips_Utils::convertMsgSign($this->dirname, $this->trustDirname);
-        $myxoopsConfig = Xoonips_Utils::getXoopsConfigs(XOOPS_CONF);
-        $xoopsTpl->assign('X_SITENAME', $myxoopsConfig['sitename']);
-        $xoopsTpl->assign('X_ADMINMAIL', $myxoopsConfig['adminmail']);
+        $xoopsTpl->assign('X_SITENAME', $sitename);
+        $xoopsTpl->assign('X_ADMINMAIL', $adminmail);
         $xoopsTpl->assign('X_SITEURL', XOOPS_URL.'/modules/'.$this->dirname.'/');
         ob_start();
         $xoopsTpl->display('messagesign:'.$this->dirname.','.$this->trustDirname);
@@ -540,10 +537,8 @@ class Xoonips_Notification extends XoopsNotificationHandler
                  .'/list.php?index_id='.$parentIndexId,
                 'ITEM_LIST' => implode("\n\n", $item_list),
             );
-            //$myxoopsConfig = Xoonips_Utils::convertMsgSign($this->dirname, $this->trustDirname);
-            $myxoopsConfig = Xoonips_Utils::getXoopsConfigs(XOOPS_CONF);
-            $tags['SITENAME'] = $myxoopsConfig['sitename'];
-            $tags['ADMINMAIL'] = $myxoopsConfig['adminmail'];
+            $tags['SITENAME'] = XoopsUtils::getXoopsConfig('sitename');
+            $tags['ADMINMAIL'] = XoopsUtils::getXoopsConfig('adminmail');
             $tags['SITEURL'] = XOOPS_URL.'/modules/'.$this->dirname.'/';
 
             $this->triggerEvent2('common', 0, 'item',

@@ -2,12 +2,11 @@
 
 use Xoonips\Core\Functions;
 
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/ComplementFactory.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Errors.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Search.class.php';
-require_once 'ItemFieldManagerFactory.class.php';
-require_once 'Notification.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/Enum.class.php';
+require_once __DIR__.'/ComplementFactory.class.php';
+require_once __DIR__.'/Errors.class.php';
+require_once __DIR__.'/Search.class.php';
+require_once __DIR__.'/ItemFieldManagerFactory.class.php';
+require_once __DIR__.'/Notification.class.php';
 
 class Xoonips_Item
 {

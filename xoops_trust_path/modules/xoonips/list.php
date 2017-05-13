@@ -2,9 +2,9 @@
 
 $xoopsOption['pagetype'] = 'user';
 
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Request.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Response.class.php';
-require_once 'class/action/ListAction.class.php';
+require_once __DIR__.'/class/core/Request.class.php';
+require_once __DIR__.'/class/core/Response.class.php';
+require_once __DIR__.'/class/action/ListAction.class.php';
 
 $request = new Xoonips_Request();
 $response = new Xoonips_Response();
@@ -20,9 +20,8 @@ if (!in_array($op, array('init', 'export', 'exportselect'))) {
 
 // set action map
 $actionMap = array();
-$dirname = Xoonips_Utils::getDirname();
-$actionMap['init_success'] = $dirname.'_list.html';
-$actionMap['exportselect_success'] = $dirname.'_export_select.html';
+$actionMap['init_success'] = $mydirname.'_list.html';
+$actionMap['exportselect_success'] = $mydirname.'_export_select.html';
 
 include XOOPS_ROOT_PATH.'/header.php';
 

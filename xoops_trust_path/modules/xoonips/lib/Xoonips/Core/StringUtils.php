@@ -37,7 +37,7 @@ class StringUtils
         '&Yuml;',   '&fnof;',   '&circ;',    '&tilde;',    '&Alpha;',
         '&Beta;',   '&Gamma;',  '&Delta;',   '&Epsilon;',  '&Zeta;',
         '&Eta;',    '&Theta;',  '&Iota;',    '&Kappa;',    '&Lambda;',
-        '&Mu;',     '&Nu;',      '&Xi;',     '&Omicron;',  '&Pi;',
+        '&Mu;',     '&Nu;',     '&Xi;',      '&Omicron;',  '&Pi;',
         '&Rho;',    '&Sigma;',  '&Tau;',     '&Upsilon;',  '&Phi;',
         '&Chi;',    '&Psi;',    '&Omega;',   '&alpha;',    '&beta;',
         '&gamma;',  '&delta;',  '&epsilon;', '&zeta;',     '&eta;',
@@ -256,8 +256,8 @@ class StringUtils
      */
     public static function htmlSpecialChars($text)
     {
-        $text = str_replace(array('&', '"', '\'', '<', '>'), array('&amp;', '&quot;', '&apos;', '&lt;', '&gt;'), $text);
-        $text = preg_replace('/&amp;(#(?:x[0-9a-f]+)|(?:x[0-9]+)|(?:[0-9a-f]+));/i', '&\1;', $text);
+        $text = preg_replace('/&amp;#([xX][0-9a-fA-F]+|[0-9]+);/', '&#\\1;', htmlspecialchars($text, ENT_QUOTES));
+        $text = preg_replace_callback('/&amp;([a-zA-Z][0-9a-zA-Z]+);/', 'self::_htmlSpecialCharsHelper', $text);
 
         return $text;
     }
@@ -476,6 +476,50 @@ class StringUtils
     }
 
     /**
+     * truncate text string.
+     *
+     * @param string $text   source string
+     * @param int    $length maximum charactor width
+     * @param string $etc    appending text if $text truncated
+     *
+     * @return string dist
+     */
+    public function truncate($text, $length, $etc = '...')
+    {
+        // multi language extension support - strip ml tags
+        if (defined('XOOPS_CUBE_LEGACY')) {
+            // cubeutil module
+            if (isset($GLOBALS['cubeUtilMlang'])) {
+                $text = $GLOBALS['cubeUtilMlang']->obFilter($text);
+            }
+        } else {
+            // sysutil module
+            if (function_exists('sysutil_get_xoops_option')) {
+                if (sysutil_get_xoops_option('sysutil', 'sysutil_use_ml')) {
+                    if (function_exists('sysutil_ml_filter')) {
+                        $text = sysutil_ml_filter($text);
+                    }
+                }
+            }
+        }
+        $olen = strlen($text);
+        // trim width
+        if (XOOPS_USE_MULTIBYTES) {
+            $text = mb_strimwidth($text, 0, $length, '', self::detectTextEncoding($text));
+        } else {
+            $text = substr($text, 0, $length);
+        }
+        // remove broken html entity from trimed strig
+        $text = preg_replace('/&[^;]*$/s', '', $text);
+        // append $etc char if text is trimed
+        if ($olen != strlen($text)) {
+            $text .= $etc;
+        }
+
+        return $text;
+    }
+
+    /**
      * detect client encoding.
      *
      * @return string encoding name
@@ -519,5 +563,17 @@ class StringUtils
         $lang = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '';
 
         return (strstr($ua, 'Mac') && strstr($lang, 'ja')) ? 'SJIS-win' : self::_detectClientEncoding();
+    }
+
+    /**
+     * helper function for htmlSpecialChars().
+     *
+     * @param array $m match condition
+     *
+     * @return string
+     */
+    private static function _htmlSpecialCharsHelper($m)
+    {
+        return in_array('&'.$m[1].';', self::$mCharEntRef) ? '&'.$m[1].';' : '&amp;'.$m[1].';';
     }
 }

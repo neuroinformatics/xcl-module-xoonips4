@@ -3,8 +3,8 @@
 use Xoonips\Core\Functions;
 
 require_once XOOPS_MODULE_PATH.'/user/admin/actions/GroupEditAction.class.php';
-require_once XOONIPS_TRUST_PATH.'/admin/forms/user/GroupAdminEditForm.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/User.class.php';
+require_once dirname(dirname(dirname(__DIR__))).'/admin/forms/user/GroupAdminEditForm.class.php';
+require_once dirname(dirname(dirname(__DIR__))).'/class/core/User.class.php';
 
 class Xoonips_GroupEditAction extends User_GroupEditAction
 {

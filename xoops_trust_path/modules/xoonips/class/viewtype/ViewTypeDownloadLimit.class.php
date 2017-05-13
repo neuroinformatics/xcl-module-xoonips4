@@ -1,6 +1,6 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/viewtype/ViewTypeDownloadNotify.class.php';
+require_once __DIR__.'/ViewTypeDownloadNotify.class.php';
 
 class Xoonips_ViewTypeDownloadLimit extends Xoonips_ViewTypeDownloadNotify
 {

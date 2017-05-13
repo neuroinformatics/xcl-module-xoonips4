@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__).'/ViewTypeText.class.php';
+require_once __DIR__.'/ViewTypeText.class.php';
 
 class Xoonips_ViewTypeUrl extends Xoonips_ViewTypeText
 {

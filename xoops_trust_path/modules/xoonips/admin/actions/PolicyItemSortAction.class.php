@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 /**
  * admin policy item sort action.
  */
@@ -78,7 +80,7 @@ class Xoonips_Admin_PolicyItemSortAction extends Xoonips_AbstractAction
     {
         $dirname = $this->mAsset->mDirname;
         $trustDirname = $this->mAsset->mTrustDirname;
-        $handler = Xoonips_Utils::getModuleHandler('ItemSort', $dirname);
+        $handler = &Functions::getXoonipsHandler('ItemSort', $dirname);
 
         return $handler->getSortTitles();
     }

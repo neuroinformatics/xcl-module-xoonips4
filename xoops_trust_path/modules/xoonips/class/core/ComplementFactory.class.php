@@ -1,7 +1,5 @@
 <?php
 
-require_once dirname(__FILE__).'/BeanFactory.class.php';
-
 /**
  * complement factory class.
  */

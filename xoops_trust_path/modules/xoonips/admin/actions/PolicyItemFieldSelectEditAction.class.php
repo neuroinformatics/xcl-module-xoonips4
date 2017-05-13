@@ -1,6 +1,8 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/AbstractEditAction.class.php';
+use Xoonips\Core\Functions;
+
+require_once dirname(dirname(__DIR__)).'/class/AbstractEditAction.class.php';
 
 /**
  * admin policy item field select edit action.
@@ -174,7 +176,7 @@ class Xoonips_Admin_PolicyItemFieldSelectEditAction extends Xoonips_AbstractEdit
     {
         $dirname = $this->mAsset->mDirname;
         $trustDirname = $this->mAsset->mTrustDirname;
-        $handler = Xoonips_Utils::getModuleHandler('ItemField', $dirname);
+        $handler = &Functions::getXoonipsHandler('ItemField', $dirname);
         $selectNames = $handler->getUsedSelectNames();
 
         return in_array($this->mObject['name'], $selectNames);

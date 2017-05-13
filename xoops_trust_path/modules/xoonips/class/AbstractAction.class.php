@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\XoopsUtils;
+
 /**
  * abstract action.
  */
@@ -63,7 +65,7 @@ abstract class Xoonips_AbstractAction
      */
     public function getPagetitle()
     {
-        return Legacy_Utils::formatPagetitle($this->mRoot->mContext->mModule->mXoopsModule->get('name'), $this->_getPagetitle(), $this->_getActionName());
+        return XoopsUtils::formatPagetitle($this->mRoot->mContext->mModule->mXoopsModule->get('name'), $this->_getPagetitle(), $this->_getActionName());
     }
 
     /**

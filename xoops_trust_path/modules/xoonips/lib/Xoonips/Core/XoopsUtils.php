@@ -51,26 +51,25 @@ class XoopsUtils
     }
 
     /**
-     * format page title.
+     * get dirname list by trust dirname.
      *
-     * @param string $moduleName
-     * @param string $pageTitle
-     * @param string $action
+     * @param string $trustDirname
      *
-     * @return string
-     **/
-    public static function formatPagetitle($moduleName, $pageTitle, $action)
+     * @return array
+     */
+    public static function getDirnameListByTrustDirname($trustDirname)
     {
-        $format = self::getModuleConfig('legacyRender', 'pagetitle');
-        if (is_null($format)) {
-            $format = '{modulename} {action} [pagetitle]:[/pagetitle] {pagetitle}';
+        $ret = array();
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('isactive', 0, '>'));
+        $criteria->add(new \Criteria('trust_dirname', $trustDirname));
+        $criteria->addSort('weight', 'ASC');
+        $criteria->addSort('mid', 'ASC');
+        $handler = &xoops_gethandler('module');
+        $objs = &$handler->getObjects($criteria);
+        foreach ($objs as $obj) {
+            $ret[] = $obj->get('dirname');
         }
-        $search = array('{modulename}', '{pagetitle}', '{action}');
-        $replace = array($moduleName, $pageTitle, $action);
-        $ret = str_replace($search, $replace, $format);
-        $ret = preg_replace('/\[modulename\](.*)\[\/modulename\]/U', (empty($moduleName) ? '' : '$1'), $ret);
-        $ret = preg_replace('/\[pagetitle\](.*)\[\/pagetitle\]/U', (empty($pageTitle) ? '' : '$1'), $ret);
-        $ret = preg_replace('/\[action\](.*)\[\/action\]/U', (empty($action) ? '' : '$1'), $ret);
 
         return $ret;
     }
@@ -107,6 +106,18 @@ class XoopsUtils
         }
 
         return $cache[$key];
+    }
+
+    /**
+     * get environment variable.
+     *
+     * @param string $key
+     *
+     * @return string
+     */
+    public static function getEnv($key)
+    {
+        return @getenv($key);
     }
 
     /**
@@ -175,6 +186,66 @@ class XoopsUtils
     }
 
     /**
+     * set module config.
+     *
+     * @param string $dirname
+     * @param string $key
+     * @param mixed  $value
+     *
+     * @return bool
+     */
+    public static function setModuleConfig($dirname, $key, $value)
+    {
+        $configHandler = &xoops_gethandler('config');
+        $moduleHandler = &xoops_gethandler('module');
+        $moduleObj = &$moduleHandler->getByDirname($dirname);
+        $mid = $moduleObj->get('mid');
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('conf_modid', $mid));
+        $criteria->add(new \Criteria('conf_name', $key));
+        $configObjs = $configHandler->getConfigs($criteria);
+        if (count($configObjs) != 1) {
+            return false;
+        }
+        $configObj = array_shift($configObjs);
+        $configObj->set('conf_value', $value);
+
+        if (!$configHandler->insertConfig($configObj)) {
+            return false;
+        }
+        if (array_key_exists($dirname, self::$mConfigs)) {
+            self::$mConfigs[$dirname][$key] = $value;
+        }
+
+        return true;
+    }
+
+    /**
+     * format page title.
+     *
+     * @param string $moduleName
+     * @param string $pageTitle
+     * @param string $action
+     *
+     * @return string
+     **/
+    public static function formatPagetitle($moduleName, $pageTitle, $action)
+    {
+        $format = self::getModuleConfig('legacyRender', 'pagetitle');
+        if (is_null($format)) {
+            $format = '{modulename} {action} [pagetitle]:[/pagetitle] {pagetitle}';
+        }
+        $search = array('{modulename}', '{pagetitle}', '{action}');
+        $replace = array($moduleName, $pageTitle, $action);
+        $ret = str_replace($search, $replace, $format);
+        $ret = preg_replace('/\[modulename\](.*)\[\/modulename\]/U', (empty($moduleName) ? '' : '$1'), $ret);
+        $ret = preg_replace('/\[pagetitle\](.*)\[\/pagetitle\]/U', (empty($pageTitle) ? '' : '$1'), $ret);
+        $ret = preg_replace('/\[action\](.*)\[\/action\]/U', (empty($action) ? '' : '$1'), $ret);
+
+        return $ret;
+    }
+
+    /**
      * render uri.
      *
      * @param string $dirname
@@ -229,18 +300,6 @@ class XoopsUtils
     }
 
     /**
-     * get current user id.
-     *
-     * @return int user id
-     */
-    public static function getUid()
-    {
-        global $xoopsUser;
-
-        return is_object($xoopsUser) ? intval($xoopsUser->get('uid')) : self::UID_GUEST;
-    }
-
-    /**
      * get module version.
      *
      * @param string $dirname
@@ -256,6 +315,56 @@ class XoopsUtils
         }
 
         return $moduleObj->get('version');
+    }
+
+    /**
+     * get current user id.
+     *
+     * @return int user id
+     */
+    public static function getUid()
+    {
+        global $xoopsUser;
+
+        return is_object($xoopsUser) ? intval($xoopsUser->get('uid')) : self::UID_GUEST;
+    }
+
+    /**
+     * get user name.
+     *
+     * @param int $uid
+     *
+     * @return string | null
+     */
+    public static function getUserName($uid)
+    {
+        $name = null;
+        XCube_DelegateUtils::call('Legacy_User.GetUserName', new XCube_Ref($name), $uid);
+        if (!$name) {
+            $handler = &xoops_gethandler('member');
+            $user = &$handler->getUser(intval($uid));
+            if ($user) {
+                $name = $user->get('uname');
+            }
+        }
+
+        return $name;
+    }
+
+    /**
+     * check whether user exists.
+     *
+     * @param int    $userId
+     * @param string $dirname
+     *
+     * @return bool
+     */
+    public static function userExists($userId)
+    {
+        $memberHandler = &xoops_gethandler('member');
+        $userObj = &$memberHandler->getUser($userId);
+
+        return is_object($userObj);
     }
 
     /**

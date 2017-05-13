@@ -1,6 +1,8 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/viewtype/ViewType.class.php';
+use Xoonips\Core\XoopsUtils;
+
+require_once __DIR__.'/ViewType.class.php';
 
 class Xoonips_ViewTypeDate extends Xoonips_ViewType
 {
@@ -379,16 +381,16 @@ class Xoonips_ViewTypeDate extends Xoonips_ViewType
      */
     protected function getTimeZoneOffset()
     {
-        global $xoopsUser;
-        $myxoopsConfigUser = Xoonips_Utils::getXoopsConfigs(XOOPS_CONF);
-        if ($xoopsUser) {
-            $uid = $xoopsUser->getVar('uid');
+        $uid = XoopsUtils::getUid();
+        $server_TZ = XoopsUtils::getXoopsConfig('server_TZ');
+        $default_TZ = XoopsUtils::getXoopsConfig('default_TZ');
+        if ($uid != XoopsUtils::UID_GUEST) {
             $userbean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
             $userInfo = $userbean->getUserBasicInfo($uid);
 
-            return ($userInfo['timezone_offset'] - $myxoopsConfigUser['server_TZ']) * 3600;
+            return ($userInfo['timezone_offset'] - $server_TZ) * 3600;
         } else {
-            return ($myxoopsConfigUser['default_TZ'] - $myxoopsConfigUser['server_TZ']) * 3600;
+            return ($default_TZ - $server_TZ) * 3600;
         }
     }
 

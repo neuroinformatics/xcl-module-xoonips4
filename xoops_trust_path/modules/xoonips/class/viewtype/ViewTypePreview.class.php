@@ -1,9 +1,8 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/core/BeanFactory.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/core/File.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/core/Request.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/viewtype/ViewType.class.php';
+require_once dirname(__DIR__).'/core/File.class.php';
+require_once dirname(__DIR__).'/core/Request.class.php';
+require_once __DIR__.'/ViewType.class.php';
 
 class Xoonips_ViewTypePreview extends Xoonips_ViewType
 {

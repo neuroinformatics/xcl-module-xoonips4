@@ -1,7 +1,7 @@
 <?php
 
-require_once dirname(dirname(__FILE__)).'/core/Item.class.php';
-require_once dirname(dirname(__FILE__)).'/core/ActionBase.class.php';
+require_once dirname(__DIR__).'/core/Item.class.php';
+require_once dirname(__DIR__).'/core/ActionBase.class.php';
 
 class Xoonips_RegisterAction extends Xoonips_ActionBase
 {

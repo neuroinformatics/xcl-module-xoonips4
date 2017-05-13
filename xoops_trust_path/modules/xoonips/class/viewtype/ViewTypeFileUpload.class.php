@@ -1,9 +1,10 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/core/BeanFactory.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/core/File.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/core/Request.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/viewtype/ViewType.class.php';
+use Xoonips\Core\Functions;
+
+require_once dirname(__DIR__).'/core/File.class.php';
+require_once dirname(__DIR__).'/core/Request.class.php';
+require_once __DIR__.'/ViewType.class.php';
 
 class Xoonips_ViewTypeFileUpload extends Xoonips_ViewType
 {
@@ -127,7 +128,7 @@ class Xoonips_ViewTypeFileUpload extends Xoonips_ViewType
                 } else {
                     $file['limit'] = true;
                 }
-                $itemFileHandler = Xoonips_Utils::getTrustModuleHandler('ItemFile', $this->dirname, $this->trustDirname);
+                $itemFileHandler = &Functions::getXoonipsHandler('ItemFile', $this->dirname);
                 $itemFileObj = &$itemFileHandler->get($value);
                 $file['download_url'] = $itemFileObj->getDownloadUrl();
                 $newFileInfo[] = $file;

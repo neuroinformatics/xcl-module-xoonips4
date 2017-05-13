@@ -3,9 +3,9 @@
 XCube_DelegateUtils::call('Xoonips.Edit.Access');
 
 $xoopsOption['pagetype'] = 'user';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Request.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Response.class.php';
-require_once 'class/action/EditAction.class.php';
+require_once __DIR__.'/class/core/Request.class.php';
+require_once __DIR__.'/class/core/Response.class.php';
+require_once __DIR__.'/class/action/EditAction.class.php';
 
 // access check
 Xoonips_Utils::denyGuestAccess();
@@ -56,30 +56,29 @@ if ($op == 'editIndex') {
 
 // set action map
 $actionMap = array();
-$dirname = Xoonips_Utils::getDirname();
-$actionMap['init_success'] = $dirname.'_edit.html';
-$actionMap['complete_success'] = $dirname.'_edit.html';
-$actionMap['addFieldGroup_success'] = $dirname.'_edit.html';
-$actionMap['deleteFieldGroup_success'] = $dirname.'_edit.html';
-$actionMap['uploadFile_success'] = $dirname.'_upload_output.html';
-$actionMap['deleteFile_success'] = $dirname.'_edit.html';
-$actionMap['searchUser_success'] = $dirname.'_edit.html';
-$actionMap['deleteUser_success'] = $dirname.'_edit.html';
-$actionMap['searchRelatedItem_success'] = $dirname.'_edit.html';
-$actionMap['deleteRelatedItem_success'] = $dirname.'_edit.html';
-$actionMap['back_success'] = $dirname.'_edit.html';
-$actionMap['confirm_success'] = $dirname.'_edit_confirm.html';
-$actionMap['confirm_error'] = $dirname.'_edit.html';
-$actionMap['save_success'] = $dirname.'_common_msg_sub.html';
+$actionMap['init_success'] = $mydirname.'_edit.html';
+$actionMap['complete_success'] = $mydirname.'_edit.html';
+$actionMap['addFieldGroup_success'] = $mydirname.'_edit.html';
+$actionMap['deleteFieldGroup_success'] = $mydirname.'_edit.html';
+$actionMap['uploadFile_success'] = $mydirname.'_upload_output.html';
+$actionMap['deleteFile_success'] = $mydirname.'_edit.html';
+$actionMap['searchUser_success'] = $mydirname.'_edit.html';
+$actionMap['deleteUser_success'] = $mydirname.'_edit.html';
+$actionMap['searchRelatedItem_success'] = $mydirname.'_edit.html';
+$actionMap['deleteRelatedItem_success'] = $mydirname.'_edit.html';
+$actionMap['back_success'] = $mydirname.'_edit.html';
+$actionMap['confirm_success'] = $mydirname.'_edit_confirm.html';
+$actionMap['confirm_error'] = $mydirname.'_edit.html';
+$actionMap['save_success'] = $mydirname.'_common_msg_sub.html';
 $actionMap['finish_success'] = 'redirect_header';
-$actionMap['editIndex_success'] = $dirname.'_itemindex_edit.html';
-$actionMap['confirmIndex_success'] = $dirname.'_itemindex_confirm.html';
+$actionMap['editIndex_success'] = $mydirname.'_itemindex_edit.html';
+$actionMap['confirmIndex_success'] = $mydirname.'_itemindex_confirm.html';
 $actionMap['saveIndex_success'] = 'redirect_header';
-$actionMap['editOwners_success'] = $dirname.'_itemowners_edit.html';
-$actionMap['searchOwners_success'] = $dirname.'_itemowners_edit.html';
-$actionMap['deleteOwners_success'] = $dirname.'_itemowners_edit.html';
+$actionMap['editOwners_success'] = $mydirname.'_itemowners_edit.html';
+$actionMap['searchOwners_success'] = $mydirname.'_itemowners_edit.html';
+$actionMap['deleteOwners_success'] = $mydirname.'_itemowners_edit.html';
 $actionMap['saveOwners_success'] = 'redirect_header';
-$actionMap['deleteConfirm_success'] = $dirname.'_delete_confirm.html';
+$actionMap['deleteConfirm_success'] = $mydirname.'_delete_confirm.html';
 $actionMap['delete_success'] = 'redirect_header';
 
 $checkOp = in_array($op, array(

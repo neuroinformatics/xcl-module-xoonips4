@@ -1,14 +1,14 @@
 <?php
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
+if (!defined('XOOPS_TRUST_PATH')) {
+    die('set XOOPS_TRUST_PATH into mainfile.php');
 }
-
-$mydirname = basename(dirname(dirname(__FILE__)));
-require XOOPS_ROOT_PATH.'/modules/'.$mydirname.'/mytrustdirname.php'; // set $mytrustdirname
-
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/preload/AssetPreload.class.php';
-Xoonips_AssetPreloadBase::prepare($mydirname, $mytrustdirname);
+$mydirname = basename(dirname(__DIR__));
+require dirname(__DIR__).'/mytrustdirname.php'; // set $mytrustdirname
+require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/preload/'.basename(__FILE__);
+$cname = ucfirst($mytrustdirname).'_AssetPreloadBase';
+$cname::prepare($mydirname, $mytrustdirname);
 
 require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/preload/UserPreload.class.php';
-Xoonips_UserPreloadBase::prepare($mydirname, $mytrustdirname);
+$cname = ucfirst($mytrustdirname).'_UserPreloadBase';
+$cname::prepare($mydirname, $mytrustdirname);

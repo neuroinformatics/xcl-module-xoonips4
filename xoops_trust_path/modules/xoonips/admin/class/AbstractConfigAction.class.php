@@ -2,7 +2,7 @@
 
 use Xoonips\Core\Functions;
 
-require_once dirname(dirname(dirname(__FILE__))).'/class/AbstractEditAction.class.php';
+require_once dirname(dirname(__DIR__)).'/class/AbstractEditAction.class.php';
 
 /**
  * abstract admin config action.

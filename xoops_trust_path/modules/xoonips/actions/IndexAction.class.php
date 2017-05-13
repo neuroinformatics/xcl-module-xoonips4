@@ -1,9 +1,10 @@
 <?php
 
-require_once XOONIPS_TRUST_PATH.'/class/core/BeanFactory.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/Request.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/Response.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/action/ItemTypeAction.class.php';
+use Xoonips\Core\XoopsUtils;
+
+require_once dirname(__DIR__).'/class/core/Request.class.php';
+require_once dirname(__DIR__).'/class/core/Response.class.php';
+require_once dirname(__DIR__).'/class/action/ItemTypeAction.class.php';
 
 /**
  * index action.
@@ -37,7 +38,7 @@ class Xoonips_IndexAction extends Xoonips_AbstractAction
      */
     public function executeViewIndex(&$render)
     {
-        $uid = Legacy_Utils::getUid();
+        $uid = XoopsUtils::getUid();
         $dirname = $this->mAsset->mDirname;
         $request = new Xoonips_Request();
         $response = new Xoonips_Response();

@@ -1,6 +1,8 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/AbstractEditAction.class.php';
+use Xoonips\Core\Functions;
+
+require_once dirname(dirname(__DIR__)).'/class/AbstractEditAction.class.php';
 
 /**
  * admin policy item quick search edit action.
@@ -125,7 +127,7 @@ class Xoonips_Admin_PolicyItemQuickSearchEditAction extends Xoonips_AbstractEdit
                 'name' => constant($constpref.'_POLICY_ITEM_QUICKSEARCH_EDIT_TITLE'),
             ),
         );
-        $handler = Xoonips_Utils::getModuleHandler('ItemField', $dirname);
+        $handler = &Functions::getXoonipsHandler('ItemField', $dirname);
         $itemFieldObjects = $handler->getObjectsForQuickSearch();
         $pendingIds = $handler->getPendingIds();
         $render->setTemplateName('policy_item_quicksearch_edit.html');

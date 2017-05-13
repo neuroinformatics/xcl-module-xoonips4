@@ -1,9 +1,5 @@
 <?php
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
-
 class Xoonips_UserAbstractEditAction extends Xoonips_UserAction
 {
     public $mObject = null;

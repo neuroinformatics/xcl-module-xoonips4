@@ -1,8 +1,9 @@
 <?php
 
-require_once dirname(__FILE__).'/ItemFieldManagerFactory.class.php';
-require_once dirname(__FILE__).'/ItemFieldManager.class.php';
-require_once dirname(__FILE__).'/BeanFactory.class.php';
+use Xoonips\Core\Functions;
+
+require_once __DIR__.'/ItemFieldManagerFactory.class.php';
+require_once __DIR__.'/ItemFieldManager.class.php';
 
 class Xoonips_ItemEntity
 {
@@ -77,7 +78,7 @@ class Xoonips_ItemEntity
             return false;
         }
 
-        $itemHandler = Xoonips_Utils::getTrustModuleHandler('Item', $this->dirname, $this->trustDirname);
+        $itemHandler = &Functions::getXoonipsHandler('Item', $this->dirname);
         $itemObj = &$itemHandler->get($this->getItemId());
 
         return $itemObj->getUrl();

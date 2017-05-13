@@ -1,9 +1,9 @@
 <?php
 
 $xoopsOption['pagetype'] = 'user';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Request.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Response.class.php';
-require_once 'class/action/IndexDescriptionAction.class.php';
+require_once __DIR__.'/class/core/Request.class.php';
+require_once __DIR__.'/class/core/Response.class.php';
+require_once __DIR__.'/class/action/IndexDescriptionAction.class.php';
 
 Xoonips_Utils::denyGuestAccess();
 
@@ -29,8 +29,7 @@ if ($indexId == 1) {
 
 // set action map
 $actionMap = array();
-$dirname = Xoonips_Utils::getDirname();
-$actionMap['init_success'] = $dirname.'_index_description.html';
+$actionMap['init_success'] = $mydirname.'_index_description.html';
 $actionMap['update_error'] = 'redirect_header';
 $actionMap['update_success'] = 'redirect_header';
 $actionMap['delete_error'] = 'redirect_header';

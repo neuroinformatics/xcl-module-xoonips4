@@ -1,10 +1,10 @@
 <?php
 
 error_reporting(0);
-require_once 'class/core/Oaipmh.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Request.class.php';
+require_once __DIR__.'/class/core/Request.class.php';
+require_once __DIR__.'/class/core/Oaipmh.class.php';
 
-$oaipmh = new Xoonips_Oaipmh(Xoonips_Utils::getDirname(), Xoonips_Utils::getTrustDirname());
+$oaipmh = new Xoonips_Oaipmh($mydirname, $mytrustdirname);
 
 $request = new Xoonips_Request();
 $args['verb'] = $request->getParameter('verb');

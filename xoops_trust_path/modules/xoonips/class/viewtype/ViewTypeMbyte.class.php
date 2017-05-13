@@ -1,6 +1,6 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/viewtype/ViewTypeText.class.php';
+require_once __DIR__.'/ViewTypeText.class.php';
 
 class Xoonips_ViewTypeMbyte extends Xoonips_ViewTypeText
 {

@@ -1,11 +1,6 @@
 <?php
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
-
-require_once 'BeanFactory.class.php';
-require_once 'ItemEntity.class.php';
+require_once __DIR__.'/ItemEntity.class.php';
 
 class Xoonips_Sitemaps
 {

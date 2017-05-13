@@ -1,6 +1,6 @@
 <?php
 
-require_once XOONIPS_TRUST_PATH.'/class/user/ActionBase.class.php';
+require_once dirname(__DIR__).'/class/user/ActionBase.class.php';
 
 class Xoonips_GroupInfoAction extends Xoonips_UserActionBase
 {

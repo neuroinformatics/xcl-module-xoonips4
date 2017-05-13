@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 /**
  * item quick search condition object.
  */
@@ -156,7 +158,7 @@ class Xoonips_ItemQuickSearchConditionHandler extends XoopsObjectGenericHandler
     public function existItemFieldId($fieldId)
     {
         // condition_id = 1 is always contain all searchable item fields
-        $handler = Xoonips_Utils::getModuleHandler('ItemField', $this->mDirname);
+        $handler = &Functions::getXoonipsHandler('ItemField', $this->mDirname);
         $objs = $handler->getObjectsForQuickSearch();
 
         return in_array($fieldId, array_keys($objs));
@@ -175,7 +177,7 @@ class Xoonips_ItemQuickSearchConditionHandler extends XoopsObjectGenericHandler
         $pid = $obj->get($this->mPrimary);
         if ($pid == 1) {
             // return all field ids if condition_id is 1
-            $handler = Xoonips_Utils::getModuleHandler('ItemField', $this->mDirname);
+            $handler = &Functions::getXoonipsHandler('ItemField', $this->mDirname);
             $objs = $handler->getObjectsForQuickSearch();
 
             return array_keys($objs);

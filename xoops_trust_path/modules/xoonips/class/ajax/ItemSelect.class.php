@@ -1,8 +1,8 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/core/Request.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/core/Response.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/action/ItemSelectSubAction.class.php';
+require_once dirname(__DIR__).'/core/Request.class.php';
+require_once dirname(__DIR__).'/core/Response.class.php';
+require_once dirname(__DIR__).'/action/ItemSelectSubAction.class.php';
 
 class Xoonips_ItemSelectAjaxMethod extends Xoonips_AbstractAjaxMethod
 {

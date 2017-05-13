@@ -1,6 +1,8 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/AbstractEditAction.class.php';
+use Xoonips\Core\Functions;
+
+require_once dirname(dirname(__DIR__)).'/class/AbstractEditAction.class.php';
 
 /**
  * admin policy item field edit action.
@@ -105,11 +107,11 @@ class Xoonips_Admin_PolicyItemFieldEditAction extends Xoonips_AbstractEditAction
                 'name' => $title,
             ),
         );
-        $vtHandler = Xoonips_Utils::getModuleHandler('ViewType', $dirname);
+        $vtHandler = &Functions::getXoonipsHandler('ViewType', $dirname);
         $viewTypes = $vtHandler->getViewTypes();
-        $dtHandler = Xoonips_Utils::getModuleHandler('DataType', $dirname);
+        $dtHandler = &Functions::getXoonipsHandler('DataType', $dirname);
         $dataTypes = $dtHandler->getDataTypes();
-        $fvsHandler = Xoonips_Utils::getModuleHandler('ItemFieldValueSet', $dirname);
+        $fvsHandler = &Functions::getXoonipsHandler('ItemFieldValueSet', $dirname);
         $selectNames = $fvsHandler->getSelectNames();
         $render->setTemplateName('policy_item_field_edit.html');
         $render->setAttribute('title', $title);

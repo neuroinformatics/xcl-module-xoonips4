@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(dirname(dirname(__FILE__))).'/class/AbstractListAction.class.php';
+require_once dirname(dirname(__DIR__)).'/class/AbstractListAction.class.php';
 
 /**
  * policy item quick search action.

@@ -1,8 +1,7 @@
 <?php
 
-require_once XOONIPS_TRUST_PATH.'/class/core/ActionBase.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/Item.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/BeanFactory.class.php';
+require_once dirname(dirname(dirname(__DIR__))).'/class/core/ActionBase.class.php';
+require_once dirname(dirname(dirname(__DIR__))).'/class/core/Item.class.php';
 
 class Xoonips_MaintenanceItemCommonAction extends Xoonips_ActionBase
 {

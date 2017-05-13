@@ -1,7 +1,7 @@
 <?php
 
 require_once XOOPS_MODULE_PATH.'/user/admin/actions/UserDeleteAction.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/User.class.php';
+require_once dirname(dirname(dirname(__DIR__))).'/class/core/User.class.php';
 
 class Xoonips_UserDeleteAction extends User_UserDeleteAction
 {

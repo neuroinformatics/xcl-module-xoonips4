@@ -1,9 +1,8 @@
 <?php
 
 require_once XOOPS_MODULE_PATH.'/user/admin/actions/UserListAction.class.php';
-require_once XOONIPS_TRUST_PATH.'/admin/forms/user/UserFilterForm.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/User.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/BeanFactory.class.php';
+require_once dirname(dirname(dirname(__DIR__))).'/admin/forms/user/UserFilterForm.class.php';
+require_once dirname(dirname(dirname(__DIR__))).'/class/core/User.class.php';
 
 class Xoonips_UserListAction extends User_UserListAction
 {

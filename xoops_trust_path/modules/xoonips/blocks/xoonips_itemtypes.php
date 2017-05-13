@@ -1,9 +1,5 @@
 <?php
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
-
 // xoonips itemtypes block
 function b_xoonips_itemtypes_show($options)
 {
@@ -17,9 +13,9 @@ function b_xoonips_itemtypes_show($options)
     }
     $trustDirname = $module->getVar('trust_dirname');
 
-    require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Request.class.php';
-    require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Response.class.php';
-    require_once dirname(dirname(__FILE__)).'/class/action/ItemTypeAction.class.php';
+    require_once dirname(__DIR__).'/class/core/Request.class.php';
+    require_once dirname(__DIR__).'/class/core/Response.class.php';
+    require_once dirname(__DIR__).'/class/action/ItemTypeAction.class.php';
 
     // backup form values
     $keys = array();

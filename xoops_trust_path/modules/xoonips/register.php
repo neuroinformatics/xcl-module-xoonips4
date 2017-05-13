@@ -3,9 +3,9 @@
 XCube_DelegateUtils::call('Xoonips.Register.Access');
 
 $xoopsOption['pagetype'] = 'user';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Request.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Response.class.php';
-require_once 'class/action/RegisterAction.class.php';
+require_once __DIR__.'/class/core/Request.class.php';
+require_once __DIR__.'/class/core/Response.class.php';
+require_once __DIR__.'/class/action/RegisterAction.class.php';
 
 // access check
 Xoonips_Utils::denyGuestAccess();
@@ -41,23 +41,22 @@ if (!in_array($op, array(
 
 // set action map
 $actionMap = array();
-$dirname = Xoonips_Utils::getDirname();
-$actionMap['init_success'] = $dirname.'_register_top.html';
-$actionMap['selectItemtype_success'] = $dirname.'_register_select_itemtype.html';
-$actionMap['register_success'] = $dirname.'_register.html';
-$actionMap['complete_success'] = $dirname.'_register.html';
-$actionMap['addFieldGroup_success'] = $dirname.'_register.html';
-$actionMap['deleteFieldGroup_success'] = $dirname.'_register.html';
-$actionMap['uploadFile_success'] = $dirname.'_upload_output.html';
-$actionMap['deleteFile_success'] = $dirname.'_register.html';
-$actionMap['searchUser_success'] = $dirname.'_register.html';
-$actionMap['deleteUser_success'] = $dirname.'_register.html';
-$actionMap['searchRelatedItem_success'] = $dirname.'_register.html';
-$actionMap['deleteRelatedItem_success'] = $dirname.'_register.html';
-$actionMap['back_success'] = $dirname.'_register.html';
-$actionMap['confirm_success'] = $dirname.'_register_confirm.html';
-$actionMap['confirm_error'] = $dirname.'_register.html';
-$actionMap['save_success'] = $dirname.'_common_msg_sub.html';
+$actionMap['init_success'] = $mydirname.'_register_top.html';
+$actionMap['selectItemtype_success'] = $mydirname.'_register_select_itemtype.html';
+$actionMap['register_success'] = $mydirname.'_register.html';
+$actionMap['complete_success'] = $mydirname.'_register.html';
+$actionMap['addFieldGroup_success'] = $mydirname.'_register.html';
+$actionMap['deleteFieldGroup_success'] = $mydirname.'_register.html';
+$actionMap['uploadFile_success'] = $mydirname.'_upload_output.html';
+$actionMap['deleteFile_success'] = $mydirname.'_register.html';
+$actionMap['searchUser_success'] = $mydirname.'_register.html';
+$actionMap['deleteUser_success'] = $mydirname.'_register.html';
+$actionMap['searchRelatedItem_success'] = $mydirname.'_register.html';
+$actionMap['deleteRelatedItem_success'] = $mydirname.'_register.html';
+$actionMap['back_success'] = $mydirname.'_register.html';
+$actionMap['confirm_success'] = $mydirname.'_register_confirm.html';
+$actionMap['confirm_error'] = $mydirname.'_register.html';
+$actionMap['save_success'] = $mydirname.'_common_msg_sub.html';
 $actionMap['finish_success'] = 'redirect_header';
 
 if ($op == 'init') {

@@ -2,9 +2,9 @@
 
 $GLOBALS['xoopsOption']['pagetype'] = 'user';
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/core/Request.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/core/Response.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/action/UserSelectSubAction.class.php';
+require_once dirname(__DIR__).'/core/Request.class.php';
+require_once dirname(__DIR__).'/core/Response.class.php';
+require_once dirname(__DIR__).'/action/UserSelectSubAction.class.php';
 
 class Xoonips_UserSelectAjaxMethod extends Xoonips_AbstractAjaxMethod
 {

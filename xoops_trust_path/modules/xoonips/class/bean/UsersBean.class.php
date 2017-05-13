@@ -1,7 +1,8 @@
 <?php
 
-require_once XOONIPS_TRUST_PATH.'/class/core/BeanBase.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/Enum.class.php';
+use Xoonips\Core\XoopsUtils;
+
+require_once dirname(__DIR__).'/core/BeanBase.class.php';
 require_once XOOPS_ROOT_PATH.'/class/xoopsuser.php';
 
 /**
@@ -207,8 +208,8 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
         } else {
             $columns = $columns.'actkey,user_regdate';
             $values = $values."'$actkey','$regtime'";
-            $myxoopsConfigUser = Xoonips_Utils::getXoopsConfigs(XOOPS_CONF_USER);
-            if ($myxoopsConfigUser['activation_type'] != 1) {
+            $activation_type = XoopsUtils::getXoopsConfig('activation_type', XOOPS_CONF_USER);
+            if ($activation_type != 1) {
                 $columns = $columns.',level';
                 $values = $values.',0';
             }

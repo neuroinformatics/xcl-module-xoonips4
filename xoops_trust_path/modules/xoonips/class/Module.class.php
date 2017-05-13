@@ -1,8 +1,10 @@
 <?php
 
-require_once dirname(__FILE__).'/AbstractAction.class.php';
-require_once dirname(__FILE__).'/AbstractActionForm.class.php';
-require_once dirname(__FILE__).'/AbstractFilterForm.class.php';
+use Xoonips\Core\XoopsUtils;
+
+require_once __DIR__.'/AbstractAction.class.php';
+require_once __DIR__.'/AbstractActionForm.class.php';
+require_once __DIR__.'/AbstractFilterForm.class.php';
 
 $prefix = strtoupper($mytrustdirname);
 define($prefix.'_FRAME_PERFORM_SUCCESS', 1);
@@ -314,8 +316,7 @@ class Xoonips_Module extends Legacy_ModuleAdapter
             $this->doPermissionError();
             die();
         }
-        $classUtils = ucfirst($trustDirname).'_Utils';
-        $viewStatus = ($classUtils::getEnv('REQUEST_METHOD') == 'POST') ? $this->mAction->execute() : $this->mAction->getDefaultView();
+        $viewStatus = (XoopsUtils::getEnv('REQUEST_METHOD') == 'POST') ? $this->mAction->execute() : $this->mAction->getDefaultView();
         if (in_array($viewStatus, $this->_mAllowViewNames)) {
             $methodName = 'executeView'.ucfirst($viewStatus);
             if (is_callable(array($this->mAction, $methodName))) {

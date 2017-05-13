@@ -7,9 +7,7 @@ use Xoonips\Core\XCubeUtils;
 use Xoonips\Core\XoopsSystemUtils;
 use Xoonips\Installer\ModuleInstaller;
 
-require_once XOONIPS_TRUST_PATH.'/class/Enum.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/BeanFactory.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/ImportItemtype.class.php';
+require_once dirname(dirname(dirname(__DIR__))).'/class/core/ImportItemtype.class.php';
 
 /**
  * installer class.
@@ -694,7 +692,7 @@ SQL;
         $dirname = $this->mXoopsModule->get('dirname');
         $trustDirname = Functions::getTrustDirname();
         $importItemType = new Xoonips_ImportItemType($dirname, $trustDirname);
-        $dpath = XOONIPS_TRUST_PATH.'/itemtype';
+        $dpath = dirname(dirname(dirname(__DIR__))).'/itemtype';
         // for Default.xml
         $fname = 'Default/Default.xml';
         $fpath = $dpath.'/'.$fname;

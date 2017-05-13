@@ -1,10 +1,11 @@
 <?php
 
-require_once dirname(dirname(__FILE__)).'/core/ActionBase.class.php';
-require_once dirname(dirname(__FILE__)).'/core/Item.class.php';
-require_once dirname(dirname(dirname(__FILE__))).'/include/itemtypetemplate.inc.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/Enum.class.php';
-require_once dirname(dirname(__FILE__)).'/XmlItemExport.class.php';
+use Xoonips\Core\Functions;
+
+require_once dirname(__DIR__).'/core/ActionBase.class.php';
+require_once dirname(__DIR__).'/core/Item.class.php';
+require_once dirname(dirname(__DIR__)).'/include/itemtypetemplate.inc.php';
+require_once dirname(__DIR__).'/XmlItemExport.class.php';
 
 class Xoonips_SearchAction extends Xoonips_ActionBase
 {
@@ -75,7 +76,7 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
         $search_condition = $request->getParameter('search_condition');
 
         // get installed quick search conditions
-        $chandler = Xoonips_Utils::getModuleHandler('ItemQuickSearchCondition', $this->dirname);
+        $chandler = &Functions::getXoonipsHandler('ItemQuickSearchCondition', $this->dirname);
         $search_conditions = $chandler->getConditions();
         if (!in_array($search_condition, array_keys($search_conditions))) {
             $search_condition = '';
@@ -193,7 +194,7 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
 
         // get order by select
         $default_orderby = '0';
-        $sortHandler = Xoonips_Utils::getModuleHandler('ItemSort', $this->dirname);
+        $sortHandler = &Functions::getXoonipsHandler('ItemSort', $this->dirname);
         $sortTitles = $sortHandler->getSortTitles();
         $sortIds = array_keys($sortTitles);
         if (!empty($sortIds)) {
@@ -451,7 +452,7 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
     {
         $iids = array();
         if (trim($keyword) != '') {
-            $chandler = Xoonips_Utils::getModuleHandler('ItemQuickSearchCondition', $this->dirname);
+            $chandler = &Functions::getXoonipsHandler('ItemQuickSearchCondition', $this->dirname);
             $cobj = &$chandler->get($search_condition);
             if (is_object($cobj)) {
                 $post_data = array();

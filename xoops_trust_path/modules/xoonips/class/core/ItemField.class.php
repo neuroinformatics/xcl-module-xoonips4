@@ -1,8 +1,8 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/BeanFactory.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Field.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/Enum.class.php';
+use Xoonips\Core\Functions;
+
+require_once __DIR__.'/Field.class.php';
 
 class Xoonips_ItemField extends Xoonips_Field
 {
@@ -40,44 +40,44 @@ class Xoonips_ItemField extends Xoonips_Field
 
         // $op(1:list 2:detail 3:search)
         switch ($op) {
-            case Xoonips_Enum::OP_TYPE_LIST:
-                if ($this->getListDisplay() == 0) {
-                    $ret = false;
-                }
-                break;
-            case Xoonips_Enum::OP_TYPE_DETAIL:
-                if ($this->getDetailDisplay() == 0) {
-                    $ret = false;
-                }
-                break;
-            case Xoonips_Enum::OP_TYPE_METAINFO:
-                if ($this->getDetailDisplay() == 0) {
-                    $ret = false;
-                }
-                break;
-            case Xoonips_Enum::OP_TYPE_ITEMUSERSEDIT:
-                if ($this->getDetailDisplay() == 0) {
-                    $ret = false;
-                }
-                break;
-            case Xoonips_Enum::OP_TYPE_SEARCH:
-                if ($this->getDetailTarget() == 0) {
-                    $ret = false;
-                }
-                break;
-            case Xoonips_Enum::OP_TYPE_SIMPLESEARCH:
-                if ($this->getDetailTarget() == 0) {
-                    $ret = false;
-                }
-                break;
-            case Xoonips_Enum::OP_TYPE_QUICKSEARCH:
-                $handler = Legacy_Utils::getModuleHandler('ItemQuickSearchCondition', $this->dirname);
-                if (!$handler->existItemFieldId($this->getId())) {
-                    $ret = false;
-                }
-                break;
-            default:
-                break;
+        case Xoonips_Enum::OP_TYPE_LIST:
+            if ($this->getListDisplay() == 0) {
+                $ret = false;
+            }
+            break;
+        case Xoonips_Enum::OP_TYPE_DETAIL:
+            if ($this->getDetailDisplay() == 0) {
+                $ret = false;
+            }
+            break;
+        case Xoonips_Enum::OP_TYPE_METAINFO:
+            if ($this->getDetailDisplay() == 0) {
+                $ret = false;
+            }
+            break;
+        case Xoonips_Enum::OP_TYPE_ITEMUSERSEDIT:
+            if ($this->getDetailDisplay() == 0) {
+                $ret = false;
+            }
+            break;
+        case Xoonips_Enum::OP_TYPE_SEARCH:
+            if ($this->getDetailTarget() == 0) {
+                $ret = false;
+            }
+            break;
+        case Xoonips_Enum::OP_TYPE_SIMPLESEARCH:
+            if ($this->getDetailTarget() == 0) {
+                $ret = false;
+            }
+            break;
+        case Xoonips_Enum::OP_TYPE_QUICKSEARCH:
+            $handler = &Functions::getXoonipsHandler('ItemQuickSearchCondition', $this->dirname);
+            if (!$handler->existItemFieldId($this->getId())) {
+                $ret = false;
+            }
+            break;
+        default:
+            break;
         }
 
         return $ret;

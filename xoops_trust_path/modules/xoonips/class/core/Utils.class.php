@@ -4,179 +4,6 @@ use Xoonips\Core\Functions;
 
 class Xoonips_Utils
 {
-    /**
-     * get trust dirname by dirname.
-     *
-     * @param string $dirname
-     *
-     * @return string/null
-     */
-    public static function getTrustDirnameByDirname($dirname)
-    {
-        static $cache = array();
-        if (!isset($cache[$dirname])) {
-            $cache[$dirname] = false;
-            $handler = &xoops_gethandler('module');
-            $module = &$handler->getByDirname($dirname);
-            if ($module && $module->get('trust_dirname')) {
-                $cache[$dirname] = $module->get('trust_dirname');
-            }
-        }
-
-        return $cache[$dirname] === false ? null : $cache[$dirname];
-    }
-
-    /**
-     * get xoops handler.
-     *
-     * @param string $name
-     * @param bool   $optional
-     *
-     * @return XoopsObjectHandler&
-     */
-    public static function &getXoopsHandler($name, $optional = false)
-    {
-        return xoops_gethandler($name, $optional);
-    }
-
-    /**
-     * get trust module handler.
-     *
-     * @param string $name
-     * @param string $dirname
-     * @param string $trustDirname
-     *
-     * @return XoopsObjectHandleer
-     */
-    public static function getTrustModuleHandler($name, $dirname, $trustDirname)
-    {
-        $mydirname = $dirname;
-        $mytrustdirname = $trustDirname;
-        require_once XOOPS_TRUST_PATH.'/modules/'.$trustDirname.'/class/handler/'.ucfirst($name).'.class.php';
-        $className = ucfirst($trustDirname).'_'.ucfirst($name).'Handler';
-        $root = &XCube_Root::getSingleton();
-        $instance = new $className($root->mController->getDB(), $dirname);
-
-        return $instance;
-    }
-
-    /**
-     * get module handler.
-     *
-     * @param string $name
-     * @param string $dirname
-     *
-     * @return XoopsObjectHandleer
-     */
-    public static function getModuleHandler($name, $dirname)
-    {
-        if ($trustDirname = self::getTrustDirnameByDirname($dirname)) {
-            return self::getTrustModuleHandler($name, $dirname, $trustDirname);
-        }
-
-        return xoops_getmodulehandler($name, $dirname);
-    }
-
-    /**
-     * get environment variable.
-     *
-     * @param string $key
-     *
-     * @return string
-     */
-    public static function getEnv($key)
-    {
-        return @getenv($key);
-    }
-
-    /**
-     * get module config.
-     *
-     * @param string $dirname
-     * @param string $key
-     *
-     * @return mixed
-     */
-    public static function getModuleConfig($dirname, $key)
-    {
-        $handler = &self::getXoopsHandler('config');
-        $configArr = $handler->getConfigsByDirname($dirname);
-
-        return $configArr[$key];
-    }
-
-    /**
-     * set module config.
-     *
-     * @param string $dirname
-     * @param string $key
-     * @param mixed  $value
-     *
-     * @return bool
-     */
-    public static function setModuleConfig($dirname, $key, $value)
-    {
-        $configHandler = &self::getXoopsHandler('config');
-        $moduleHandler = &self::getXoopsHandler('module');
-        $moduleObj = &$moduleHandler->getByDirname($dirname);
-        $mid = $moduleObj->get('mid');
-        $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('conf_modid', $mid));
-        $criteria->add(new Criteria('conf_name', $key));
-        $configObjs = $configHandler->getConfigs($criteria);
-        if (count($configObjs) != 1) {
-            return false;
-        }
-        $configObj = array_shift($configObjs);
-        $configObj->set('conf_value', $value);
-
-        return $configHandler->insertConfig($configObj);
-    }
-
-    /**
-     * check whether user exists.
-     *
-     * @param int    $userId
-     * @param string $dirname
-     *
-     * @return bool
-     */
-    public static function userExists($userId)
-    {
-        $memberHandler = &xoops_gethandler('member');
-        $userObj = &$memberHandler->getUser($userId);
-
-        return is_object($userObj);
-    }
-
-    /**
-     * check whether user is admin.
-     *
-     * @param int    $userId
-     * @param string $dirname
-     *
-     * @return bool
-     */
-    public static function isAdmin($userId, $dirname = false)
-    {
-        $memberHandler = &xoops_gethandler('member');
-        $groupIds = &$memberHandler->getGroupsByUser($userId);
-        if (in_array(XOOPS_GROUP_ADMIN, $groupIds)) {
-            return true;
-        }
-        if ($dirname !== false) {
-            $userObj = &$memberHandler->getUser($userId);
-            $moduleHandler = &xoops_gethandler('module');
-            $moduleObj = &$moduleHandler->getByDirname($dirname);
-            $moduleId = $moduleObj->get('mid');
-            if ($userObj->isAdmin($moduleId)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public static function convertSQLStr($v)
     {
         if (is_null($v)) {
@@ -222,19 +49,6 @@ class Xoonips_Utils
         return $ret;
     }
 
-    public static function convertMsgSign($dirname, $trustDirname)
-    {
-        $myxoopsConfig = self::getXoopsConfigs(XOOPS_CONF);
-        $config_values = array(
-            'sitename' => $myxoopsConfig['sitename'],
-            'adminmail' => $myxoopsConfig['adminmail'],
-            'siteurl' => XOOPS_URL.'/',
-            'message_sign' => Functions::getXoonipsConfig($dirname, 'message_sign'),
-        );
-
-        return $config_values;
-    }
-
     /**
      * delete files not related to any sessions and any items.
      */
@@ -268,6 +82,7 @@ class Xoonips_Utils
      */
     public static function getCcLicense($cc_commercial_use, $cc_modification, $compact_icon = false)
     {
+        $trustDirname = Functions::getTrustDirname();
         $cc_version = '40';
         static $cc_condition_map = array(
             '00' => 'BY\-NC\-ND',
@@ -293,7 +108,7 @@ class Xoonips_Utils
         } else {
             $reg = sprintf('/\bCC\-%s\-%s\.html\b/', $condition, $cc_version);
         }
-        $fpath = self::ccTemplateDir(XOONIPS_TRUST_DIRNAME);
+        $fpath = self::ccTemplateDir($trustDirname);
         $fileNames = scandir($fpath);
         if (!$fileNames) {
             return false;
@@ -308,7 +123,7 @@ class Xoonips_Utils
         if ($fname == '') {
             return false;
         }
-        $fpath = self::ccTemplateDir(XOONIPS_TRUST_DIRNAME).$fname;
+        $fpath = self::ccTemplateDir($trustDirname).$fname;
         // file not found
         if (!file_exists($fpath)) {
             return false;
@@ -364,39 +179,6 @@ class Xoonips_Utils
         if (!$xoopsUser) {
             redirect_header(is_null($url) ? XOOPS_URL.'/user.php' : $url, 3, $msg);
         }
-    }
-
-    /**
-     * get xoops configs for compatibility with XOOPS Cube Legacy 2.1.
-     *
-     * @return array xoops configs
-     */
-    public static function getXoopsConfigs($category)
-    {
-        static $cache_configs = array();
-        if (isset($cache_configs[$category])) {
-            return $cache_configs[$category];
-        }
-        $config_handler = &xoops_gethandler('config');
-        $configs = $config_handler->getConfigsByCat($category);
-        switch ($category) {
-            case XOOPS_CONF:
-                $tmp = &$config_handler->getConfigsByDirname('legacyRender');
-                $configs['banners'] = $tmp['banners'];
-                $tmp = &$config_handler->getConfigsByDirname(XCUBE_CORE_USER_MODULE_NAME);
-                $configs['usercookie'] = $tmp['usercookie'];
-                $configs['maxuname'] = $tmp['maxuname'];
-                $configs['sslloginlink'] = $tmp['sslloginlink'];
-                $configs['sslpost_name'] = $tmp['sslpost_name'];
-                $configs['use_ssl'] = $tmp['use_ssl'];
-                break;
-            case XOOPS_CONF_USER:
-                $configs = $config_handler->getConfigsByDirname(XCUBE_CORE_USER_MODULE_NAME);
-                break;
-        }
-        $cache_configs[$category] = &$configs;
-
-        return $cache_configs[$category];
     }
 
     public static function loadModinfoMessage($dirname)
@@ -456,167 +238,13 @@ class Xoonips_Utils
         return $langpath;
     }
 
-    public static function ccTemplateDir($trustDirname = null)
+    public static function ccTemplateDir($trustDirname)
     {
-        if (is_null($trustDirname)) {
-            $trustDirname = XOONIPS_TRUST_DIRNAME;
-        }
         $resource = 'cc/';
         $root = &XCube_Root::getSingleton();
         $lang = $root->mLanguageManager->getLanguage();
         $langpath = XOOPS_TRUST_PATH.'/modules/'.$trustDirname.'/language/'.$lang.'/'.$resource;
 
         return $langpath;
-    }
-
-    public static function getDirname()
-    {
-        global $xoopsModule;
-
-        return strtolower($xoopsModule->getVar('dirname'));
-    }
-
-    public static function getTrustDirname()
-    {
-        global $xoopsModule;
-
-        return $xoopsModule->getVar('trust_dirname');
-    }
-
-    // php-indent: disable
-    /**
-     * html character entity references.
-     *
-     * @var array strings of html character entity reference
-     */
-    public $_html_char_entity_ref = array(
-        '&quot;',     '&amp;',      '&apos;',     '&lt;',       '&gt;',
-        '&nbsp;',     '&iexcl;',    '&cent;',     '&pound;',    '&curren;',
-        '&yen;',      '&brvbar;',   '&sect;',     '&uml;',      '&copy;',
-        '&ordf;',     '&laquo;',    '&not;',      '&shy;',      '&reg;',
-        '&macr;',     '&deg;',      '&plusmn;',   '&sup2;',     '&sup3;',
-        '&acute;',    '&micro;',    '&para;',     '&middot;',   '&cedil;',
-        '&sup1;',     '&ordm;',     '&raquo;',    '&frac14;',   '&frac12;',
-        '&frac34;',   '&iquest;',   '&Agrave;',   '&Aacute;',   '&Acirc;',
-        '&Atilde;',   '&Auml;',     '&Aring;',    '&AElig;',    '&Ccedil;',
-        '&Egrave;',   '&Eacute;',   '&Ecirc;',    '&Euml;',     '&Igrave;',
-        '&Iacute;',   '&Icirc;',    '&Iuml;',     '&ETH;',      '&Ntilde;',
-        '&Ograve;',   '&Oacute;',   '&Ocirc;',    '&Otilde;',   '&Ouml;',
-        '&times;',    '&Oslash;',   '&Ugrave;',   '&Uacute;',   '&Ucirc;',
-        '&Uuml;',     '&Yacute;',   '&THORN;',    '&szlig;',    '&agrave;',
-        '&aacute;',   '&acirc;',    '&atilde;',   '&auml;',     '&aring;',
-        '&aelig;',    '&ccedil;',   '&egrave;',   '&eacute;',   '&ecirc;',
-        '&euml;',     '&igrave;',   '&iacute;',   '&icirc;',    '&iuml;',
-        '&eth;',      '&ntilde;',   '&ograve;',   '&oacute;',   '&ocirc;',
-        '&otilde;',   '&ouml;',     '&divide;',   '&oslash;',   '&ugrave;',
-        '&uacute;',   '&ucirc;',    '&uuml;',     '&yacute;',   '&thorn;',
-        '&yuml;',     '&OElig;',    '&oelig;',    '&Scaron;',   '&scaron;',
-        '&Yuml;',     '&fnof;',     '&circ;',     '&tilde;',    '&Alpha;',
-        '&Beta;',     '&Gamma;',    '&Delta;',    '&Epsilon;',  '&Zeta;',
-        '&Eta;',      '&Theta;',    '&Iota;',     '&Kappa;',    '&Lambda;',
-        '&Mu;',       '&Nu;',       '&Xi;',       '&Omicron;',  '&Pi;',
-        '&Rho;',      '&Sigma;',    '&Tau;',      '&Upsilon;',  '&Phi;',
-        '&Chi;',      '&Psi;',      '&Omega;',    '&alpha;',    '&beta;',
-        '&gamma;',    '&delta;',    '&epsilon;',  '&zeta;',     '&eta;',
-        '&theta;',    '&iota;',     '&kappa;',    '&lambda;',   '&mu;',
-        '&nu;',       '&xi;',       '&omicron;',  '&pi;',       '&rho;',
-        '&sigmaf;',   '&sigma;',    '&tau;',      '&upsilon;',  '&phi;',
-        '&chi;',      '&psi;',      '&omega;',    '&thetasym;', '&upsih;',
-        '&piv;',      '&ensp;',     '&emsp;',     '&thinsp;',   '&zwnj;',
-        '&zwj;',      '&lrm;',      '&rlm;',      '&ndash;',    '&mdash;',
-        '&lsquo;',    '&rsquo;',    '&sbquo;',    '&ldquo;',    '&rdquo;',
-        '&bdquo;',    '&dagger;',   '&Dagger;',   '&bull;',     '&hellip;',
-        '&permil;',   '&prime;',    '&Prime;',    '&lsaquo;',   '&rsaquo;',
-        '&oline;',    '&frasl;',    '&euro;',     '&image;',    '&weierp;',
-        '&real;',     '&trade;',    '&alefsym;',  '&larr;',     '&uarr;',
-        '&rarr;',     '&darr;',     '&harr;',     '&crarr;',    '&lArr;',
-        '&uArr;',     '&rArr;',     '&dArr;',     '&hArr;',     '&forall;',
-        '&part;',     '&exist;',    '&empty;',    '&nabla;',    '&isin;',
-        '&notin;',    '&ni;',       '&prod;',     '&sum;',      '&minus;',
-        '&lowast;',   '&radic;',    '&prop;',     '&infin;',    '&ang;',
-        '&and;',      '&or;',       '&cap;',      '&cup;',      '&int;',
-        '&there4;',   '&sim;',      '&cong;',     '&asymp;',    '&ne;',
-        '&equiv;',    '&le;',       '&ge;',       '&sub;',      '&sup;',
-        '&nsub;',     '&sube;',     '&supe;',     '&oplus;',    '&otimes;',
-        '&perp;',     '&sdot;',     '&lceil;',    '&rceil;',    '&lfloor;',
-        '&rfloor;',   '&lang;',     '&rang;',     '&loz;',      '&spades;',
-        '&clubs;',    '&hearts;',   '&diams;',
-        );
-
-    /**
-     * escape html special characters
-     * this function will convert text to follow some rules:
-     * - '&' => '&amp;'
-     * - '"' => '&quot;'
-     * - ''' => '&#039;'
-     * - '<' => '&lt;'
-     * - '>' => '&gt;'
-     * - numeric entity reference => (pass)
-     * - character entity reference => (pass)
-     * - '&nbsp;' => '&amp;nbsp;'.
-     *
-     * @param string $text text string
-     *
-     * @return string escaped text string
-     */
-    public function getHtmlSpecialChars($text)
-    {
-        static $s = array(
-            '/&amp;#([xX][0-9a-fA-F]+|[0-9]+);/',
-            '/&amp;([a-zA-Z][0-9a-zA-Z]+);/e',
-            '/&nbsp;/',
-        );
-        static $r = array(
-            '&#\\1;',
-            'in_array( "&$1;", $this->_html_char_entity_ref ) ? "&$1;" : "&amp;$1;"',
-            '&amp;nbsp;',
-        );
-
-        return preg_replace($s, $r, htmlspecialchars($text, ENT_QUOTES));
-    }
-
-    /**
-     * truncate text.
-     *
-     * @param string $text   src
-     * @param int    $length maximum char width
-     * @param string $etc    appending text if $text truncated
-     *
-     * @return string dist
-     */
-    public function getTruncate($text, $length, $etc = '...')
-    {
-        // multi language extension support - strip ml tags
-        if (defined('XOOPS_CUBE_LEGACY')) {
-            // cubeutil module
-            if (isset($GLOBALS['cubeUtilMlang'])) {
-                $text = $GLOBALS['cubeUtilMlang']->obFilter($text);
-            }
-        } else {
-            // sysutil module
-            if (function_exists('sysutil_get_xoops_option')) {
-                if (sysutil_get_xoops_option('sysutil', 'sysutil_use_ml')) {
-                    if (function_exists('sysutil_ml_filter')) {
-                        $text = sysutil_ml_filter($text);
-                    }
-                }
-            }
-        }
-
-        $olen = strlen($text);
-        // trim width
-        if (XOOPS_USE_MULTIBYTES) {
-            $text = mb_strimwidth($text, 0, $length, '', mb_detect_encoding($text));
-        } else {
-            $text = substr($text, 0, $length);
-        }
-        // remove broken html entity from trimed strig
-        $text = preg_replace('/&#[^;]*$/s', '', $text);
-        // append $etc char if text is trimed
-        if ($olen != strlen($text)) {
-            $text .= $etc;
-        }
-
-        return $text;
     }
 }

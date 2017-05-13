@@ -1,9 +1,9 @@
 <?php
 
 $xoopsOption['pagetype'] = 'user';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Request.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Response.class.php';
-require_once 'class/action/EditIndexAction.class.php';
+require_once __DIR__.'/class/core/Request.class.php';
+require_once __DIR__.'/class/core/Response.class.php';
+require_once __DIR__.'/class/action/EditIndexAction.class.php';
 
 Xoonips_Utils::denyGuestAccess();
 
@@ -30,16 +30,15 @@ if ($indexId == 1) {
 
 // set action map
 $actionMap = array();
-$dirname = Xoonips_Utils::getDirname();
-$actionMap['init_success'] = $dirname.'_index_list.html';
+$actionMap['init_success'] = $mydirname.'_index_list.html';
 $actionMap['save_success'] = 'redirect_header';
-$actionMap['indexEdit_success'] = $dirname.'_index_edit.html';
-$actionMap['update_error'] = $dirname.'_index_edit.html';
-$actionMap['update_success'] = $dirname.'_common_msg_sub.html';
-$actionMap['indexMove_success'] = $dirname.'_index_move.html';
-$actionMap['move_success'] = $dirname.'_common_msg_sub.html';
-$actionMap['indexDelete_success'] = $dirname.'_index_delete.html';
-$actionMap['delete_success'] = $dirname.'_common_msg_sub.html';
+$actionMap['indexEdit_success'] = $mydirname.'_index_edit.html';
+$actionMap['update_error'] = $mydirname.'_index_edit.html';
+$actionMap['update_success'] = $mydirname.'_common_msg_sub.html';
+$actionMap['indexMove_success'] = $mydirname.'_index_move.html';
+$actionMap['move_success'] = $mydirname.'_common_msg_sub.html';
+$actionMap['indexDelete_success'] = $mydirname.'_index_delete.html';
+$actionMap['delete_success'] = $mydirname.'_common_msg_sub.html';
 $actionMap['finish_success'] = 'redirect_header';
 
 if ($op == 'init') {

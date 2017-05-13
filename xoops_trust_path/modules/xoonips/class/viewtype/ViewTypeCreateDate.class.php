@@ -1,6 +1,6 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/viewtype/ViewTypeLastUpdate.class.php';
+require_once __DIR__.'/ViewTypeLastUpdate.class.php';
 
 class Xoonips_ViewTypeCreateDate extends Xoonips_ViewTypeLastUpdate
 {

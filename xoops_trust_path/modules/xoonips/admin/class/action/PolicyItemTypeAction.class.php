@@ -7,12 +7,11 @@ use Xoonips\Core\StringUtils;
 use Xoonips\Core\UnzipFile;
 use Xoonips\Core\ZipFile;
 
-require_once XOONIPS_TRUST_PATH.'/class/core/ActionBase.class.php';
+require_once dirname(dirname(dirname(__DIR__))).'/class/core/ActionBase.class.php';
 require_once XOOPS_ROOT_PATH.'/core/XCube_PageNavigator.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/bean/ItemFieldDetailBean.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/Transaction.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/BeanFactory.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/ImportItemtype.class.php';
+require_once dirname(dirname(dirname(__DIR__))).'/class/bean/ItemFieldDetailBean.class.php';
+require_once dirname(dirname(dirname(__DIR__))).'/class/core/Transaction.class.php';
+require_once dirname(dirname(dirname(__DIR__))).'/class/core/ImportItemtype.class.php';
 
 class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 {
@@ -1223,7 +1222,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
             return false;
         }
         //item sort
-        $sortHandler = Xoonips_Utils::getModuleHandler('ItemSort', $this->dirname);
+        $sortHandler = &Functions::getXoonipsHandler('ItemSort', $this->dirname);
         $sortObj = $sortHandler->getExportDataForItemType($itemtypeid);
         if ($sortObj === false) {
             return false;
@@ -1385,7 +1384,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
                 return false;
             }
                     //item sort
-            $sortHandler = Xoonips_Utils::getModuleHandler('ItemSort', $this->dirname);
+            $sortHandler = &Functions::getXoonipsHandler('ItemSort', $this->dirname);
             $sortObj = $sortHandler->getExportDataForItemType($itemtypeid);
             if ($sortObj === false) {
                 return false;
@@ -2213,7 +2212,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         }
 
         // delete item_type_sort
-        $sortHandler = Xoonips_Utils::getModuleHandler('ItemSort', $this->dirname);
+        $sortHandler = &Functions::getXoonipsHandler('ItemSort', $this->dirname);
         if (!$sortHandler->deleteSortFieldsByItemTypeId($itemtypeid)) {
             echo 'failure in delete item_type_sort_detail';
 

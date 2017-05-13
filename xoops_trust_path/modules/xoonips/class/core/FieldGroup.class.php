@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Field.class.php';
+require_once __DIR__.'/Field.class.php';
 
 class Xoonips_FieldGroup
 {

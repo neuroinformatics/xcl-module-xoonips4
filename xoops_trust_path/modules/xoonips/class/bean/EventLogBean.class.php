@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\XoopsUtils;
+
 define('ETID_LOGIN_FAILURE', 1);
 define('ETID_LOGIN_SUCCESS', 2);
 define('ETID_LOGOUT', 3);
@@ -58,7 +60,7 @@ define('ETID_DELETE_ITEM_OWNER', 57);
 define('ETID_MOVE_INDEX', 58);
 define('ETID_MAX', 59);
 
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/BeanBase.class.php';
+require_once dirname(__DIR__).'/core/BeanBase.class.php';
 
 /**
  * @brief operate xoonips_event_log table
@@ -151,12 +153,7 @@ class Xoonips_EventLogBean extends Xoonips_BeanBase
      */
     private function getExecUid()
     {
-        $exec_uid = XOONIPS_UID_GUEST;
-        if (isset($GLOBALS['xoopsUser']) && is_object($GLOBALS['xoopsUser'])) {
-            $exec_uid = intval($GLOBALS['xoopsUser']->getVar('uid'));
-        }
-
-        return $exec_uid;
+        return XoopsUtils::getUid();
     }
 
     /**
@@ -539,12 +536,11 @@ class Xoonips_EventLogBean extends Xoonips_BeanBase
     public function recordViewTopPageEvent()
     {
         // get start page script name
-        global $xoopsRequestUri;
-        $moduleHandler = xoops_gethandler('module');
-        $myxoopsConfig = Xoonips_Utils::getXoopsConfigs(XOOPS_CONF);
+        $moduleHandler = &xoops_gethandler('module');
+        $startpage = XoopsUtils::getXoopsConfig('startpage');
         $startpage_url = XOOPS_URL.'/index.php';
-        if (isset($myxoopsConfig['startpage']) && $myxoopsConfig['startpage'] != '' && $myxoopsConfig['startpage'] != '--') {
-            $module = $moduleHandler->get($myxoopsConfig['startpage']);
+        if ($startpage !== null && $startpage != '' && $startpage != '--') {
+            $module = $moduleHandler->get($startpage);
             $dirname = $module->getVar('dirname');
             $startpage_url = XOOPS_URL.'/modules/'.$dirname.'/index.php';
         }

@@ -4,9 +4,10 @@ use Xoonips\Core\CacheUtils;
 use Xoonips\Core\FileUtils;
 use Xoonips\Core\Functions;
 use Xoonips\Core\StringUtils;
+use Xoonips\Core\XoopsUtils;
 use Xoonips\Core\ZipFile;
 
-require_once XOONIPS_TRUST_PATH.'/class/core/Item.class.php';
+require_once dirname(__DIR__).'/class/core/Item.class.php';
 
 /**
  * download action.
@@ -131,8 +132,8 @@ class Xoonips_DownloadAction extends Xoonips_AbstractAction
         $itemObj = null;
         $itemFileObj = null;
         $dirname = $this->mAsset->mDirname;
-        $itemHandler = Xoonips_Utils::getModuleHandler('item', $dirname);
-        $itemFileHandler = Xoonips_Utils::getModuleHandler('itemFile', $dirname);
+        $itemHandler = &Functions::getXoonipsHandler('Item', $dirname);
+        $itemFileHandler = &Functions::getXoonipsHandler('ItemFile', $dirname);
         if (!empty($params['item_id'])) {
             $itemObj = &$itemHandler->get($params['item_id']);
             if (!is_object($itemObj)) {
@@ -247,7 +248,7 @@ class Xoonips_DownloadAction extends Xoonips_AbstractAction
             return $this->_getFrameViewStatus('ERROR');
         }
         // check access permission
-        $uid = Legacy_Utils::getUid();
+        $uid = XoopsUtils::getUid();
         if (!$this->mItemObj->isReadable($uid)) {
             $this->mErrorCode = 403;
 
@@ -300,8 +301,8 @@ class Xoonips_DownloadAction extends Xoonips_AbstractAction
     {
         $dirname = $this->mAsset->mDirname;
         $trustDirname = $this->mAsset->mTrustDirname;
-        $itemHandler = Xoonips_Utils::getModuleHandler('item', $dirname);
-        $itemFileHandler = Xoonips_Utils::getModuleHandler('itemFile', $dirname);
+        $itemHandler = &Functions::getXoonipsHandler('Item', $dirname);
+        $itemFileHandler = &Functions::getXoonipsHandler('ItemFile', $dirname);
         // record download file event log
         $eventLogBean = Xoonips_BeanFactory::getBean('EventLogBean', $dirname, $trustDirname);
         $eventLogBean->recordDownloadFileEvent($this->mItemObj->get('item_id'), $this->mItemFileObj->get('file_id'));

@@ -1,7 +1,8 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/core/BeanFactory.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/viewtype/ViewTypeText.class.php';
+use Xoonips\Core\XoopsUtils;
+
+require_once __DIR__.'/ViewTypeText.class.php';
 
 class Xoonips_ViewTypeEmail extends Xoonips_ViewTypeText
 {
@@ -25,7 +26,7 @@ class Xoonips_ViewTypeEmail extends Xoonips_ViewTypeText
     {
         //dataCheck
         $field->getDataType()->inputCheck($errors, $field, $value, $fieldName);
-        $myxoopsConfigUser = Xoonips_Utils::getXoopsConfigs(XOOPS_CONF_USER);
+        $badEmails = XoopsUtils::getXoopsConfig('bad_emails', XOOPS_CONF_USER);
         $char = "/^[_a-z0-9\-+!#$%&'*\/=?^`{|}~]+(\.[_a-z0-9\-+!#$%&'*\/=?^`{|}~]+)*@[a-z0-9-]+([\.][a-z0-9-]+)+$/i";
         $parameters = array();
         $value = trim($value);
@@ -39,8 +40,8 @@ class Xoonips_ViewTypeEmail extends Xoonips_ViewTypeText
             }
 
             if ($chk) {
-                foreach ($myxoopsConfigUser['bad_emails'] as $bad_email) {
-                    $preg = '/'.$bad_email.'/';
+                foreach ($badEmails as $badEmail) {
+                    $preg = '/'.$badEmail.'/';
                     if (preg_match($preg, $value)) {
                         $chk = false;
                     }
@@ -109,10 +110,10 @@ class Xoonips_ViewTypeEmail extends Xoonips_ViewTypeText
 
     public function getEditView($field, $value, $groupLoopId)
     {
-        $myxoopsConfigUser = Xoonips_Utils::getXoopsConfigs(XOOPS_CONF_USER);
+        $allowChgmail = XoopsUtils::getXoopsConfig('allow_chgmail', XOOPS_CONF_USER);
         $fieldName = $this->getFieldName($field, $groupLoopId);
         $this->getXoopsTpl()->assign('viewType', 'edit');
-        $this->getXoopsTpl()->assign('allowChgMail', $myxoopsConfigUser['allow_chgmail']);
+        $this->getXoopsTpl()->assign('allowChgMail', $allowChgmail);
         $this->getXoopsTpl()->assign('len', $field->getLen());
         $this->getXoopsTpl()->assign('fieldName', $fieldName);
         $this->getXoopsTpl()->assign('value', $value);

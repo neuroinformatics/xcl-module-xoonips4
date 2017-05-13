@@ -1,12 +1,9 @@
 <?php
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+use Xoonips\Core\XoopsUtils;
 
-require_once XOONIPS_TRUST_PATH.'/class/user/Notification.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/Enum.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/User.class.php';
+require_once dirname(dirname(__DIR__)).'/class/user/Notification.class.php';
+require_once dirname(dirname(__DIR__)).'/class/core/User.class.php';
 
 /***
  * @internal
@@ -46,14 +43,13 @@ class Xoonips_UserDeleteAction extends Xoonips_UserAction
      **/
     protected function _getPagetitle()
     {
-        return Legacy_Utils::getUserName(Legacy_Utils::getUid());
+        return XoopsUtils::getUserName(XoopsUtils::getUid());
     }
 
     public function prepare(&$controller, &$xoopsUser, &$moduleConfig)
     {
-        $myxoopsConfigUser = Xoonips_Utils::getXoopsConfigs(XOOPS_CONF_USER);
-        $this->mSelfDelete = $myxoopsConfigUser['self_delete'];
-        $this->mSelfDeleteConfirmMessage = $myxoopsConfigUser['self_delete_confirm'];
+        $this->mSelfDelete = XoopsUtils::getXoopsConfig('self_delete', XOOPS_CONF_USER);
+        $this->mSelfDeleteConfirmMessage = XoopsUtils::getXoopsConfig('self_delete_confirm', XOOPS_CONF_USER);
 
         $this->_mDoDelete = new XCube_Delegate('bool &', 'Legacy_Controller', 'XoopsUser');
         $this->_mDoDelete->register('Xoonips_UserDeleteAction._doDelete');
@@ -86,7 +82,6 @@ class Xoonips_UserDeleteAction extends Xoonips_UserAction
     {
         $uid = isset($_GET['uid']) ? intval(xoops_getrequest('uid')) : $xoopsUser->get('uid');
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
-        $myxoopsConfigUser = Xoonips_Utils::getXoopsConfigs(XOOPS_CONF_USER);
         // userType (0:guest 1:user 2:groupManager 3:moderator)
         $userType = $userBean->getUserType($uid);
         // userself
@@ -103,8 +98,7 @@ class Xoonips_UserDeleteAction extends Xoonips_UserAction
         }
         //set ticket
         $user = $userBean->getUserBasicInfo($uid);
-        $notice = $myxoopsConfigUser['self_delete_confirm'];
-        $this->viewData['notice'] = $notice;
+        $this->viewData['notice'] = $this->mSelfDeleteConfirmMessage;
         $this->viewData['username'] = $user['uname'];
         $this->viewData['uid'] = $uid;
         $this->viewData['dirname'] = $this->dirname;

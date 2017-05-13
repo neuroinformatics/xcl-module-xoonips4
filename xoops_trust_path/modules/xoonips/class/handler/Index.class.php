@@ -1,6 +1,7 @@
 <?php
 
 use Xoonips\Core\JoinCriteria;
+use Xoonips\Core\XoopsUtils;
 
 /**
  * index object.
@@ -65,7 +66,7 @@ class Xoonips_IndexHandler extends XoopsObjectGenericHandler
      */
     public function getPublicIndexList($uid)
     {
-        $isModerator = ($uid == XOONIPS_UID_GUEST ? false : Xoonips_Utils::isAdmin($uid, $this->mDirname));
+        $isModerator = ($uid == XOONIPS_UID_GUEST ? false : XoopsUtils::isAdmin($uid, $this->mDirname));
         $criteriaList = new Criteria('open_level', XOONIPS_OL_PUBLIC, '=', $this->mTable);
         $criteriaCount = $this->_getReadableCountCriteriaForPublic($uid, $isModerator);
 
@@ -82,7 +83,7 @@ class Xoonips_IndexHandler extends XoopsObjectGenericHandler
      */
     public function getGroupIndexList($uid, $gid)
     {
-        $isModerator = ($uid == XOONIPS_UID_GUEST ? false : Xoonips_Utils::isAdmin($uid, $this->mDirname));
+        $isModerator = ($uid == XOONIPS_UID_GUEST ? false : XoopsUtils::isAdmin($uid, $this->mDirname));
         $criteriaList = new CriteriaCompo(new Criteria('open_level', XOONIPS_OL_GROUP_ONLY, '=', $this->mTable));
         $criteriaList->add(new Criteria('groupid', $gid, '=', $this->mTable));
         $criteriaCount = $this->_getReadableCountCriteriaForGroup($uid, $gid, $isModerator);
@@ -100,7 +101,7 @@ class Xoonips_IndexHandler extends XoopsObjectGenericHandler
      */
     public function getPrivateIndexList($uid)
     {
-        $isModerator = ($uid == XOONIPS_UID_GUEST ? false : Xoonips_Utils::isAdmin($uid, $this->mDirname));
+        $isModerator = ($uid == XOONIPS_UID_GUEST ? false : XoopsUtils::isAdmin($uid, $this->mDirname));
         $criteriaList = new CriteriaCompo(new Criteria('open_level', XOONIPS_OL_PRIVATE, '=', $this->mTable));
         $criteriaList->add(new Criteria('uid', $uid, '=', $this->mTable));
         $criteriaCount = $this->_getReadableCountCriteriaForPrivate($uid, $isModerator);
@@ -118,7 +119,7 @@ class Xoonips_IndexHandler extends XoopsObjectGenericHandler
      */
     private function _getIndexList($uid, $criteriaList, $criteriaCount)
     {
-        $isModerator = ($uid == XOONIPS_UID_GUEST ? false : Xoonips_Utils::isAdmin($uid, $this->mDirname));
+        $isModerator = ($uid == XOONIPS_UID_GUEST ? false : XoopsUtils::isAdmin($uid, $this->mDirname));
         // get index list
         $field = '`'.$this->mTable.'`.`index_id`, `'.$this->mTable.'`.`parent_index_id`, `'.$this->mTable.'`.`uid`, `'.$this->mTable.'`.`groupid`, `'.$this->mTable.'`.`weight`, `'.$this->mTable.'`.`title`, \'0\' AS `num_items`';
         $orderBy = ' ORDER BY `'.$this->mTable.'`.`weight` ASC';

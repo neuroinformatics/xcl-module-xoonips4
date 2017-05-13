@@ -2,7 +2,7 @@
 
 use Xoonips\Core\StringUtils;
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/core/Request.class.php';
+require_once dirname(__DIR__).'/core/Request.class.php';
 
 class Xoonips_InputTextFileAjaxMethod extends Xoonips_AbstractAjaxMethod
 {
@@ -65,8 +65,7 @@ class Xoonips_InputTextFileAjaxMethod extends Xoonips_AbstractAjaxMethod
         $xoopsTpl->assign('text', $text);
         $xoopsTpl->assign('textFromOpener', $textFromOpener);
         $xoopsTpl->assign('errorMessage', $errorMessage);
-        $dirname = Xoonips_Utils::getDirname();
-        $xoopsTpl->display('db:'.$dirname.'_ajax_textfileinput.html');
+        $xoopsTpl->display('db:'.$this->mDirname.'_ajax_textfileinput.html');
 
         xoops_footer();
         $this->mResult = ob_get_clean();

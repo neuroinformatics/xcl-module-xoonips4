@@ -1,9 +1,9 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/BeanBase.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/ViewTypeFactory.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/DataTypeFactory.class.php';
-require_once dirname(dirname(__FILE__)).'/core/ItemField.class.php';
+require_once dirname(__DIR__).'/core/BeanBase.class.php';
+require_once dirname(__DIR__).'/core/ViewTypeFactory.class.php';
+require_once dirname(__DIR__).'/core/DataTypeFactory.class.php';
+require_once dirname(__DIR__).'/core/ItemField.class.php';
 
 /**
  * @brief operate xoonips_item_field_detail table

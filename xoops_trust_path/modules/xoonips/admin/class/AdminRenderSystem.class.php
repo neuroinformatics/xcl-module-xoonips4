@@ -131,8 +131,7 @@ class Xoonips_AdminRenderSystem extends Legacy_AdminRenderSystem
         $module = &$root->mContext->mXoopsModule;
         $dirName = $root->mContext->mRequest->getRequest('dirname');
         if ($isSpDirName && preg_match('/^\w+$/', $dirName)) {
-            $cnameUtils = str_replace('AdminRenderSystem', 'Utils', __CLASS__);
-            $handler = &$cnameUtils::getXoopsHandler('module');
+            $handler = &xoops_gethandler('module');
             $module = &$handler->getByDirname($dirName);
         }
         $isModule = is_object($module);

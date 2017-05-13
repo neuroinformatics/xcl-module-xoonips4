@@ -1,7 +1,9 @@
 <?php
 
-require_once XOONIPS_TRUST_PATH.'/class/core/User.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/user/ActionBase.class.php';
+use Xoonips\Core\XoopsUtils;
+
+require_once dirname(__DIR__).'/class/core/User.class.php';
+require_once dirname(__DIR__).'/class/user/ActionBase.class.php';
 
 class Xoonips_UserSearchAction extends Xoonips_UserActionBase
 {
@@ -38,13 +40,6 @@ class Xoonips_UserSearchAction extends Xoonips_UserActionBase
         ),
     );
 
-    private function getUserId()
-    {
-        $userId = $_SESSION['xoopsUserId'];
-
-        return $userId;
-    }
-
     // set page size
     private $perPage = 20;
 
@@ -58,7 +53,7 @@ class Xoonips_UserSearchAction extends Xoonips_UserActionBase
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
         $ret = false;
         //isModerator not installed Moderator Group
-        if ($userBean->isGroupMember(1, $this->getUserId())) {
+        if ($userBean->isGroupMember(1, XoopsUtils::getUid())) {
             $ret = true;
         }
 
@@ -72,13 +67,9 @@ class Xoonips_UserSearchAction extends Xoonips_UserActionBase
      */
     private function isSelfDelete()
     {
-        $ret = false;
-        $myxoopsConfigUser = Xoonips_Utils::getXoopsConfigs(XOOPS_CONF_USER);
-        if ($myxoopsConfigUser['self_delete'] == 1) {
-            $ret = true;
-        }
+        $self_delete = XoopsUtils::getXoopsConfig('self_delete', XOOPS_CONF_USER);
 
-        return $ret;
+        return $self_delete === null ? false : ($self_delete == 1);
     }
 
     /**
@@ -229,7 +220,7 @@ class Xoonips_UserSearchAction extends Xoonips_UserActionBase
             unset($_POST['Id']);
             unset($_POST['newOrder']);
             $viewData['hiddenData'] = $_POST;
-            $viewData['userId'] = $this->getUserId();
+            $viewData['userId'] = XoopsUtils::getUid();
             $viewData['userslist'] = $this->pageUserslist($userslist, $page, $this->perPage);
             $viewData['head'] = $this->detailHead;
             $viewData['pagenavi'] = $this->pagenavi($userslist, 'user.php?op=userSearch&action=search&', $this->perPage);
@@ -280,7 +271,7 @@ class Xoonips_UserSearchAction extends Xoonips_UserActionBase
         $viewData['xoops_breadcrumbs'] = $this->breadcrumbs_userlist;
         $viewData['isSelfDelete'] = $this->isSelfDelete();
         $viewData['isModerator'] = $this->isModerator();
-        $viewData['userId'] = $this->getUserId();
+        $viewData['userId'] = XoopsUtils::getUid();
         $viewData['detailId'] = $detailId;
         $viewData['sortkey'] = $sortkey;
         $viewData['order'] = $order;

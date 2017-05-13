@@ -1,7 +1,7 @@
 <?php
 
 require_once XOOPS_ROOT_PATH.'/class/template.php';
-require_once 'LayeredWindow.class.php';
+require_once __DIR__.'/LayeredWindow.class.php';
 
 class Xoonips_Response
 {

@@ -1,7 +1,7 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/admin/class/AbstractConfigAction.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/core/Notification.class.php';
+require_once dirname(__DIR__).'/class/AbstractConfigAction.class.php';
+require_once dirname(dirname(__DIR__)).'/class/core/Notification.class.php';
 
 /**
  * admin system message sign action.

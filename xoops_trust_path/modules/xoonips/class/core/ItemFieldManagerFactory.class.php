@@ -1,6 +1,6 @@
 <?php
 
-require_once 'ItemFieldManager.class.php';
+require_once __DIR__.'/ItemFieldManager.class.php';
 
 class Xoonips_ItemFieldManagerFactory
 {

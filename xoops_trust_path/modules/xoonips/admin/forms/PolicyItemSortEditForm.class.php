@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 /**
  * admin policy item sort edit form.
  */
@@ -52,7 +54,7 @@ class Xoonips_Admin_PolicyItemSortEditForm extends Xoonips_AbstractActionForm
     {
         $constpref = '_AD_'.strtoupper($this->mDirname);
         $fields = $this->get('fields');
-        $handler = Xoonips_Utils::getModuleHandler('ItemSort', $this->mDirname);
+        $handler = &Functions::getXoonipsHandler('ItemSort', $this->mDirname);
         $allFields = $handler->getSelectableSortFields();
         foreach ($fields as $field) {
             list($tId, $gId, $fId) = $handler->decodeSortField($field);

@@ -3,8 +3,7 @@
 use Xoonips\Core\Functions;
 use Xoonips\Core\StringUtils;
 
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/BeanFactory.class.php';
-require_once 'Item.class.php';
+require_once __DIR__.'/Item.class.php';
 
 class Xoonips_Metadata
 {
@@ -43,8 +42,8 @@ class Xoonips_Metadata
         $this->schemaList = $oaipmhSchemaBean->getSchemaList($this->metadataPrefix);
         $this->valueSetList = $oaipmhSchemaBean->getSchemaValueSetList($this->metadataPrefix);
         $this->linkBean = Xoonips_BeanFactory::getBean('OaipmhSchemaItemtypeLinkBean', $this->dirname, $this->trustDirname);
-        $this->itemHandler = Xoonips_Utils::getTrustModuleHandler('Item', $this->dirname, $this->trustDirname);
-        $this->itemFileHandler = Xoonips_Utils::getTrustModuleHandler('ItemFile', $this->dirname, $this->trustDirname);
+        $this->itemHandler = &Functions::getXoonipsHandler('Item', $this->dirname);
+        $this->itemFileHandler = &Functions::getXoonipsHandler('ItemFile', $this->dirname);
     }
 
     public function getMetadata($item_type_id, $item_id)

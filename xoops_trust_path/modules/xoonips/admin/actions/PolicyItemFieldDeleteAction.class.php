@@ -1,6 +1,6 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/AbstractDeleteAction.class.php';
+require_once dirname(dirname(__DIR__)).'/class/AbstractDeleteAction.class.php';
 
 /**
  * admin policy item field delete action.

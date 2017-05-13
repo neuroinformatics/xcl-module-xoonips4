@@ -1,6 +1,8 @@
 <?php
 
-require_once dirname(dirname(__FILE__)).'/core/Notification.class.php';
+use Xoonips\Core\XoopsUtils;
+
+require_once dirname(__DIR__).'/core/Notification.class.php';
 
 class Xoonips_EventDelegate
 {
@@ -11,8 +13,8 @@ class Xoonips_EventDelegate
      */
     public static function userCertifyRequest($xoopsUser)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $uid = $xoopsUser->get('uid');
         foreach ($dirnames as $dirname) {
             $log = Xoonips_BeanFactory::getBean('EventLogBean', $dirname, $trustDirname);
@@ -27,8 +29,8 @@ class Xoonips_EventDelegate
      */
     public static function userCertify($xoopsUser)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $uid = $xoopsUser->get('uid');
         $success = true;
         foreach ($dirnames as $dirname) {
@@ -54,8 +56,8 @@ class Xoonips_EventDelegate
      */
     public static function userReject($xoopsUser)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $uid = $xoopsUser->get('uid');
         foreach ($dirnames as $dirname) {
             $log = Xoonips_BeanFactory::getBean('EventLogBean', $dirname, $trustDirname);
@@ -71,8 +73,8 @@ class Xoonips_EventDelegate
      */
     public static function userSuBegin($xoopsUser, $xoopsUser_target)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $uid = $xoopsUser->get('uid');
         $tuid = $xoopsUser_target->get('uid');
         foreach ($dirnames as $dirname) {
@@ -89,8 +91,8 @@ class Xoonips_EventDelegate
      */
     public static function userSuEnd($xoopsUser, $xoopsUser_target)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $uid = $xoopsUser->get('uid');
         $tuid = $xoopsUser_target->get('uid');
         foreach ($dirnames as $dirname) {
@@ -109,8 +111,8 @@ class Xoonips_EventDelegate
         // FIXME: this delegate is different policy with others!
         // this should handle only logging, and should not operates
         // user information deleting action!
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         global $xoopsDB;
         $uid = $xoopsUser->get('uid');
         foreach ($dirnames as $dirname) {
@@ -205,8 +207,8 @@ class Xoonips_EventDelegate
      */
     public static function groupMemberJoin($xoopsUser, $xoopsGroup)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $uid = $xoopsUser->get('uid');
         $gid = $xoopsGroup->get('groupid');
         foreach ($dirnames as $dirname) {
@@ -223,8 +225,8 @@ class Xoonips_EventDelegate
      */
     public static function groupMemberJoinRequest($xoopsUser, $xoopsGroup)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $uid = $xoopsUser->get('uid');
         $gid = $xoopsGroup->get('groupid');
         foreach ($dirnames as $dirname) {
@@ -241,8 +243,8 @@ class Xoonips_EventDelegate
      */
     public static function groupMemberJoinCertify($xoopsUser, $xoopsGroup)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $uid = $xoopsUser->get('uid');
         $gid = $xoopsGroup->get('groupid');
         foreach ($dirnames as $dirname) {
@@ -259,8 +261,8 @@ class Xoonips_EventDelegate
      */
     public static function groupMemberJoinReject($xoopsUser, $xoopsGroup)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $uid = $xoopsUser->get('uid');
         $gid = $xoopsGroup->get('groupid');
         foreach ($dirnames as $dirname) {
@@ -277,8 +279,8 @@ class Xoonips_EventDelegate
      */
     public static function groupMemberLeave($xoopsUser, $xoopsGroup)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $uid = $xoopsUser->get('uid');
         $gid = $xoopsGroup->get('groupid');
         foreach ($dirnames as $dirname) {
@@ -295,8 +297,8 @@ class Xoonips_EventDelegate
      */
     public static function groupMemberLeaveRequest($xoopsUser, $xoopsGroup)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $uid = $xoopsUser->get('uid');
         $gid = $xoopsGroup->get('groupid');
         foreach ($dirnames as $dirname) {
@@ -313,8 +315,8 @@ class Xoonips_EventDelegate
      */
     public static function groupMemberLeaveCertify($xoopsUser, $xoopsGroup)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $uid = $xoopsUser->get('uid');
         $gid = $xoopsGroup->get('groupid');
         foreach ($dirnames as $dirname) {
@@ -331,8 +333,8 @@ class Xoonips_EventDelegate
      */
     public static function groupMemberLeaveReject($xoopsUser, $xoopsGroup)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $uid = $xoopsUser->get('uid');
         $gid = $xoopsGroup->get('groupid');
         foreach ($dirnames as $dirname) {
@@ -348,8 +350,8 @@ class Xoonips_EventDelegate
      */
     public static function groupCertifyRequest($xoopsGroup)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $gid = $xoopsGroup->get('groupid');
         foreach ($dirnames as $dirname) {
             $log = Xoonips_BeanFactory::getBean('EventLogBean', $dirname, $trustDirname);
@@ -367,8 +369,8 @@ class Xoonips_EventDelegate
         // FIXME: this delegate is different policy with others!
         // this should handle only logging, and should not operates
         // group information creating action!
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $gid = $xoopsGroup->get('groupid');
         $success = true;
         foreach ($dirnames as $dirname) {
@@ -407,8 +409,8 @@ class Xoonips_EventDelegate
      */
     public static function groupReject($xoopsGroup)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $gid = $xoopsGroup->get('groupid');
         foreach ($dirnames as $dirname) {
             $log = Xoonips_BeanFactory::getBean('EventLogBean', $dirname, $trustDirname);
@@ -423,8 +425,8 @@ class Xoonips_EventDelegate
      */
     public static function groupDeleteRequest($xoopsGroup)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $gid = $xoopsGroup->get('groupid');
         foreach ($dirnames as $dirname) {
             $log = Xoonips_BeanFactory::getBean('EventLogBean', $dirname, $trustDirname);
@@ -442,8 +444,8 @@ class Xoonips_EventDelegate
         // FIXME: this delegate is different policy with others!
         // this should handle only logging, and should not operates
         // group information deleting action!
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $gid = $xoopsGroup->get('groupid');
         $success = true;
         foreach ($dirnames as $dirname) {
@@ -469,8 +471,8 @@ class Xoonips_EventDelegate
      */
     public static function groupDeleteReject($xoopsGroup)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $gid = $xoopsGroup->get('groupid');
         foreach ($dirnames as $dirname) {
             $log = Xoonips_BeanFactory::getBean('EventLogBean', $dirname, $trustDirname);
@@ -485,8 +487,8 @@ class Xoonips_EventDelegate
      */
     public static function groupEdit($xoopsGroup)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $gid = $xoopsGroup->get('groupid');
         foreach ($dirnames as $dirname) {
             $groupbean = Xoonips_BeanFactory::getBean('GroupsBean', $dirname);
@@ -516,8 +518,8 @@ class Xoonips_EventDelegate
      */
     public static function groupOpenRequest($xoopsGroup)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $gid = $xoopsGroup->get('groupid');
         foreach ($dirnames as $dirname) {
             $log = Xoonips_BeanFactory::getBean('EventLogBean', $dirname, $trustDirname);
@@ -532,8 +534,8 @@ class Xoonips_EventDelegate
      */
     public static function groupOpenCertify($xoopsGroup)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $gid = $xoopsGroup->get('groupid');
         foreach ($dirnames as $dirname) {
             $log = Xoonips_BeanFactory::getBean('EventLogBean', $dirname, $trustDirname);
@@ -551,8 +553,8 @@ class Xoonips_EventDelegate
      */
     public static function groupOpenReject($xoopsGroup)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $gid = $xoopsGroup->get('groupid');
         foreach ($dirnames as $dirname) {
             $log = Xoonips_BeanFactory::getBean('EventLogBean', $dirname, $trustDirname);
@@ -567,8 +569,8 @@ class Xoonips_EventDelegate
      */
     public static function groupCloseRequest($xoopsGroup)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $gid = $xoopsGroup->get('groupid');
         foreach ($dirnames as $dirname) {
             $log = Xoonips_BeanFactory::getBean('EventLogBean', $dirname, $trustDirname);
@@ -586,8 +588,8 @@ class Xoonips_EventDelegate
         // FIXME: this delegate is different policy with others!
         // this should handle only logging, and should not operates
         // public item information modification!
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $gid = $xoopsGroup->get('groupid');
         foreach ($dirnames as $dirname) {
             $log = Xoonips_BeanFactory::getBean('EventLogBean', $dirname, $trustDirname);
@@ -605,8 +607,8 @@ class Xoonips_EventDelegate
      */
     public static function groupCloseReject($xoopsGroup)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         $gid = $xoopsGroup->get('groupid');
         foreach ($dirnames as $dirname) {
             $log = Xoonips_BeanFactory::getBean('EventLogBean', $dirname, $trustDirname);

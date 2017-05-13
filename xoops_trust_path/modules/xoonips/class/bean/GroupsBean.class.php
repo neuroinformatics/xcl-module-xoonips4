@@ -2,8 +2,7 @@
 
 use Xoonips\Core\Functions;
 
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/BeanBase.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/Enum.class.php';
+require_once dirname(__DIR__).'/core/BeanBase.class.php';
 
 /**
  * @brief operate groups table

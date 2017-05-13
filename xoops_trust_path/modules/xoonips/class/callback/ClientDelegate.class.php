@@ -1,6 +1,8 @@
 <?php
 
-require_once dirname(dirname(__FILE__)).'/core/WorkflowClientFactory.class.php';
+use Xoonips\Core\XoopsUtils;
+
+require_once dirname(__DIR__).'/core/WorkflowClientFactory.class.php';
 
 /**
  * workflow client delegate class.
@@ -71,8 +73,8 @@ class Xoonips_WorkflowClientDelegate implements Legacy_iWorkflowClientDelegate
      */
     public static function getClientList(&$list)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         foreach ($dirnames as $dirname) {
             XCube_Root::getSingleton()->mLanguageManager->loadModuleMessageCatalog($dirname);
             $constpref = '_MD_'.strtoupper($dirname);
@@ -99,8 +101,8 @@ class Xoonips_WorkflowClientDelegate implements Legacy_iWorkflowClientDelegate
      */
     public static function updateStatus(&$result, $dirname, $dataname, $data_id, $status)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         if (!in_array($dirname, $dirnames)) {
             return;
         }
@@ -126,8 +128,8 @@ class Xoonips_WorkflowClientDelegate implements Legacy_iWorkflowClientDelegate
      */
     public static function getTargetGroupId(&$gid, $dirname, $dataname, $target_id)
     {
-        $trustDirname = basename(dirname(dirname(dirname(__FILE__))));
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname($trustDirname);
+        $trustDirname = basename(dirname(dirname(__DIR__)));
+        $dirnames = XoopsUtils::getDirnameListByTrustDirname($trustDirname);
         if (!in_array($dirname, $dirnames)) {
             return;
         }

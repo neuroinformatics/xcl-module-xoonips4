@@ -4,8 +4,6 @@ use Xoonips\Core\CacheUtils;
 use Xoonips\Core\Functions;
 use Xoonips\Core\ImageUtils;
 
-require_once dirname(dirname(__FILE__)).'/class/core/BeanFactory.class.php';
-
 /**
  * image action.
  */

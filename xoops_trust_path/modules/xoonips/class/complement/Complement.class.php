@@ -1,8 +1,6 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/Enum.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/core/BeanFactory.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/core/ItemComplementManager.class.php';
+require_once dirname(__DIR__).'/core/ItemComplementManager.class.php';
 
 abstract class Xoonips_Complement
 {

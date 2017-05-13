@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 /**
  * admin policy item field select action.
  */
@@ -79,7 +81,7 @@ class Xoonips_Admin_PolicyItemFieldSelectAction extends Xoonips_AbstractAction
     {
         $dirname = $this->mAsset->mDirname;
         $trustDirname = $this->mAsset->mTrustDirname;
-        $handler = Xoonips_Utils::getModuleHandler('ItemFieldValueSet', $dirname);
+        $handler = &Functions::getXoonipsHandler('ItemFieldValueSet', $dirname);
 
         return $handler->getSelectNames();
     }
@@ -93,7 +95,7 @@ class Xoonips_Admin_PolicyItemFieldSelectAction extends Xoonips_AbstractAction
     {
         $dirname = $this->mAsset->mDirname;
         $trustDirname = $this->mAsset->mTrustDirname;
-        $handler = Xoonips_Utils::getModuleHandler('ItemField', $dirname);
+        $handler = &Functions::getXoonipsHandler('ItemField', $dirname);
 
         return $handler->getUsedSelectNames();
     }

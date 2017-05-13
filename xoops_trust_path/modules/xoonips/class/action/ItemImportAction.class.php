@@ -4,9 +4,9 @@ use Xoonips\Core\FileUtils;
 use Xoonips\Core\Functions;
 use Xoonips\Core\UnzipFile;
 
-require_once dirname(dirname(__FILE__)).'/core/ActionBase.class.php';
-require_once dirname(dirname(__FILE__)).'/XmlItemImport.class.php';
-require_once dirname(dirname(dirname(__FILE__))).'/class/core/Item.class.php';
+require_once dirname(__DIR__).'/core/ActionBase.class.php';
+require_once dirname(__DIR__).'/XmlItemImport.class.php';
+require_once dirname(dirname(__DIR__)).'/class/core/Item.class.php';
 
 class Xoonips_ItemImportAction extends Xoonips_ActionBase
 {

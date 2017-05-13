@@ -1,16 +1,15 @@
 <?php
 
 use Xoonips\Core\Functions;
+use Xoonips\Core\XoopsUtils;
 
-require_once XOONIPS_TRUST_PATH.'/class/core/FieldGroup.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/ComplementFactory.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/Errors.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/ViewTypeFactory.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/BeanFactory.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/Transaction.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/Workflow.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/user/Notification.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/Enum.class.php';
+require_once __DIR__.'/FieldGroup.class.php';
+require_once __DIR__.'/ComplementFactory.class.php';
+require_once __DIR__.'/Errors.class.php';
+require_once __DIR__.'/ViewTypeFactory.class.php';
+require_once __DIR__.'/Transaction.class.php';
+require_once __DIR__.'/Workflow.class.php';
+require_once dirname(__DIR__).'/user/Notification.class.php';
 
 class Xoonips_User
 {
@@ -595,7 +594,6 @@ class Xoonips_User
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
         $groupsUsersLinkBean = Xoonips_BeanFactory::getBean('GroupsUsersLinkBean', $this->dirname, $this->trustDirname);
         $userInfo = $userBean->getUserBasicInfo($uid);
-        $xoopsConfig = Xoonips_Utils::getXoopsConfigs(XOOPS_CONF);
 
         $transaction = null;
         $transaction = Xoonips_Transaction::getInstance();
@@ -704,18 +702,20 @@ class Xoonips_User
         XCube_DelegateUtils::call('Module.Xoonips.Event.User.Delete', $xoopsUser);
 
         //send to user
+        $sitename = XoopsUtils::getXoopsConfig('sitename');
+        $adminmail = XoopsUtils::getXoopsConfig('adminmail');
         $xoopsMailer = &getMailer();
         $xoopsMailer->useMail();
         $xoopsMailer->setTemplateDir(Xoonips_Utils::mailTemplateDir($this->dirname, $this->trustDirname));
         $xoopsMailer->setTemplate('user_account_deleted_notify.tpl');
-        $xoopsMailer->assign('SITENAME', $xoopsConfig['sitename']);
-        $xoopsMailer->assign('ADMINMAIL', $xoopsConfig['adminmail']);
+        $xoopsMailer->assign('SITENAME', $sitename);
+        $xoopsMailer->assign('ADMINMAIL', $adminmail);
         $xoopsMailer->assign('SITEURL', XOOPS_URL.'/');
         $xoopsMailer->assign('USER_UNAME', $userInfo['uname']);
         $xoopsMailer->assign('USER_EMAIL', $userInfo['email']);
         $xoopsMailer->setToUsers($deleteUserInfo);
-        $xoopsMailer->setFromEmail($xoopsConfig['adminmail']);
-        $xoopsMailer->setFromName($xoopsConfig['sitename']);
+        $xoopsMailer->setFromEmail($adminmail);
+        $xoopsMailer->setFromName($sitename);
         $xoopsMailer->setSubject(_MD_XOONIPS_MESSAGE_ACCOUNT_DELETED_NOTIFYSBJ);
         $xoopsMailer->send();
         // send to moderators
@@ -824,7 +824,6 @@ class Xoonips_User
 
     public function doGroupEdit($groupPublic, $group, $uids, &$message)
     {
-        $myxoopsConfigUser = Xoonips_Utils::getXoopsConfigs(XOOPS_CONF_USER);
         $configVal = Functions::getXoonipsConfig($this->dirname, 'group_publish_certify');
         $groupId = $group['groupid'];
 

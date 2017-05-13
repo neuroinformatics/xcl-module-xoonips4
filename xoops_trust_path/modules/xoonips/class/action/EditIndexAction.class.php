@@ -2,7 +2,7 @@
 
 use Xoonips\Core\Functions;
 
-require_once dirname(dirname(__FILE__)).'/core/ActionBase.class.php';
+require_once dirname(__DIR__).'/core/ActionBase.class.php';
 
 class Xoonips_EditIndexAction extends Xoonips_ActionBase
 {

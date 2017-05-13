@@ -1,10 +1,12 @@
 <?php
 
+use Xoonips\Core\XoopsUtils;
+
 $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 $_SERVER['REQUEST_METHOD'] = 'POST';
 define('XOOPS_XMLRPC', 1);
 
-$mytrustdirpath = dirname(dirname(__FILE__));
+$mytrustdirpath = dirname(__DIR__);
 $mytrustdirname = basename($mytrustdirpath);
 
 $ping = false;
@@ -18,7 +20,7 @@ if (basename($mainfile) != 'mainfile.php' || !file_exists($mainfile)) {
     printUsage('mainfile.php not found');
 }
 require_once $mainfile;
-$dirnames = Legacy_Utils::getDirnameListByTrustDirname($mytrustdirname);
+$dirnames = XoopsUtils::getDirnameListByTrustDirname($mytrustdirname);
 $mydirname = $dirnames[0];
 
 // load required classes

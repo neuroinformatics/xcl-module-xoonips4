@@ -4,7 +4,6 @@ use Xoonips\Core\FileUtils;
 use Xoonips\Core\Functions;
 use Xoonips\Core\StringUtils;
 
-require_once __DIR__.'/BeanFactory.class.php';
 require_once __DIR__.'/Search.class.php';
 require_once __DIR__.'/Request.class.php';
 
@@ -163,9 +162,9 @@ class Xoonips_File
             return true;
         }
         $this->fsearch_plugins = array();
-        require_once XOOPS_TRUST_PATH.'/modules/'.$this->trustDirname.'/class/core/FileSearchBase.class.php';
+        require_once __DIR__.'/FileSearchBase.class.php';
 
-        $fsearch_dir = XOOPS_TRUST_PATH.'/modules/'.$this->trustDirname.'/class/filesearch';
+        $fsearch_dir = dirname(__DIR__).'/filesearch';
         if ($fsearch_handle = opendir($fsearch_dir)) {
             while ($file = readdir($fsearch_handle)) {
                 if (preg_match('/^FileSearch.+\\.class.php$/', $file)) {

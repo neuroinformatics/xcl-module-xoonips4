@@ -1,6 +1,8 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/'.$mytrustdirname.'/class/viewtype/ViewType.class.php';
+use Xoonips\Core\XoopsUtils;
+
+require_once __DIR__.'/ViewType.class.php';
 
 class Xoonips_ViewTypeTimeZone extends Xoonips_ViewType
 {
@@ -11,9 +13,9 @@ class Xoonips_ViewTypeTimeZone extends Xoonips_ViewType
 
     public function getRegistryView($field)
     {
-        $myxoopsConfig = Xoonips_Utils::getXoopsConfigs(XOOPS_CONF);
+        $default_TZ = XoopsUtils::getXoopsConfig('default_TZ');
 
-        return $this->getInputView($field, $myxoopsConfig['default_TZ'], 1);
+        return $this->getInputView($field, $default_TZ, 1);
     }
 
     public function getInputView($field, $value, $groupLoopId)

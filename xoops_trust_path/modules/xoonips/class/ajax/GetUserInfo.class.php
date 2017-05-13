@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\XoopsUtils;
+
 class Xoonips_GetUserInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
 {
     /**
@@ -11,7 +13,7 @@ class Xoonips_GetUserInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
     {
         static $keys = array('uid', 'uname', 'name');
         $ret = array();
-        if (Legacy_Utils::getUid() == XOONIPS_UID_GUEST) {
+        if (XoopsUtils::getUid() == XOONIPS_UID_GUEST) {
             return false;
         }
         $uid = intval($this->mRequest->getRequest('uid'));

@@ -14,9 +14,7 @@ define('XOONIPS_CONFIG_REPOSITORY_NIJC_CODE', 'repository_nijc_code');
 define('REPOSITORY_RESPONSE_LIMIT_ROW', 100);
 define('REPOSITORY_RESUMPTION_TOKEN_EXPIRE_TERM', 1000);
 
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/BeanFactory.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/Enum.class.php';
-require_once 'Metadata.class.php';
+require_once __DIR__.'/Metadata.class.php';
 
 class Xoonips_Oaipmh
 {

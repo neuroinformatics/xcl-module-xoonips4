@@ -1,9 +1,8 @@
 <?php
 
-require_once XOONIPS_TRUST_PATH.'/class/core/Workflow.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/WorkflowClientBase.class.php';
-require_once XOONIPS_TRUST_PATH.'/class/core/BeanFactory.class.php';
-require_once dirname(dirname(__FILE__)).'/core/User.class.php';
+require_once dirname(__DIR__).'/core/Workflow.class.php';
+require_once dirname(__DIR__).'/core/WorkflowClientBase.class.php';
+require_once dirname(__DIR__).'/core/User.class.php';
 
 class Xoonips_WorkflowClientGroupJoin extends Xoonips_WorkflowClientBase
 {

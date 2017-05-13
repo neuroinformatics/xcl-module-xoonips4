@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Error.class.php';
+require_once __DIR__.'/Error.class.php';
 
 class Xoonips_Errors
 {

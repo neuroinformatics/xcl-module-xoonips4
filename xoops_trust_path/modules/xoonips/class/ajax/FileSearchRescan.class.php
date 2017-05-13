@@ -1,6 +1,8 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/File.class.php';
+use Xoonips\Core\XoopsUtils;
+
+require_once dirname(__DIR__).'/core/File.class.php';
 
 class Xoonips_FileSearchRescanAjaxMethod extends Xoonips_AbstractAjaxMethod
 {
@@ -11,10 +13,10 @@ class Xoonips_FileSearchRescanAjaxMethod extends Xoonips_AbstractAjaxMethod
      */
     public function execute()
     {
-        if (($uid = Legacy_Utils::getUid()) == XOONIPS_UID_GUEST) {
+        if (($uid = XoopsUtils::getUid()) == XOONIPS_UID_GUEST) {
             return false;
         }
-        if (!Xoonips_Utils::isAdmin($uid, $this->mDirname)) {
+        if (!XoopsUtils::isAdmin($uid, $this->mDirname)) {
             return false;
         } // permission error
         $mode = trim($this->mRequest->getRequest('mode'));

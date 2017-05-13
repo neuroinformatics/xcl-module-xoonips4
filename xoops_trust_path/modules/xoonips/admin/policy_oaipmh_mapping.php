@@ -1,9 +1,9 @@
 <?php
 
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Request.class.php';
-require_once XOOPS_TRUST_PATH.'/modules/xoonips/class/core/Response.class.php';
+require_once dirname(__DIR__).'/class/core/Request.class.php';
+require_once dirname(__DIR__).'/class/core/Response.class.php';
 require_once XOOPS_ROOT_PATH.'/include/cp_header.php';
-require_once 'class/action/PolicyOaipmhMappingAction.class.php';
+require_once __DIR__.'/class/action/PolicyOaipmhMappingAction.class.php';
 
 $request = new Xoonips_Request();
 $response = new Xoonips_Response();
