@@ -167,7 +167,7 @@ class ModuleUninstaller
                     break;
                 }
             } else {
-                $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_FAILED_TO_EXECUTE_CALLBACK'), get_class($this).'::'.$func));
+                $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_EXECUTE_CALLBACK'), get_class($this).'::'.$func));
                 if (!$this->mForceMode) {
                     break;
                 }
@@ -187,7 +187,7 @@ class ModuleUninstaller
                     break;
                 }
             } else {
-                $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_FAILED_TO_EXECUTE_CALLBACK'), get_class($this).'::'.$func));
+                $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_EXECUTE_CALLBACK'), get_class($this).'::'.$func));
                 if (!$this->mForceMode) {
                     break;
                 }
@@ -271,14 +271,14 @@ class ModuleUninstaller
             require_once XOOPS_MODULE_PATH.'/'.$this->mXoopsModule->get('dirname').'/'.$installScript;
             $funcName = 'xoops_module_uninstall_'.$this->mXoopsModule->get('dirname');
             if (!preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $funcName)) {
-                $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_FAILED_TO_EXECUTE_CALLBACK'), $funcName));
+                $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_EXECUTE_CALLBACK'), $funcName));
 
                 return;
             }
             if (function_exists($funcName)) {
                 $result = $funcName($this->mXoopsModule, new \XCube_Ref($this->mLog));
                 if (!$result) {
-                    $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_FAILED_TO_EXECUTE_CALLBACK'), $funcName));
+                    $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_EXECUTE_CALLBACK'), $funcName));
                 }
             }
         }

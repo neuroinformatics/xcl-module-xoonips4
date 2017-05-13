@@ -255,7 +255,7 @@ class ModuleInstaller
                     break;
                 }
             } else {
-                $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_FAILED_TO_EXECUTE_CALLBACK'), get_class($this).'::'.$func));
+                $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_EXECUTE_CALLBACK'), get_class($this).'::'.$func));
                 if (!$this->mForceMode) {
                     break;
                 }
@@ -275,7 +275,7 @@ class ModuleInstaller
                     break;
                 }
             } else {
-                $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_FAILED_TO_EXECUTE_CALLBACK'), get_class($this).'::'.$func));
+                $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_EXECUTE_CALLBACK'), get_class($this).'::'.$func));
                 if (!$this->mForceMode) {
                     break;
                 }

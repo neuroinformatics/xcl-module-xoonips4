@@ -67,11 +67,25 @@ class ModuleUpdater
     protected $mLangMan = null;
 
     /**
-     * custom hooks.
+     * time limit.
+     *
+     * @var int
+     */
+    protected $mTimeLimit = -1;
+
+    /**
+     * custom pre-update hooks.
      *
      * @var array
      */
-    protected $mHooks = array();
+    protected $mPreUpdateHooks = array();
+
+    /**
+     * custom post-update hooks.
+     *
+     * @var array
+     */
+    protected $mPostUpdateHooks = array();
 
     /**
      * constructor.
@@ -192,6 +206,9 @@ class ModuleUpdater
         $dirname = $this->mCurrentXoopsModule->get('dirname');
         $this->mLangMan = new LanguageManager($dirname, 'install');
         $this->mLangMan->load();
+        if ($this->mTimeLimit >= 0) {
+            set_time_limit($this->mTimeLimit);
+        }
 
         return $this->hasUpgradeMethod() ? $this->_callUpgradeMethod() : $this->_executeAutomaticUpgrade();
     }
@@ -221,7 +238,7 @@ class ModuleUpdater
     protected function _executeAutomaticUpgrade()
     {
         $this->mLog->addReport($this->mLangMan->get('INSTALL_MSG_UPDATE_STARTED'));
-        $this->_executeHooks();
+        $this->_executePreUpdateHooks();
         if (!$this->mForceMode && $this->mLog->hasError()) {
             $this->_processReport();
 
@@ -251,26 +268,66 @@ class ModuleUpdater
 
             return false;
         }
+        $this->_executePostUpdateHooks();
+        if (!$this->mForceMode && $this->mLog->hasError()) {
+            $this->_processReport();
+
+            return false;
+        }
         $this->_processReport();
 
         return true;
     }
 
     /**
-     * execute hooks.
+     * execute pre-update hooks.
      */
-    protected function _executeHooks()
+    protected function _executePreUpdateHooks()
     {
-        if (!empty($this->mHooks)) {
+        if (!empty($this->mPreUpdateHooks)) {
             $currentVersion = $this->getCurrentVersion();
-            ksort($this->mHooks);
-            foreach ($this->mHooks as $version => $func) {
-                if ($version > $currentVersion && is_callable(array($this, $func))) {
-                    $this->$func();
-                    if (!$this->mForceMode && $this->mLog->hasError()) {
-                        break;
+            ksort($this->mPreUpdateHooks);
+            foreach ($this->mPreUpdateHooks as $version => $func) {
+                if ($version > $currentVersion) {
+                    if (is_callable(array($this, $func))) {
+                        $this->$func();
+                        if (!$this->mForceMode && $this->mLog->hasError()) {
+                            break;
+                        }
+                        $currentVersion = $version;
+                    } else {
+                        $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_EXECUTE_CALLBACK'), get_class($this).'::'.$func));
+                        if (!$this->mForceMode) {
+                            break;
+                        }
                     }
-                    $currentVersion = $version;
+                }
+            }
+        }
+    }
+
+    /**
+     * execute post-update hooks.
+     */
+    protected function _executePostUpdateHooks()
+    {
+        if (!empty($this->mPostUpdateHooks)) {
+            $currentVersion = $this->getCurrentVersion();
+            ksort($this->mPostUpdateHooks);
+            foreach ($this->mPostUpdateHooks as $version => $func) {
+                if ($version > $currentVersion) {
+                    if (is_callable(array($this, $func))) {
+                        $this->$func();
+                        if (!$this->mForceMode && $this->mLog->hasError()) {
+                            break;
+                        }
+                        $currentVersion = $version;
+                    } else {
+                        $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_EXECUTE_CALLBACK'), get_class($this).'::'.$func));
+                        if (!$this->mForceMode) {
+                            break;
+                        }
+                    }
                 }
             }
         }

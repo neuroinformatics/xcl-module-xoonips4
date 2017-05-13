@@ -2,54 +2,6 @@
 
 // _MI_<MODULENAME>_<STRINGNAME>
 
-define('_MI_XOONIPS_INSTALL_ERROR_MODULE_INSTALLED', 'Module could not be installed.');
-define('_MI_XOONIPS_INSTALL_ERROR_PERM_ADMIN_SET', 'Additional administrative authority of the module failed.');
-define('_MI_XOONIPS_INSTALL_ERROR_PERM_READ_SET', 'Additional access authority of the module failed.');
-define('_MI_XOONIPS_INSTALL_MSG_MODULE_INSTALLED', 'Module [{0}] is installed.');
-define('_MI_XOONIPS_INSTALL_ERROR_SQL_FILE_NOT_FOUND', 'SQL file not found[{0}] .');
-define('_MI_XOONIPS_INSTALL_MSG_DB_SETUP_FINISHED', 'Database setup is complete.');
-define('_MI_XOONIPS_INSTALL_MSG_SQL_SUCCESS', 'SQL success : {0}');
-define('_MI_XOONIPS_INSTALL_MSG_SQL_ERROR', 'SQL error : {0}');
-define('_MI_XOONIPS_INSTALL_MSG_TPL_INSTALLED', 'Template [{0}] is installed.');
-define('_MI_XOONIPS_INSTALL_ERROR_TPL_INSTALLED', 'Template [{0}] could not be installed.');
-define('_MI_XOONIPS_INSTALL_ERROR_TPL_UNINSTALLED', 'Template [{0}] could not be uninstalled.');
-define('_MI_XOONIPS_INSTALL_MSG_BLOCK_INSTALLED', 'Block [{0}] is installed.');
-define('_MI_XOONIPS_INSTALL_ERROR_BLOCK_COULD_NOT_LINK', 'Block [{0}] was unable to associated with the module.');
-define('_MI_XOONIPS_INSTALL_ERROR_PERM_COULD_NOT_SET', 'Block [{0}] could not be added to the authority.');
-define('_MI_XOONIPS_INSTALL_ERROR_BLOCK_PERM_SET', 'Block [{0}] could not be added to the authority.');
-define('_MI_XOONIPS_INSTALL_MSG_BLOCK_TPL_INSTALLED', 'Block Template [{0}] is installed.');
-define('_MI_XOONIPS_INSTALL_ERROR_BLOCK_TPL_INSTALLED', 'Block Template [{0}] could not be installed.');
-define('_MI_XOONIPS_INSTALL_MSG_BLOCK_UNINSTALLED', 'Block [{0}] is uninstalled.');
-define('_MI_XOONIPS_INSTALL_ERROR_BLOCK_UNINSTALLED', 'Block [{0}] could not be uninstalled.');
-define('_MI_XOONIPS_INSTALL_ERROR_BLOCK_PERM_DELETE', 'Block [{0}] permissions could not be deleted.');
-define('_MI_XOONIPS_INSTALL_MSG_BLOCK_UPDATED', 'Block [{0}] is updated.');
-define('_MI_XOONIPS_INSTALL_ERROR_BLOCK_UPDATED', 'Block [{0}] could not be updated.');
-define('_MI_XOONIPS_INSTALL_ERROR_BLOCK_INSTALLED', 'Block [{0}] could not be installed.');
-define('_MI_XOONIPS_INSTALL_MSG_BLOCK_TPL_UNINSTALLED', 'Block Template [{0}] is installed.');
-define('_MI_XOONIPS_INSTALL_MSG_CONFIG_ADDED', 'General Settings [{0}] is added.');
-define('_MI_XOONIPS_INSTALL_ERROR_CONFIG_ADDED', 'General Settings [{0}] could not be added.');
-define('_MI_XOONIPS_INSTALL_MSG_CONFIG_DELETED', 'General Settings [{0}] is deleted.');
-define('_MI_XOONIPS_INSTALL_ERROR_CONFIG_DELETED', 'General Settings [{0}] could not be deleted.');
-define('_MI_XOONIPS_INSTALL_MSG_CONFIG_UPDATED', 'General Settings [{0}] is updated.');
-define('_MI_XOONIPS_INSTALL_ERROR_CONFIG_UPDATED', 'General Settings [{0}] could not be updated.');
-define('_MI_XOONIPS_INSTALL_ERROR_CONFIG_NOT_FOUND', 'General Settings is not found');
-define('_MI_XOONIPS_INSTALL_MSG_MODULE_INFORMATION_DELETED', 'Module information is deleted.');
-define('_MI_XOONIPS_INSTALL_ERROR_MODULE_INFORMATION_DELETED', 'Module information could not be deleted.');
-define('_MI_XOONIPS_INSTALL_MSG_TABLE_DOROPPED', 'Table [{0}] is deleted.');
-define('_MI_XOONIPS_INSTALL_ERROR_TABLE_DOROPPED', 'Table [{0}] could not be deleted.');
-define('_MI_XOONIPS_INSTALL_ERROR_BLOCK_TPL_DELETED', 'Block template could not be deleted.<br />{0}');
-define('_MI_XOONIPS_INSTALL_MSG_MODULE_UNINSTALLED', 'Module [{0}] is uninstalled.');
-define('_MI_XOONIPS_INSTALL_ERROR_MODULE_UNINSTALLED', 'Module [{0}] could not be uninstalled.');
-define('_MI_XOONIPS_INSTALL_MSG_UPDATE_STARTED', 'Update module start.');
-define('_MI_XOONIPS_INSTALL_MSG_UPDATE_FINISHED', 'Update module finish.');
-define('_MI_XOONIPS_INSTALL_ERROR_UPDATE_FINISHED', 'Failed to update the module.');
-define('_MI_XOONIPS_INSTALL_MSG_MODULE_UPDATED', 'Module [{0}] is updated.');
-define('_MI_XOONIPS_INSTALL_ERROR_MODULE_UPDATED', 'Module [{0}] could not be updated.');
-define('_MI_XOONIPS_INSTALL_MSG_DATA_INSTALLED', 'Data is inserted in the table [{0}].');
-define('_MI_XOONIPS_INSTALL_ERROR_DATAL_INSTALLED', 'Data could not be inserted in the table [{0}].');
-define('_MI_XOONIPS_INSTALL_MSG_ITEMTYPE_INSTALLED', 'Itemtype [{0}] is updated.');
-define('_MI_XOONIPS_INSTALL_ERROR_ITEMTYPEL_INSTALLED', 'Itemtype [{0}] could not be updated.');
-
 // compatibility
 define('_MI_XOONIPS_INSTALL_DOWNLOAD_LIMIT_LOGIN_USER', 'Login User');
 define('_MI_XOONIPS_INSTALL_DOWNLOAD_LIMIT_EVERYONE', 'Everyone');

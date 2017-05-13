@@ -333,7 +333,7 @@ class ModuleInstallUtils
                 $perm->set('gperm_groupid', $group->get('groupid'));
                 $perm->setNew();
                 if (!$gpermHandler->insert($perm)) {
-                    $log->addWarning(XCubeUtils::formatString($langman->get('INSTALL_ERROR_PERM_COULD_NOT_SET'), $blockObj->get('name')));
+                    $log->addWarning(XCubeUtils::formatString($langman->get('INSTALL_ERROR_BLOCK_PERM_SET'), $blockObj->get('name')));
                 }
             }
         } else {
