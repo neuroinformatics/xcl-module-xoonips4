@@ -9,6 +9,10 @@ use Xoonips\Object\AbstractObject;
  */
 class IndexObjectHandler extends AbstractObjectHandler
 {
+    const OPEN_LEVEL_PUBLIC = 1;
+    const OPEN_LEVEL_GROUP = 2;
+    const OPEN_LEVEL_PRIVATE = 3;
+
     /**
      * constructor.
      *

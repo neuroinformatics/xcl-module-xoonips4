@@ -7,6 +7,11 @@ namespace Xoonips\Handler;
  */
 class IndexItemLinkObjectHandler extends AbstractObjectHandler
 {
+    const CERTIFY_STATE_NOT_CERTIFED = 0;
+    const CERTIFY_STATE_CERTIFY_REQUIRED = 1;
+    const CERTIFY_STATE_CERTIFIED = 2;
+    const CERTIFY_STATE_WITHDRAW_REQUIRED = 3;
+
     /**
      * constructor.
      *

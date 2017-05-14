@@ -2,7 +2,6 @@
 
 use Xoonips\Core\Functions;
 
-require_once dirname(__DIR__).'/core/BeanBase.class.php';
 require_once dirname(__DIR__).'/core/DataTypeFactory.class.php';
 require_once dirname(__DIR__).'/core/ItemFieldManagerFactory.class.php';
 require_once dirname(__DIR__).'/core/ItemFieldManager.class.php';

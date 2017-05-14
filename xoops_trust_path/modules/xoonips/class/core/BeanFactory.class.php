@@ -2,6 +2,8 @@
 
 use Xoonips\Core\Functions;
 
+require_once __DIR__.'/BeanBase.class.php';
+
 class Xoonips_BeanFactory
 {
     public static function getBean($c, $dirname, $trustDirname = null)

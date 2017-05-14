@@ -1,7 +1,5 @@
 <?php
 
-require_once dirname(__DIR__).'/core/BeanBase.class.php';
-
 /**
  * @brief operate xoonips_item_title table
  */

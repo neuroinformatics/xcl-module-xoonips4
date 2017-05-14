@@ -77,7 +77,7 @@ class Xoonips_ItemFieldObject extends XoopsSimpleObject
         }
         $fieldId = $this->get('item_field_detail_id');
         // false if field id exists in the field group
-        $gflHandler = &Functions::getXoonipsHandler('ItemFieldGroupFieldLink', $this->mDirname);
+        $gflHandler = &Functions::getXoonipsHandler('ItemFieldGroupFieldDetailLinkObject', $this->mDirname);
         $criteria = new Criteria('item_field_detail_id', $fieldId);
         if ($gflHandler->getCount($criteria) > 0) {
             return false;
@@ -304,7 +304,7 @@ class Xoonips_ItemFieldHandler extends XoopsObjectGenericHandler
     private function _getDataTypeIdsForQuickSearch()
     {
         $names = array('varchar', 'text');
-        $handler = &Functions::getXoonipsHandler('DataType', $this->mDirname);
+        $handler = &Functions::getXoonipsHandler('DataTypeObject', $this->mDirname);
         $criteria = new Criteria('name', $names, 'IN');
         $objs = &$handler->getObjects($criteria, null, null, true);
 

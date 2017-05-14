@@ -19,4 +19,17 @@ class DataTypeObjectHandler extends AbstractObjectHandler
         $this->mTable = $db->prefix($dirname.'_data_type');
         $this->mPrimaryKey = 'data_type_id';
     }
+
+    /**
+     * get data types.
+     *
+     * @return array
+     */
+    public function getDataTypes()
+    {
+        $criteria = new \CriteriaElement();
+        $criteria->setSort($this->mPrimaryKey);
+
+        return $this->getObjects($criteria, '', false, true);
+    }
 }

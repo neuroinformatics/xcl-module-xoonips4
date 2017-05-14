@@ -389,6 +389,9 @@ class XoopsUtils
      */
     public static function isSiteAdmin($uid)
     {
+        if ($uid == self::UID_GUEST) {
+            return false;
+        }
         if (!array_key_exists($uid, self::$mGroupIds)) {
             $memberHandler = &xoops_gethandler('member');
             self::$mGroupIds[$uid] = $memberHandler->getGroupsByUser($uid, false);
@@ -407,6 +410,9 @@ class XoopsUtils
      */
     public static function isModuleAdmin($uid, $dirname)
     {
+        if ($uid == self::UID_GUEST) {
+            return false;
+        }
         $moduleHandler = &xoops_gethandler('module');
         $moduleObj = &$moduleHandler->getByDirname($dirname);
         if (!is_object($moduleObj)) {

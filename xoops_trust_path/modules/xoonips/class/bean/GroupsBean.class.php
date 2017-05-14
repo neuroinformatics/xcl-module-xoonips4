@@ -2,8 +2,6 @@
 
 use Xoonips\Core\Functions;
 
-require_once dirname(__DIR__).'/core/BeanBase.class.php';
-
 /**
  * @brief operate groups table
  */

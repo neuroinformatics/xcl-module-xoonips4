@@ -60,8 +60,6 @@ define('ETID_DELETE_ITEM_OWNER', 57);
 define('ETID_MOVE_INDEX', 58);
 define('ETID_MAX', 59);
 
-require_once dirname(__DIR__).'/core/BeanBase.class.php';
-
 /**
  * @brief operate xoonips_event_log table
  */

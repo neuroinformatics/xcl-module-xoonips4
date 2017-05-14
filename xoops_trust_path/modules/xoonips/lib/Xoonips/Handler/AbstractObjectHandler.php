@@ -246,7 +246,10 @@ abstract class AbstractObjectHandler extends AbstractHandler
     {
         $sql = 'DELETE FROM `'.$this->mTable.'`';
         if (is_object($criteria)) {
-            $sql .= ' '.$criteria->renderWhere();
+            $where = $criteria->render();
+            if (!empty($where)) {
+                $sql .= ' WHERE '.$where;
+            }
         }
         if (!$res = $this->_query($sql, $force)) {
             return false;
@@ -455,7 +458,10 @@ abstract class AbstractObjectHandler extends AbstractHandler
             $sql .= ' '.$join->render();
         }
         if (is_object($criteria)) {
-            $sql .= ' '.$criteria->renderWhere();
+            $where = $criteria->render();
+            if (!empty($where)) {
+                $sql .= ' WHERE '.$where;
+            }
             if ($criteria->groupby) {
                 $sql .= ' GROUP BY '.$criteria->groupby;
             }

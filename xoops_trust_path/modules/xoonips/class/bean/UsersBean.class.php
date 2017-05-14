@@ -2,7 +2,6 @@
 
 use Xoonips\Core\XoopsUtils;
 
-require_once dirname(__DIR__).'/core/BeanBase.class.php';
 require_once XOOPS_ROOT_PATH.'/class/xoopsuser.php';
 
 /**

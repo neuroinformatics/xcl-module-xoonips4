@@ -1,7 +1,5 @@
 <?php
 
-require_once dirname(__DIR__).'/core/BeanBase.class.php';
-
 /**
  * @brief operate groups_users_link table
  */

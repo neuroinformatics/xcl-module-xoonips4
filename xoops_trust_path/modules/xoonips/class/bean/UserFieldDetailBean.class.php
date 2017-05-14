@@ -1,6 +1,5 @@
 <?php
 
-require_once dirname(__DIR__).'/core/BeanBase.class.php';
 require_once dirname(__DIR__).'/core/ViewTypeFactory.class.php';
 require_once dirname(__DIR__).'/core/DataTypeFactory.class.php';
 require_once dirname(__DIR__).'/core/UserField.class.php';

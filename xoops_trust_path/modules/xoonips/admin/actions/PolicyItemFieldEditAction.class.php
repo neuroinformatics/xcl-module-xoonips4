@@ -109,7 +109,7 @@ class Xoonips_Admin_PolicyItemFieldEditAction extends Xoonips_AbstractEditAction
         );
         $vtHandler = &Functions::getXoonipsHandler('ViewType', $dirname);
         $viewTypes = $vtHandler->getViewTypes();
-        $dtHandler = &Functions::getXoonipsHandler('DataType', $dirname);
+        $dtHandler = &Functions::getXoonipsHandler('DataTypeObject', $dirname);
         $dataTypes = $dtHandler->getDataTypes();
         $fvsHandler = &Functions::getXoonipsHandler('ItemFieldValueSet', $dirname);
         $selectNames = $fvsHandler->getSelectNames();
