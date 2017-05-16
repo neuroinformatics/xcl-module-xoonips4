@@ -237,9 +237,8 @@ class CacheUtils
      * @param int    $len
      * @param int    &$offset
      * @param int    &$limit
-     * @param string $mime
      */
-    protected static function _outputRangeHeader($useRange, $len, &$offset, &$limit, $mime)
+    protected static function _outputRangeHeader($useRange, $len, &$offset, &$limit)
     {
         $offset = 0;
         $limit = $len - 1;
