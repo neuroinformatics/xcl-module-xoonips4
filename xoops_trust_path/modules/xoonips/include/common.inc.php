@@ -10,4 +10,6 @@ require_once __DIR__.'/condefs.inc.php';
 require_once dirname(__DIR__).'/lib/vendor/autoload.php';
 
 // load common classes
+require_once dirname(__DIR__).'/class/Enum.class.php';
+require_once dirname(__DIR__).'/class/core/BeanFactory.class.php';
 require_once dirname(__DIR__).'/class/core/Utils.class.php';

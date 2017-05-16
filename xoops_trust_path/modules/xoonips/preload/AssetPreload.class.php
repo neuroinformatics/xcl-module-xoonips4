@@ -1,8 +1,6 @@
 <?php
 
 require_once dirname(__DIR__).'/include/common.inc.php';
-require_once dirname(__DIR__).'/class/Enum.class.php';
-require_once dirname(__DIR__).'/class/core/BeanFactory.class.php';
 
 /**
  * asset preload base class.
