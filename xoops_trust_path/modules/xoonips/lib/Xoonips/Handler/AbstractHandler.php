@@ -22,7 +22,7 @@ abstract class AbstractHandler
     protected $mDirname;
 
     /**
-     * constractor.
+     * constructor.
      *
      * @param \XoopsDatabase &$db
      * @param string         $dirname

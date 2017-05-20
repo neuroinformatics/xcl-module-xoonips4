@@ -39,7 +39,7 @@ abstract class AbstractObjectHandler extends AbstractHandler
     protected $mIsAutoIncrement;
 
     /**
-     * constractor
+     * constructer
      * override this function then set mTable and mPrimaryKey variables.
      *
      * @param \XoopsDatabase &$db

@@ -233,10 +233,10 @@ class CacheUtils
     /**
      * output range header.
      *
-     * @param bool   $useRange
-     * @param int    $len
-     * @param int    &$offset
-     * @param int    &$limit
+     * @param bool $useRange
+     * @param int  $len
+     * @param int  &$offset
+     * @param int  &$limit
      */
     protected static function _outputRangeHeader($useRange, $len, &$offset, &$limit)
     {

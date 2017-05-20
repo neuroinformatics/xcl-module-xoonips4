@@ -29,7 +29,7 @@ class IndexObjectHandler extends AbstractObjectHandler
     /**
      * insert/update/replace object.
      *
-     * @param Object/AbstractObject &$obj
+     * @param Object\AbstractObject &$obj
      * @param bool                  $force
      * @param bool                  $isReplace
      *
