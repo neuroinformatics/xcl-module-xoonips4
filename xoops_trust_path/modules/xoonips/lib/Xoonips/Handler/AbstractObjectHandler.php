@@ -319,7 +319,7 @@ abstract class AbstractObjectHandler extends AbstractHandler
     /**
      * insert/update/replace object.
      *
-     * @param Object/AbstractObject &$obj
+     * @param Object\AbstractObject &$obj
      * @param bool                  $force
      * @param bool                  $isReplace
      *
@@ -397,7 +397,7 @@ abstract class AbstractObjectHandler extends AbstractHandler
     /**
      * make variables array for sql.
      *
-     * @param Object/AbstractObject &$obj
+     * @param Object\AbstractObject &$obj
      *
      * @return array
      */

@@ -100,7 +100,7 @@ class ModuleInstallUtils
      * @param string $dirname
      * @param string $trustDirname
      *
-     * @return {string 'public', string 'trust'}
+     * @return array
      */
     public static function replaceDirname($from, $dirname, $trustDirname = null)
     {

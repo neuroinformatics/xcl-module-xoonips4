@@ -28,7 +28,7 @@ class Functions
      * @param string $name
      * @param string $dirname
      *
-     * @return Handler\AbstractHandler&
+     * @return Handler\AbstractHandler &
      */
     public static function &getXoonipsHandler($name, $dirname)
     {

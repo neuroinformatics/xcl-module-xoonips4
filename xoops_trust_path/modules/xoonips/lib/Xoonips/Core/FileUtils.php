@@ -264,7 +264,7 @@ class FileUtils
      * @param string $dir
      * @param string $prefix
      *
-     * @return string/bool temporary directory, false if failure
+     * @return string|bool temporary directory, false if failure
      */
     public static function makeTempDirectory($dir, $prefix)
     {

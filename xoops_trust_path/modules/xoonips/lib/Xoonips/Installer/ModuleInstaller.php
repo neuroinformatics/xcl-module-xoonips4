@@ -206,7 +206,7 @@ class ModuleInstaller
      *
      * @param int $gid
      *
-     * @return \XoopsGroupPerm&
+     * @return \XoopsGroupPerm &
      */
     protected function _createPermission($gid)
     {

@@ -81,7 +81,7 @@ class XoopsUtils
      * @param string $dirname
      * @param string $trustDirname
      *
-     * @return Handler\AbstractHandler&
+     * @return Handler\AbstractHandler &
      */
     public static function &getModuleHandler($name, $dirname, $trustDirname = null)
     {
