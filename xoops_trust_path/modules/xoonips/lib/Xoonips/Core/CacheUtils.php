@@ -159,6 +159,24 @@ class CacheUtils
     }
 
     /**
+     * output data using callback function.
+     *
+     * @param int      $mitme
+     * @param string   $etag
+     * @param string   $mime
+     * @param callable $func
+     * @param array    $params
+     */
+    public static function outputCallback($mtime, $etag, $mime, $func, $params)
+    {
+        self::_prepareOutput();
+        self::_outputCacheHeader($mtime, $etag);
+        header('Content-Type: '.$mime);
+        call_user_func_array($func, $params);
+        self::_cleanupOutput();
+    }
+
+    /**
      * download file content.
      *
      * @param bool   $useRange
