@@ -304,7 +304,7 @@ class Xoonips_ItemFieldHandler extends XoopsObjectGenericHandler
     private function _getDataTypeIdsForQuickSearch()
     {
         $names = array('varchar', 'text');
-        $handler = &Functions::getXoonipsHandler('DataTypeObject', $this->mDirname);
+        $handler = &Functions::getXoonipsHandler('DataType', $this->mDirname);
         $criteria = new Criteria('name', $names, 'IN');
         $objs = &$handler->getObjects($criteria, null, null, true);
 
