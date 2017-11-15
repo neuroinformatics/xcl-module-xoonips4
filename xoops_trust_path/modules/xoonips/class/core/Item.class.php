@@ -1596,8 +1596,8 @@ class Xoonips_Item
                                 if (!$itemExtendBean->insert($itemId, $tableName, $v, $loop, $groupid)) {
                                     return false;
                                 }
-                                ++$loop;
                             }
+                            ++$loop;
                         }
                     }
                 }
