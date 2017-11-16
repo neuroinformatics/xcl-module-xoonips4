@@ -291,7 +291,7 @@ abstract class AbstractObject
             return null;
         }
 
-        return $this->mExtraVar[$key];
+        return $this->mExtraVars[$key];
     }
 
     /**
