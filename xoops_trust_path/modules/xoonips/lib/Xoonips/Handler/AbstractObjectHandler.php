@@ -352,7 +352,7 @@ abstract class AbstractObjectHandler extends AbstractHandler
                 $where[] = $keyField.'='.$varsArr[$keyField];
             }
             foreach ($varsArr as $field => $value) {
-                if (!in_array($field, $keyField)) {
+                if (!in_array($field, $keyFields)) {
                     $setArr[] = $field.'='.$value;
                 }
             }

@@ -110,6 +110,7 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
 
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         $index = $indexBean->getIndex($index_id);
+        $oldTitle = $index['title'];
 
         $index_upload_dir = Functions::getXoonipsConfig($this->dirname, 'index_upload_dir');
         $upload_path = $index_upload_dir.'/index';
@@ -185,6 +186,13 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
 
                 return false;
             }
+        }
+
+        if ($oldTitle != $title) {
+            // write log
+            $this->log->recordUpdateIndexEvent($index_id);
+            // event
+            $this->notification->afterUserIndexRenamed($this->notification->beforeUserIndexRenamed($index_id));
         }
 
         if (empty($viewData['redirect_msg'])) {
