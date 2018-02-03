@@ -44,7 +44,7 @@ class Xoonips_ItemFieldObject extends XoopsSimpleObject
      */
     public function isEditing()
     {
-        if ($this->get('released') == 0) {
+        if (0 == $this->get('released')) {
             return true;
         }
         $handler = &Functions::getXoonipsHandler('ItemField', $this->mDirname);
@@ -72,7 +72,7 @@ class Xoonips_ItemFieldObject extends XoopsSimpleObject
      */
     public function isDeletable()
     {
-        if ($this->get('preselect') == 1 && $this->get('update_id') == null) {
+        if (1 == $this->get('preselect') && null == $this->get('update_id')) {
             return false;
         }
         $fieldId = $this->get('item_field_detail_id');
@@ -156,7 +156,7 @@ class Xoonips_ItemFieldHandler extends XoopsObjectGenericHandler
         if ($is_new) {
             $vtHandler = &Functions::getXoonipsHandler('ViewType', $this->mDirname);
             $tinfo = $vtHandler->getTableInfo($obj->get('view_type_id'));
-            if ($tinfo === false) {
+            if (false === $tinfo) {
                 $pid = $obj->get($this->mPrimary);
                 $obj->set('table_name', $this->mDirname.'_item_extend'.$pid);
             } else {
@@ -202,7 +202,7 @@ class Xoonips_ItemFieldHandler extends XoopsObjectGenericHandler
             return false;
         }
         // drop extend table
-        if ($obj->get('preselect') == 0 && $obj->get('released') == 1) {
+        if (0 == $obj->get('preselect') && 1 == $obj->get('released')) {
             $tname = $obj->get('table_name');
             if (preg_match('/^'.$this->mDirname.'_item_extend\\d+$/', $tname)) {
                 $sql = sprintf('DROP TABLE `%s`', $this->db->prefix($tname));
@@ -229,7 +229,7 @@ class Xoonips_ItemFieldHandler extends XoopsObjectGenericHandler
     public function getObjectsForQuickSearch()
     {
         static $cache = null;
-        if ($cache != null) {
+        if (null != $cache) {
             return $cache;
         }
         $viewTypeIds = $this->_getViewTypeIdsForQuickSearch();
@@ -254,7 +254,7 @@ class Xoonips_ItemFieldHandler extends XoopsObjectGenericHandler
     public function getPendingIds()
     {
         static $cache = null;
-        if ($cache != null) {
+        if (null != $cache) {
             return $cache;
         }
         $criteria = new CriteriaCompo();
@@ -279,7 +279,7 @@ class Xoonips_ItemFieldHandler extends XoopsObjectGenericHandler
     public function getUsedSelectNames()
     {
         static $cache = null;
-        if ($cache != null) {
+        if (null != $cache) {
             return $cache;
         }
         $ret = array();
@@ -304,7 +304,7 @@ class Xoonips_ItemFieldHandler extends XoopsObjectGenericHandler
     private function _getDataTypeIdsForQuickSearch()
     {
         $names = array('varchar', 'text');
-        $handler = &Functions::getXoonipsHandler('DataType', $this->mDirname);
+        $handler = &Functions::getXoonipsHandler('DataTypeObject', $this->mDirname);
         $criteria = new Criteria('name', $names, 'IN');
         $objs = &$handler->getObjects($criteria, null, null, true);
 

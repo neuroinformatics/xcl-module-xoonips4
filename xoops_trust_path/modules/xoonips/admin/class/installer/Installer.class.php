@@ -74,7 +74,7 @@ class Xoonips_Installer extends ModuleInstaller
         foreach ($blocks as $block) {
             list($dirname, $show_func) = $block;
             $bid = XoopsSystemUtils::getBlockId($dirname, $show_func);
-            if ($bid !== false) {
+            if (false !== $bid) {
                 XoopsSystemUtils::setBlockInfo($bid, XoopsSystemUtils::BLOCK_SIDE_HIDE, false, false);
             }
         }
@@ -697,21 +697,21 @@ SQL;
         $fname = 'Default/Default.xml';
         $fpath = $dpath.'/'.$fname;
         $xmlObj = $importItemType->getSimpleXMLElement($fpath);
-        if ($xmlObj == false) {
+        if (false == $xmlObj) {
             $this->mLog->addError('Failed to load Item Type XML : '.$fname);
 
             return;
         }
         $id = '';
-        if ($importItemType->installDefaultItemtype($xmlObj, $id) === false) {
+        if (false === $importItemType->installDefaultItemtype($xmlObj, $id)) {
             $this->mLog->addError('Failed to install Item Type XML : '.$fname);
 
             return;
         }
         // for All item types
         $itemTypes = array();
-        if (($dh = opendir($dpath)) !== false) {
-            while (($fname = readdir($dh)) !== false) {
+        if (false !== ($dh = opendir($dpath))) {
+            while (false !== ($fname = readdir($dh))) {
                 if (in_array($fname, array('.', '..', 'Default'))) {
                     continue;
                 }
@@ -722,7 +722,7 @@ SQL;
         asort($itemTypes);
         foreach ($itemTypes as $itemType) {
             $fname = $itemType.'/'.$itemType.'.xml';
-            if ($importItemType->installItemType($dpath, $itemType) === false) {
+            if (false === $importItemType->installItemType($dpath, $itemType)) {
                 $this->mLog->addError('Failed to install Item Type XML : '.$fname);
 
                 return;
@@ -761,8 +761,7 @@ SQL;
             }
             // install search conditon details
             if (!empty($searchCond['field_xmls'])) {
-                $fields = array_map(array($db, 'quoteString'), $searchCond['field_xmls']);
-                $criteria = new Criteria('xml', $fields, 'IN');
+                $criteria = new Criteria('xml', $searchCond['field_xmls'], 'IN');
                 $ifdObjs = $ifdHandler->getObjects($criteria, null, null, true);
                 if (count($ifdObjs) > 0) {
                     $fids = array_keys($ifdObjs);
@@ -795,7 +794,7 @@ SQL;
     protected function onInstallSetupUploadsDirectory()
     {
         $fpath = 'uploads/xoonips/group';
-        if (FileUtils::makeDirectory(XOOPS_ROOT_PATH.'/'.$fpath) === false) {
+        if (false === FileUtils::makeDirectory(XOOPS_ROOT_PATH.'/'.$fpath)) {
             $this->mLog->addError('Failed to create file upload direcotry "XOOPS_ROOT_PATH/'.$fpath.'".');
         }
         $this->mLog->addReport('Create file upload directory "XOOPS_ROOT_PATH/'.$fpath.'".');
@@ -859,7 +858,7 @@ SQL;
         $numUsers = $memberHandler->getUserCount();
         $limit = 100;
         for ($start = 0; $start < $numUsers; $start += $limit) {
-            $criteria = new \CriteriaElement();
+            $criteria = new CriteriaElement();
             $criteria->setSort('uid');
             $criteria->setOrder('ASC');
             $criteria->setLimit($limit);
@@ -867,7 +866,7 @@ SQL;
             $userObjs = &$memberHandler->getUsers($criteria, true);
             foreach ($userObjs as $userObj) {
                 if ($userObj->isActive()) {
-                    if ($this->_pickupUser($userObj, $dirname) === false) {
+                    if (false === $this->_pickupUser($userObj, $dirname)) {
                         $this->mLog->addError('Failed to pickup user : '.$userObj->get('name').'.');
 
                         return;
@@ -892,13 +891,13 @@ SQL;
         foreach ($notification['event'] as $event) {
             $name = $event['name'];
             $category = $event['category'];
-            if (XoopsSystemUtils::enableNotification($mid, $category, $name) === false) {
+            if (false === XoopsSystemUtils::enableNotification($mid, $category, $name)) {
                 $this->mLog->addError('Failed to enable notification "'.$category.'-'.$name.'".');
 
                 return;
             }
             for ($start = 0; $start < $numUsers; $start += $limit) {
-                $criteria = new \CriteriaElement();
+                $criteria = new CriteriaElement();
                 $criteria->setSort('uid');
                 $criteria->setOrder('ASC');
                 $criteria->setLimit($limit);
@@ -957,7 +956,7 @@ SQL;
             }
         }
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $dirname);
-        if ($indexBean->insertPrivateIndex($uid) === false) {
+        if (false === $indexBean->insertPrivateIndex($uid)) {
             return false;
         }
         $eventLogBean = Xoonips_BeanFactory::getBean('EventLogBean', $dirname);

@@ -41,7 +41,7 @@ class Xoonips_Updater extends ModuleUpdater
             if (SqlUtils::tableExists($table)) {
                 $tableName = $db->prefix($table);
                 $sql = sprintf('SELECT * FROM `%s`', $tableName);
-                if (($res = $db->query($sql)) === false) {
+                if (false === ($res = $db->query($sql))) {
                     $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_SQL_FAILURE'), 'on '.__CLASS__.'::'.__METHOD__.' at line '.__LINE__));
 
                     return;
@@ -80,14 +80,13 @@ class Xoonips_Updater extends ModuleUpdater
         $ifdHandler = &Functions::getXoonipsHandler('ItemFieldDetailObject', $dirname);
         // item_extend : dataType varchar(255) => text
         $xmls = array('kana', 'romaji', 'sub_title_title', 'sub_title_kana', 'sub_title_romaji', 'name', 'jalc_doi', 'naid', 'ichushi', 'grant_id', 'date_of_granted', 'degree_name', 'grantor', 'type_of_resource', 'textversion');
-        $xmlsSql = array_map(array($db, 'quoteString'), $xmls);
-        $criteria = new Criteria('xml', $xmlsSql, 'IN');
+        $criteria = new Criteria('xml', $xmls, 'IN');
         $ifdObjs = $ifdHandler->getObjects($criteria);
         foreach ($ifdObjs as $ifdObj) {
             $table = $ifdObj->get('table_name');
             if (SqlUtils::tableExists($table)) {
                 $cinfo = SqlUtils::getColumnInfo($table, 'value');
-                if ($cinfo !== false && $cinfo['Type'] == 'varchar(255)') {
+                if (false !== $cinfo && 'varchar(255)' == $cinfo['Type']) {
                     $sqls = <<<'SQL'
 ALTER TABLE `{prefix}_{table_name}` DROP INDEX `value`;
 ALTER TABLE `{prefix}_{table_name}` MODIFY `value` TEXT;
@@ -107,14 +106,13 @@ SQL;
         }
         // item_extend : dataType varchar(255) => varchar(1000)
         $xmls = array('physical_description', 'uri');
-        $xmlsSql = array_map(array($db, 'quoteString'), $xmls);
-        $criteria = new Criteria('xml', $xmlsSql, 'IN');
+        $criteria = new Criteria('xml', $xmls, 'IN');
         $ifdObjs = $ifdHandler->getObjects($criteria);
         foreach ($ifdObjs as $ifdObj) {
             $table = $ifdObj->get('table_name');
             if (SqlUtils::tableExists($table)) {
                 $cinfo = SqlUtils::getColumnInfo($table, 'value');
-                if ($cinfo !== false && $cinfo['Type'] == 'varchar(255)') {
+                if (false !== $cinfo && 'varchar(255)' == $cinfo['Type']) {
                     $sqls = <<<'SQL'
 ALTER TABLE `{prefix}_{table_name}` DROP INDEX `value`;
 ALTER TABLE `{prefix}_{table_name}` MODIFY `value` VARCHAR(1000);
@@ -160,7 +158,7 @@ SQL;
         );
         foreach ($configArr as $config) {
             $value = $cHandler->getConfig($config['name']);
-            if ($value === null) {
+            if (null === $value) {
                 $cObj = $cHandler->create();
                 $cObj->set('name', $config['name']);
                 $cObj->set('value', $config['value']);
@@ -175,7 +173,7 @@ SQL;
         // item_import_log : expand `log` field size
         $table = $dirname.'_item_import_log';
         $cinfo = SqlUtils::getColumnInfo($table, 'log');
-        if ($cinfo['Type'] == 'text') {
+        if ('text' == $cinfo['Type']) {
             $sql = sprintf('ALTER TABLE `{prefix}_%s` MODIFY `log` LONGTEXT', $table);
             if (SqlUtils::execute($sql)) {
                 $this->mLog->addReport(XCubeUtils::formatString($this->mLangMan->get('INSTALL_MSG_TABLE_ALTERED'), $table));

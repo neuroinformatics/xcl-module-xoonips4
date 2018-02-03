@@ -450,7 +450,7 @@ abstract class AbstractObjectHandler extends AbstractHandler
     protected function _makeSelectSQL(\CriteriaElement $criteria = null, $fieldlist = '', $distinct = false, JoinCriteria $join = null)
     {
         $distinct = ($distinct) ? 'DISTINCT ' : '';
-        if ($fieldlist == '') {
+        if ('' == $fieldlist) {
             $fieldlist = is_null($join) ? '*' : '`'.$this->mTable.'`.*';
         }
         $sql = 'SELECT '.$distinct.$fieldlist.' FROM `'.$this->mTable.'`';
@@ -458,7 +458,7 @@ abstract class AbstractObjectHandler extends AbstractHandler
             $sql .= ' '.$join->render();
         }
         if (is_object($criteria)) {
-            $where = $criteria->render();
+            $where = $this->_renderCriteria($criteria);
             if (!empty($where)) {
                 $sql .= ' WHERE '.$where;
             }
@@ -470,13 +470,13 @@ abstract class AbstractObjectHandler extends AbstractHandler
                 // XOOPS Cube Legacy
                 $sorts = $criteria->getSorts();
                 foreach ($sorts as $sort) {
-                    if ($sort['sort'] != '') {
+                    if ('' != $sort['sort']) {
                         $orderby[] = $sort['sort'].' '.$sort['order'];
                     }
                 }
             } else {
                 $sort = $criteria->getSort();
-                if ($sort != '') {
+                if ('' != $sort) {
                     $orderby[] = $sort.' '.$criteria->getOrder();
                 }
             }
@@ -486,5 +486,36 @@ abstract class AbstractObjectHandler extends AbstractHandler
         }
 
         return $sql;
+    }
+
+    /**
+     * render criteria.
+     *
+     * @param \CriteriaElement $criteria
+     *
+     * @return string
+     */
+    protected function _renderCriteria(\CriteriaElement $criteria)
+    {
+        if ('Criteria' != get_class($criteria)) {
+            return $criteria->render();
+        }
+        $clause = (!empty($criteria->prefix) ? '`'.$criteria->prefix.'`.' : '').'`'.$criteria->column.'`';
+        if (!empty($criteria->function)) {
+            $clause = sprintf($criteria->function, $clause);
+        }
+        $operator = strtoupper($criteria->operator);
+        $value = $criteria->value;
+        if (is_null($criteria->value)) {
+            $operator = in_array($operator, array('IS', '=')) ? 'IS' : 'IS NOT';
+            $value = 'NULL';
+        } elseif (in_array($operator, array('IN', 'NOT IN'))) {
+            $value = '('.implode(', ', array_map(array($this->mDB, 'quoteString'), $value)).')';
+        } else {
+            $value = $this->mDB->quoteString($value);
+        }
+        $clause .= ' '.$operator.' '.$value;
+
+        return $clause;
     }
 }
