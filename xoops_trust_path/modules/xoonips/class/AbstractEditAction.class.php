@@ -79,8 +79,10 @@ abstract class Xoonips_AbstractEditAction extends Xoonips_AbstractAction
         // override, if id is not integer
         $req = $this->mRoot->mContext->mRequest;
         $dataId = $req->getRequest(_REQUESTED_DATA_ID);
+        $handler = $this->_getHandler();
+        $pkey = method_exists($handler, 'getPrimaryKey') ? $handler->getPrimaryKey() : $handler->mPrimary;
 
-        return isset($dataId) ? intval($dataId) : intval($req->getRequest($this->_getHandler()->mPrimary));
+        return isset($dataId) ? intval($dataId) : intval($req->getRequest($pkey));
     }
 
     /**
@@ -122,7 +124,7 @@ abstract class Xoonips_AbstractEditAction extends Xoonips_AbstractAction
         $this->mObjectHandler = &$this->_getHandler();
         $id = $this->_getId();
         $this->mObject = &$this->mObjectHandler->get($id);
-        if ($this->mObject == null && $this->_isEnableCreate()) {
+        if (null == $this->mObject && $this->_isEnableCreate()) {
             $this->mObject = &$this->mObjectHandler->create();
         }
     }
@@ -158,7 +160,7 @@ abstract class Xoonips_AbstractEditAction extends Xoonips_AbstractAction
      */
     public function getDefaultView()
     {
-        if ($this->mObject === null) {
+        if (null === $this->mObject) {
             return $this->_getFrameViewStatus('ERROR');
         }
         $this->mActionForm->load($this->mObject);
@@ -173,10 +175,10 @@ abstract class Xoonips_AbstractEditAction extends Xoonips_AbstractAction
      */
     public function execute()
     {
-        if ($this->mObject === null) {
+        if (null === $this->mObject) {
             return $this->_getFrameViewStatus('ERROR');
         }
-        if ($this->mRoot->mContext->mRequest->getRequest('_form_control_cancel') != null) {
+        if (null != $this->mRoot->mContext->mRequest->getRequest('_form_control_cancel')) {
             return $this->_getFrameViewStatus('CANCEL');
         }
         $this->mActionForm->load($this->mObject);

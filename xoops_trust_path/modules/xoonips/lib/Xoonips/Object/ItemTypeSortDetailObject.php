@@ -19,4 +19,14 @@ class ItemTypeSortDetailObject extends AbstractObject
         $this->initVar('item_type_id', XOBJ_DTYPE_INT, 0, true);
         $this->initVar('item_field_detail_id', XOBJ_DTYPE_INT, null, false);
     }
+
+    /**
+     * get encorded sort field.
+     *
+     * @return string
+     */
+    public function getEncodedSortField()
+    {
+        return sprintf('%u:%u:%u', $this->get('sort_id'), $this->get('item_type_id'), $this->get('item_field_detail_id'));
+    }
 }

@@ -24,12 +24,12 @@ abstract class AbstractHandler
     /**
      * constructor.
      *
-     * @param \XoopsDatabase &$db
+     * @param \XoopsDatabase $db
      * @param string         $dirname
      */
-    public function __construct(\XoopsDatabase &$db, $dirname)
+    public function __construct(\XoopsDatabase $db, $dirname)
     {
-        $this->mDB = &$db;
+        $this->mDB = $db;
         $this->mDirname = $dirname;
     }
 }

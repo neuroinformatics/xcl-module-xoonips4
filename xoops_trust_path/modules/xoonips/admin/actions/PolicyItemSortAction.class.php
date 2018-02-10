@@ -62,26 +62,13 @@ class Xoonips_Admin_PolicyItemSortAction extends Xoonips_AbstractAction
                 'class' => 'add',
             ),
         );
+        $itsHandler = &Functions::getXoonipsHandler('ItemTypeSortObject', $dirname);
         $render->setTemplateName('policy_item_sort.html');
         $render->setAttribute('title', constant($constpref.'_POLICY_ITEM_SORT_TITLE'));
         $render->setAttribute('description', constant($constpref.'_POLICY_ITEM_SORT_DESC'));
         $render->setAttribute('xoops_breadcrumbs', $breadcrumbs);
         $render->setAttribute('toptab', $toptab);
         $render->setAttribute('constpref', $constpref);
-        $render->setAttribute('sortTitles', $this->_getItemSortTitles());
-    }
-
-    /**
-     * get item sort titles.
-     *
-     * return string[]
-     */
-    protected function _getItemSortTitles()
-    {
-        $dirname = $this->mAsset->mDirname;
-        $trustDirname = $this->mAsset->mTrustDirname;
-        $handler = &Functions::getXoonipsHandler('ItemSort', $dirname);
-
-        return $handler->getSortTitles();
+        $render->setAttribute('sortTitles', $itsHandler->getSortTitles());
     }
 }

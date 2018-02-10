@@ -42,10 +42,10 @@ abstract class AbstractObjectHandler extends AbstractHandler
      * constructer
      * override this function then set mTable and mPrimaryKey variables.
      *
-     * @param \XoopsDatabase &$db
+     * @param \XoopsDatabase $db
      * @param string         $dirname
      */
-    public function __construct(\XoopsDatabase &$db, $dirname)
+    public function __construct(\XoopsDatabase $db, $dirname)
     {
         parent::__construct($db, $dirname);
         $this->mClassName = str_replace(
@@ -187,12 +187,12 @@ abstract class AbstractObjectHandler extends AbstractHandler
     /**
      * insert/update object.
      *
-     * @param Object\AbstractObject &$obj
+     * @param Object\AbstractObject $obj
      * @param bool                  $force
      *
      * @return bool
      */
-    public function insert(AbstractObject &$obj, $force = false)
+    public function insert(AbstractObject $obj, $force = false)
     {
         return $this->_update($obj, $force, false);
     }
@@ -200,12 +200,12 @@ abstract class AbstractObjectHandler extends AbstractHandler
     /**
      * replace object.
      *
-     * @param Object\AbstractObject &$obj
+     * @param Object\AbstractObject $obj
      * @param bool                  $force
      *
      * @return bool
      */
-    public function replace(AbstractObject &$obj, $force = false)
+    public function replace(AbstractObject $obj, $force = false)
     {
         return $this->_update($obj, $force, true);
     }
@@ -213,12 +213,12 @@ abstract class AbstractObjectHandler extends AbstractHandler
     /**
      * delete object.
      *
-     * @param Object\AbstractObject &$obj
+     * @param Object\AbstractObject $obj
      * @param bool                  $force
      *
      * @return bool
      */
-    public function delete(AbstractObject &$obj, $force = false)
+    public function delete(AbstractObject $obj, $force = false)
     {
         if (is_array($this->mPrimaryKey)) {
             $criteria = new \CriteriaCompo();
@@ -287,7 +287,7 @@ abstract class AbstractObjectHandler extends AbstractHandler
      *
      * @return Object\AbstractObject
      */
-    public function getNext(&$res)
+    public function getNext($res)
     {
         $ret = null;
         if ($row = $this->mDB->fetchArray($res)) {
@@ -319,13 +319,13 @@ abstract class AbstractObjectHandler extends AbstractHandler
     /**
      * insert/update/replace object.
      *
-     * @param Object\AbstractObject &$obj
+     * @param Object\AbstractObject $obj
      * @param bool                  $force
      * @param bool                  $isReplace
      *
      * @return bool
      */
-    protected function _update(AbstractObject &$obj, $force, $isReplace)
+    protected function _update(AbstractObject $obj, $force, $isReplace)
     {
         $isNew = $obj->isNew();
         $isArrayPrimaryKey = is_array($this->mPrimaryKey);
@@ -383,9 +383,9 @@ abstract class AbstractObjectHandler extends AbstractHandler
     protected function _query($sql, $force = false, $limit = 0, $start = 0)
     {
         if ($force) {
-            $res = &$this->mDB->queryF($sql, $limit, $start);
+            $res = $this->mDB->queryF($sql, $limit, $start);
         } else {
-            $res = &$this->mDB->query($sql, $limit, $start);
+            $res = $this->mDB->query($sql, $limit, $start);
         }
         if (!$res) {
             trigger_error($this->mDB->error(), E_USER_ERROR);
@@ -397,11 +397,11 @@ abstract class AbstractObjectHandler extends AbstractHandler
     /**
      * make variables array for sql.
      *
-     * @param Object\AbstractObject &$obj
+     * @param Object\AbstractObject $obj
      *
      * @return array
      */
-    public function _makeVarsArray4SQL(AbstractObject &$obj)
+    public function _makeVarsArray4SQL(AbstractObject $obj)
     {
         $ret = array();
         $info = $obj->getTableInfo();

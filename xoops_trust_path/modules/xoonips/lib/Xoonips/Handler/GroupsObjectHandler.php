@@ -13,10 +13,10 @@ class GroupsObjectHandler extends AbstractObjectHandler
     /**
      * constructor.
      *
-     * @param \XoopsDatabase &$db
+     * @param \XoopsDatabase $db
      * @param string         $dirname
      */
-    public function __construct(\XoopsDatabase &$db, $dirname)
+    public function __construct(\XoopsDatabase $db, $dirname)
     {
         parent::__construct($db, $dirname);
         $this->mTable = $db->prefix('groups');
