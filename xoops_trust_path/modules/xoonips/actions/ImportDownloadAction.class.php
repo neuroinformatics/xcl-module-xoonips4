@@ -61,7 +61,7 @@ class Xoonips_ImportDownloadAction extends Xoonips_AbstractAction
             return $this->_getFrameViewStatus('ERROR');
         }
         $importId = $this->_getId();
-        $handler = &Functions::getXoonipsHandler('ItemImportLogObject', $dirname);
+        $handler = Functions::getXoonipsHandler('ItemImportLogObject', $dirname);
         $this->mObject = &$handler->get($importId);
         if (!is_object($this->mObject)) {
             return $this->_getFrameViewStatus('ERROR');

@@ -36,7 +36,7 @@ class ItemObject extends AbstractObject
      */
     public function isOwner($uid)
     {
-        $itemUsersLinkHandler = &Functions::getXoonipsHandler('ItemUsersLinkObject', $this->mDirname);
+        $itemUsersLinkHandler = Functions::getXoonipsHandler('ItemUsersLinkObject', $this->mDirname);
         $criteria = new \CriteriaCompo();
         $criteria->add(new \Criteria('uid', $uid));
         $criteria->add(new \Criteria('item_id', $this->get('item_id')));
@@ -59,9 +59,9 @@ class ItemObject extends AbstractObject
         if ($this->isOwner($uid)) {
             return true;
         }
-        $indexHandler = &Functions::getXoonipsHandler('IndexObject', $this->mDirname);
-        $indexItemLinkHandler = &Functions::getXoonipsHandler('IndexItemLinkObject', $this->mDirname);
-        $groupsHandler = &Functions::getXoonipsHandler('GroupsObject', $this->mDirname);
+        $indexHandler = Functions::getXoonipsHandler('IndexObject', $this->mDirname);
+        $indexItemLinkHandler = Functions::getXoonipsHandler('IndexItemLinkObject', $this->mDirname);
+        $groupsHandler = Functions::getXoonipsHandler('GroupsObject', $this->mDirname);
         $adminGids = array_keys($groupsHandler->getAdminGroups($uid));
         $myGids = array_keys($groupsHandler->getMyGroups($uid));
         $publicGids = array_keys($groupsHandler->getPublicGroups($uid));
@@ -96,7 +96,7 @@ class ItemObject extends AbstractObject
             }
             $criteriaOpenLevel->add($criteriaOpenLevelGroup, 'OR');
         }
-        if ($uid != XoopsUtils::UID_GUEST) {
+        if (XoopsUtils::UID_GUEST != $uid) {
             $criteriaOpenLevelPrivate = new \CriteriaCompo();
             $criteriaOpenLevelPrivate->add(new \Criteria('open_level', $indexHandler::OPEN_LEVEL_PRIVATE, '=', $indexTable));
             $criteriaOpenLevelPrivate->add(new \Criteria('uid', $uid, '=', $indexTable));

@@ -64,13 +64,13 @@ class Xoonips_Admin_PolicyItemFieldSelectEditForm extends Xoonips_AbstractAction
         $name = $this->get('name');
         $select_name = $this->get('select_name');
         if ($name == '') {
-            $handler = &Functions::getXoonipsHandler('ItemFieldValueSet', $this->mDirname);
+            $handler = Functions::getXoonipsHandler('ItemFieldValueSet', $this->mDirname);
             if (in_array($select_name, $handler->getSelectNames())) {
                 // name is already used
                 $this->addErrorMessage(XCube_Utils::formatString(constant($constpref.'_ERROR_INPUTVALUE'), constant($constpref.'_POLICY_ITEM_FIELD_SELECT_NAME')));
             }
         } elseif ($name != $select_name) {
-            $handler = &Functions::getXoonipsHandler('ItemField', $this->mDirname);
+            $handler = Functions::getXoonipsHandler('ItemField', $this->mDirname);
             $usedNames = $handler->getUsedSelectNames();
             if (in_array($name, $handler->getUsedSelectNames())) {
                 // select_name is not editable

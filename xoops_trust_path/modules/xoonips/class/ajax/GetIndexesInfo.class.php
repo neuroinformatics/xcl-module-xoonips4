@@ -179,7 +179,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
         $trustDirname = $module->getVar('trust_dirname');
 
         global $xoopsUser;
-        $indexHandler = &Functions::getXoonipsHandler('Index', $dirname);
+        $indexHandler = Functions::getXoonipsHandler('Index', $dirname);
 
         $request = new Xoonips_Request();
         $itemBean = Xoonips_BeanFactory::getBean('ItemBean', $dirname, $trustDirname);

@@ -62,7 +62,7 @@ class Xoonips_Admin_PolicyItemSortAction extends Xoonips_AbstractAction
                 'class' => 'add',
             ),
         );
-        $itsHandler = &Functions::getXoonipsHandler('ItemTypeSortObject', $dirname);
+        $itsHandler = Functions::getXoonipsHandler('ItemTypeSortObject', $dirname);
         $render->setTemplateName('policy_item_sort.html');
         $render->setAttribute('title', constant($constpref.'_POLICY_ITEM_SORT_TITLE'));
         $render->setAttribute('description', constant($constpref.'_POLICY_ITEM_SORT_DESC'));

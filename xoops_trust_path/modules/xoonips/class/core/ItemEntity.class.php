@@ -78,7 +78,7 @@ class Xoonips_ItemEntity
             return false;
         }
 
-        $itemHandler = &Functions::getXoonipsHandler('Item', $this->dirname);
+        $itemHandler = Functions::getXoonipsHandler('Item', $this->dirname);
         $itemObj = &$itemHandler->get($this->getItemId());
 
         return $itemObj->getUrl();

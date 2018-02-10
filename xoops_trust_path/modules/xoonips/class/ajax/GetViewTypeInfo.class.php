@@ -21,7 +21,7 @@ class Xoonips_GetViewTypeInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
             return false;
         } // permission error
         $vtId = intval($this->mRequest->getRequest('viewTypeId'));
-        $vtHandler = &Functions::getXoonipsHandler('ViewType', $this->mDirname);
+        $vtHandler = Functions::getXoonipsHandler('ViewType', $this->mDirname);
         $vtObj = $vtHandler->get($vtId);
         if (!is_object($vtObj)) {
             return false;

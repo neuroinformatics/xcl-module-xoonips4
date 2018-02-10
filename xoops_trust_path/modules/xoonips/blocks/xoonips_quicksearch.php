@@ -19,7 +19,7 @@ function b_xoonips_quick_search_show($options)
     $search_conditions = array();
 
     // get installed itemtypes
-    $handler = &Functions::getXoonipsHandler('ItemQuickSearchCondition', $dirname);
+    $handler = Functions::getXoonipsHandler('ItemQuickSearchCondition', $dirname);
     $search_conditions = $handler->getConditions();
     // fetch previous query conditions
     // - keyword

@@ -436,7 +436,7 @@ class Xoonips_ImportItemType
         }
 
         // item sort
-        $sortHandler = &Functions::getXoonipsHandler('ItemSort', $this->dirname);
+        $sortHandler = Functions::getXoonipsHandler('ItemSort', $this->dirname);
         $sortTitles = $sortHandler->getSortTitles();
         $sortIds = array_flip($sortTitles);
         $sObjs = array();

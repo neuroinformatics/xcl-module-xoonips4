@@ -81,7 +81,7 @@ class Xoonips_Admin_PolicyItemFieldSelectAction extends Xoonips_AbstractAction
     {
         $dirname = $this->mAsset->mDirname;
         $trustDirname = $this->mAsset->mTrustDirname;
-        $handler = &Functions::getXoonipsHandler('ItemFieldValueSet', $dirname);
+        $handler = Functions::getXoonipsHandler('ItemFieldValueSet', $dirname);
 
         return $handler->getSelectNames();
     }
@@ -95,7 +95,7 @@ class Xoonips_Admin_PolicyItemFieldSelectAction extends Xoonips_AbstractAction
     {
         $dirname = $this->mAsset->mDirname;
         $trustDirname = $this->mAsset->mTrustDirname;
-        $handler = &Functions::getXoonipsHandler('ItemField', $dirname);
+        $handler = Functions::getXoonipsHandler('ItemField', $dirname);
 
         return $handler->getUsedSelectNames();
     }

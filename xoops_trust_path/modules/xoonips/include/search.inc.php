@@ -38,7 +38,7 @@ function xoonips_search($keywords, $andor, $limit, $offset, $userid)
     if ($andor == 'exact') {
         $isExact = true;
     }
-    $chandler = &Functions::getXoonipsHandler('ItemQuickSearchCondition', $dirname);
+    $chandler = Functions::getXoonipsHandler('ItemQuickSearchCondition', $dirname);
     $cobj = &$chandler->get(1);
     $fieldIds = $chandler->getItemFieldIds($cobj);
     if (count($fieldIds) == 0) {

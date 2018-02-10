@@ -176,7 +176,7 @@ class Xoonips_Admin_PolicyItemFieldSelectEditAction extends Xoonips_AbstractEdit
     {
         $dirname = $this->mAsset->mDirname;
         $trustDirname = $this->mAsset->mTrustDirname;
-        $handler = &Functions::getXoonipsHandler('ItemField', $dirname);
+        $handler = Functions::getXoonipsHandler('ItemField', $dirname);
         $selectNames = $handler->getUsedSelectNames();
 
         return in_array($this->mObject['name'], $selectNames);

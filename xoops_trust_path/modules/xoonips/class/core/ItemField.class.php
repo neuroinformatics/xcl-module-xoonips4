@@ -71,7 +71,7 @@ class Xoonips_ItemField extends Xoonips_Field
             }
             break;
         case Xoonips_Enum::OP_TYPE_QUICKSEARCH:
-            $handler = &Functions::getXoonipsHandler('ItemQuickSearchCondition', $this->dirname);
+            $handler = Functions::getXoonipsHandler('ItemQuickSearchCondition', $this->dirname);
             if (!$handler->existItemFieldId($this->getId())) {
                 $ret = false;
             }

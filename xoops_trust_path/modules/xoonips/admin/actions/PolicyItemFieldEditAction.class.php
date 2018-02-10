@@ -107,11 +107,11 @@ class Xoonips_Admin_PolicyItemFieldEditAction extends Xoonips_AbstractEditAction
                 'name' => $title,
             ),
         );
-        $vtHandler = &Functions::getXoonipsHandler('ViewType', $dirname);
+        $vtHandler = Functions::getXoonipsHandler('ViewType', $dirname);
         $viewTypes = $vtHandler->getViewTypes();
-        $dtHandler = &Functions::getXoonipsHandler('DataTypeObject', $dirname);
+        $dtHandler = Functions::getXoonipsHandler('DataTypeObject', $dirname);
         $dataTypes = $dtHandler->getDataTypes();
-        $fvsHandler = &Functions::getXoonipsHandler('ItemFieldValueSet', $dirname);
+        $fvsHandler = Functions::getXoonipsHandler('ItemFieldValueSet', $dirname);
         $selectNames = $fvsHandler->getSelectNames();
         $render->setTemplateName('policy_item_field_edit.html');
         $render->setAttribute('title', $title);

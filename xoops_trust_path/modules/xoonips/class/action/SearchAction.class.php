@@ -76,7 +76,7 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
         $search_condition = $request->getParameter('search_condition');
 
         // get installed quick search conditions
-        $chandler = &Functions::getXoonipsHandler('ItemQuickSearchCondition', $this->dirname);
+        $chandler = Functions::getXoonipsHandler('ItemQuickSearchCondition', $this->dirname);
         $search_conditions = $chandler->getConditions();
         if (!in_array($search_condition, array_keys($search_conditions))) {
             $search_condition = '';
@@ -194,7 +194,7 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
 
         // get order by select
         $default_orderby = '0';
-        $sortHandler = &Functions::getXoonipsHandler('ItemSort', $this->dirname);
+        $sortHandler = Functions::getXoonipsHandler('ItemSort', $this->dirname);
         $sortTitles = $sortHandler->getSortTitles();
         $sortIds = array_keys($sortTitles);
         if (!empty($sortIds)) {
@@ -452,7 +452,7 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
     {
         $iids = array();
         if (trim($keyword) != '') {
-            $chandler = &Functions::getXoonipsHandler('ItemQuickSearchCondition', $this->dirname);
+            $chandler = Functions::getXoonipsHandler('ItemQuickSearchCondition', $this->dirname);
             $cobj = &$chandler->get($search_condition);
             if (is_object($cobj)) {
                 $post_data = array();

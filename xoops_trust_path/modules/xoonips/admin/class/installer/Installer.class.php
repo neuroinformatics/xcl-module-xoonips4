@@ -226,7 +226,7 @@ SQL;
     {
         $dirname = $this->mXoopsModule->get('dirname');
         $dataTypeIds = array();
-        $dataTypeHandler = &Functions::getXoonipsHandler('DataTypeObject', $dirname);
+        $dataTypeHandler = Functions::getXoonipsHandler('DataTypeObject', $dirname);
         $dataTypeObjs = $dataTypeHandler->getObjects();
         foreach ($dataTypeObjs as $dataTypeObj) {
             $id = $dataTypeObj->get($dataTypeHandler->getPrimaryKey());
@@ -234,7 +234,7 @@ SQL;
             $dataTypeIds[$name] = $id;
         }
         $viewTypeIds = array();
-        $viewTypeHandler = &Functions::getXoonipsHandler('ViewTypeObject', $dirname);
+        $viewTypeHandler = Functions::getXoonipsHandler('ViewTypeObject', $dirname);
         $viewTypeObjs = $viewTypeHandler->getObjects();
         foreach ($viewTypeObjs as $viewTypeObj) {
             $id = $viewTypeObj->get($viewTypeHandler->getPrimaryKey());
@@ -310,7 +310,7 @@ SQL;
     {
         $dirname = $this->mXoopsModule->get('dirname');
         $viewTypeIds = array();
-        $viewTypeHandler = &Functions::getXoonipsHandler('ViewTypeObject', $dirname);
+        $viewTypeHandler = Functions::getXoonipsHandler('ViewTypeObject', $dirname);
         $viewTypeObjs = $viewTypeHandler->getObjects();
         foreach ($viewTypeObjs as $viewTypeObj) {
             $id = $viewTypeObj->get($viewTypeHandler->getPrimaryKey());
@@ -334,7 +334,7 @@ SQL;
     {
         $dirname = $this->mXoopsModule->get('dirname');
         $complementIds = array();
-        $complementHandler = &Functions::getXoonipsHandler('ComplementObject', $dirname);
+        $complementHandler = Functions::getXoonipsHandler('ComplementObject', $dirname);
         $complementObjs = $complementHandler->getObjects();
         foreach ($complementObjs as $complementObj) {
             $id = $complementObj->get($complementHandler->getPrimaryKey());
@@ -543,7 +543,7 @@ SQL;
     {
         $dirname = $this->mXoopsModule->get('dirname');
         $oaipmhSchemaIds = array();
-        $oaipmhSchemaHandler = &Functions::getXoonipsHandler('OaipmhSchemaObject', $dirname);
+        $oaipmhSchemaHandler = Functions::getXoonipsHandler('OaipmhSchemaObject', $dirname);
         $oaipmhSchemaObjs = $oaipmhSchemaHandler->getObjects();
         foreach ($oaipmhSchemaObjs as $oaipmhSchemaObj) {
             $id = $oaipmhSchemaObj->get($oaipmhSchemaHandler->getPrimaryKey());
@@ -594,7 +594,7 @@ SQL;
     {
         $dirname = $this->mXoopsModule->get('dirname');
         $oaipmhSchemaIds = array();
-        $oaipmhSchemaHandler = &Functions::getXoonipsHandler('OaipmhSchemaObject', $dirname);
+        $oaipmhSchemaHandler = Functions::getXoonipsHandler('OaipmhSchemaObject', $dirname);
         $oaipmhSchemaObjs = $oaipmhSchemaHandler->getObjects();
         foreach ($oaipmhSchemaObjs as $oaipmhSchemaObj) {
             $id = $oaipmhSchemaObj->get($oaipmhSchemaHandler->getPrimaryKey());
@@ -748,8 +748,8 @@ SQL;
                 'field_xmls' => array('title', 'keyword'),
             ),
         );
-        $itscHandler = &Functions::getXoonipsHandler('ItemTypeSearchConditionObject', $dirname);
-        $ifdHandler = &Functions::getXoonipsHandler('ItemFieldDetailObject', $dirname);
+        $itscHandler = Functions::getXoonipsHandler('ItemTypeSearchConditionObject', $dirname);
+        $ifdHandler = Functions::getXoonipsHandler('ItemFieldDetailObject', $dirname);
         foreach ($searchCondArr as $searchCond) {
             // install search condtion
             $itscObj = $itscHandler->create();
@@ -921,7 +921,7 @@ SQL;
         $dirname = $this->mXoopsModule->get('dirname');
         $tableName = $dirname.'_'.$name;
         $objectName = str_replace(' ', '', ucwords(str_replace('_', ' ', $name))).'Object';
-        $handler = &Functions::getXoonipsHandler($objectName, $dirname);
+        $handler = Functions::getXoonipsHandler($objectName, $dirname);
         foreach ($data as $datum) {
             $obj = $handler->create();
             foreach ($datum as $key => $value) {

@@ -77,7 +77,7 @@ function b_xoonips_ranking_show($options)
     // ranking viewed item
     if ($config['visible'][0]) {
         $items = array();
-        $itemHandler = &Functions::getXoonipsHandler('Item', $dirname);
+        $itemHandler = Functions::getXoonipsHandler('Item', $dirname);
         $itemObjs = $itemHandler->getMostViewedItems($config['num_rows'], $term);
         $i = 0;
         foreach ($itemObjs as $itemObj) {
@@ -102,7 +102,7 @@ function b_xoonips_ranking_show($options)
     // ranking downloaded item
     if ($config['visible'][1]) {
         $items = array();
-        $itemFileHandler = &Functions::getXoonipsHandler('ItemFile', $dirname);
+        $itemFileHandler = Functions::getXoonipsHandler('ItemFile', $dirname);
         $itemFileObjs = $itemFileHandler->getMostDownloadedItems($config['num_rows'], $term);
         $i = 0;
         foreach ($itemFileObjs as $itemFileObj) {

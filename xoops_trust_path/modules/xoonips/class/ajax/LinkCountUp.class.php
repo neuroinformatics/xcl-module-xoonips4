@@ -67,7 +67,7 @@ class Xoonips_LinkCountUpAjaxMethod extends Xoonips_AbstractAjaxMethod
         $targetGroupId = $target['group_id'];
         $targetFieldId = $target['item_field_detail_id'];
         // get extend table name
-        $fHandler = &Functions::getXoonipsHandler('ItemField', $this->mDirname);
+        $fHandler = Functions::getXoonipsHandler('ItemField', $this->mDirname);
         $fObj = &$fHandler->get($targetFieldId);
         $tableName = $fObj->get('table_name');
         // get current data

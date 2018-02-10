@@ -46,12 +46,12 @@ class Xoonips_Admin_PolicyItemFieldSelectDeleteForm extends Xoonips_AbstractActi
         $trustDirname = $this->mAsset->mTrustDirname;
         $name = $this->get('name');
         // check exists
-        $handler = &Functions::getXoonipsHandler('ItemField', $this->mDirname);
+        $handler = Functions::getXoonipsHandler('ItemField', $this->mDirname);
         if (!in_array($name, $handler->getSelectNames())) {
             $this->addErrorMessage(XCube_Utils::formatString(constant($constpref.'_ERROR_INPUTVALUE'), constant($constpref.'_POLICY_ITEM_FIELD_SELECT_NAME')));
         }
         // check used
-        $handler = &Functions::getXoonipsHandler('ItemFieldValueSet', $this->mDirname);
+        $handler = Functions::getXoonipsHandler('ItemFieldValueSet', $this->mDirname);
         if (in_array($name, $handler->getUsedSelectNames())) {
             $this->addErrorMessage(XCube_Utils::formatString(constant($constpref.'_ERROR_INPUTVALUE'), constant($constpref.'_POLICY_ITEM_FIELD_SELECT_NAME')));
         }

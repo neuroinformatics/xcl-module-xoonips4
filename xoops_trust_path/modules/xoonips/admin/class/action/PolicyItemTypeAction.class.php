@@ -1222,7 +1222,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
             return false;
         }
         //item sort
-        $sortHandler = &Functions::getXoonipsHandler('ItemSort', $this->dirname);
+        $sortHandler = Functions::getXoonipsHandler('ItemSort', $this->dirname);
         $sortObj = $sortHandler->getExportDataForItemType($itemtypeid);
         if ($sortObj === false) {
             return false;
@@ -1342,13 +1342,13 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
     protected function doExports(&$request, &$response)
     {
         //get Export aItemType XML Elment Data
-                //itemtype
-                $itemTypeBean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
+        //itemtype
+        $itemTypeBean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
 
         $itemtypeids = array();
         $itemtypeids = $itemTypeBean->getAllItemTypeId();
-                //create zip
-                $zipClass = new ZipFile();
+        //create zip
+        $zipClass = new ZipFile();
 
         // create temporary directry
         $tmp = '/tmp';
@@ -1365,32 +1365,32 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
             if ($itemTypeObj === false) {
                 return false;
             }
-                       //item group
-                    $groupBean = Xoonips_BeanFactory::getBean('ItemFieldGroupBean', $this->dirname, $this->trustDirname);
+            //item group
+            $groupBean = Xoonips_BeanFactory::getBean('ItemFieldGroupBean', $this->dirname, $this->trustDirname);
             $groupObj = $groupBean->getExportItemTypeGroup($itemtypeid);
             if ($groupObj === false) {
                 return false;
             }
-                    //value set (item select list)
-                    $valueSetBean = Xoonips_BeanFactory::getBean('ItemFieldValueSetBean', $this->dirname, $this->trustDirname);
+            //value set (item select list)
+            $valueSetBean = Xoonips_BeanFactory::getBean('ItemFieldValueSetBean', $this->dirname, $this->trustDirname);
             $valueSetObj = $valueSetBean->getExportItemTypeValueSet();
             if ($valueSetObj === false) {
                 return false;
             }
-                    //item complement
-                    $complementBean = Xoonips_BeanFactory::getBean('ComplementBean', $this->dirname, $this->trustDirname);
+            //item complement
+            $complementBean = Xoonips_BeanFactory::getBean('ComplementBean', $this->dirname, $this->trustDirname);
             $complementObj = $complementBean->getExportItemTypeComplement($itemtypeid);
             if ($complementObj === false) {
                 return false;
             }
-                    //item sort
-            $sortHandler = &Functions::getXoonipsHandler('ItemSort', $this->dirname);
+            //item sort
+            $sortHandler = Functions::getXoonipsHandler('ItemSort', $this->dirname);
             $sortObj = $sortHandler->getExportDataForItemType($itemtypeid);
             if ($sortObj === false) {
                 return false;
             }
-                    //OAI-PMH
-                    $oaipmhBean = Xoonips_BeanFactory::getBean('OaipmhSchemaItemtypeLinkBean', $this->dirname, $this->trustDirname);
+            //OAI-PMH
+            $oaipmhBean = Xoonips_BeanFactory::getBean('OaipmhSchemaItemtypeLinkBean', $this->dirname, $this->trustDirname);
             $oaipmhObj = $oaipmhBean->getExportItemTypeOaipmh($itemtypeid);
             if ($oaipmhObj === false) {
                 return false;
@@ -1402,16 +1402,16 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
                 return false;
             }
 
-                    // create item type directry
-                    //file name URL encode
-                    $fname = urlencode($itemTypeObj['name']);
+            // create item type directry
+            //file name URL encode
+            $fname = urlencode($itemTypeObj['name']);
             $itemtypedir = "${tmpdir}/${fname}";
             if (!mkdir($itemtypedir, 755)) {
                 return false;
             }
 
-                    //make xml file
-                    $xmlfile = "${itemtypedir}/${fname}.xml";
+            //make xml file
+            $xmlfile = "${itemtypedir}/${fname}.xml";
             $fhdl = fopen($xmlfile, 'w');
             if (!$fhdl) {
                 die("can't open file '${xmlfile}' for write.");
@@ -1421,7 +1421,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
             }
             fclose($fhdl);
 
-                    //make template file
+            //make template file
             $templateSet = false;
             if ($itemTypeObj['template'] != null) {
                 $templateSet = true;
@@ -1436,7 +1436,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
                 }
             }
 
-            //copy image file
+            // copy image file
             $iconSet = false;
             if ($itemTypeObj['icon'] != null) {
                 $imgsrc = XOOPS_ROOT_PATH.'/modules/'.$this->dirname.'/images/'.$itemTypeObj['icon'];
@@ -1449,7 +1449,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
                 }
             }
 
-                // itemtype dir
+            // itemtype dir
             $itemtype = $fname.'.zip';
             $itemtypezip = $tmpdir.'/'.$itemtype;
 // 			$res = $zip->open ( $itemtypezip, ZipArchive::CREATE );
@@ -2212,7 +2212,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         }
 
         // delete item_type_sort
-        $sortHandler = &Functions::getXoonipsHandler('ItemSort', $this->dirname);
+        $sortHandler = Functions::getXoonipsHandler('ItemSort', $this->dirname);
         if (!$sortHandler->deleteSortFieldsByItemTypeId($itemtypeid)) {
             echo 'failure in delete item_type_sort_detail';
 

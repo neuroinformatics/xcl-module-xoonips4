@@ -128,7 +128,7 @@ class Xoonips_ViewTypeFileUpload extends Xoonips_ViewType
                 } else {
                     $file['limit'] = true;
                 }
-                $itemFileHandler = &Functions::getXoonipsHandler('ItemFile', $this->dirname);
+                $itemFileHandler = Functions::getXoonipsHandler('ItemFile', $this->dirname);
                 $itemFileObj = &$itemFileHandler->get($value);
                 $file['download_url'] = $itemFileObj->getDownloadUrl();
                 $newFileInfo[] = $file;

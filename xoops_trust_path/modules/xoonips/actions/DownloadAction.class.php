@@ -132,8 +132,8 @@ class Xoonips_DownloadAction extends Xoonips_AbstractAction
         $itemObj = null;
         $itemFileObj = null;
         $dirname = $this->mAsset->mDirname;
-        $itemHandler = &Functions::getXoonipsHandler('Item', $dirname);
-        $itemFileHandler = &Functions::getXoonipsHandler('ItemFile', $dirname);
+        $itemHandler = Functions::getXoonipsHandler('Item', $dirname);
+        $itemFileHandler = Functions::getXoonipsHandler('ItemFile', $dirname);
         if (!empty($params['item_id'])) {
             $itemObj = &$itemHandler->get($params['item_id']);
             if (!is_object($itemObj)) {
@@ -301,8 +301,8 @@ class Xoonips_DownloadAction extends Xoonips_AbstractAction
     {
         $dirname = $this->mAsset->mDirname;
         $trustDirname = $this->mAsset->mTrustDirname;
-        $itemHandler = &Functions::getXoonipsHandler('Item', $dirname);
-        $itemFileHandler = &Functions::getXoonipsHandler('ItemFile', $dirname);
+        $itemHandler = Functions::getXoonipsHandler('Item', $dirname);
+        $itemFileHandler = Functions::getXoonipsHandler('ItemFile', $dirname);
         // record download file event log
         $eventLogBean = Xoonips_BeanFactory::getBean('EventLogBean', $dirname, $trustDirname);
         $eventLogBean->recordDownloadFileEvent($this->mItemObj->get('item_id'), $this->mItemFileObj->get('file_id'));

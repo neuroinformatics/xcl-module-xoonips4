@@ -19,7 +19,7 @@ class Xoonips_ListAction extends Xoonips_ActionBase
 
         // get order by select
         $defalut_orderby = '0';
-        $sortHandler = &Functions::getXoonipsHandler('ItemSort', $this->dirname);
+        $sortHandler = Functions::getXoonipsHandler('ItemSort', $this->dirname);
         $sortTitles = $sortHandler->getSortTitles();
         $sortIds = array_keys($sortTitles);
         if (!empty($sortIds)) {

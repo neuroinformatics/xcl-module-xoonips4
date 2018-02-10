@@ -42,8 +42,8 @@ class Xoonips_Metadata
         $this->schemaList = $oaipmhSchemaBean->getSchemaList($this->metadataPrefix);
         $this->valueSetList = $oaipmhSchemaBean->getSchemaValueSetList($this->metadataPrefix);
         $this->linkBean = Xoonips_BeanFactory::getBean('OaipmhSchemaItemtypeLinkBean', $this->dirname, $this->trustDirname);
-        $this->itemHandler = &Functions::getXoonipsHandler('Item', $this->dirname);
-        $this->itemFileHandler = &Functions::getXoonipsHandler('ItemFile', $this->dirname);
+        $this->itemHandler = Functions::getXoonipsHandler('Item', $this->dirname);
+        $this->itemFileHandler = Functions::getXoonipsHandler('ItemFile', $this->dirname);
     }
 
     public function getMetadata($item_type_id, $item_id)

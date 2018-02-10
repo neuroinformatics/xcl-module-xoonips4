@@ -39,7 +39,7 @@ class Xoonips_ItemFileObject extends XoopsSimpleObject
     public function getDownloadUrl($format = 1)
     {
         $item_id = intval($this->get('item_id'));
-        $itemHandler = &Functions::getXoonipsHandler('Item', $this->mDirname);
+        $itemHandler = Functions::getXoonipsHandler('Item', $this->mDirname);
         $itemObj = &$itemHandler->get($item_id);
         if (!is_object($itemObj)) {
             return false;
@@ -149,7 +149,7 @@ class Xoonips_ItemFileHandler extends XoopsObjectGenericHandler
                 $r = array();
                 $r['title'] = $row['title'];
                 $r['download_count'] = $row['download_count'];
-                $itemHandler = &Functions::getXoonipsHandler('Item', $this->mDirname);
+                $itemHandler = Functions::getXoonipsHandler('Item', $this->mDirname);
                 $itemObj = &$itemHandler->get($row['item_id']);
                 $r['url'] = $itemObj->getUrl();
                 unset($itemObj);

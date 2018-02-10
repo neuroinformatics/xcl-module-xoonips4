@@ -127,7 +127,7 @@ class Xoonips_Admin_PolicyItemQuickSearchEditAction extends Xoonips_AbstractEdit
                 'name' => constant($constpref.'_POLICY_ITEM_QUICKSEARCH_EDIT_TITLE'),
             ),
         );
-        $handler = &Functions::getXoonipsHandler('ItemField', $dirname);
+        $handler = Functions::getXoonipsHandler('ItemField', $dirname);
         $itemFieldObjects = $handler->getObjectsForQuickSearch();
         $pendingIds = $handler->getPendingIds();
         $render->setTemplateName('policy_item_quicksearch_edit.html');

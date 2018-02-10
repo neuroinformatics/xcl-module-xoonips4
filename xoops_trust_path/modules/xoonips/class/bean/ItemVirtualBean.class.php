@@ -175,7 +175,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
      */
     public function canView($item_id, $uid)
     {
-        $iul_handler = &Functions::getXoonipsHandler('ItemUsersLink', $this->dirname);
+        $iul_handler = Functions::getXoonipsHandler('ItemUsersLink', $this->dirname);
         if ($iul_handler->isOwner($item_id, $uid)) {
             return true;
         }
@@ -253,7 +253,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
             $sql = "SELECT DISTINCT item_id FROM $itemTable WHERE item_id IN ( ".$this->getCsvStr($item_ids).' )';
             $criteria['order'] = ' item_id ';
         } else {
-            $sortHandler = &Functions::getXoonipsHandler('ItemSort', $this->dirname);
+            $sortHandler = Functions::getXoonipsHandler('ItemSort', $this->dirname);
             $sortObj = &$sortHandler->get($criteria['orderby']);
             $sortFields = $sortHandler->getSortFields($sortObj);
             $itemtypeDetailBean = Xoonips_BeanFactory::getBean('ItemFieldDetailBean', $this->dirname, $this->trustDirname);

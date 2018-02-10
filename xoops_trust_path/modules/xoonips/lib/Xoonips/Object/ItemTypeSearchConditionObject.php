@@ -29,8 +29,8 @@ class ItemTypeSearchConditionObject extends AbstractObject
     public function getItemFieldDetailObjects()
     {
         $ret = array();
-        $itscdHandler = &Functions::getXoonipsHandler('ItemTypeSearchConditionDetailObject', $this->mDirname);
-        $ifdHandler = &Functions::getXoonipsHandler('ItemFieldDetailObject', $this->mDirname);
+        $itscdHandler = Functions::getXoonipsHandler('ItemTypeSearchConditionDetailObject', $this->mDirname);
+        $ifdHandler = Functions::getXoonipsHandler('ItemFieldDetailObject', $this->mDirname);
         $cid = $this->get('condition_id');
         $criteria = new \Criteria('condition_id', $cid);
         $itscdObjs = $itscdHandler->getObjects($criteria);
@@ -55,17 +55,17 @@ class ItemTypeSearchConditionObject extends AbstractObject
      */
     public function updateItemFieldDetailIds($fids)
     {
-        $itscdHandler = &Functions::getXoonipsHandler('ItemTypeSearchConditionDetailObject', $this->mDirname);
+        $itscdHandler = Functions::getXoonipsHandler('ItemTypeSearchConditionDetailObject', $this->mDirname);
         $cid = $this->get('condition_id');
         $criteria = new \Criteria('condition_id', $cid);
-        if ($itscdHandler->deleteAll($criteria) == false) {
+        if (false == $itscdHandler->deleteAll($criteria)) {
             return false;
         }
         foreach ($fids as $fid) {
             $itscdObj = $itscdHandler->create();
             $itscdObj->set('condition_id', $cid);
             $itscdObj->set('item_field_detail_id', $fid);
-            if ($itscdHandler->insert($itscdObj) === false) {
+            if (false === $itscdHandler->insert($itscdObj)) {
                 return false;
             }
         }

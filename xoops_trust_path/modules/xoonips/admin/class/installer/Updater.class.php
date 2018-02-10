@@ -34,7 +34,7 @@ class Xoonips_Updater extends ModuleUpdater
         // update creative commons version 3.0 to 4.0
         //  - From 3.0: /^\d\d\d.+,.*/ - {USE_CC}{COMMERCIAL_USE}{MODIFICATION}{REGION},{TEXT}
         //  - To   4.0: /^\d\d\d,.*/   - {USE_CC}{COMMERCIAL_USE}{MODIFICATION},{TEXT}
-        $ifdHandler = &Functions::getXoonipsHandler('ItemFieldDetailObject', $dirname);
+        $ifdHandler = Functions::getXoonipsHandler('ItemFieldDetailObject', $dirname);
         $ifdObj = $ifdHandler->getByXml('rights');
         if (is_object($ifdObj)) {
             $table = $dirname.'_'.$ifdObj->get('table_name');
@@ -77,7 +77,7 @@ class Xoonips_Updater extends ModuleUpdater
         $db = &\XoopsDatabaseFactory::getDatabaseConnection();
         $this->mLog->addReport('Start to apply changes since verion 4.20.');
         $dirname = $this->mCurrentXoopsModule->get('dirname');
-        $ifdHandler = &Functions::getXoonipsHandler('ItemFieldDetailObject', $dirname);
+        $ifdHandler = Functions::getXoonipsHandler('ItemFieldDetailObject', $dirname);
         // item_extend : dataType varchar(255) => text
         $xmls = array('kana', 'romaji', 'sub_title_title', 'sub_title_kana', 'sub_title_romaji', 'name', 'jalc_doi', 'naid', 'ichushi', 'grant_id', 'date_of_granted', 'degree_name', 'grantor', 'type_of_resource', 'textversion');
         $criteria = new Criteria('xml', $xmls, 'IN');
@@ -152,7 +152,7 @@ SQL;
         }
         // config : add 'index_upload_dir' entry
         $table = $dirname.'_config';
-        $cHandler = &Functions::getXoonipsHandler('ConfigObject', $dirname);
+        $cHandler = Functions::getXoonipsHandler('ConfigObject', $dirname);
         $configArr = array(
             array('name' => 'index_upload_dir', 'value' => XOOPS_ROOT_PATH.'/uploads'),
         );
