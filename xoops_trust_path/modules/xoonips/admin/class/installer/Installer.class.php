@@ -159,6 +159,9 @@ SQL;
             array('name' => 'access_key', 'value' => ''),
             array('name' => 'secret_access_key', 'value' => ''),
             array('name' => 'index_upload_dir', 'value' => XOOPS_ROOT_PATH.'/uploads'),
+            array('name' => 'url_compatible', 'value' => 'off'),
+            array('name' => 'ranking_last_update', 'value' => time()),
+            array('name' => 'ranking_lock_timeout', 'value' => '0'),
         );
         $this->_insertData('config', $configArr);
     }

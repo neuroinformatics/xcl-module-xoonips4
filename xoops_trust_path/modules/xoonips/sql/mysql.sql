@@ -679,3 +679,27 @@ CREATE TABLE `{prefix}_{dirname}_item_import_link` (
   PRIMARY KEY (`item_import_log_id`, `item_id`)
 ) ENGINE=InnoDB;
 
+# --------------------------------------------------------
+
+#
+# Table structure for table `{prefix}_{dirname}_ranking_viewed_item`
+#
+
+CREATE TABLE `{prefix}_{dirname}_ranking_viewed_item` (
+  `item_id` int(10) unsigned NOT NULL default '0',
+  `count` int(10) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`item_id`)
+) ENGINE=InnoDB;
+
+# --------------------------------------------------------
+
+#
+# Table structure for table `{prefix}_{dirname}_ranking_downloaded_item`
+#
+
+CREATE TABLE `{prefix}_{dirname}_ranking_downloaded_item` (
+  `item_id` int(10) unsigned NOT NULL default '0',
+  `count` int(10) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`item_id`)
+) ENGINE=InnoDB;
+

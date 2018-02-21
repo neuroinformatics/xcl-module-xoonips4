@@ -19,6 +19,7 @@ class Xoonips_Updater extends ModuleUpdater
         $this->mTimeLimit = 240;
         $this->mPostUpdateHooks[410] = 'onUpdateToVersion410';
         $this->mPostUpdateHooks[420] = 'onUpdateToVersion420';
+        $this->mPostUpdateHooks[430] = 'onUpdateToVersion430';
     }
 
     /**
@@ -182,6 +183,73 @@ SQL;
 
                 return;
             }
+        }
+    }
+
+    /**
+     * update version to 4.30.
+     *
+     * @return bool
+     */
+    public function onUpdateToVersion430()
+    {
+        $this->mLog->addReport('Start to apply changes since verion 4.30.');
+        $dirname = $this->mCurrentXoopsModule->get('dirname');
+        // config : add 'url_compatible' entry
+        $table = $dirname.'_config';
+        $cHandler = Functions::getXoonipsHandler('ConfigObject', $dirname);
+        $configArr = array(
+            array('name' => 'url_compatible', 'value' => 'off'),
+            array('name' => 'ranking_last_update', 'value' => time()),
+            array('name' => 'ranking_lock_timeout', 'value' => '0'),
+        );
+        foreach ($configArr as $config) {
+            $value = $cHandler->getConfig($config['name']);
+            if (null === $value) {
+                $cObj = $cHandler->create();
+                $cObj->set('name', $config['name']);
+                $cObj->set('value', $config['value']);
+                if (!$cHandler->insert($cObj)) {
+                    $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_DATA_INSERTED'), $table));
+
+                    return;
+                }
+            }
+        }
+        $this->mLog->addReport(XCubeUtils::formatString($this->mLangMan->get('INSTALL_MSG_DATA_INSERTED'), $table));
+        // create ranking_viewed_item table
+        $table = $dirname.'_ranking_viewed_item';
+        $sql = <<<'SQL'
+CREATE TABLE `{prefix}_{table_name}` (
+  `item_id` int(10) unsigned NOT NULL default '0',
+  `count` int(10) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`item_id`)
+) ENGINE=InnoDB;
+SQL;
+        $sql = str_replace('{table_name}', $table, $sql);
+        if (SqlUtils::execute($sql)) {
+            $this->mLog->addReport(XCubeUtils::formatString($this->mLangMan->get('INSTALL_MSG_TABLE_UPDATED'), $table));
+        } else {
+            $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_TABLE_UPDATED'), $table));
+
+            return;
+        }
+        // create ranking_downloaded_item table
+        $table = $dirname.'_ranking_downloaded_item';
+        $sql = <<<'SQL'
+CREATE TABLE `{prefix}_{table_name}` (
+  `item_id` int(10) unsigned NOT NULL default '0',
+  `count` int(10) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`item_id`)
+) ENGINE=InnoDB;
+SQL;
+        $sql = str_replace('{table_name}', $table, $sql);
+        if (SqlUtils::execute($sql)) {
+            $this->mLog->addReport(XCubeUtils::formatString($this->mLangMan->get('INSTALL_MSG_TABLE_UPDATED'), $table));
+        } else {
+            $this->mLog->addError(XCubeUtils::formatString($this->mLangMan->get('INSTALL_ERROR_TABLE_UPDATED'), $table));
+
+            return;
         }
     }
 }

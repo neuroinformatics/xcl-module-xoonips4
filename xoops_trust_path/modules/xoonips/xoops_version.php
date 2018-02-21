@@ -5,7 +5,7 @@ require_once __DIR__.'/include/common.inc.php';
 Xoonips_Utils::loadModinfoMessage('xoonips');
 
 $modversion['name'] = _MI_XOONIPS_NAME;
-$modversion['version'] = 4.20;
+$modversion['version'] = 4.30;
 $modversion['description'] = _MI_XOONIPS_DESC;
 $modversion['credits'] = 'Neuroinformatics Japan Center, RIKEN BSI (https://nijc.brain.riken.jp/)';
 $modversion['author'] = 'The XooNIps Project (http://xoonips.osdn.jp/)';
@@ -77,6 +77,8 @@ $modversion['tables'] = array(
     '{prefix}_{dirname}_item_field_group_field_detail_link',
     '{prefix}_{dirname}_item_import_log',
     '{prefix}_{dirname}_item_import_link',
+    '{prefix}_{dirname}_ranking_viewed_item',
+    '{prefix}_{dirname}_ranking_downloaded_item',
 );
 
 // Admin things
