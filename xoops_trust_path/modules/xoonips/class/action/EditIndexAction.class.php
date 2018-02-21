@@ -13,7 +13,7 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
         $viewData = array();
         $indexId = $request->getParameter('index_id');
         $uid = $xoopsUser->getVar('uid');
-        if ($indexId == null) {
+        if (null == $indexId) {
             $index = $indexBean->getPrivateIndex($uid);
             $indexId = $index['index_id'];
         } else {
@@ -27,20 +27,20 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
         }
 
         //if private index
-        if ($index['open_level'] == XOONIPS_OL_PRIVATE) {
+        if (XOONIPS_OL_PRIVATE == $index['open_level']) {
             $breadcrumbsName = _MD_XOONIPS_INDEX_PANKUZU_EDIT_PRIVATE_INDEX_KEYWORD;
             $limitLabel = _MD_XOONIPS_INDEX_NUMBER_OF_PRIVATE_INDEX_LABEL;
             $indexNumberLimit = Functions::getXoonipsConfig($this->dirname, 'private_index_number_limit');
             $indexCount = $indexBean->countUserIndexes($index['uid']);
-            //if group index
-        } elseif ($index['open_level'] == XOONIPS_OL_GROUP_ONLY) {
+        //if group index
+        } elseif (XOONIPS_OL_GROUP_ONLY == $index['open_level']) {
             $breadcrumbsName = _MD_XOONIPS_INDEX_PANKUZU_EDIT_GROUP_INDEX_KEYWORD;
             $limitLabel = _MD_XOONIPS_INDEX_NUMBER_OF_GROUP_INDEX_LABEL;
             $groupBean = Xoonips_BeanFactory::getBean('GroupsBean', $this->dirname);
             $group = $groupBean->getGroup($index['groupid']);
             $indexNumberLimit = $group['index_number_limit'];
             $indexCount = $indexBean->countGroupIndexes($index['groupid']);
-            // if public index
+        // if public index
         } else {
             $breadcrumbsName = _MD_XOONIPS_INDEX_PANKUZU_EDIT_PUBLIC_INDEX_KEYWORD;
         }
@@ -51,7 +51,7 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
         );
         $viewData['xoops_breadcrumbs'] = $breadcrumbs;
         // if not public index
-        if ($index['open_level'] != XOONIPS_OL_PUBLIC) {
+        if (XOONIPS_OL_PUBLIC != $index['open_level']) {
             $viewData['limitLabel'] = $limitLabel;
             $viewData['indexNumberLimit'] = $indexNumberLimit;
             $viewData['indexCount'] = $indexCount;
@@ -76,6 +76,7 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
         $viewData['token_ticket'] = $token_ticket;
         $viewData['dirname'] = $this->dirname;
         $viewData['mytrustdirname'] = $this->trustDirname;
+        $viewData['itemListUrl'] = Functions::getItemListUrl($this->dirname);
         $response->setViewData($viewData);
         $response->setForward('init_success');
 
@@ -126,7 +127,7 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
         $uid = $xoopsUser->getVar('uid');
 
         // if update mode
-        if ($indexId != null) {
+        if (null != $indexId) {
             // check write right
             if (!$indexBean->checkWriteRight($indexId, $uid)) {
                 // User doesn't have the right to write.
@@ -135,7 +136,7 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
                 return false;
             }
             $index = $indexBean->getIndex($indexId);
-            if ($index == false) {
+            if (false == $index) {
                 $response->setSystemError(_MD_XOONIPS_ERROR_DELETE_NOTEXIST_INDEX);
 
                 return false;
@@ -198,7 +199,7 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
         }
 
         // if not input
-        if (trim($title) == '') {
+        if ('' == trim($title)) {
             $errors = new Xoonips_Errors();
             $parameters[] = _MD_XOONIPS_INDEX_TITLE;
             $errors->addError('_MD_XOONIPS_ERROR_REQUIRED', 'title', $parameters);
@@ -216,14 +217,14 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
         }
 
         // if update mode
-        if ($indexId != null) {
+        if (null != $indexId) {
             $index = $indexBean->getIndex($indexId);
-            if ($index == false) {
+            if (false == $index) {
                 $response->setSystemError(_MD_XOONIPS_ERROR_DELETE_NOTEXIST_INDEX);
 
                 return false;
             }
-            if ($index['open_level'] != XOONIPS_OL_PRIVATE && $index['title'] != $title && $indexBean->isLocked($indexId)) {
+            if (XOONIPS_OL_PRIVATE != $index['open_level'] && $index['title'] != $title && $indexBean->isLocked($indexId)) {
                 $response->setSystemError(_MD_XOONIPS_ERROR_CANNOT_EDIT_LOCKED_INDEX);
 
                 return false;
@@ -244,10 +245,10 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
                 $this->notification->afterUserIndexRenamed($notification_context);
             }
             $viewData['callbackvalue'] = _MD_XOONIPS_MSG_DBUPDATED;
-            // if registry mode
+        // if registry mode
         } else {
             $index = $indexBean->getIndex($parentIndexId);
-            if ($index == false) {
+            if (false == $index) {
                 $response->setSystemError(_MD_XOONIPS_ERROR_DELETE_NOTEXIST_INDEX);
 
                 return false;
@@ -308,12 +309,12 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
         }
 
         // if private index
-        if ($index['open_level'] == XOONIPS_OL_PRIVATE) {
+        if (XOONIPS_OL_PRIVATE == $index['open_level']) {
             $rootIndex = $indexBean->getPrivateIndex($uid);
-            // if group index
-        } elseif ($index['open_level'] == XOONIPS_OL_GROUP_ONLY) {
+        // if group index
+        } elseif (XOONIPS_OL_GROUP_ONLY == $index['open_level']) {
             $rootIndex = $indexBean->getRootIndex($indexId);
-            // if public index
+        // if public index
         } else {
             $rootIndex = $indexBean->getPublicIndex();
         }
@@ -469,7 +470,7 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
         $indexBean->deleteIndex($indexIds);
 
         // if private index
-        if ($index['open_level'] == XOONIPS_OL_PRIVATE) {
+        if (XOONIPS_OL_PRIVATE == $index['open_level']) {
             // get root index
             $privateIndex = $indexBean->getPrivateIndex($uid);
 
@@ -481,7 +482,7 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
                 }
             }
             // if public index
-        } elseif ($index['open_level'] == XOONIPS_OL_PUBLIC) {
+        } elseif (XOONIPS_OL_PUBLIC == $index['open_level']) {
             foreach ($itemIds as $itemId) {
                 // if item is not linked in public ,public group
                 if (!$indexBean->isLinked2PublicItem($itemId)) {
@@ -537,14 +538,14 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
         $uid = $xoopsUser->getVar('uid');
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         $rootIndex = $indexBean->getRootIndex($parentIndexId);
-        if ($rootIndex['open_level'] == XOONIPS_OL_PUBLIC) {
+        if (XOONIPS_OL_PUBLIC == $rootIndex['open_level']) {
             return true;
-            // if private index
-        } elseif ($rootIndex['open_level'] == XOONIPS_OL_PRIVATE) {
+        // if private index
+        } elseif (XOONIPS_OL_PRIVATE == $rootIndex['open_level']) {
             $indexNumberLimit = Functions::getXoonipsConfig($this->dirname, 'private_index_number_limit');
             $indexCount = $indexBean->countUserIndexes($rootIndex['uid']);
-            //if group index
-        } elseif ($rootIndex['open_level'] == XOONIPS_OL_GROUP_ONLY) {
+        //if group index
+        } elseif (XOONIPS_OL_GROUP_ONLY == $rootIndex['open_level']) {
             $groupBean = Xoonips_BeanFactory::getBean('GroupsBean', $this->dirname);
             $group = $groupBean->getGroup($rootIndex['groupid']);
             $indexNumberLimit = $group['index_number_limit'];
@@ -552,7 +553,7 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
         }
 
         // if over index number limit
-        if ($indexNumberLimit != 0 && $indexCount >= $indexNumberLimit) {
+        if (0 != $indexNumberLimit && $indexCount >= $indexNumberLimit) {
             $response->setSystemError(_MD_XOONIPS_INDEX_TOO_MANY_INDEXES);
 
             return false;

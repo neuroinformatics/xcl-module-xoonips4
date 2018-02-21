@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 require_once dirname(__DIR__).'/class/core/Request.class.php';
 
 // xoonips index tree block
@@ -25,7 +27,7 @@ function b_xoonips_tree_show($options)
     $userBean = Xoonips_BeanFactory::getBean('UsersBean', $dirname);
     $itemUserBean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $dirname, $trustDirname);
     $is_moderator = false;
-    if ($uid != XOONIPS_UID_GUEST) {
+    if (XOONIPS_UID_GUEST != $uid) {
         $is_moderator = $userBean->isModerator($uid);
     }
 
@@ -47,16 +49,16 @@ function b_xoonips_tree_show($options)
     $groupIndexes = array();
     $privateIndexes = array();
 
-    if ($uid == XOONIPS_UID_GUEST) {
+    if (XOONIPS_UID_GUEST == $uid) {
         $publicIndex = $indexBean->getPublicIndex();
         $publicGroupIndexes = $indexBean->getPublicGroupIndex();
     } else {
         // login users
         if (!empty($xoonipsEditIndex)) {
             // edit index - show editable indexes
-          if ($is_moderator) {
-              $publicIndex = $indexBean->getPublicIndex();
-          }
+            if ($is_moderator) {
+                $publicIndex = $indexBean->getPublicIndex();
+            }
             $groupIndexes = $indexBean->getGroupIndex2($puid);
             $privateIndexes = $indexBean->getPrivateIndex2($puid);
         } else {
@@ -69,7 +71,7 @@ function b_xoonips_tree_show($options)
     if (isset($xoonipsURL)) {
         $url = urlencode($xoonipsURL);
     } else {
-        $url = XOOPS_URL.'/modules/'.$dirname.'/list.php';
+        $url = XOOPS_URL.'/modules/'.$dirname.'/'.Functions::getItemListUrl($dirname);
     }
 
     if (empty($xoonipsTreeCheckBox)) {
@@ -89,12 +91,12 @@ function b_xoonips_tree_show($options)
     }
 
     // group index and public group index
-    if ($checkbox != true) {
+    if (true != $checkbox) {
         $groupIndexes = $indexBean->mergeIndexes($publicGroupIndexes, $groupIndexes);
     // if has checkbox
     } else {
         // if not moderator and not item user
-        if (!$is_moderator && $xoonipsItemId != null && !$itemUserBean->isLink($xoonipsItemId, $uid)) {
+        if (!$is_moderator && null != $xoonipsItemId && !$itemUserBean->isLink($xoonipsItemId, $uid)) {
             // only admin group index
             foreach ($groupIndexes as $key => $index) {
                 if (!$userBean->isGroupManager($index['groupid'], $uid)) {
@@ -132,11 +134,11 @@ function b_xoonips_tree_show($options)
         $indexes[$key]['title'] = $value['title'];
     }
     $block = array(
-        'isKHTML' => (strstr($_SERVER['HTTP_USER_AGENT'], 'KHTML') !== false),
         'checkbox' => $checkbox,
         'indexes' => $indexes,
         'trees' => $trees,
-        'dirname' => $dirname, );
+        'dirname' => $dirname,
+        'itemListUrl' => Functions::getItemListUrl($dirname), );
 
     return $block;
 }

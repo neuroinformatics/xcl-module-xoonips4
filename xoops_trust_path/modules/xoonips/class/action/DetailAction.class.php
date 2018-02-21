@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 require_once dirname(__DIR__).'/core/Item.class.php';
 require_once dirname(__DIR__).'/core/ActionBase.class.php';
 require_once dirname(__DIR__).'/XmlItemExport.class.php';
@@ -98,7 +100,7 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
         $breadcrumbs = array(
         array(
                 'name' => _MD_XOONIPS_ITEM_LISTING_ITEM,
-                'url' => 'list.php?index_id='.$indexId,
+                'url' => Functions::getItemListUrl($this->dirname).'?index_id='.$indexId,
         ),
         array(
                 'name' => _MD_XOONIPS_ITEM_DETAIL_ITEM_TITLE,
@@ -113,7 +115,7 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
 
         $itembean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
         $limit = $itembean->getDownloadLimit($itemId, $itemtypeId);
-        if ($limit === true && $uid == XOONIPS_UID_GUEST) {
+        if (true === $limit && XOONIPS_UID_GUEST == $uid) {
             $download_confirmation = $this->getDownloadConfirmation($itemId, $itemtypeId, true);
         } else {
             $download_confirmation = $this->getDownloadConfirmation($itemId, $itemtypeId, false);
@@ -147,7 +149,7 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
         $message = '';
         if ($result) {
             foreach ($result as $link) {
-                if ($link['certify_state'] == XOONIPS_CERTIFY_REQUIRED || $link['certify_state'] == XOONIPS_WITHDRAW_REQUIRED) {
+                if (XOONIPS_CERTIFY_REQUIRED == $link['certify_state'] || XOONIPS_WITHDRAW_REQUIRED == $link['certify_state']) {
                     $message = sprintf(_MD_XOONIPS_WARNING_CANNOT_EDIT_LOCKED_ITEM,
                     _MD_XOONIPS_LOCK_TYPE_STRING_CERTIFY_OR_WITHDRAW_REQUEST);
                 }
@@ -182,7 +184,7 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
         $result = $bean->getPublicIndexItemLinkInfo($itemId);
         if ($result) {
             foreach ($result as $link) {
-                if (($link['certify_state'] == XOONIPS_CERTIFY_REQUIRED || $link['certify_state'] == XOONIPS_WITHDRAW_REQUIRED) && $isModerator) {
+                if ((XOONIPS_CERTIFY_REQUIRED == $link['certify_state'] || XOONIPS_WITHDRAW_REQUIRED == $link['certify_state']) && $isModerator) {
                     return true;
                 }
             }
@@ -214,7 +216,7 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
         $use_cc = '0';
         $rights = '';
         $item_rights = $bean->getRights($item_id, $itemtypeId);
-        if ($item_rights === false) {
+        if (false === $item_rights) {
         } else {
             $use_license = true;
             if (strlen($item_rights) >= 4) {
@@ -227,12 +229,12 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
             }
         }
 
-        if ($attachment_dl_notify == '0' && !$use_license) {
+        if ('0' == $attachment_dl_notify && !$use_license) {
             return '';
         }
 
         $files = $this->getFileInfo($item_id);
-        if ($files == false || count($files) == 0) {
+        if (false == $files || 0 == count($files)) {
             return '';
         }
 
@@ -275,7 +277,7 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
         $sql = 'select file_id, original_file_name, file_size, mime_type, timestamp from '
         .$xoopsDB->prefix($this->modulePrefix('item_file'))." where item_id = $item_id ";
         $result = $xoopsDB->query($sql);
-        if ($result == false) {
+        if (false == $result) {
             return false;
         }
         $files = array();

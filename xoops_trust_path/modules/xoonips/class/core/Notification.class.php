@@ -13,7 +13,7 @@ require_once __DIR__.'/Workflow.class.php';
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
 function createMessageSignTemplate($resource_type, $resource_name, &$template_source, &$template_timestamp, &$smarty_obj)
 {
-    if ($resource_type != 'messagesign') {
+    if ('messagesign' != $resource_type) {
         return false;
     }
     $parameter = explode(',', $resource_name);
@@ -167,19 +167,19 @@ class Xoonips_Notification extends XoopsNotificationHandler
     {
         $itemBasicBean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
         $item_basic = $itemBasicBean->getItemBasicInfo($item_id);
-        if ($item_basic === false) {
+        if (false === $item_basic) {
             return false;
         }
 
         $itemTypeBean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
         $item_type = $itemTypeBean->getItemTypeInfo($item_basic['item_type_id']);
-        if ($item_type === false) {
+        if (false === $item_type) {
             return false;
         }
 
         $itemTitleBean = Xoonips_BeanFactory::getBean('ItemTitleBean', $this->dirname, $this->trustDirname);
         $titles = $itemTitleBean->getItemTitleInfo($item_id);
-        if ($titles === false) {
+        if (false === $titles) {
             return false;
         }
 
@@ -187,7 +187,7 @@ class Xoonips_Notification extends XoopsNotificationHandler
 
         $itemUsersBean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $this->dirname, $this->trustDirname);
         $itemUsersInfo = $itemUsersBean->getItemUsersInfo($item_id);
-        if ($itemUsersInfo === false) {
+        if (false === $itemUsersInfo) {
             return false;
         }
         $itemUsersName = array();
@@ -195,7 +195,7 @@ class Xoonips_Notification extends XoopsNotificationHandler
         foreach ($itemUsersInfo as $itemUser) {
             $xoops_user = $userBean->getUserBasicInfo($itemUser['uid']);
             $itemName = '';
-            if ($xoops_user['name'] != '') {
+            if ('' != $xoops_user['name']) {
                 $itemName = '('.$xoops_user['name'].')';
             }
             $itemUsersUname[] = $xoops_user['uname'].$itemName;
@@ -203,7 +203,7 @@ class Xoonips_Notification extends XoopsNotificationHandler
 
         $keywordBean = Xoonips_BeanFactory::getBean('ItemKeywordBean', $this->dirname, $this->trustDirname);
         $keywords = $keywordBean->getKeywords($item_id);
-        if ($keywords === false) {
+        if (false === $keywords) {
             return false;
         }
 
@@ -534,7 +534,7 @@ class Xoonips_Notification extends XoopsNotificationHandler
                 'OLD_INDEX_PATH' => $context['old_index_path'],
                 'NEW_INDEX_PATH' => $new_index_path,
                 'LISTITEM_URL' => XOOPS_URL.'/modules/'.$this->dirname
-                 .'/list.php?index_id='.$parentIndexId,
+                 .'/'.Functions::getItemListUrl($this->dirname).'?index_id='.$parentIndexId,
                 'ITEM_LIST' => implode("\n\n", $item_list),
             );
             $tags['SITENAME'] = XoopsUtils::getXoopsConfig('sitename');
@@ -608,13 +608,13 @@ class Xoonips_Notification extends XoopsNotificationHandler
     {
         $fileBean = Xoonips_BeanFactory::getBean('ItemFileBean', $this->dirname, $this->trustDirname);
         $file = $fileBean->getFile($file_id);
-        if ($file === false || count($file) === 0) {
+        if (false === $file || 0 === count($file)) {
             return;
         }
 
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
         $user = $userBean->getUserBasicInfo($downloader_uid);
-        if ($user === false || count($user) === 0) {
+        if (false === $user || 0 === count($user)) {
             return;
         }
 

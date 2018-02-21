@@ -15,7 +15,7 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
         $viewData = array();
         $indexId = $request->getParameter('index_id');
         $uid = $xoopsUser->getVar('uid');
-        if ($indexId == null) {
+        if (null == $indexId) {
             $index = $indexBean->getPrivateIndex($uid);
             $indexId = $index['index_id'];
         } else {
@@ -38,7 +38,7 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
         $fullpathInfo = $indexBean->getFullPathIndexes($indexId);
         $fullPathIndexes = array();
         foreach ($fullpathInfo as $index) {
-            if ($index['parent_index_id'] == 1 && $index['open_level'] == XOONIPS_OL_PRIVATE) {
+            if (1 == $index['parent_index_id'] && XOONIPS_OL_PRIVATE == $index['open_level']) {
                 $index['html_title'] = 'Private';
             }
             $fullPathIndexes[] = $index;
@@ -56,7 +56,7 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
 
         // root dir check
         $root_dir = false;
-        if ($index['parent_index_id'] == XOONIPS_IID_ROOT) {
+        if (XOONIPS_IID_ROOT == $index['parent_index_id']) {
             $root_dir = true;
             if (!empty($index['uid'])) {
                 $index['title'] = self::PRIVATE_INDEX;
@@ -66,7 +66,7 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
         // back
         $back = $request->getParameter('back');
         if (empty($back)) {
-            $back = 'list.php?index_id='.$indexId;
+            $back = Functions::getItemListUrl($this->dirname).'?index_id='.$indexId;
         } else {
             $back = 'editindex.php?index_id='.$back;
         }
@@ -85,6 +85,7 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
         $token_ticket = $this->createToken($this->modulePrefix('index_description'));
         $viewData['token_ticket'] = $token_ticket;
         $viewData['dirname'] = $this->dirname;
+        $viewData['itemListUrl'] = Functions::getItemListUrl($this->dirname);
         $response->setViewData($viewData);
         $response->setViewDataByKey('index_path', $fullPathIndexes);
         $response->setForward('init_success');
@@ -120,7 +121,7 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
         if (!empty($file)) {
             $index['icon'] = $file['name'];
             $index['mime_type'] = $file['type'];
-        } elseif ($show_thumbnail == 2) {
+        } elseif (2 == $show_thumbnail) {
             $index['icon'] = null;
             $index['mime_type'] = null;
         }
@@ -128,7 +129,7 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
         // start transaction
         $this->startTransaction();
 
-        if ($index['parent_index_id'] != XOONIPS_IID_ROOT) {
+        if (XOONIPS_IID_ROOT != $index['parent_index_id']) {
             if (empty($title)) {
                 $viewData = array();
                 if (empty($viewData['redirect_msg'])) {
@@ -170,7 +171,7 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
             return true;
         }
 
-        if ($show_thumbnail == 2) {
+        if (2 == $show_thumbnail) {
             $uploadfile = $upload_path.'/'.$index_id;
             unlink($uploadfile);
         }
@@ -198,7 +199,7 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
         if (empty($viewData['redirect_msg'])) {
             $viewData['redirect_msg'] = _MD_XOONIPS_MESSAGE_INDEX_DESCRIPTION_UPDATE_SUCCESS;
         }
-        $viewData['url'] = 'list.php?index_id='.$index_id;
+        $viewData['url'] = Functions::getItemListUrl($this->dirname).'?index_id='.$index_id;
         $response->setViewData($viewData);
         $response->setForward('update_success');
 
@@ -243,7 +244,7 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
         if (empty($viewData['redirect_msg'])) {
             $viewData['redirect_msg'] = _MD_XOONIPS_MESSAGE_INDEX_DESCRIPTION_DELETE_SUCCESS;
         }
-        $viewData['url'] = 'list.php?index_id='.$index_id;
+        $viewData['url'] = Functions::getItemListUrl($this->dirname).'?index_id='.$index_id;
         $response->setViewData($viewData);
         $response->setForward('delete_success');
 
