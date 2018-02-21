@@ -104,7 +104,7 @@ class Xoonips_ItemHandler extends XoopsObjectGenericHandler
         $ret = null;
         $criteria = new Criteria('doi', $doi);
         $objArr = &$this->getObjects($criteria);
-        if (count($objArr) == 1) {
+        if (1 == count($objArr)) {
             $ret = &$objArr[0];
         }
 
@@ -115,31 +115,64 @@ class Xoonips_ItemHandler extends XoopsObjectGenericHandler
      * get most viewed item object.
      *
      * @param int $limit
-     * @param int $term
      *
      * @return $ret
      */
-    public function &getMostViewedItems($limit, $term)
+    public function &getMostViewedItems($limit)
     {
         $ret = array();
         $tableItemTitle = $this->db->prefix($this->mDirname.'_item_title');
         $tableIndex = $this->db->prefix($this->mDirname.'_index');
         $tableIndexItemLink = $this->db->prefix($this->mDirname.'_index_item_link');
+        $tableRanking = $this->db->prefix($this->mDirname.'_ranking_viewed_item');
         if ($limit < 1) {
             return;
         }
 
-        $sql = sprintf('SELECT * FROM `%1$s` INNER JOIN `%2$s` ON `%1$s`.`item_id` = `%2$s`.`item_id` WHERE `%1$s`.`item_id` IN (SELECT DISTINCT `%4$s`.`item_id` FROM `%4$s` WHERE (`%4$s`.`certify_state` = %6$d OR `%4$s`.`certify_state` = %7$d) AND `%4$s`.`index_id` IN (SELECT `%3$s`.`index_id` FROM `%3$s` WHERE `%3$s`.`open_level` = %5$d)) AND ', $this->mTable, $tableItemTitle, $tableIndex, $tableIndexItemLink, XOONIPS_OL_PUBLIC, XOONIPS_CERTIFIED, XOONIPS_WITHDRAW_REQUIRED);
-        if ($term != 0) {
-            $sql .= sprintf('`%1$s`.`last_update_date` >= %2$d AND ', $this->mTable, $term);
-        }
-        $sql .= sprintf('`%1$s`.`view_count` != 0 ORDER BY `%1$s`.`view_count` DESC limit %2$d', $this->mTable, $limit);
-
+        $sql = sprintf('SELECT * FROM `%1$s` INNER JOIN (`%5$s` INNER JOIN `%2$s` ON `%5$s`.`item_id` = `%2$s`.`item_id`) ON `%1$s`.`item_id` = `%2$s`.`item_id` WHERE `%1$s`.`item_id` IN (SELECT DISTINCT `%4$s`.`item_id` FROM `%4$s` WHERE (`%4$s`.`certify_state` = %7$d OR `%4$s`.`certify_state` = %8$d) AND `%4$s`.`index_id` IN (SELECT `%3$s`.`index_id` FROM `%3$s` WHERE `%3$s`.`open_level` = %6$d)) ', $this->mTable, $tableItemTitle, $tableIndex, $tableIndexItemLink, $tableRanking, XOONIPS_OL_PUBLIC, XOONIPS_CERTIFIED, XOONIPS_WITHDRAW_REQUIRED);
+        $sql .= sprintf(' ORDER BY `%1$s`.`count` DESC limit %2$d', $tableRanking, $limit);
         if ($result = $this->db->query($sql)) {
             while ($row = $this->db->fetchArray($result)) {
                 $r = array();
                 $r['title'] = $row['title'];
-                $r['view_count'] = $row['view_count'];
+                $r['count'] = $row['count'];
+                $obj = new $this->mClass();
+                $obj->mDirname = $this->getDirname();
+                $obj->assignVars($row);
+                $r['url'] = $obj->getUrl();
+                unset($obj);
+                $ret[] = $r;
+            }
+        }
+
+        return $ret;
+    }
+
+    /**
+     * get most downloaded item object.
+     *
+     * @param int $limit
+     *
+     * @return $ret
+     */
+    public function &getMostDownloadedItems($limit)
+    {
+        $ret = array();
+        $tableItemTitle = $this->db->prefix($this->mDirname.'_item_title');
+        $tableIndex = $this->db->prefix($this->mDirname.'_index');
+        $tableIndexItemLink = $this->db->prefix($this->mDirname.'_index_item_link');
+        $tableRanking = $this->db->prefix($this->mDirname.'_ranking_downloaded_item');
+        if ($limit < 1) {
+            return;
+        }
+
+        $sql = sprintf('SELECT * FROM `%1$s` INNER JOIN (`%5$s` INNER JOIN `%2$s` ON `%5$s`.`item_id` = `%2$s`.`item_id`) ON `%1$s`.`item_id` = `%2$s`.`item_id` WHERE `%1$s`.`item_id` IN (SELECT DISTINCT `%4$s`.`item_id` FROM `%4$s` WHERE (`%4$s`.`certify_state` = %7$d OR `%4$s`.`certify_state` = %8$d) AND `%4$s`.`index_id` IN (SELECT `%3$s`.`index_id` FROM `%3$s` WHERE `%3$s`.`open_level` = %6$d)) ', $this->mTable, $tableItemTitle, $tableIndex, $tableIndexItemLink, $tableRanking, XOONIPS_OL_PUBLIC, XOONIPS_CERTIFIED, XOONIPS_WITHDRAW_REQUIRED);
+        $sql .= sprintf(' ORDER BY `%1$s`.`count` DESC limit %2$d', $tableRanking, $limit);
+        if ($result = $this->db->query($sql)) {
+            while ($row = $this->db->fetchArray($result)) {
+                $r = array();
+                $r['title'] = $row['title'];
+                $r['count'] = $row['count'];
                 $obj = new $this->mClass();
                 $obj->mDirname = $this->getDirname();
                 $obj->assignVars($row);
