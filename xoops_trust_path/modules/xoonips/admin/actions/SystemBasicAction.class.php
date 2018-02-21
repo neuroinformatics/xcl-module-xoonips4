@@ -24,7 +24,7 @@ class Xoonips_Admin_SystemBasicAction extends Xoonips_Admin_AbstractConfigAction
      */
     protected function getConfigKeys()
     {
-        return array('moderator_gid', 'upload_dir');
+        return array('moderator_gid', 'upload_dir', 'url_compatible');
     }
 
     /**

@@ -34,6 +34,19 @@
     </td>
   </tr>
   <tr>
+    <td class="head" style="width: 40%; vertical-align: top;">
+      <span style="font-weight: bold;"><{"`$constpref`_SYSTEM_BASIC_URL_COMPATIBLE_TITLE"|constant}></span>
+      <br /><br />
+      <span style="font-weight: normal;"><{"`$constpref`_SYSTEM_BASIC_URL_COMPATIBLE_DESC"|constant}></span>
+    </td>
+    <td class="even" style="width: 60%; vertical-align: top;">
+      <select name="url_compatible" size="1">
+        <option value="off"<{if $actionForm->get('url_compatible') == 'off'}> selected="selected"<{/if}>><{"`$constpref`_SYSTEM_BASIC_URL_COMPATIBLE_DEFAULT"|constant}></option>
+        <option value="on"<{if $actionForm->get('url_compatible') == 'on'}> selected="selected"<{/if}>><{"`$constpref`_SYSTEM_BASIC_URL_COMPATIBLE_VERSION3"|constant}></option>
+      </select>
+    </td>
+  </tr>
+  <tr>
     <td class="head" style="width: 40%; vertical-align: top;">&nbsp;</td>
     <td class="even" style="width: 60%; vertical-align: top;">
       <input type="submit" name="submit" value="<{"`$constpref`_LANG_UPDATE"|constant}>" />

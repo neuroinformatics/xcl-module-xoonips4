@@ -101,6 +101,10 @@ define($constpref.'_SYSTEM_BASIC_MODERATOR_GROUP_DESC', 'Choose the XOOPS group 
 define($constpref.'_SYSTEM_BASIC_UPLOAD_DIR_TITLE', 'File Upload Directory');
 define($constpref.'_SYSTEM_BASIC_UPLOAD_DIR_DESC', 'Enter absolute path for the file upload direcotry. This direcotry needs write permission for the web server process.');
 define($constpref.'_ERROR_UPLOAD_DIRECTORY', 'The entered file upload directory not exists.');
+define($constpref.'_SYSTEM_BASIC_URL_COMPATIBLE_TITLE', 'XooNIps3 Compatible');
+define($constpref.'_SYSTEM_BASIC_URL_COMPATIBLE_DESC', '');
+define($constpref.'_SYSTEM_BASIC_URL_COMPATIBLE_DEFAULT', 'list.php (default)');
+define($constpref.'_SYSTEM_BASIC_URL_COMPATIBLE_VERSION3', 'listitem.php (version3 compatible)');
 
 // action: SystemMessageSign
 define($constpref.'_SYSTEM_MSGSIGN_SIGN_TITLE', 'Signature Template');
