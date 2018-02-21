@@ -21,7 +21,7 @@ function xoonips_search($keywords, $andor, $limit, $offset, $userid)
     if (is_array($keywords)) {
         $pos = 0;
         foreach ($keywords as $val) {
-            if ($pos == 0) {
+            if (0 == $pos) {
                 $keyword .= $val;
             } else {
                 $keyword .= ' '.$andor.' '.$val;
@@ -30,18 +30,18 @@ function xoonips_search($keywords, $andor, $limit, $offset, $userid)
         }
     }
 
-    if (trim($keyword) == '') {
+    if ('' == trim($keyword)) {
         return $ret;
     }
 
     $isExact = false;
-    if ($andor == 'exact') {
+    if ('exact' == $andor) {
         $isExact = true;
     }
     $chandler = Functions::getXoonipsHandler('ItemQuickSearchCondition', $dirname);
     $cobj = &$chandler->get(1);
     $fieldIds = $chandler->getItemFieldIds($cobj);
-    if (count($fieldIds) == 0) {
+    if (0 == count($fieldIds)) {
         return $ret;
     }
     $post_data = array();

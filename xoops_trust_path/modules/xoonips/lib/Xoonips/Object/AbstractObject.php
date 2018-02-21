@@ -236,15 +236,16 @@ abstract class AbstractObject
             $this->mValues[$key] = $value ? 1 : 0;
             break;
         case XOBJ_DTYPE_INT:
-            $this->mValues[$key] = $value !== null ? intval($value) : null;
+            $this->mValues[$key] = null !== $value ? intval($value) : null;
             break;
         case XOBJ_DTYPE_FLOAT:
-            $this->mValues[$key] = $value !== null ? floatval($value) : null;
+            $this->mValues[$key] = null !== $value ? floatval($value) : null;
             break;
         case XOBJ_DTYPE_STRING:
             if ($this->mTableInfo[$key]['maxlength'] !== null && mb_strlen($value) > $this->mTableInfo[$key]['maxlength']) {
                 return false;
             }
+            // no break
         case XOBJ_DTYPE_TEXT:
             $this->mValues[$key] = $myts->censorString($value);
             break;

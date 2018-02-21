@@ -152,7 +152,7 @@ class Xoonips_ImportItemType
         //get XML object
         $xmlFile = $uploaddir.'/'.$itemtype.'/'.$itemtype.'.xml';
         $xmlObj = $this->getSimpleXMLElement($xmlFile);
-        if ($xmlObj === false || empty($xmlObj)) {
+        if (false === $xmlObj || empty($xmlObj)) {
             return false;
         }
 
@@ -417,7 +417,7 @@ class Xoonips_ImportItemType
                     'released' => 1,
                 );
             $link_info = $groupBean->getGroupDetailById($link['group_id'], $link['item_field_detail_id']);
-            if (count($link_info) == 0) {
+            if (0 == count($link_info)) {
                 if (!$groupBean->insertLink($link, $lid)) {
                     return false;
                 }
@@ -495,7 +495,7 @@ class Xoonips_ImportItemType
             $obj['schema_id'] = $schemaid[$obj['schema_id']];
             $obj['item_type_id'] = $map['itemtype'][$obj['item_type_id']];
             $obj['group_id'] = null;
-            if (strpos($schema, 'NIItype') != false) {
+            if (false != strpos($schema, 'NIItype')) {
                 if (in_array($obj['item_field_detail_id'], $niiTypes)) {
                     $obj['item_field_detail_id'] = $valuesetid[$schema.':'.$obj['item_field_detail_id']];
                 } else {
@@ -510,10 +510,10 @@ class Xoonips_ImportItemType
                     $obj['item_field_detail_id'] = implode(',', $detail_id_list);
                     $obj['group_id'] = implode(',', $group_id_list);
                 }
-            } elseif ($obj['item_field_detail_id'] != 'http://' && $obj['item_field_detail_id'] != 'ID'
-                && $obj['item_field_detail_id'] != 'itemtype' && $obj['item_field_detail_id'] != 'meta_author'
-                && $obj['item_field_detail_id'] != 'owner' && $obj['item_field_detail_id'] != 'full_text'
-                && $obj['item_field_detail_id'] != 'fixed_value' && !in_array($obj['item_field_detail_id'], $niiTypes)) {
+            } elseif ('http://' != $obj['item_field_detail_id'] && 'ID' != $obj['item_field_detail_id']
+                && 'itemtype' != $obj['item_field_detail_id'] && 'meta_author' != $obj['item_field_detail_id']
+                && 'owner' != $obj['item_field_detail_id'] && 'full_text' != $obj['item_field_detail_id']
+                && 'fixed_value' != $obj['item_field_detail_id'] && !in_array($obj['item_field_detail_id'], $niiTypes)) {
                 $detail_id_list = array();
                 $group_id_list = array();
                 $idlist = explode(',', $obj['item_field_detail_id']);

@@ -84,7 +84,7 @@ class Xoonips_ItemQuickSearchConditionHandler extends XoopsObjectGenericHandler
     public function delete(&$obj, $force = false)
     {
         $pid = $obj->get($this->mPrimary);
-        if ($pid == 1) {
+        if (1 == $pid) {
             return false;
         } // don't delete quick search condtion 'All'
         if (!parent::delete($obj, $force)) {
@@ -132,7 +132,7 @@ class Xoonips_ItemQuickSearchConditionHandler extends XoopsObjectGenericHandler
     public function getConditions()
     {
         static $cache = null;
-        if ($cache != null) {
+        if (null != $cache) {
             return $cache;
         }
         $criteria = new CriteriaElement();
@@ -175,7 +175,7 @@ class Xoonips_ItemQuickSearchConditionHandler extends XoopsObjectGenericHandler
     {
         $ret = array();
         $pid = $obj->get($this->mPrimary);
-        if ($pid == 1) {
+        if (1 == $pid) {
             // return all field ids if condition_id is 1
             $handler = Functions::getXoonipsHandler('ItemField', $this->mDirname);
             $objs = $handler->getObjectsForQuickSearch();
@@ -207,7 +207,7 @@ class Xoonips_ItemQuickSearchConditionHandler extends XoopsObjectGenericHandler
     {
         $ret = true;
         $pid = $obj->get($this->mPrimary);
-        if ($pid == 1) {
+        if (1 == $pid) {
             // allways success if condition_id is 1
             return true;
         }
@@ -264,10 +264,10 @@ class Xoonips_ItemQuickSearchConditionHandler extends XoopsObjectGenericHandler
     {
         $sql = sprintf('DELETE FROM `%s`', $this->mTableDetail);
         $where = array();
-        if ($cId !== false) {
+        if (false !== $cId) {
             $where[] = sprintf('`condition_id`=%u', $cId);
         }
-        if ($dId !== false) {
+        if (false !== $dId) {
             $where[] = sprintf('`item_field_detail_id`=%u', $dId);
         }
         if (!empty($where)) {

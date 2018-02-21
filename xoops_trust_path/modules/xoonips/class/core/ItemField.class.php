@@ -34,39 +34,39 @@ class Xoonips_ItemField extends Xoonips_Field
         $ret = true;
         $viewType = $this->getViewType();
 
-        if ($viewType->isDisplay($op) == false) {
+        if (false == $viewType->isDisplay($op)) {
             return false;
         }
 
         // $op(1:list 2:detail 3:search)
         switch ($op) {
         case Xoonips_Enum::OP_TYPE_LIST:
-            if ($this->getListDisplay() == 0) {
+            if (0 == $this->getListDisplay()) {
                 $ret = false;
             }
             break;
         case Xoonips_Enum::OP_TYPE_DETAIL:
-            if ($this->getDetailDisplay() == 0) {
+            if (0 == $this->getDetailDisplay()) {
                 $ret = false;
             }
             break;
         case Xoonips_Enum::OP_TYPE_METAINFO:
-            if ($this->getDetailDisplay() == 0) {
+            if (0 == $this->getDetailDisplay()) {
                 $ret = false;
             }
             break;
         case Xoonips_Enum::OP_TYPE_ITEMUSERSEDIT:
-            if ($this->getDetailDisplay() == 0) {
+            if (0 == $this->getDetailDisplay()) {
                 $ret = false;
             }
             break;
         case Xoonips_Enum::OP_TYPE_SEARCH:
-            if ($this->getDetailTarget() == 0) {
+            if (0 == $this->getDetailTarget()) {
                 $ret = false;
             }
             break;
         case Xoonips_Enum::OP_TYPE_SIMPLESEARCH:
-            if ($this->getDetailTarget() == 0) {
+            if (0 == $this->getDetailTarget()) {
                 $ret = false;
             }
             break;

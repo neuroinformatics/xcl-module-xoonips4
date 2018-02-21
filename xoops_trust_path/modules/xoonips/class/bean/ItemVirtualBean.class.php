@@ -65,25 +65,25 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
                     $itemUsersBean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $this->dirname, $this->trustDirname);
                     $info = $itemUsersBean->getItemUsersInfo($itemId);
                 }
-            // if item relation table
+                // if item relation table
             } elseif ($tableName == $this->modulePrefix('item_related_to')) {
                 if (!$itemRelationBean) {
                     $itemRelationBean = Xoonips_BeanFactory::getBean('ItemRelatedToBean', $this->dirname, $this->trustDirname);
                     $info = $itemRelationBean->getRelatedToInfo($itemId);
                 }
-            // if item title table
+                // if item title table
             } elseif ($tableName == $this->modulePrefix('item_title')) {
                 if (!$itemTitleBean) {
                     $itemTitleBean = Xoonips_BeanFactory::getBean('ItemTitleBean', $this->dirname, $this->trustDirname);
                     $info = $itemTitleBean->getItemTitleInfo($itemId);
                 }
-            // if item keyword table
+                // if item keyword table
             } elseif ($tableName == $this->modulePrefix('item_keyword')) {
                 if (!$itemKeywordBean) {
                     $itemKeywordBean = Xoonips_BeanFactory::getBean('ItemKeywordBean', $this->dirname, $this->trustDirname);
                     $info = $itemKeywordBean->getKeywords($itemId);
                 }
-            // if file table
+                // if file table
             } elseif ($tableName == $this->modulePrefix('item_file')) {
                 if (!$fileBean) {
                     $fileBean = Xoonips_BeanFactory::getBean('ItemFileBean', $this->dirname, $this->trustDirname);
@@ -97,14 +97,14 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
                     $indexItemLinkBean = Xoonips_BeanFactory::getBean('IndexItemLinkBean', $this->dirname, $this->trustDirname);
                     $info = $indexItemLinkBean->getIndexItemLinkInfo($itemId);
                 }
-            // if change log table
+                // if change log table
             } elseif ($tableName == $this->modulePrefix('item_changelog')) {
                 if (!$changeLogBean) {
                     $changeLogBean = Xoonips_BeanFactory::getBean('ItemChangeLogBean', $this->dirname, $this->trustDirname);
                     $info = $changeLogBean->getChangeLogs($itemId);
                 }
-            // if item extend
-            } elseif (strncmp($tableName, $this->modulePrefix('item_extend'), strlen($this->dirname) + 12) == 0) {
+                // if item extend
+            } elseif (0 == strncmp($tableName, $this->modulePrefix('item_extend'), strlen($this->dirname) + 12)) {
                 if (!$itemExtendBean) {
                     $itemExtendBean = Xoonips_BeanFactory::getBean('ItemExtendBean', $this->dirname, $this->trustDirname);
                 }
@@ -190,11 +190,11 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
         if ($linkInfos) {
             foreach ($linkInfos as $linkInfo) {
                 $index = $indexBean->getIndex($linkInfo['index_id']);
-                if ($index['open_level'] == XOONIPS_OL_PUBLIC) {
+                if (XOONIPS_OL_PUBLIC == $index['open_level']) {
                     if (in_array($linkInfo['certify_state'], array(XOONIPS_CERTIFIED, XOONIPS_WITHDRAW_REQUIRED))) {
                         return true;
                     }
-                } elseif ($index['open_level'] == XOONIPS_OL_GROUP_ONLY) {
+                } elseif (XOONIPS_OL_GROUP_ONLY == $index['open_level']) {
                     if ($userBean->isGroupManager($index['groupid'], $uid)) {
                         return true;
                     }
@@ -243,13 +243,13 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
     public function getItemsList($item_ids, $criteria)
     {
         $items = array();
-        if (count($item_ids) == 0) {
+        if (0 == count($item_ids)) {
             return $items;
         }
         $itemTable = $this->prefix($this->modulePrefix('item'));
         $itemBean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
         $sql = '';
-        if ($criteria['orderby'] == '0') {
+        if ('0' == $criteria['orderby']) {
             $sql = "SELECT DISTINCT item_id FROM $itemTable WHERE item_id IN ( ".$this->getCsvStr($item_ids).' )';
             $criteria['order'] = ' item_id ';
         } else {
@@ -325,9 +325,9 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
         $sql = '';
         if (isset($cri['order']) && isset($cri['orderdir'])) {
             $orders = ' (CASE WHEN '.$cri['order']."='' THEN 1 WHEN ".$cri['order'].' IS NULL THEN 2 ELSE 0 END ) ';
-            if ($cri['orderdir'] == 0) {
+            if (0 == $cri['orderdir']) {
                 $orders .= ' , '.$cri['order'].' ASC';
-            } elseif ($cri['orderdir'] == 1) {
+            } elseif (1 == $cri['orderdir']) {
                 $orders .= ' , '.$cri['order'].' DESC';
             }
             $sql .= " ORDER BY $orders ";
@@ -387,7 +387,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
             return false;
         }
         if ($row = $this->fetchArray($result)) {
-            if ($row['count'] != 0) {
+            if (0 != $row['count']) {
                 $ret = true;
             }
         }
@@ -413,7 +413,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
             return false;
         }
         while ($row = $this->fetchArray($result)) {
-            if (strpos($row['table_name'], 'item_extend') !== false) {
+            if (false !== strpos($row['table_name'], 'item_extend')) {
                 $ret[] = $row['table_name'];
             }
         }
@@ -463,7 +463,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
             return 0;
         }
         if ($row = $this->fetchArray($result)) {
-            if ($row['count'] != 0) {
+            if (0 != $row['count']) {
                 $ret = $row['count'];
             }
         }
@@ -491,7 +491,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
             return false;
         }
         while ($row = $this->fetchArray($result)) {
-            if (strpos($row['table_name'], 'item_extend') !== false) {
+            if (false !== strpos($row['table_name'], 'item_extend')) {
                 $extendTable = $this->prefix($row['table_name']);
                 $extendSql = "SELECT DISTINCT value FROM $extendTable WHERE item_id=$itemId";
                 $extendRet = $this->execute($extendSql);
@@ -528,7 +528,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
             return false;
         }
         while ($row = $this->fetchArray($result)) {
-            if (strpos($row['table_name'], 'item_extend') !== false) {
+            if (false !== strpos($row['table_name'], 'item_extend')) {
                 $extendTable = $this->prefix($row['table_name']);
                 $extendSql = "SELECT DISTINCT value FROM $extendTable WHERE item_id=$itemId";
                 $entendRet = $this->execute($extendSql);
@@ -565,7 +565,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
             return false;
         }
         while ($row = $this->fetchArray($result)) {
-            if (strpos($row['table_name'], 'item_extend') !== false) {
+            if (false !== strpos($row['table_name'], 'item_extend')) {
                 $extendTable = $this->prefix($row['table_name']);
                 $extendSql = "SELECT DISTINCT value FROM $extendTable WHERE item_id=$itemId";
                 $entendRet = $this->execute($extendSql);
@@ -573,7 +573,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
                     return false;
                 }
                 while ($entendRow = $this->fetchArray($entendRet)) {
-                    return $entendRow['value'] == 0;
+                    return 0 == $entendRow['value'];
                 }
                 $this->freeRecordSet($entendRet);
             }
@@ -725,12 +725,12 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
         $columnName = '';
         foreach ($itemFields as $itemField) {
             $viewtype = $itemField->getViewType();
-            if ($viewtype != null && $viewtype->getName() == 'file type') {
+            if (null != $viewtype && 'file type' == $viewtype->getName()) {
                 $tableName = $itemField->getTableName();
                 $columnName = $itemField->getColumnName();
             }
         }
-        if ($tableName == '' || $columnName == '') {
+        if ('' == $tableName || '' == $columnName) {
             return $items;
         }
 
@@ -775,12 +775,12 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
                 $indexId = $index['index_id'];
                 $level = $index['open_level'];
                 $title = $index['title'];
-                if ($level == XOONIPS_OL_PUBLIC) {
+                if (XOONIPS_OL_PUBLIC == $level) {
                     $ret[0][$indexId] = sprintf(_MD_XOONIPS_ITEM_PUBLIC_REQUEST_MESSAGE, $title);
-                } elseif ($level == XOONIPS_OL_GROUP_ONLY) {
+                } elseif (XOONIPS_OL_GROUP_ONLY == $level) {
                     $ret[0][$indexId] = sprintf(_MD_XOONIPS_ITEM_GROUP_REQUEST_MESSAGE, $title);
-                } elseif ($level == XOONIPS_OL_PRIVATE) {
-                    if ($index['uid'] == $xoopsUid && $index['parent_index_id'] == 1) {
+                } elseif (XOONIPS_OL_PRIVATE == $level) {
+                    if ($index['uid'] == $xoopsUid && 1 == $index['parent_index_id']) {
                         $title = 'Private';
                     }
                     $ret[0][$indexId] = sprintf(_MD_XOONIPS_ITEM_PRIVATE_REGIST_MESSAGE, $title);
@@ -795,35 +795,35 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
             $state = $index['certify_state'];
             // delete index
             if (!isset($checkIndexes[$key])) {
-                if ($level == XOONIPS_OL_PUBLIC) {
-                    if ($state == XOONIPS_CERTIFIED) {
+                if (XOONIPS_OL_PUBLIC == $level) {
+                    if (XOONIPS_CERTIFIED == $state) {
                         $ret[1][$indexId] = sprintf(_MD_XOONIPS_ITEM_PUBLIC_CANCEL_REQUEST_MESSAGE, $title);
-                    } elseif ($state == XOONIPS_CERTIFY_REQUIRED) {
+                    } elseif (XOONIPS_CERTIFY_REQUIRED == $state) {
                         $ret[2][$indexId] = sprintf(_MD_XOONIPS_ITEM_PUBLIC_REQUEST_STOP_MESSAGE, $title);
                     }
-                } elseif ($level == XOONIPS_OL_GROUP_ONLY) {
-                    if ($state == XOONIPS_CERTIFIED) {
+                } elseif (XOONIPS_OL_GROUP_ONLY == $level) {
+                    if (XOONIPS_CERTIFIED == $state) {
                         $ret[1][$indexId] = sprintf(_MD_XOONIPS_ITEM_GROUP_CANCEL_REQUEST_MESSAGE, $title);
-                    } elseif ($state == XOONIPS_CERTIFY_REQUIRED) {
+                    } elseif (XOONIPS_CERTIFY_REQUIRED == $state) {
                         $ret[2][$indexId] = sprintf(_MD_XOONIPS_ITEM_GROUP_REQUEST_STOP_MESSAGE, $title);
                     }
-                } elseif ($level == XOONIPS_OL_PRIVATE && $state == XOONIPS_NOT_CERTIFIED) {
-                    if ($index['uid'] == $xoopsUid && $index['parent_index_id'] == 1) {
+                } elseif (XOONIPS_OL_PRIVATE == $level && XOONIPS_NOT_CERTIFIED == $state) {
+                    if ($index['uid'] == $xoopsUid && 1 == $index['parent_index_id']) {
                         $title = 'Private';
                     }
                     $ret[1][$indexId] = sprintf(_MD_XOONIPS_ITEM_PRIVATE_DELETE_MESSAGE, $title);
                 }
             } else {
-                if ($level == XOONIPS_OL_PUBLIC) {
-                    if ($state == XOONIPS_WITHDRAW_REQUIRED) {
+                if (XOONIPS_OL_PUBLIC == $level) {
+                    if (XOONIPS_WITHDRAW_REQUIRED == $state) {
                         $ret[2][$indexId] = sprintf(_MD_XOONIPS_ITEM_PUBLIC_CANCEL_REQUEST_STOP_MESSAGE, $title);
-                    } elseif ($state == XOONIPS_CERTIFIED) {
+                    } elseif (XOONIPS_CERTIFIED == $state) {
                         $ret[3][$indexId] = sprintf(_MD_XOONIPS_ITEM_PUBLIC_REQUEST_MESSAGE, $title);
                     }
-                } elseif ($level == XOONIPS_OL_GROUP_ONLY) {
-                    if ($state == XOONIPS_WITHDRAW_REQUIRED) {
+                } elseif (XOONIPS_OL_GROUP_ONLY == $level) {
+                    if (XOONIPS_WITHDRAW_REQUIRED == $state) {
                         $ret[2][$indexId] = sprintf(_MD_XOONIPS_ITEM_GROUP_CANCEL_REQUEST_STOP_MESSAGE, $title);
-                    } elseif ($state == XOONIPS_CERTIFIED) {
+                    } elseif (XOONIPS_CERTIFIED == $state) {
                         $ret[3][$indexId] = sprintf(_MD_XOONIPS_ITEM_GROUP_REQUEST_MESSAGE, $title);
                     }
                 }
@@ -881,18 +881,18 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
         $groupsLinkBean = Xoonips_BeanFactory::getBean('GroupsUsersLinkBean', $this->dirname, $this->trustDirname);
 
         $certify = Functions::getXoonipsConfig($this->dirname, 'certify_item');
-        if ($certify_item != null) {
+        if (null != $certify_item) {
             $certify = $certify_item;
         }
 
         foreach ($typeInfo as $type) {
             $indexId = $type['indexId'];
-            if ($type['type'] == 'add') {
+            if ('add' == $type['type']) {
                 // add index
-                if ($type['open_level'] == XOONIPS_OL_PUBLIC) {
+                if (XOONIPS_OL_PUBLIC == $type['open_level']) {
                     $dataname = Xoonips_Enum::WORKFLOW_PUBLIC_ITEMS;
                     $moderatorUids = $groupsLinkBean->getModeratorUserIds();
-                    if ($certify == 'auto') {
+                    if ('auto' == $certify) {
                         if (!$linkBean->insert($indexId, $itemId, XOONIPS_CERTIFIED)) {
                             return false;
                         }
@@ -929,12 +929,12 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
                             $eventLogBean->recordCertifyItemEvent($itemId, $indexId);
                         }
                     }
-                } elseif ($type['open_level'] == XOONIPS_OL_GROUP_ONLY) {
+                } elseif (XOONIPS_OL_GROUP_ONLY == $type['open_level']) {
                     $groupId = $type['groupid'];
                     $accept = $type['item_accept'];
                     $dataname = Xoonips_Enum::WORKFLOW_GROUP_ITEMS;
                     $groupAdminUids = $groupsLinkBean->getAdminUserIds($groupId);
-                    if ($accept == '1') {
+                    if ('1' == $accept) {
                         if (!$linkBean->insert($indexId, $itemId, XOONIPS_CERTIFIED)) {
                             return false;
                         }
@@ -972,19 +972,19 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
                             $eventLogBean->recordCertifyGroupItemEvent($indexId, $itemId);
                         }
                     }
-                } elseif ($type['open_level'] == XOONIPS_OL_PRIVATE) {
+                } elseif (XOONIPS_OL_PRIVATE == $type['open_level']) {
                     if (!$linkBean->insert($indexId, $itemId, XOONIPS_NOT_CERTIFIED)) {
                         return false;
                     }
                 }
-            } elseif ($type['type'] == 'delete') {
+            } elseif ('delete' == $type['type']) {
                 // delete index
                 $indexItemLinkInfo = $linkBean->getInfo($itemId, $indexId);
                 $indexItemLinkId = $indexItemLinkInfo['index_item_link_id'];
-                if ($type['open_level'] == XOONIPS_OL_PUBLIC) {
+                if (XOONIPS_OL_PUBLIC == $type['open_level']) {
                     $dataname = Xoonips_Enum::WORKFLOW_PUBLIC_ITEMS_WITHDRAWAL;
                     $moderatorUids = $groupsLinkBean->getModeratorUserIds();
-                    if ($certify == 'auto') {
+                    if ('auto' == $certify) {
                         if (!$linkBean->deleteById($indexId, $itemId)) {
                             return false;
                         }
@@ -1017,12 +1017,12 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
                             $eventLogBean->recordCertifyItemWithdrawalEvent($itemId, $indexId);
                         }
                     }
-                } elseif ($type['open_level'] == XOONIPS_OL_GROUP_ONLY) {
+                } elseif (XOONIPS_OL_GROUP_ONLY == $type['open_level']) {
                     $groupId = $type['groupid'];
                     $accept = $type['item_accept'];
                     $dataname = Xoonips_Enum::WORKFLOW_GROUP_ITEMS_WITHDRAWAL;
                     $groupAdminUids = $groupsLinkBean->getAdminUserIds($groupId);
-                    if ($accept == '1') {
+                    if ('1' == $accept) {
                         if (!$linkBean->deleteById($indexId, $itemId)) {
                             return false;
                         }
@@ -1056,19 +1056,19 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
                             $eventLogBean->recordCertifyGroupItemWithdrawalEvent($itemId, $indexId);
                         }
                     }
-                } elseif ($type['open_level'] == XOONIPS_OL_PRIVATE) {
+                } elseif (XOONIPS_OL_PRIVATE == $type['open_level']) {
                     if (!$linkBean->deleteById($indexId, $itemId)) {
                         return false;
                     }
                 }
-            } elseif ($type['type'] == 'update') {
+            } elseif ('update' == $type['type']) {
                 //update public index
                 $indexItemLinkInfo = $linkBean->getInfo($itemId, $indexId);
                 $indexItemLinkId = $indexItemLinkInfo['index_item_link_id'];
-                if ($type['open_level'] == XOONIPS_OL_PUBLIC) {
+                if (XOONIPS_OL_PUBLIC == $type['open_level']) {
                     $dataname = Xoonips_Enum::WORKFLOW_PUBLIC_ITEMS;
                     $moderatorUids = $groupsLinkBean->getModeratorUserIds();
-                    if ($certify == 'auto') {
+                    if ('auto' == $certify) {
                         $sendToUsers = Xoonips_Workflow::getAllApproverUserIds($this->dirname, $dataname, $indexItemLinkId);
                         $sendToUsers = array_merge($sendToUsers, $moderatorUids);
                         $sendToUsers = array_unique($sendToUsers);
@@ -1100,12 +1100,12 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
                             $eventLogBean->recordCertifyItemEvent($itemId, $indexId);
                         }
                     }
-                } elseif ($type['open_level'] == XOONIPS_OL_GROUP_ONLY) {
+                } elseif (XOONIPS_OL_GROUP_ONLY == $type['open_level']) {
                     $groupId = $type['groupid'];
                     $accept = $type['item_accept'];
                     $dataname = Xoonips_Enum::WORKFLOW_GROUP_ITEMS;
                     $groupAdminUids = $groupsLinkBean->getAdminUserIds($groupId);
-                    if ($accept == '1') {
+                    if ('1' == $accept) {
                         $sendToUsers = Xoonips_Workflow::getAllApproverUserIds($this->dirname, $dataname, $indexItemLinkId);
                         $sendToUsers = array_merge($sendToUsers, $groupAdminUids);
                         $sendToUsers = array_unique($sendToUsers);
@@ -1173,7 +1173,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
                     'indexId' => $indexId,
                     'open_level' => $index['open_level'],
                 );
-                if ($index['open_level'] == XOONIPS_OL_GROUP_ONLY) {
+                if (XOONIPS_OL_GROUP_ONLY == $index['open_level']) {
                     $groupId = $index['groupid'];
                     $groupInfo = $groupBean->getGroup($groupId);
                     if ($groupInfo['item_number_limit'] > 0 && $this->countGroupItems($groupId) >= $groupInfo['item_number_limit']) {
@@ -1202,7 +1202,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
                     'indexId' => $indexId,
                     'open_level' => $index['open_level'],
                 );
-                if ($index['open_level'] == XOONIPS_OL_GROUP_ONLY) {
+                if (XOONIPS_OL_GROUP_ONLY == $index['open_level']) {
                     $groupId = $index['groupid'];
                     $groupInfo = $groupBean->getGroup($groupId);
                     $info['groupid'] = $groupId;
@@ -1221,7 +1221,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
                     'indexId' => $indexId,
                     'open_level' => $index['open_level'],
                 );
-                if ($index['open_level'] == XOONIPS_OL_GROUP_ONLY) {
+                if (XOONIPS_OL_GROUP_ONLY == $index['open_level']) {
                     $groupId = $index['groupid'];
                     $groupInfo = $groupBean->getGroup($groupId);
                     if ($groupInfo['item_number_limit'] > 0 && $this->countGroupItems($groupId) >= $groupInfo['item_number_limit']) {
@@ -1281,10 +1281,10 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
         $result = $bean->getIndexItemLinkInfo($itemId);
         if ($result) {
             foreach ($result as $link) {
-                if ($link['certify_state'] == XOONIPS_CERTIFY_REQUIRED || $link['certify_state'] == XOONIPS_WITHDRAW_REQUIRED) {
+                if (XOONIPS_CERTIFY_REQUIRED == $link['certify_state'] || XOONIPS_WITHDRAW_REQUIRED == $link['certify_state']) {
                     return false;
                 }
-                if ($link['certify_state'] == XOONIPS_CERTIFIED && !$isModerator) {
+                if (XOONIPS_CERTIFIED == $link['certify_state'] && !$isModerator) {
                     return false;
                 }
             }
@@ -1314,10 +1314,10 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
         $result = $bean->getIndexItemLinkInfo($itemId);
         if ($result) {
             foreach ($result as $link) {
-                if ($link['certify_state'] == XOONIPS_CERTIFY_REQUIRED || $link['certify_state'] == XOONIPS_WITHDRAW_REQUIRED) {
+                if (XOONIPS_CERTIFY_REQUIRED == $link['certify_state'] || XOONIPS_WITHDRAW_REQUIRED == $link['certify_state']) {
                     return false;
                 }
-                if ($link['certify_state'] == XOONIPS_CERTIFIED && !$isModerator && !$isItemUser) {
+                if (XOONIPS_CERTIFIED == $link['certify_state'] && !$isModerator && !$isItemUser) {
                     return false;
                 }
             }
@@ -1347,16 +1347,16 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
         if ($links) {
             foreach ($links as $link) {
                 $indexInfo = $indexBean->getIndex($link['index_id']);
-                if ($link['certify_state'] == XOONIPS_NOT_CERTIFIED) {
+                if (XOONIPS_NOT_CERTIFIED == $link['certify_state']) {
                     if ($isModerator || $isItemUser) {
                         $visible = true;
                     }
-                } elseif ($link['certify_state'] == XOONIPS_CERTIFY_REQUIRED || $link['certify_state'] == XOONIPS_CERTIFIED || $link['certify_state'] == XOONIPS_WITHDRAW_REQUIRED) {
-                    if ($indexInfo['open_level'] == XOONIPS_OL_PUBLIC) {
+                } elseif (XOONIPS_CERTIFY_REQUIRED == $link['certify_state'] || XOONIPS_CERTIFIED == $link['certify_state'] || XOONIPS_WITHDRAW_REQUIRED == $link['certify_state']) {
+                    if (XOONIPS_OL_PUBLIC == $indexInfo['open_level']) {
                         if ($isModerator || $isItemUser) {
                             $visible = true;
                         }
-                    } elseif ($indexInfo['open_level'] == XOONIPS_OL_GROUP_ONLY) {
+                    } elseif (XOONIPS_OL_GROUP_ONLY == $indexInfo['open_level']) {
                         $isGroupManager = $userBean->isGroupManager($indexInfo['groupid'], $uid);
                         if ($isModerator || $isItemUser || $isGroupManager) {
                             $visible = true;

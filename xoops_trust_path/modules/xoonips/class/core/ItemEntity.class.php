@@ -29,7 +29,7 @@ class Xoonips_ItemEntity
     public function get($groupXmlTag, $detailXmlTag)
     {
         $ret = false;
-        if ($this->data == null) {
+        if (null == $this->data) {
             return false;
         }
         $itemTypeId = $this->data[$this->dirname.'_item_type']['item_type_id'];
@@ -52,7 +52,7 @@ class Xoonips_ItemEntity
 
     public function getItemId()
     {
-        if ($this->data == null) {
+        if (null == $this->data) {
             return false;
         }
 
@@ -61,7 +61,7 @@ class Xoonips_ItemEntity
 
     public function getItemDoi()
     {
-        if ($this->data == null) {
+        if (null == $this->data) {
             return false;
         }
         $doi = $this->data[$this->dirname.'_item']['doi'];
@@ -74,7 +74,7 @@ class Xoonips_ItemEntity
 
     public function getItemUrl()
     {
-        if ($this->data == null) {
+        if (null == $this->data) {
             return false;
         }
 
@@ -86,7 +86,7 @@ class Xoonips_ItemEntity
 
     public function getItemTypeId()
     {
-        if ($this->data == null) {
+        if (null == $this->data) {
             return false;
         }
 
@@ -95,7 +95,7 @@ class Xoonips_ItemEntity
 
     public function getItemTypeIconName()
     {
-        if ($this->data == null) {
+        if (null == $this->data) {
             return false;
         }
 
@@ -106,7 +106,7 @@ class Xoonips_ItemEntity
     {
         $data = $this->getData($this->dirname.'_index_item_link');
         foreach ($data as $value) {
-            if ($value['certify_state'] == 1 || $value['certify_state'] == 3) {
+            if (1 == $value['certify_state'] || 3 == $value['certify_state']) {
                 return true;
             }
         }
@@ -127,7 +127,7 @@ class Xoonips_ItemEntity
     {
         $ret = false;
         $itemField = $this->getPreviewField();
-        if ($itemField != false) {
+        if (false != $itemField) {
             $data = $this->getData($this->dirname.'_item_file');
             foreach ($data as $value) {
                 $fileId = null;
@@ -140,7 +140,7 @@ class Xoonips_ItemEntity
             }
         }
 
-        if ($ret == false) {
+        if (false == $ret) {
             $icon = $this->data[$this->dirname.'_item_type']['icon'];
             $ret = XOOPS_URL."/modules/$this->dirname/images/$icon";
         }
@@ -155,7 +155,7 @@ class Xoonips_ItemEntity
         $itemFields = $itemFieldManager->getFields();
         foreach ($itemFields as $itemField) {
             // if preview view type
-            if ($itemField->getViewType()->getModule() == 'ViewTypePreview') {
+            if ('ViewTypePreview' == $itemField->getViewType()->getModule()) {
                 return $itemField;
             }
         }
@@ -175,10 +175,10 @@ class Xoonips_ItemEntity
         $beanList[$this->dirname.'_index_item_link'] = array('IndexItemLinkBean', 'getIndexItemLinkInfo');
         $beanList[$this->dirname.'_item_changelog'] = array('ItemChangeLogBean', 'getChangeLogs');
         $info = array();
-        if (strncmp($table, $this->dirname.'_item_extend', strlen($this->dirname) + 12) == 0) {
+        if (0 == strncmp($table, $this->dirname.'_item_extend', strlen($this->dirname) + 12)) {
             $itemExtendBean = Xoonips_BeanFactory::getBean('ItemExtendBean', $this->dirname, $this->trustDirname);
             $info = $itemExtendBean->getItemExtendInfo($this->item_id, $table, $this->item_gid);
-        } elseif (strncmp($table, $this->dirname.'_item_file', strlen($this->dirname) + 12) == 0) {
+        } elseif (0 == strncmp($table, $this->dirname.'_item_file', strlen($this->dirname) + 12)) {
             $fileBean = Xoonips_BeanFactory::getBean('ItemFileBean', $this->dirname, $this->trustDirname);
             $info = $fileBean->getFilesByItemId($this->item_id, $this->item_gid);
         } else {
