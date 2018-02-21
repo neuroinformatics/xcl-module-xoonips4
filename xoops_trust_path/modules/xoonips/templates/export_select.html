@@ -3,7 +3,7 @@
 <p style="color:blue">&nbsp;&nbsp;&nbsp;<{$smarty.const._MD_XOONIPS_ITEM_EXPORT_SELECT_DESC}></p>
 <div style="text-align:right; margin-left: 10px; margin-bottom: 10px;">
 </div>
-<form action="list.php" method="post">
+<form action="<{$itemListUrl}>" method="post">
 <input type="hidden" name="index_id" value="<{$index_id}>" />
 <input type="hidden" name="op" value="export" />
 <table width="100%" cellspacing="0" class="outer">
@@ -25,7 +25,7 @@
 <div style="text-align:right; margin-left: 10px; margin-bottom: 10px;">
 </div>
 <div style="text-align: left">
- 	<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_LABEL_GO}>" onclick="form.action='list.php'; op.value='export'; submit();" />
+ 	<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_LABEL_GO}>" onclick="form.action='<{$itemListUrl}>'; op.value='export'; submit();" />
 </div>
 </form>
 <{include file="db:`$dirname`_footer.html"}>

@@ -1,10 +1,10 @@
 <table>
  <tr>
   <td style="vertical-align:middle; text-align:center; width: 65px;">
-   <a href="<{$xoops_url}>/modules/<{$dirname}>/list.php?index_id=<{$index.index_id}>"><img src="<{$smarty.const.XOOPS_URL}>/modules/<{$dirname}>/image.php/folder.gif" alt="<{$index.title|xoops_escape}>" /></a>
+   <a href="<{$xoops_url}>/modules/<{$dirname}>/<{$itemListUrl}>?index_id=<{$index.index_id}>"><img src="<{$smarty.const.XOOPS_URL}>/modules/<{$dirname}>/image.php/folder.gif" alt="<{$index.title|xoops_escape}>" /></a>
   </td> 
   <td>
-   <a href="<{$xoops_url}>/modules/<{$dirname}>/list.php?index_id=<{$index.index_id}>"><{$index.title|xoops_escape}></a>&nbsp;&nbsp; <{$index.description|xoops_escape}><br />
+   <a href="<{$xoops_url}>/modules/<{$dirname}>/<{$itemListUrl}>?index_id=<{$index.index_id}>"><{$index.title|xoops_escape}></a>&nbsp;&nbsp; <{$index.description|xoops_escape}><br />
    <{$index.child_index_num}> Indexes / <{$index.child_item_num}> Items
   </td>
  </tr>
