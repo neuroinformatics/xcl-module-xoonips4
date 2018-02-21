@@ -65,4 +65,23 @@ class Functions
 
         return $cHandler->setConfig($name, $value);
     }
+
+    /**
+     * get item list url.
+     *
+     * @param string $dirname
+     *
+     * @return string
+     **/
+    public static function getItemListUrl($dirname)
+    {
+        $url = null;
+        if ('on' == self::getXoonipsConfig($dirname, 'url_compatible')) {
+            $url = XOONIPS_ITEM_LIST_COMPATIBLE;
+        } elseif ('off' == self::getXoonipsConfig($dirname, 'url_compatible')) {
+            $url = XOONIPS_ITEM_LIST;
+        }
+
+        return $url;
+    }
 }
