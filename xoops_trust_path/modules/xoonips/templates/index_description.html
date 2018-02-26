@@ -39,7 +39,7 @@ function back(back) {
 </script>
 <h3><{$smarty.const._MD_XOONIPS_INDEX_DETAILED_DESCRIPTION}></h3>
 <{foreach item=index from=$index_path}>
- / <a href="list.php?index_id=<{$index.index_id}>"><{$index.html_title|xoops_escape}></a>
+ / <a href="<{$itemListUrl}>?index_id=<{$index.index_id}>"><{$index.html_title|xoops_escape}></a>
 <{/foreach}>&nbsp;&nbsp;
 <br />
 <{$errors}>

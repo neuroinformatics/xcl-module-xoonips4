@@ -3,6 +3,8 @@
 use Xoonips\Core\Functions;
 use Xoonips\Core\StringUtils;
 
+require_once dirname(__DIR__).'/class/core/Transaction.class.php';
+
 // xoonips ranking block
 function b_xoonips_ranking_show($options)
 {
@@ -27,12 +29,12 @@ function b_xoonips_ranking_show($options)
     // default
     foreach ($block_arr as $b) {
         $func = $b->getVar('show_func', 'n');
-        if ($func == 'b_xoonips_ranking_show') {
+        if ('b_xoonips_ranking_show' == $func) {
             $side = $b->getVar('side', 'n');
-            if ($side == XOOPS_SIDEBLOCK_LEFT || $side == XOOPS_SIDEBLOCK_RIGHT) {
+            if (XOOPS_SIDEBLOCK_LEFT == $side || XOOPS_SIDEBLOCK_RIGHT == $side) {
                 $maxlen = 16;
                 break;
-            } elseif ($side == XOOPS_CENTERBLOCK_LEFT || $side == XOOPS_CENTERBLOCK_RIGHT) {
+            } elseif (XOOPS_CENTERBLOCK_LEFT == $side || XOOPS_CENTERBLOCK_RIGHT == $side) {
                 $maxlen = 24;
                 break;
             }
@@ -47,21 +49,30 @@ function b_xoonips_ranking_show($options)
     $config['days_enabled'] = XOONIPS_BLOCK_RANKING_DAYS_ENABLED;
     $config['days'] = XOONIPS_BLOCK_RANKING_DAYS;
 
+    // update ranking
+    $last_update = Functions::getXoonipsConfig($dirname, 'ranking_last_update');
+    if ($last_update < time() - 86400) {
+        $timeout = lock($dirname);
+        if (false != $timeout) {
+            $term = getTerm($config);
+            // update viewed ranking
+            $rankingViewedItemHandler = Functions::getXoonipsHandler('RankingViewedItemObject', $dirname);
+            $rankingViewedItemHandler->update($term);
+            // update downloaded ranking
+            $rankingDownloadedItemHandler = Functions::getXoonipsHandler('RankingDownloadedItemObject', $dirname);
+            $rankingDownloadedItemHandler->update($term);
+            unlock($timeout, $dirname);
+        }
+    }
+
     $visible = false;
     foreach ($config['visible'] as $v) {
-        if ($v != 0) {
+        if (0 != $v) {
             $visible = true;
         }
     }
     if (!$visible) {
         return;
-    }
-
-    $term = 0;
-    if ($config['days_enabled'] == 'on') {
-        if (is_numeric($config['days'])) {
-            $term = time() - (int) $config['days'] * 86400;
-        }
     }
 
     // - set ranking number label
@@ -72,13 +83,13 @@ function b_xoonips_ranking_show($options)
     }
 
     $block['rankings'] = array();
+    $itemHandler = Functions::getXoonipsHandler('Item', $dirname);
 
     // ranking block
     // ranking viewed item
     if ($config['visible'][0]) {
         $items = array();
-        $itemHandler = Functions::getXoonipsHandler('Item', $dirname);
-        $itemObjs = $itemHandler->getMostViewedItems($config['num_rows'], $term);
+        $itemObjs = $itemHandler->getMostViewedItems($config['num_rows']);
         $i = 0;
         foreach ($itemObjs as $itemObj) {
             $title = StringUtils::htmlSpecialChars($itemObj['title']);
@@ -86,7 +97,7 @@ function b_xoonips_ranking_show($options)
             $items[] = array(
                 'title' => $title,
                 'url' => $itemObj['url'],
-                'num' => $itemObj['view_count'],
+                'num' => $itemObj['count'],
                 'rank_str' => $rank_str[$i],
             );
             ++$i;
@@ -102,16 +113,15 @@ function b_xoonips_ranking_show($options)
     // ranking downloaded item
     if ($config['visible'][1]) {
         $items = array();
-        $itemFileHandler = Functions::getXoonipsHandler('ItemFile', $dirname);
-        $itemFileObjs = $itemFileHandler->getMostDownloadedItems($config['num_rows'], $term);
+        $itemObjs = $itemHandler->getMostDownloadedItems($config['num_rows']);
         $i = 0;
-        foreach ($itemFileObjs as $itemFileObj) {
-            $title = StringUtils::htmlSpecialChars($itemFileObj['title']);
+        foreach ($itemObjs as $itemObj) {
+            $title = StringUtils::htmlSpecialChars($itemObj['title']);
             $title = StringUtils::truncate($title, $maxlen, $etc);
             $items[] = array(
                 'title' => $title,
-                'url' => $itemFileObj['url'],
-                'num' => $itemFileObj['download_count'],
+                'url' => $itemObj['url'],
+                'num' => $itemObj['count'],
                 'rank_str' => $rank_str[$i],
             );
             ++$i;
@@ -126,4 +136,94 @@ function b_xoonips_ranking_show($options)
     ksort($block['rankings']);
 
     return $block;
+}
+
+/**
+ * lock rankings table update.
+ *
+ * @param string dirname
+ *
+ * @return int
+ */
+function lock($dirname)
+{
+    $now = time();
+    $timeout = $now + 180;
+    if (setConfig('ranking_lock_timeout', $timeout, $dirname)) {
+        // transaction
+        $transaction = Xoonips_Transaction::getInstance();
+        $transaction->start();
+        // lock exclusively
+        global $xoopsDB;
+        $configTable = $xoopsDB->prefix($dirname.'_config');
+        $xoopsDB->queryF('SELECT value FROM '.$configTable.' WHERE name=\'ranking_last_update\' FOR UPDATE');
+
+        return $timeout;
+    }
+
+    return false;
+}
+
+/**
+ * unlock rankings table update.
+ *
+ * @param int timeout
+ * @param string dirname
+ *
+ * @return bool
+ */
+function unlock($timeout, $dirname)
+{
+    // transaction
+    $transaction = Xoonips_Transaction::getInstance();
+    $transaction->commit();
+    $oldTimeout = Functions::getXoonipsConfig($dirname, 'ranking_lock_timeout');
+    if ($oldTimeout != $timeout) {
+        return false;
+    }
+    if (!setConfig('ranking_lock_timeout', 0, $dirname)) {
+        return false;
+    }
+    if (!setConfig('ranking_last_update', time(), $dirname)) {
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * set config (force).
+ *
+ * @param string name
+ * @param string value
+ * @param string dirname
+ *
+ * @return bool
+ */
+function setConfig($name, $value, $dirname)
+{
+    $configHandler = Functions::getXoonipsHandler('ConfigObject', $dirname);
+
+    return $configHandler->setConfig($name, $value, true);
+}
+
+/**
+ * get term.
+ *
+ * @param array config
+ *
+ * @return int term
+ */
+function getTerm($config)
+{
+    $now = time();
+    // set default 7 days.
+    $term = $now - 604800;
+    if ('on' == $config['days_enabled']) {
+        if (is_numeric($config['days'])) {
+            $term = time() - (int) $config['days'] * 86400;
+        }
+    }
+
+    return $term;
 }

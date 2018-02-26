@@ -93,7 +93,7 @@ class Xoonips_Item
      */
     protected function getFieldName($field, $groupLoopId, $id = null)
     {
-        if ($id == null) {
+        if (null == $id) {
             return $field->getFieldGroupId().Xoonips_Enum::ITEM_ID_SEPARATOR.$groupLoopId.Xoonips_Enum::ITEM_ID_SEPARATOR.$field->getId();
         } else {
             return $field->getFieldGroupId().Xoonips_Enum::ITEM_ID_SEPARATOR.$groupLoopId.Xoonips_Enum::ITEM_ID_SEPARATOR.$id;
@@ -410,7 +410,7 @@ class Xoonips_Item
         // insert xoonips_change_log
         $edited = false;
         $logs = $this->getChangeLogs($this->data, $itemId, $edited);
-        if ($logs != '' && !$this->insertXoonipsChangeLog($logs, $itemId)) {
+        if ('' != $logs && !$this->insertXoonipsChangeLog($logs, $itemId)) {
             return false;
         }
 
@@ -525,7 +525,7 @@ class Xoonips_Item
         $usersLinkBean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $this->dirname, $this->trustDirname);
         $usersBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
         $results = $usersLinkBean->getItemUsersInfo($itemId);
-        if ($results !== false) {
+        if (false !== $results) {
             // subtract post
             foreach ($results as $result) {
                 $usersBean->subtractPost($result['uid']);
@@ -612,7 +612,7 @@ class Xoonips_Item
     {
         $sqlStrings = array();
         $scopeSearchFlg = false;
-        if ($search_type == Xoonips_Enum::OP_TYPE_SEARCH) {
+        if (Xoonips_Enum::OP_TYPE_SEARCH == $search_type) {
             $scopeSearchFlg = true;
         }
 
@@ -630,14 +630,14 @@ class Xoonips_Item
         $basicTable = $xoopsDB->prefix($this->dirname.'_item');
         $searchTextTable = $xoopsDB->prefix($this->dirname.'_search_text');
 
-        if ($search_type == Xoonips_Enum::OP_TYPE_SEARCH) {
+        if (Xoonips_Enum::OP_TYPE_SEARCH == $search_type) {
             $detailSql = "SELECT t1.item_id FROM $basicTable t1";
             $index = 2;
             foreach ($sqlStrings as $tableNm => $strings) {
                 $tableName = $xoopsDB->prefix($tableNm);
                 $subtn = 't'.$index;
                 if ($tableNm == $this->dirname.'_item' || $tableNm == $this->dirname.'_item_title' || $tableNm == $this->dirname.'_item_keyword') {
-                    if (count($strings) == 0) {
+                    if (0 == count($strings)) {
                         $detailSql .= " INNER JOIN $tableName $subtn ON t1.item_id=$subtn.item_id AND t1.item_type_id=$itemtypeId";
                     } else {
                         foreach ($strings as $string) {
@@ -647,7 +647,7 @@ class Xoonips_Item
                         }
                     }
                 } elseif ($tableNm == $this->dirname.'_item_file') {
-                    if (count($strings) == 0) {
+                    if (0 == count($strings)) {
                         $detailSql .= " INNER JOIN $tableName $subtn ON t1.item_id=$subtn.item_id AND t1.item_type_id=$itemtypeId AND $subtn.sess_id IS NULL";
                     } else {
                         foreach ($strings as $string) {
@@ -659,7 +659,7 @@ class Xoonips_Item
                         }
                     }
                 } elseif ($tableNm == $this->dirname.'_item_users_link') {
-                    if (count($strings) == 0) {
+                    if (0 == count($strings)) {
                         $detailSql .= " INNER JOIN $tableName $subtn ON t1.item_id=$subtn.item_id AND t1.item_type_id=$itemtypeId";
                     } else {
                         foreach ($strings as $string) {
@@ -672,7 +672,7 @@ class Xoonips_Item
                         }
                     }
                 } elseif ($tableNm == $this->dirname.'_item_changelog') {
-                    if (count($strings) == 0) {
+                    if (0 == count($strings)) {
                         $detailSql .= " INNER JOIN $tableName $subtn ON t1.item_id=$subtn.item_id AND t1.item_type_id=$itemtypeId";
                     } else {
                         foreach ($strings as $string) {
@@ -682,7 +682,7 @@ class Xoonips_Item
                         }
                     }
                 } elseif ($tableNm == $this->dirname.'_item_related_to') {
-                    if (count($strings) == 0) {
+                    if (0 == count($strings)) {
                         $detailSql .= " INNER JOIN $tableName $subtn ON t1.item_id=$subtn.item_id AND t1.item_type_id=$itemtypeId";
                     } else {
                         foreach ($strings as $string) {
@@ -691,8 +691,8 @@ class Xoonips_Item
                             $detailSql .= " INNER JOIN $tableName $subtn ON t1.item_id=$subtn.item_id AND t1.item_type_id=$itemtypeId AND ".mb_ereg_replace('\\x22t1\\x22', "$subtn", $string);
                         }
                     }
-                } elseif (strncmp($tableNm, $this->dirname.'_item_extend', strlen($this->dirname) + 12) == 0) {
-                    if (count($strings) == 0) {
+                } elseif (0 == strncmp($tableNm, $this->dirname.'_item_extend', strlen($this->dirname) + 12)) {
+                    if (0 == count($strings)) {
                         $detailSql .= " INNER JOIN $tableName $subtn ON t1.item_id=$subtn.item_id AND t1.item_type_id=$itemtypeId";
                     } else {
                         foreach ($strings as $string) {
@@ -713,7 +713,7 @@ class Xoonips_Item
                 $tableName = $xoopsDB->prefix($tableNm);
                 $subtn = 't'.$index;
                 if ($tableNm == $this->dirname.'_item' || $tableNm == $this->dirname.'_item_title' || $tableNm == $this->dirname.'_item_keyword') {
-                    if (count($strings) == 0) {
+                    if (0 == count($strings)) {
                         if ($tableNm == $this->dirname.'_item') {
                             $detailSqlArr[] = "SELECT $subtn.item_id FROM $tableName $subtn WHERE $subtn.item_type_id=$itemtypeId";
                         } else {
@@ -727,7 +727,7 @@ class Xoonips_Item
                         }
                     }
                 } elseif ($tableNm == $this->dirname.'_item_file') {
-                    if (count($strings) == 0) {
+                    if (0 == count($strings)) {
                         $detailSqlArr[] = "SELECT $subtn.item_id FROM $tableName $subtn WHERE $subtn.sess_id IS NULL";
                     } else {
                         foreach ($strings as $string) {
@@ -739,7 +739,7 @@ class Xoonips_Item
                         }
                     }
                 } elseif ($tableNm == $this->dirname.'_item_users_link') {
-                    if (count($strings) == 0) {
+                    if (0 == count($strings)) {
                         $detailSqlArr[] = "SELECT $subtn.item_id FROM $tableName $subtn";
                     } else {
                         foreach ($strings as $string) {
@@ -751,7 +751,7 @@ class Xoonips_Item
                         }
                     }
                 } elseif ($tableNm == $this->dirname.'_item_changelog') {
-                    if (count($strings) == 0) {
+                    if (0 == count($strings)) {
                         $detailSqlArr[] = "SELECT $subtn.item_id FROM $tableName $subtn";
                     } else {
                         foreach ($strings as $string) {
@@ -761,11 +761,11 @@ class Xoonips_Item
                         }
                     }
                 } elseif ($tableNm == $this->dirname.'_item_related_to') {
-                    if ($search_type == Xoonips_Enum::OP_TYPE_QUICKSEARCH) {
+                    if (Xoonips_Enum::OP_TYPE_QUICKSEARCH == $search_type) {
                         continue;
                     }
 
-                    if (count($strings) == 0) {
+                    if (0 == count($strings)) {
                         $detailSqlArr[] = "SELECT $subtn.item_id FROM $tableName $subtn";
                     } else {
                         foreach ($strings as $string) {
@@ -774,8 +774,8 @@ class Xoonips_Item
                             $detailSqlArr[] = "SELECT $subtn.item_id as item_id FROM $tableName $subtn WHERE ".mb_ereg_replace('\\x22t1\\x22', "$subtn", $string);
                         }
                     }
-                } elseif (strncmp($tableNm, $this->dirname.'_item_extend', strlen($this->dirname) + 12) == 0) {
-                    if (count($strings) == 0) {
+                } elseif (0 == strncmp($tableNm, $this->dirname.'_item_extend', strlen($this->dirname) + 12)) {
+                    if (0 == count($strings)) {
                         $detailSqlArr[] = "SELECT $subtn.item_id FROM $tableName $subtn";
                     } else {
                         foreach ($strings as $string) {
@@ -788,7 +788,7 @@ class Xoonips_Item
             }
             $searchSqlStr = implode(' UNION ALL ', $detailSqlArr);
 
-            if ($itemtypeId == 0) {
+            if (0 == $itemtypeId) {
                 $detailSql = "SELECT bscTbl.item_id FROM $basicTable bscTbl INNER JOIN ( $searchSqlStr ) AS tempTbl ON bscTbl.item_id=tempTbl.item_id";
             } else {
                 $detailSql = "SELECT bscTbl.item_id FROM $basicTable bscTbl INNER JOIN ( $searchSqlStr ) AS tempTbl ON bscTbl.item_id=tempTbl.item_id AND bscTbl.item_type_id=$itemtypeId ";
@@ -910,7 +910,7 @@ class Xoonips_Item
         foreach ($newData as $key => $value) {
             if (isset($key)) {
                 $ids = explode(Xoonips_Enum::ITEM_ID_SEPARATOR, $key);
-                if (count($ids) == 3) {
+                if (3 == count($ids)) {
                     $groupId = $ids[0];
                     $detailId = $ids[2];
                     $viewType = $this->fields[$fields_cnt]->getViewType();
@@ -925,7 +925,7 @@ class Xoonips_Item
 
                     // added item
                     if (!isset($oldData[$key])) {
-                        if ($value != '') {
+                        if ('' != $value) {
                             $logs["$groupId:0"] = $this->fieldGroups[$groupId]->getName();
                             if ($viewType->getId() != $createUserView && $viewType->getId() != $indexView) {
                                 $edited = true;
@@ -947,7 +947,7 @@ class Xoonips_Item
         foreach ($oldData as $key => $value) {
             if (!isset($newData[$key])) {
                 $ids = explode(Xoonips_Enum::ITEM_ID_SEPARATOR, $key);
-                if (count($ids) == 3) {
+                if (3 == count($ids)) {
                     $groupId = $ids[0];
                     $logs["$groupId:0"] = $this->fieldGroups[$groupId]->getName();
                 }
@@ -960,7 +960,7 @@ class Xoonips_Item
     private function convertTime($str)
     {
         $ret = '';
-        if (strlen($str) == 10) {
+        if (10 == strlen($str)) {
             $int_year = intval(substr($str, 0, 4));
             $int_month = intval(substr($str, 5, 2));
             $int_day = intval(substr($str, 8, 2));
@@ -978,14 +978,14 @@ class Xoonips_Item
         foreach ($newData as $key => $value) {
             if (isset($key)) {
                 $ids = explode(Xoonips_Enum::ITEM_ID_SEPARATOR, $key);
-                if (count($ids) == 3) {
+                if (3 == count($ids)) {
                     $detailId = $ids[2];
                     $viewType = $this->fields[$fields_cnt]->getViewType();
                     ++$fields_cnt;
                     if (!$viewType->isIndex()) {
                         // added item
                         if (!isset($oldData[$key])) {
-                            if ($value != '') {
+                            if ('' != $value) {
                                 return true;
                             }
                             // updated item
@@ -1001,7 +1001,7 @@ class Xoonips_Item
         foreach ($oldData as $key => $value) {
             if (!isset($newData[$key])) {
                 $ids = explode(Xoonips_Enum::ITEM_ID_SEPARATOR, $key);
-                if (count($ids) == 3) {
+                if (3 == count($ids)) {
                     $detailId = $ids[2];
                     $viewType = $this->fields[$detailId]->getViewType();
                     if (!$viewType->isIndex()) {
@@ -1059,7 +1059,7 @@ class Xoonips_Item
         $columns = '';
         $values = '';
         foreach ($strings as $column => $v) {
-            if ($column == 'doi') {
+            if ('doi' == $column) {
                 $setkey = $column.'='.$v[0].', ';
             }
         }
@@ -1148,7 +1148,7 @@ class Xoonips_Item
         $usersLinkBean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $this->dirname, $this->trustDirname);
         $usersBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
         $changedUids = $usersLinkBean->getUserChangeInfo($itemId, $uids);
-        if ($changedUids === false) {
+        if (false === $changedUids) {
             return false;
         }
         // add user
@@ -1174,7 +1174,7 @@ class Xoonips_Item
                 $user = $usersBean->getUserBasicInfo($uid);
                 $userNames = $userNames.$user['uname'].',';
             }
-            if ($userNames != '') {
+            if ('' != $userNames) {
                 $userNames = substr($userNames, 0, strlen($userNames) - 1);
             }
             //send to item user
@@ -1183,7 +1183,7 @@ class Xoonips_Item
             foreach ($itemUsersInfo as $itemUser) {
                 $itemUsersId[] = $itemUser['uid'];
             }
-            if ($itemUsersId != false && count($itemUsersId) != 0) {
+            if (false != $itemUsersId && 0 != count($itemUsersId)) {
                 $this->notification->userAddItemUser($itemId, $userNames, $itemUsersId);
             }
         }
@@ -1204,7 +1204,7 @@ class Xoonips_Item
                 $itemUsersId[] = $uid;
                 $log->recordDeleteItemUserEvent($itemId, $uid);
             }
-            if ($userNames != '') {
+            if ('' != $userNames) {
                 $userNames = substr($userNames, 0, strlen($userNames) - 1);
             }
             //send to item user
@@ -1213,7 +1213,7 @@ class Xoonips_Item
                 $itemUsersId[] = $itemUser['uid'];
             }
 
-            if ($itemUsersId != false && count($itemUsersId) != 0) {
+            if (false != $itemUsersId && 0 != count($itemUsersId)) {
                 $this->notification->userDeleteItemUser($itemId, $userNames, $itemUsersId);
             }
         }
@@ -1234,7 +1234,7 @@ class Xoonips_Item
         $indexLinkBean = Xoonips_BeanFactory::getBean('IndexItemLinkBean', $this->dirname, $this->trustDirname);
         $usersBean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $this->dirname, $this->trustDirname);
         $changedUids = $usersBean->getUserChangeInfo($itemId, $uids);
-        if ($changedUids === false) {
+        if (false === $changedUids) {
             return false;
         }
         // add user
@@ -1284,7 +1284,7 @@ class Xoonips_Item
         foreach ($data as $key => $value) {
             if (isset($key)) {
                 $ids = explode(Xoonips_Enum::ITEM_ID_SEPARATOR, $key);
-                if (count($ids) == 3) {
+                if (3 == count($ids)) {
                     $detailId = $ids[2];
                     $field = $this->fields[$detailId];
                     if ($field->getViewType()->isCreateUser()) {
@@ -1302,7 +1302,7 @@ class Xoonips_Item
     {
         $usersBean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $this->dirname, $this->trustDirname);
         $changedUids = $usersBean->getUserChangeInfo($itemId, $uids);
-        if ($changedUids === false) {
+        if (false === $changedUids) {
             return false;
         }
         $changedFlg = false;
@@ -1393,7 +1393,7 @@ class Xoonips_Item
         foreach ($strings as $column => $v) {
             $columns = 'item_field_detail_id, title_id, title, item_id';
             $title = $v[0];
-            if (trim($title) != '' && trim($title) != "''") {
+            if ('' != trim($title) && "''" != trim($title)) {
                 $values = "$column, $loop, $title, $itemId";
                 $sql = "insert into $table ($columns) values ($values)";
                 if (!$xoopsDB->queryF($sql)) {
@@ -1420,7 +1420,7 @@ class Xoonips_Item
             $columns = 'item_id, keyword_id, keyword';
             $loop = 1;
             foreach ($values as $v) {
-                if (trim($v) != '' && trim($v) != "''") {
+                if ('' != trim($v) && "''" != trim($v)) {
                     $sql = sprintf('insert into %s (%s) values (%u, %u, %s)', $table, $columns, $itemId, $loop, Xoonips_Utils::convertSQLStr($v));
                     if (!$xoopsDB->queryF($sql)) {
                         return false;
@@ -1444,7 +1444,7 @@ class Xoonips_Item
         $loop = 1;
         $temp = '';
         foreach ($strings as $column => $v) {
-            if (empty($column) || $column == 'caption') {
+            if (empty($column) || 'caption' == $column) {
                 continue;
             }
 
@@ -1490,7 +1490,7 @@ class Xoonips_Item
         }
 
         foreach ($strings as $column => $v) {
-            if (empty($column) || $column == 'caption') {
+            if (empty($column) || 'caption' == $column) {
                 continue;
             }
 
@@ -1584,7 +1584,7 @@ class Xoonips_Item
         $ret = true;
         $itemExtendBean = Xoonips_BeanFactory::getBean('ItemExtendBean', $this->dirname, $this->trustDirname);
         foreach ($sqlStrings as $tableName => $strings) {
-            if (strpos($tableName, 'item_extend') !== false) {
+            if (false !== strpos($tableName, 'item_extend')) {
                 foreach ($strings as $groupid => $columns) {
                     if (!$itemExtendBean->delete($itemId, $tableName, $groupid)) {
                         return false;
@@ -1592,7 +1592,7 @@ class Xoonips_Item
                     foreach ($columns as $column => $values) {
                         $loop = 1;
                         foreach ($values as $v) {
-                            if (trim($v) != '' && trim($v) != "''") {
+                            if ('' != trim($v) && "''" != trim($v)) {
                                 if (!$itemExtendBean->insert($itemId, $tableName, $v, $loop, $groupid)) {
                                     return false;
                                 }
@@ -1630,7 +1630,7 @@ class Xoonips_Item
             } elseif ($tblIndex == $this->dirname.'_item_users_link') {
                 $retKey = '';
                 foreach ($this->fields as $field) {
-                    if ($field->getColumnName() == 'uid') {
+                    if ('uid' == $field->getColumnName()) {
                         $retKey = $this->getFieldName($field, 1);
                         break;
                     }
@@ -1640,11 +1640,11 @@ class Xoonips_Item
                     $uids[] = $val['uid'];
                 }
                 $ret[$retKey] = implode(',', $uids);
-                // xoonips_item_related_to
+            // xoonips_item_related_to
             } elseif ($tblIndex == $this->dirname.'_item_related_to') {
                 $retKey = '';
                 foreach ($this->fields as $field) {
-                    if ($field->getColumnName() == 'child_item_id') {
+                    if ('child_item_id' == $field->getColumnName()) {
                         $retKey = $this->getFieldName($field, 1);
                         break;
                     }
@@ -1654,7 +1654,7 @@ class Xoonips_Item
                     $iids[] = $val['child_item_id'];
                 }
                 $ret[$retKey] = implode(',', $iids);
-                // xoonips_item_title
+            // xoonips_item_title
             } elseif ($tblIndex == $this->dirname.'_item_title') {
                 foreach ($values as $val) {
                     $retKey = '';
@@ -1700,7 +1700,7 @@ class Xoonips_Item
                 // xoonips_index_item_link
             } elseif ($tblIndex == $this->dirname.'_index_item_link') {
                 foreach ($this->fields as $field) {
-                    if ($field->getColumnName() == 'index_id') {
+                    if ('index_id' == $field->getColumnName()) {
                         $retKey = $this->getFieldName($field, 1);
                         break;
                     }
@@ -1718,7 +1718,7 @@ class Xoonips_Item
                 // xoonips_item_changelog
             } elseif ($tblIndex == $this->dirname.'_item_changelog') {
                 foreach ($this->fields as $field) {
-                    if ($field->getColumnName() == 'log') {
+                    if ('log' == $field->getColumnName()) {
                         $retKey = $this->getFieldName($field, 1);
                         break;
                     }
@@ -1731,7 +1731,7 @@ class Xoonips_Item
             }
 
             // xoonips_item_extend[999]
-            if (strncmp($tblIndex, $this->dirname.'_item_extend', strlen($this->dirname) + 12) == 0) {
+            if (0 == strncmp($tblIndex, $this->dirname.'_item_extend', strlen($this->dirname) + 12)) {
                 $detailId = substr($tblIndex, strlen($this->dirname) + 12, strlen($tblIndex) - strlen($this->dirname) - 12);
                 foreach ($values as $val) {
                     $retKey = '';
@@ -1808,7 +1808,7 @@ class Xoonips_Item
                 $field = $this->fields[$index];
                 $tmpdb = $this->dbData;
                 $tbl = $field->getTableName();
-                if (!is_null($group_id) && strpos($tbl, 'xoonips_item_extend') !== false) {
+                if (!is_null($group_id) && false !== strpos($tbl, 'xoonips_item_extend')) {
                     foreach ($tmpdb[$tbl] as $index => &$distinct_tbl) {
                         if ($distinct_tbl['group_id'] !== $group_id) {
                             unset($tmpdb[$tbl][$index]);

@@ -33,7 +33,7 @@ class Xoonips_ItemSelectSubAction extends Xoonips_ActionBase
             $title = mb_convert_encoding($title, _CHARSET, 'utf-8');
         }
 
-        if ($indexId != '') {
+        if ('' != $indexId) {
             $itemIds = $indexBean->getCanViewItemIds($indexId, $uid);
         } else {
             $itemIds = $itemTitleBean->searchItemIdByTitle(trim($title));
@@ -48,10 +48,10 @@ class Xoonips_ItemSelectSubAction extends Xoonips_ActionBase
         if (!empty($sortIds)) {
             $defalut_orderby = $sortIds[0];
         }
-        $page = $request->getParameter('page') != '' ? $request->getParameter('page') : 1;
-        $orderby = $request->getParameter('orderby') != '' ? $request->getParameter('orderby') : $defalut_orderby;
-        $order_dir = $request->getParameter('order_dir') != '' ? $request->getParameter('order_dir') : XOONIPS_ASC;
-        $itemcount = $request->getParameter('itemcount') != '' ? $request->getParameter('itemcount') : 2;
+        $page = '' != $request->getParameter('page') ? $request->getParameter('page') : 1;
+        $orderby = '' != $request->getParameter('orderby') ? $request->getParameter('orderby') : $defalut_orderby;
+        $order_dir = '' != $request->getParameter('order_dir') ? $request->getParameter('order_dir') : XOONIPS_ASC;
+        $itemcount = '' != $request->getParameter('itemcount') ? $request->getParameter('itemcount') : 2;
 
         $cri = array('start' => ($page - 1) * $itemcount,
                 'rows' => $itemcount,
@@ -73,7 +73,7 @@ class Xoonips_ItemSelectSubAction extends Xoonips_ActionBase
         $num_of_items = count($itemIds);
         $item_no_label = false;
         $page_no_label = '';
-        if ($num_of_items == 0) {
+        if (0 == $num_of_items) {
             $item_no_label = '0 - 0 of 0 Items';
         } else {
             $_pMin = min(($page - 1) * $itemcount + 1, $num_of_items);
@@ -113,7 +113,7 @@ class Xoonips_ItemSelectSubAction extends Xoonips_ActionBase
         $privateIndex = false;
         $publicIndex = $indexBean->getPublicIndex();
         $publicGroupIndexes = $indexBean->getPublicGroupIndex();
-        if ($uid != XOONIPS_UID_GUEST) {
+        if (XOONIPS_UID_GUEST != $uid) {
             $groupIndexes = $indexBean->getGroupIndex($uid);
             $privateIndex = $indexBean->getPrivateIndex($uid);
         }

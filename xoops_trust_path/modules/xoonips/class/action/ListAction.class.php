@@ -41,7 +41,7 @@ class Xoonips_ListAction extends Xoonips_ActionBase
         foreach ($request_vars as $key => $meta) {
             list($type, $default) = $meta;
             $$key = $request->getParameter($key);
-            if ($$key == '') {
+            if ('' == $$key) {
                 $$key = $default;
             }
         }
@@ -78,7 +78,7 @@ class Xoonips_ListAction extends Xoonips_ActionBase
         $indexInfo = $indexBean->getIndex($index_id);
         if ($indexInfo) {
             $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
-            if (!$userBean->isModerator($uid) && $indexInfo['open_level'] == XOONIPS_OL_PUBLIC) {
+            if (!$userBean->isModerator($uid) && XOONIPS_OL_PUBLIC == $indexInfo['open_level']) {
                 $export_enabled = false;
             }
 
@@ -137,19 +137,19 @@ class Xoonips_ListAction extends Xoonips_ActionBase
         $fullpathInfo = $indexBean->getFullPathIndexes($index_id);
         $fullPathIndexes = array();
         foreach ($fullpathInfo as $index) {
-            if ($index['parent_index_id'] == 1 && $index['open_level'] == XOONIPS_OL_PRIVATE) {
+            if (1 == $index['parent_index_id'] && XOONIPS_OL_PRIVATE == $index['open_level']) {
                 $index['html_title'] = 'Private';
             }
             $fullPathIndexes[] = $index;
         }
 
         // get page_no_label
-        if ($num_of_items == 0) {
+        if (0 == $num_of_items) {
             $page_no_label = _MD_XOONIPS_ITEM_NO_ITEM_LISTED;
         } else {
             $_pMin = min(($page - 1) * $itemcount + 1, $num_of_items);
             $_pMax = min($page * $itemcount, $num_of_items);
-            if ($_pMin == 1 && $_pMax == $num_of_items && $num_of_items == 1) {
+            if (1 == $_pMin && $_pMax == $num_of_items && 1 == $num_of_items) {
                 $page_no_label = '';
             } else {
                 $page_no_label = $_pMin.' - '.$_pMax.' of '.$num_of_items.' Items';
@@ -186,7 +186,7 @@ class Xoonips_ListAction extends Xoonips_ActionBase
         $response->setViewDataByKey('order_by_select', $sortTitles);
         $response->setViewDataByKey('item_count_select', array('20', '50', '100'));
         $response->setViewDataByKey('dirname', $this->dirname);
-        if ($isPrint == 'print') {
+        if ('print' == $isPrint) {
             $response->setViewDataByKey('isPrintPage', true);
         } else {
             $response->setViewDataByKey('isPrintPage', false);

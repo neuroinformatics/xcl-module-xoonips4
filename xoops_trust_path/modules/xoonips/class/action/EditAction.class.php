@@ -57,7 +57,7 @@ class Xoonips_EditAction extends Xoonips_ActionBase
         $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
         $targetItemId = $request->getParameter('targetItemId');
         $item->setData($_POST, true);
-        if ($item->complete($targetItemId) === false) {
+        if (false === $item->complete($targetItemId)) {
             $viewData['relation'] = false;
         }
         $viewData['editryView'] = $item->getEditViewWithData();
@@ -181,7 +181,7 @@ class Xoonips_EditAction extends Xoonips_ActionBase
         $insertInfo = array();
         $item->setData($_POST, true);
         $item->editCheck($errors, $itemId);
-        if (count($errors->getErrors()) != 0) {
+        if (0 != count($errors->getErrors())) {
             $viewData['editryView'] = $item->getEditViewWithData();
             $viewData['errors'] = $errors->getView($this->dirname);
             $response->setViewData($viewData);
@@ -277,7 +277,7 @@ class Xoonips_EditAction extends Xoonips_ActionBase
         $breadcrumbs = array(
         array(
                 'name' => _MD_XOONIPS_ITEM_LISTING_ITEM,
-                'url' => 'list.php?index_id='.$index_id,
+                'url' => Functions::getItemListUrl($this->dirname).'?index_id='.$index_id,
         ),
         array(
                 'name' => _MD_XOONIPS_ITEM_DETAIL_ITEM_TITLE,
@@ -336,7 +336,7 @@ class Xoonips_EditAction extends Xoonips_ActionBase
         $breadcrumbs = array(
         array(
                 'name' => _MD_XOONIPS_ITEM_LISTING_ITEM,
-                'url' => 'list.php?index_id='.$indexId,
+                'url' => Functions::getItemListUrl($this->dirname).'?index_id='.$indexId,
         ),
         array(
                 'name' => _MD_XOONIPS_ITEM_DETAIL_ITEM_TITLE,
@@ -452,16 +452,16 @@ class Xoonips_EditAction extends Xoonips_ActionBase
                 $parameters[] = $user['uname'];
                 $errors->addError('_MD_XOONIPS_ITEM_WARNING_ITEM_NUMBER_LIMIT2', '', $parameters);
             } else {
-                $uids .= (strlen($uids) == 0) ? $uid : ','.$uid;
+                $uids .= (0 == strlen($uids)) ? $uid : ','.$uid;
             }
         }
         $viewData = array();
         $this->setCommonViewDataByEditOwners($itemId, $uids, $viewData);
-        if (count($errors->getErrors()) != 0) {
+        if (0 != count($errors->getErrors())) {
             $viewData['errors'] = $errors->getView($this->dirname);
         }
         $response->setViewData($viewData);
-        if (count($errors->getErrors()) != 0) {
+        if (0 != count($errors->getErrors())) {
             $response->setErrors($errors);
         }
         $response->setForward('searchOwners_success');
@@ -650,7 +650,7 @@ class Xoonips_EditAction extends Xoonips_ActionBase
         $breadcrumbs = array(
         array(
                 'name' => _MD_XOONIPS_ITEM_LISTING_ITEM,
-                'url' => 'list.php?index_id='.$indexId,
+                'url' => Functions::getItemListUrl($this->dirname).'?index_id='.$indexId,
         ),
         array(
                 'name' => _MD_XOONIPS_ITEM_DETAIL_ITEM_TITLE,
@@ -799,7 +799,7 @@ class Xoonips_EditAction extends Xoonips_ActionBase
         $viewData['storage_of_items_max'] = sprintf('%.02lf', $privateItemLimit['itemStorage'] / 1024 / 1024);
 
         $op = $request->getParameter('op');
-        if ($op == 'confirm' && $response->getForward() == 'confirm_success') {
+        if ('confirm' == $op && 'confirm_success' == $response->getForward()) {
             $xoonipsTreeCheckBox = false;
         } else {
             $xoonipsTreeCheckBox = true;
@@ -811,7 +811,7 @@ class Xoonips_EditAction extends Xoonips_ActionBase
         $publicIndex = $indexBean->getPublicIndex();
         $publicGroupIndexes = $indexBean->getPublicGroupIndex();
 
-        if ($uid != XOONIPS_UID_GUEST) {
+        if (XOONIPS_UID_GUEST != $uid) {
             $groupIndexes = $indexBean->getGroupIndex($uid);
             $privateIndex = $indexBean->getPrivateIndex($uid);
         }

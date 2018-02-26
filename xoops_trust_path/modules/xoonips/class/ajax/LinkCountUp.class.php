@@ -22,24 +22,24 @@ class Xoonips_LinkCountUpAjaxMethod extends Xoonips_AbstractAjaxMethod
         $type = trim($this->mRequest->getRequest('type'));
         $field = trim($this->mRequest->getRequest('field'));
         $ids = explode(':', $field);
-        if ($itemId == 0) {
+        if (0 == $itemId) {
             return $this->_returnWithValue(false);
         }
         if (!in_array($type, array('xml', 'id'))) {
             return $this->_returnWithValue(false);
         }
-        if (count($ids) != 2) {
+        if (2 != count($ids)) {
             return $this->_returnWithValue(false);
         }
         // get item type id
         $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->mDirname, $this->mTrustDirname);
         $item = $itemBean->getItem2($itemId);
-        if ($item['xoonips_item'] === false) {
+        if (false === $item['xoonips_item']) {
             return $this->_returnWithValue(false);
         }
         $itemTypeId = $item['xoonips_item']['item_type_id'];
         // get group id and field id
-        if ($type == 'id') {
+        if ('id' == $type) {
             list($groupId, $fieldId) = array_map('intval', $ids);
         } else {
             list($gXml, $fXml) = array_map('trim', $ids);
@@ -48,7 +48,7 @@ class Xoonips_LinkCountUpAjaxMethod extends Xoonips_AbstractAjaxMethod
             }
             list($groupId, $fieldId) = $this->_getFieldInfoByXml($gXml, $fXml);
         }
-        if ($groupId == 0 || $fieldId == 0) {
+        if (0 == $groupId || 0 == $fieldId) {
             return $this->_returnWithValue(false);
         }
         // get complement target
@@ -60,7 +60,7 @@ class Xoonips_LinkCountUpAjaxMethod extends Xoonips_AbstractAjaxMethod
                 $target[] = $link;
             }
         }
-        if (count($target) != 1) {
+        if (1 != count($target)) {
             return $this->_returnWithValue(false);
         }
         $target = array_shift($target);
@@ -73,7 +73,7 @@ class Xoonips_LinkCountUpAjaxMethod extends Xoonips_AbstractAjaxMethod
         // get current data
         $extendBean = Xoonips_BeanFactory::getBean('ItemExtendBean', $this->mDirname, $this->mTrustDirname);
         $info = $extendBean->getItemExtendInfo($itemId, $tableName, $targetGroupId);
-        if (count($info) != 1) {
+        if (1 != count($info)) {
             return $this->_returnWithValue(false);
         }
         $info = array_shift($info);

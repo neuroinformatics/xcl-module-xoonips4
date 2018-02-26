@@ -135,14 +135,14 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
      */
     private function maintenaceItemCommon($dirname, $trustDirname, $xoopsUser, $indexHandler, $public_flg, $checkedIndexes, $openedIndexes, $searchUserID = 0)
     {
-        if ($searchUserID != 0) {
+        if (0 != $searchUserID) {
             $uid = $searchUserID;
         } else {
             $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
         }
 
         $trees = array();
-        if ($public_flg == 1) {
+        if (1 == $public_flg) {
             // public index
             $trees[] = $this->_getPublicIndexTree($indexHandler, $uid, $checkedIndexes, $openedIndexes);
         } else {
@@ -190,13 +190,13 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
         $functionName = $request->getParameter('function');
         $checkedIndexes = array();
         $openedIndexes = array();
-        if ($functionName == 'itemimport') {
+        if ('itemimport' == $functionName) {
             return self::itemImport($dirname, $trustDirname, $xoopsUser, $indexHandler);
-        } elseif ($functionName == 'register') {
+        } elseif ('register' == $functionName) {
             return self::register($dirname, $trustDirname, $xoopsUser, $indexHandler);
-        } elseif ($functionName == 'editItem') {
+        } elseif ('editItem' == $functionName) {
             return self::editItem($dirname, $trustDirname, $xoopsUser, $indexHandler, $xoonipsItemId);
-        } elseif ($functionName == 'commonItemDelete') {
+        } elseif ('commonItemDelete' == $functionName) {
             if (isset($_COOKIE['item_delete_checked_indexes'])) {
                 $checkedIndexes = explode(':', $_COOKIE['item_delete_checked_indexes']);
             }
@@ -205,7 +205,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
             }
 
             return self::maintenaceItemCommon($dirname, $trustDirname, $xoopsUser, $indexHandler, 0, $checkedIndexes, $openedIndexes, $request->getParameter('searchUserID'));
-        } elseif ($functionName == 'commonItemTransferFrom') {
+        } elseif ('commonItemTransferFrom' == $functionName) {
             if (isset($_COOKIE['item_transfer_from_checked_indexes'])) {
                 $checkedIndexes = explode(':', $_COOKIE['item_transfer_from_checked_indexes']);
             }
@@ -214,7 +214,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
             }
 
             return self::maintenaceItemCommon($dirname, $trustDirname, $xoopsUser, $indexHandler, 0, $checkedIndexes, $openedIndexes, $request->getParameter('searchUserID'));
-        } elseif ($functionName == 'commonItemTransferTo') {
+        } elseif ('commonItemTransferTo' == $functionName) {
             if (isset($_COOKIE['item_transfer_to_checked_indexes'])) {
                 $checkedIndexes = explode(':', $_COOKIE['item_transfer_to_checked_indexes']);
             }
@@ -223,7 +223,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
             }
 
             return self::maintenaceItemCommon($dirname, $trustDirname, $xoopsUser, $indexHandler, 0, $checkedIndexes, $openedIndexes, $request->getParameter('searchUserID'));
-        } elseif ($functionName == 'commonItemWithDraw') {
+        } elseif ('commonItemWithDraw' == $functionName) {
             if (isset($_COOKIE['item_withdraw_checked_indexes'])) {
                 $checkedIndexes = explode(':', $_COOKIE['item_withdraw_checked_indexes']);
             }
@@ -288,7 +288,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
         $public_index_id = '';
         $publicIndexes = $indexHandler->getPublicIndexList($uid);
         foreach ($publicIndexes as $index) {
-            if ($index['index_id'] == XOONIPS_IID_ROOT) {
+            if (XOONIPS_IID_ROOT == $index['index_id']) {
                 continue;
             }
             $html = array();
@@ -296,7 +296,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
             $html['id'] = $index['index_id'];
             // parent
             $parent = $index['parent_index_id'];
-            if ($index['parent_index_id'] == XOONIPS_IID_ROOT) {
+            if (XOONIPS_IID_ROOT == $index['parent_index_id']) {
                 $parent = '#';
                 $public_index_id = $index['index_id'];
                 $html['state'] = array('opened' => true);
@@ -304,7 +304,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
             $html['parent'] = $parent;
             // text
             $text = sprintf('%s(%s)', $index['title'], $index['num_items']);
-            if ($index['num_items'] == '0') {
+            if ('0' == $index['num_items']) {
                 $text = $index['title'];
             }
             $html['text'] = $text;
@@ -349,7 +349,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
         $itemUserBean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $dirname, $trustDirname);
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $dirname, $trustDirname);
         $is_moderator = false;
-        if ($uid != XOONIPS_UID_GUEST) {
+        if (XOONIPS_UID_GUEST != $uid) {
             $is_moderator = $userBean->isModerator($uid);
         }
         $puid = array();
@@ -402,7 +402,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
             $html['id'] = $index['index_id'];
             // parent
             $parent = $index['parent_index_id'];
-            if ($index['parent_index_id'] == XOONIPS_IID_ROOT) {
+            if (XOONIPS_IID_ROOT == $index['parent_index_id']) {
                 $parent = '#';
                 $group_index_id = $index['index_id'];
                 $html['state'] = array('opened' => true);
@@ -410,7 +410,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
             $html['parent'] = $parent;
             // text
             $text = sprintf('%s(%s)', $index['title'], $index['num_items']);
-            if ($index['num_items'] == '0') {
+            if ('0' == $index['num_items']) {
                 $text = $index['title'];
             }
             $html['text'] = $text;
@@ -465,7 +465,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
             $html['id'] = $index['index_id'];
             // parent
             $parent = $index['parent_index_id'];
-            if ($index['parent_index_id'] == XOONIPS_IID_ROOT) {
+            if (XOONIPS_IID_ROOT == $index['parent_index_id']) {
                 $parent = '#';
                 $private_index_id = $index['index_id'];
                 $index['title'] = 'Private';
@@ -474,7 +474,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
             $html['parent'] = $parent;
             // text
             $text = sprintf('%s(%s)', $index['title'], $index['num_items']);
-            if ($index['num_items'] == '0') {
+            if ('0' == $index['num_items']) {
                 $text = $index['title'];
             }
             $html['text'] = $text;

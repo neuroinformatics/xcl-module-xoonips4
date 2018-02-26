@@ -29,3 +29,7 @@ define('XOONIPS_BLOCK_RANKING_ORDER', '0,1');
 define('XOONIPS_BLOCK_RANKING_VISIBLE', '1,1');
 define('XOONIPS_BLOCK_RANKING_DAYS_ENABLED', 'on');
 define('XOONIPS_BLOCK_RANKING_DAYS', '14');
+
+// xoonips 3.4 compatible list.php
+define('XOONIPS_ITEM_LIST', 'list.php');
+define('XOONIPS_ITEM_LIST_COMPATIBLE', 'listitem.php');

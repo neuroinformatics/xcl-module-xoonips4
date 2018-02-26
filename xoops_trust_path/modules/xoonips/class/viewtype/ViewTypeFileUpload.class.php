@@ -25,7 +25,7 @@ class Xoonips_ViewTypeFileUpload extends Xoonips_ViewType
         }
         $fileBean = Xoonips_BeanFactory::getBean('ItemFileBean', $this->dirname, $this->trustDirname);
         if (!empty($value)) {
-            if ($fileId == 'none') {
+            if ('none' == $fileId) {
                 $fileId = $value;
             } else {
                 $fileBean->delete($value);
@@ -51,7 +51,7 @@ class Xoonips_ViewTypeFileUpload extends Xoonips_ViewType
             $file = new Xoonips_File($this->dirname, $this->trustDirname, true);
             $fileId = $file->uploadFile($fileName, 'upload', 0, $field->getId(), $field->getFieldGroupId());
             //upload_max_filesize check
-            if ($fileId == 'none') {
+            if ('none' == $fileId) {
                 $fileId = -1;
             }
         } else {
@@ -80,7 +80,7 @@ class Xoonips_ViewTypeFileUpload extends Xoonips_ViewType
         }
         $fileBean = Xoonips_BeanFactory::getBean('ItemFileBean', $this->dirname, $this->trustDirname);
         if (!empty($value)) {
-            if ($fileId == 'none') {
+            if ('none' == $fileId) {
                 $fileId = $value;
             } else {
                 $fileBean->delete($value);
@@ -108,7 +108,7 @@ class Xoonips_ViewTypeFileUpload extends Xoonips_ViewType
             $fileBean = Xoonips_BeanFactory::getBean('ItemFileBean', $this->dirname, $this->trustDirname);
             $fileInfo = $fileBean->getFileInformation($value);
             $file = $fileBean->getFile($value);
-            if ($file !== false) {
+            if (false !== $file) {
                 $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
                 $notify = $itemBean->getDownloadNotify($file['item_id'], $field->getItemTypeId());
                 $rights = $itemBean->getRights($file['item_id'], $field->getItemTypeId());
@@ -118,12 +118,12 @@ class Xoonips_ViewTypeFileUpload extends Xoonips_ViewType
             $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
             $newFileInfo = array();
             foreach ($fileInfo as $file) {
-                if ($file === false || ($rights === false && ($notify === false || $notify == '0'))) {
+                if (false === $file || (false === $rights && (false === $notify || '0' == $notify))) {
                     $file['notify'] = false;
                 } else {
                     $file['notify'] = true;
                 }
-                if ($file === false || ($uid == XOONIPS_UID_GUEST && $limit === false)) {
+                if (false === $file || (XOONIPS_UID_GUEST == $uid && false === $limit)) {
                     $file['limit'] = false;
                 } else {
                     $file['limit'] = true;
@@ -157,7 +157,7 @@ class Xoonips_ViewTypeFileUpload extends Xoonips_ViewType
 
     public function isDisplay($op)
     {
-        if ($op == Xoonips_Enum::OP_TYPE_METAINFO) {
+        if (Xoonips_Enum::OP_TYPE_METAINFO == $op) {
             return false;
         } //hidden when metainfo form
         return true;
@@ -165,7 +165,7 @@ class Xoonips_ViewTypeFileUpload extends Xoonips_ViewType
 
     public function mustCheck(&$errors, $field, $value, $fieldName)
     {
-        if ($field->getEssential() == 1 && $value == '') {
+        if (1 == $field->getEssential() && '' == $value) {
             $fileName = $fieldName;
             $request = new Xoonips_Request();
             $file = $request->getFile($fileName);
@@ -253,10 +253,10 @@ class Xoonips_ViewTypeFileUpload extends Xoonips_ViewType
             $tableData = array();
             $sqlStrings[$tableName] = &$tableData;
         }
-        if ($value != '') {
+        if ('' != $value) {
             $query1 = $this->search->getSearchSql('original_file_name', $value, _CHARSET, $field->getDataType(), $isExact);
             $query2 = $this->search->getFulltextSearchSql('search_text', $value, _CHARSET);
-            if ($query2 != '') {
+            if ('' != $query2) {
                 $tableData[] = '('.$query1.' OR '.$query2.')';
             } else {
                 $tableData[] = $query1;

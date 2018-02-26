@@ -68,7 +68,7 @@ var getIndexesInfo = function() {
                             jQuery("[id^=" + idNamePrefix + "]").bind("changed.jstree", function (e, data) {
                                 checked = jQuery(this).jstree("get_selected", true);
                                 jQuery.each(checked, function() {
-                                    url = '<{$smarty.const.XOOPS_URL}>/modules/' + json.dirname + '/list.php?index_id=' + this.id;
+                                    url = '<{$smarty.const.XOOPS_URL}>/modules/' + json.dirname + '/<{$block.itemListUrl}>?index_id=' + this.id;
                                     location.href = url;
                                 });
                             });

@@ -14,7 +14,7 @@ class Xoonips_GetViewTypeInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
      */
     public function execute()
     {
-        if (($uid = XoopsUtils::getUid()) == XOONIPS_UID_GUEST) {
+        if (XOONIPS_UID_GUEST == ($uid = XoopsUtils::getUid())) {
             return false;
         }
         if (!XoopsUtils::isAdmin($uid, $this->mDirname)) {
@@ -30,7 +30,7 @@ class Xoonips_GetViewTypeInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
         if (!in_array($mode, array('', 'default'))) {
             return false;
         }
-        if ($mode == '') {
+        if ('' == $mode) {
             $ret = array(
                 'hasSelectionList' => $vtObj->hasSelectionList(),
                 'dataTypesInfo' => $vtObj->getDataTypesInfo(),
@@ -38,7 +38,7 @@ class Xoonips_GetViewTypeInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
         } else {
             $list = trim($this->mRequest->getRequest('list'));
             $default = trim($this->mRequest->getRequest('default'));
-            $disabled = (intval($this->mRequest->getRequest('disabled')) == 0 ? false : true);
+            $disabled = (0 == intval($this->mRequest->getRequest('disabled')) ? false : true);
             $ret = $vtObj->getDefaultValueAdminHtml($list, $default, $disabled);
         }
         $this->mResult = json_encode($ret);

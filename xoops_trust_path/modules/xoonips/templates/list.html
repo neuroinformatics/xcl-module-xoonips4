@@ -24,7 +24,7 @@ function submit_order_dir( str ){
 <input type="hidden" name="index_id" value="<{$index_id}>" />
 <input type="hidden" name="op" value="" />
 <{foreach item=index from=$index_path}>
- / <a href="list.php?index_id=<{$index.index_id}>"><{$index.html_title|xoops_escape}></a>
+ / <a href="<{$itemListUrl}>?index_id=<{$index.index_id}>"><{$index.html_title|xoops_escape}></a>
 <{/foreach}>&nbsp;&nbsp;
 <{$description|xoops_escape}>
 <span class="no_print_span">
@@ -32,9 +32,9 @@ function submit_order_dir( str ){
  <input class="formButton" type="button" name="edit_index" value="<{$smarty.const._MD_XOONIPS_ITEM_EDIT_INDEX_BUTTON_LABEL}>" onclick="submit_edit_index();" />
  <input class="formButton" type="button" name="edit_index" value="<{$smarty.const._MD_XOONIPS_ITEM_INDEX_DESCRIPTION_BUTTON_LABEL}>" onclick="submit_index_description();" />
 <{/if}>
-<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_PRINT_FRIENDLY_BUTTON_LABEL}>" onclick="window.open('<{$smarty.const.XOOPS_URL}>/modules/xoonips/list.php?isPrint=print&index_id=<{$index_id}>&page=<{$page}>&orderby=<{$orderby}>&itemcount=<{$itemcount}>&num_of_items=<{$num_of_items}>');" />
+<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_PRINT_FRIENDLY_BUTTON_LABEL}>" onclick="window.open('<{$smarty.const.XOOPS_URL}>/modules/xoonips/<{$itemListUrl}>?isPrint=print&index_id=<{$index_id}>&page=<{$page}>&orderby=<{$orderby}>&itemcount=<{$itemcount}>&num_of_items=<{$num_of_items}>');" />
 <{if !empty($export_enabled)}>
- <input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_LABEL_EXPORT}>" onclick="form.action='list.php'; op.value='<{if $export_select==1}>exportselect<{else}>export<{/if}>'; submit();" />
+ <input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_LABEL_EXPORT}>" onclick="form.action='<{$itemListUrl}>'; op.value='<{if $export_select==1}>exportselect<{else}>export<{/if}>'; submit();" />
 <{/if}>
 </span>
 <br />

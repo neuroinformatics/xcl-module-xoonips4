@@ -101,6 +101,10 @@ define($constpref.'_SYSTEM_BASIC_MODERATOR_GROUP_DESC', 'XooNIps のモデレー
 define($constpref.'_SYSTEM_BASIC_UPLOAD_DIR_TITLE', 'ファイルアップロードディレクトリ');
 define($constpref.'_SYSTEM_BASIC_UPLOAD_DIR_DESC', '各アイテムの添付ファイルを格納するディレクトリをシステムの絶対パスで指定します。このディレクトリは Web サーバプロセスの権限で書き込みができる必要があります。');
 define($constpref.'_ERROR_UPLOAD_DIRECTORY', '指定されたファイルアップロードディレクトリにアクセス権限がありません');
+define($constpref.'_SYSTEM_BASIC_URL_COMPATIBLE_TITLE', 'XooNIps3互換');
+define($constpref.'_SYSTEM_BASIC_URL_COMPATIBLE_DESC', '');
+define($constpref.'_SYSTEM_BASIC_URL_COMPATIBLE_DEFAULT', 'list.php (デフォルト)');
+define($constpref.'_SYSTEM_BASIC_URL_COMPATIBLE_VERSION3', 'listitem.php (バージョン3互換)');
 
 // action: SystemMessageSign
 define($constpref.'_SYSTEM_MSGSIGN_SIGN_TITLE', '署名テンプレート');

@@ -38,7 +38,7 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
         $search_itemtype = $request->getParameter('search_itemtype');
         $search_subtype = $request->getParameter('search_subtype');
 
-        if (!is_null($search_subtype) && $search_subtype != '') {
+        if (!is_null($search_subtype) && '' != $search_subtype) {
             // do advanced search by subtype
             $this->doAdvancedSearchBySubType($request, $response);
             $response->setForward('advanced_search_success');
@@ -46,7 +46,7 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
             return true;
         }
 
-        if (!is_null($search_itemtype) && $search_itemtype != '') {
+        if (!is_null($search_itemtype) && '' != $search_itemtype) {
             // do advanced search by itemtype
             $this->doAdvancedSearchByItemType($request, $response);
             $response->setForward('advanced_search_success');
@@ -150,7 +150,7 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
     private function doAdvancedSearch(&$request, &$response)
     {
         $post_data = $_POST;
-        if (count($post_data) == 0) {
+        if (0 == count($post_data)) {
             $post_data = $_GET;
         }
         $iids = $this->_doAdvancedSearchBody($request, $post_data, $search_data);
@@ -217,7 +217,7 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
         foreach ($request_vars as $key => $meta) {
             list($type, $default) = $meta;
             $$key = $request->getParameter($key);
-            if ($$key == '') {
+            if ('' == $$key) {
                 $$key = $default;
             }
         }
@@ -265,7 +265,7 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
 
         $item_no_label = false;
         $page_no_label = '';
-        if ($num_of_items == 0) {
+        if (0 == $num_of_items) {
             $item_no_label = '0 - 0 of 0 Items';
         } else {
             $_pMin = min(($page - 1) * $itemcount + 1, $num_of_items);
@@ -282,7 +282,7 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
         $response->setViewDataByKey('num_of_items', $num_of_items);
         $response->setViewDataByKey('page_no_label', $page_no_label);
 
-        ($print == 'print') ? $printPage = true : $printPage = false;
+        ('print' == $print) ? $printPage = true : $printPage = false;
         $response->setViewDataByKey('isPrintPage', $printPage);
 
         // assign export_enable variable if permitted
@@ -302,7 +302,7 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
         foreach ($itemtypes as $itemtype) {
             $itemtypeId = $itemtype['item_type_id'];
             $checkValue = $request->getParameter($itemtypeId);
-            if ($checkValue == 'on') {
+            if ('on' == $checkValue) {
                 $checked[$itemtypeId] = true;
             } else {
                 $checked[$itemtypeId] = false;
@@ -332,10 +332,10 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
         $keyword = $request->getParameter('keyword');
 
         $items = array();
-        if (!is_null($search_subtype) && $search_subtype != '') {
+        if (!is_null($search_subtype) && '' != $search_subtype) {
             // do advanced search by subtype
             $items = $this->doAdvancedSearchBySubTypeExport($request, $response);
-        } elseif (!is_null($search_itemtype) && $search_itemtype != '') {
+        } elseif (!is_null($search_itemtype) && '' != $search_itemtype) {
             // do advanced search by itemtype
             $items = $this->doAdvancedSearchByItemTypeExport($request, $response);
         } elseif (!is_null($search_parameter)) {
@@ -371,7 +371,7 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
     private function doAdvancedSearchExport(&$request, &$response)
     {
         $post_data = $_POST;
-        if (count($post_data) == 0) {
+        if (0 == count($post_data)) {
             $post_data = $_GET;
         }
 
@@ -409,15 +409,15 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
         $search_var = array();
         foreach ($post_data as $key => $value) {
             $idArray = explode(Xoonips_Enum::ITEM_ID_SEPARATOR, $key);
-            if (count($idArray) == 3) {
-                if ($checkedValue[$idArray[1]] === true) {
+            if (3 == count($idArray)) {
+                if (true === $checkedValue[$idArray[1]]) {
                     if (is_array($value)) {
-                        if (trim($value[0]) != ' ' || trim($value[1]) != '') {
+                        if (' ' != trim($value[0]) || '' != trim($value[1])) {
                             $search_data[$key] = $key.'='.$value[0].','.$value[1];
                             $search_var[$idArray[1]][$key] = $value;
                         }
                     } else {
-                        if (trim($value) != '') {
+                        if ('' != trim($value)) {
                             $search_data[$key] = $key.'='.trim($value);
                             $search_var[$idArray[1]][$key] = $value;
                         }
@@ -451,7 +451,7 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
     private function _doQuickSearchBody($keyword, $search_condition)
     {
         $iids = array();
-        if (trim($keyword) != '') {
+        if ('' != trim($keyword)) {
             $chandler = Functions::getXoonipsHandler('ItemQuickSearchCondition', $this->dirname);
             $cobj = &$chandler->get($search_condition);
             if (is_object($cobj)) {
@@ -467,7 +467,7 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
                 }
                 $searchSqlArr = array();
                 foreach ($post_data as $key => $data) {
-                    if ($itemtypeId == 0) {
+                    if (0 == $itemtypeId) {
                         $key = 0;
                     }
                     $item = new Xoonips_Item($key, $this->dirname, $this->trustDirname);
