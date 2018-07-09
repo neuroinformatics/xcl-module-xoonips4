@@ -101,6 +101,10 @@ class Xoonips_WebServiceBase extends SaxParser
         $this->snoopy->proxy_port = Functions::getXoonipsConfig($dirname, 'proxy_port');
         $this->snoopy->proxy_user = Functions::getXoonipsConfig($dirname, 'proxy_user');
         $this->snoopy->proxy_pass = Functions::getXoonipsConfig($dirname, 'proxy_pass');
+
+        // disable gzip support.
+        // Snoopy 2.0.0 can not handle 'content-encoding: gzip' lower case header.
+        $this->snoopy->use_gzip = false;
     }
 
     /**
