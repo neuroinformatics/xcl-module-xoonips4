@@ -141,7 +141,7 @@ class StringUtils
     public static function convertEncoding($text, $to_encoding, $from_encoding, $fallback)
     {
         // convert encoding to 'UTF-8'
-        if ($from_encoding != 'UTF-8') {
+        if ('UTF-8' != $from_encoding) {
             $text = mb_convert_encoding($text, 'UTF-8', $from_encoding);
         }
         // normalize utf8
@@ -171,11 +171,11 @@ class StringUtils
         $text = mb_decode_numericentity($text, array(0x0, 0x100000, 0, 0xffffff), 'UTF-8');
         // convert &amp; to '&' for htmlspecialchars()
         $text = str_replace('&amp;', '&', $text);
-        if ($to_encoding != 'UTF-8') {
+        if ('UTF-8' != $to_encoding) {
             // backup substitute character
             $subst = mb_substitute_character();
             // set substitute character to entity
-            if ($fallback == 'n') {
+            if ('n' == $fallback) {
                 mb_substitute_character('none');
             } else {
                 mb_substitute_character('entity');
@@ -186,7 +186,7 @@ class StringUtils
                 // restore substitute character
                 mb_substitute_character($subst);
             }
-            if ($fallback == 'h') {
+            if ('h' == $fallback) {
                 $text = preg_replace_callback(
                     '/&#x[0-9a-f]+;/i',
                     function ($matches) {
@@ -194,7 +194,7 @@ class StringUtils
                     },
                     $text
                 );
-            } elseif ($fallback == 'u') {
+            } elseif ('u' == $fallback) {
                 // replace substitute entity chacter to url encoded string
                 $text = preg_replace_callback(
                     '/&#x[0-9a-f]+;/i',
@@ -301,7 +301,7 @@ class StringUtils
             array('&#x201C;', '&#x201D;', '&#x2018;', '&#x2019;', ', ',       '. ',       '^',         ' '),
             $text
         );
-        // replace kaatkana with roma-ji
+        // replace katakana with roma-ji
         $text = str_replace(
             array(
                 '&#12461;&#12515;', '&#12461;&#12517;', '&#12461;&#12519;', '&#12461;&#12455;', // kya, kyu, kyo, (kye)
@@ -462,7 +462,7 @@ class StringUtils
         mb_internal_encoding('UTF-8');
         mb_language('Japanese');
         $encoding = mb_detect_encoding($text, 'auto');
-        if ($encoding === false) {
+        if (false === $encoding) {
             $encoding = 'ASCII';
         }
         if ($mb_ienc) {
@@ -520,11 +520,11 @@ class StringUtils
     }
 
     /**
-     * detect client encoding.
+     * detect client file system encoding.
      *
      * @return string encoding name
      */
-    private static function _detectClientEncoding()
+    private static function _detectClientFileSystemEncoding()
     {
         $ua = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
         $lang = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '';
@@ -553,16 +553,16 @@ class StringUtils
     }
 
     /**
-     * detect client file system encoding.
+     * detect client encoding.
      *
      * @return string encoding name
      */
-    private static function _detectClientFileSystemEncoding()
+    private static function _detectClientEncoding()
     {
         $ua = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
         $lang = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '';
 
-        return (strstr($ua, 'Mac') && strstr($lang, 'ja')) ? 'SJIS-win' : self::_detectClientEncoding();
+        return (strstr($ua, 'Mac') && strstr($lang, 'ja')) ? 'SJIS-win' : self::_detectClientFileSystemEncoding();
     }
 
     /**
