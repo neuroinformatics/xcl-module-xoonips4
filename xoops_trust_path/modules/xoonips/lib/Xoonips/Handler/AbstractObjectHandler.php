@@ -246,7 +246,7 @@ abstract class AbstractObjectHandler extends AbstractHandler
     {
         $sql = 'DELETE FROM `'.$this->mTable.'`';
         if (is_object($criteria)) {
-            $where = $criteria->render();
+            $where = $this->_renderCriteria($criteria);
             if (!empty($where)) {
                 $sql .= ' WHERE '.$where;
             }
@@ -497,25 +497,39 @@ abstract class AbstractObjectHandler extends AbstractHandler
      */
     protected function _renderCriteria(\CriteriaElement $criteria)
     {
-        if ('Criteria' != get_class($criteria)) {
-            return $criteria->render();
-        }
-        $clause = (!empty($criteria->prefix) ? '`'.$criteria->prefix.'`.' : '').'`'.$criteria->column.'`';
-        if (!empty($criteria->function)) {
-            $clause = sprintf($criteria->function, $clause);
-        }
-        $operator = strtoupper($criteria->operator);
-        $value = $criteria->value;
-        if (is_null($criteria->value)) {
-            $operator = in_array($operator, array('IS', '=')) ? 'IS' : 'IS NOT';
-            $value = 'NULL';
-        } elseif (in_array($operator, array('IN', 'NOT IN'))) {
-            $value = '('.implode(', ', array_map(array($this->mDB, 'quoteString'), $value)).')';
-        } else {
-            $value = $this->mDB->quoteString($value);
-        }
-        $clause .= ' '.$operator.' '.$value;
+        $klass = get_class($criteria);
+        if ('CriteriaCompo' == $klass) {
+            $clause = '';
+            $count = $criteria->getCountChildElements();
+            if ($count > 0) {
+                $clause = '('.$this->_renderCriteria($criteria->getChildElement(0));
+                for ($i = 1; $i < $count; ++$i) {
+                    $clause .= ' '.$criteria->getCondition($i).' '.$this->_renderCriteria($criteria->getChildElement($i));
+                }
+                $clause .= ')';
+            }
 
-        return $clause;
+            return $clause;
+        } elseif ('Criteria' == $klass) {
+            $clause = (!empty($criteria->prefix) ? '`'.$criteria->prefix.'`.' : '').'`'.$criteria->column.'`';
+            if (!empty($criteria->function)) {
+                $clause = sprintf($criteria->function, $clause);
+            }
+            $operator = strtoupper($criteria->operator);
+            $value = $criteria->value;
+            if (is_null($criteria->value)) {
+                $operator = in_array($operator, array('IS', '=')) ? 'IS' : 'IS NOT';
+                $value = 'NULL';
+            } elseif (in_array($operator, array('IN', 'NOT IN'))) {
+                $value = '('.implode(', ', array_map(array($this->mDB, 'quoteString'), $value)).')';
+            } else {
+                $value = $this->mDB->quoteString($value);
+            }
+            $clause .= ' '.$operator.' '.$value;
+
+            return $clause;
+        }
+
+        return $criteria->render();
     }
 }
