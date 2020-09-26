@@ -188,9 +188,9 @@ class StringUtils
             }
             if ('h' == $fallback) {
                 $text = preg_replace_callback(
-                    '/&#x[0-9a-f]+;/i',
+                    '/&#x([0-9a-f]+);/i',
                     function ($matches) {
-                        return '&#'.hexdec($matches[0]).';';
+                        return '&#'.hexdec($matches[1]).';';
                     },
                     $text
                 );
