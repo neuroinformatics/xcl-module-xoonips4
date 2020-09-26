@@ -1,0 +1,16 @@
+# language: php
+build:
+  nodes:
+    tests: true
+    analysis:
+      dependencies:
+        after:
+          - git clone --depth=1 https://github.com/XoopsX/legacy
+      project_setup:
+        override: true
+      tests:
+        override:
+          - php-scrutinizer-run --enable-security-analysis
+filter:
+  dependency_paths:
+    - legacy/*
