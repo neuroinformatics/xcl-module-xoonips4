@@ -294,26 +294,21 @@ class Xoonips_UserPreloadFunctions
         $root->mLanguageManager->loadModuleMessageCatalog(XCUBE_CORE_USER_MODULE_NAME);
         $root->mLanguageManager->loadModuleMessageCatalog($trustDirname);
 
-        $userHandler = &xoops_getmodulehandler('users', 'user');
+        $memberHandler = xoops_gethandler('member');
+        $userObj = $memberHandler->loginUser(addslashes(xoops_getrequest('uname')), xoops_getrequest('pass'));
 
-        $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('uname', xoops_getrequest('uname')));
-        $criteria->add(new Criteria('pass', md5(xoops_getrequest('pass'))));
-
-        $userArr = &$userHandler->getObjects($criteria);
-
-        if (1 != count($userArr)) {
+        if (!is_object($userObj)) {
             return;
         }
 
-        $level = $userArr[0]->get('level');
+        $level = $userObj->get('level');
         if (0 == $level) {
             //check not activate user
-            XCube_DelegateUtils::call('Site.CheckLogin.Fail', $userArr[0]->get('uname'));
+            XCube_DelegateUtils::call('Site.CheckLogin.Fail', $userObj->get('uname'));
             redirect_header(XOOPS_URL.'/', 5, _MD_XOONIPS_LANG_NOACTTPADM);
         } elseif (1 == $level) {
             //check not certify user
-            XCube_DelegateUtils::call('Site.CheckLogin.Fail', $userArr[0]->get('uname'));
+            XCube_DelegateUtils::call('Site.CheckLogin.Fail', $userObj->get('uname'));
             redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_ACCOUNT_NOT_ACTIVATED);
         } else {
             return;
