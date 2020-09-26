@@ -13,7 +13,7 @@ Xoonips_Utils::denyGuestAccess();
 $request = new Xoonips_Request();
 $response = new Xoonips_Response();
 $op = $request->getParameter('op');
-$item_id = $request->getParameter('item_id');
+$item_id = intval($request->getParameter('item_id'));
 if (null == $op) {
     $op = 'init';
 }

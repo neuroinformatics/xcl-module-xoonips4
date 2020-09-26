@@ -13,18 +13,17 @@ $xoonipsEditIndex = true;
 
 $request = new Xoonips_Request();
 $response = new Xoonips_Response();
-$indexId = $request->getParameter('index_id');
+$indexId = intval($request->getParameter('index_id'));
 $op = $request->getParameter('op');
 
 if (null == $op) {
     $op = 'init';
 }
 // check request
-if (!in_array($op, ['init', 'save', 'indexEdit', 'update',
-    'indexMove', 'move', 'indexDelete', 'delete', 'finish', ])) {
+if (!in_array($op, ['init', 'save', 'indexEdit', 'update', 'indexMove', 'move', 'indexDelete', 'delete', 'finish'])) {
     die('illegal request');
 }
-if (1 == $indexId) {
+if (in_array($indexId, [0, 1])) {
     die('illegal request');
 }
 

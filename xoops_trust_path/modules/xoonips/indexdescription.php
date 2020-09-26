@@ -13,7 +13,7 @@ $xoonipsIndexDescription = true;
 
 $request = new Xoonips_Request();
 $response = new Xoonips_Response();
-$indexId = $request->getParameter('index_id');
+$indexId = intval($request->getParameter('index_id'));
 $op = $request->getParameter('op');
 
 if (null == $op) {
@@ -23,7 +23,7 @@ if (null == $op) {
 if (!in_array($op, ['init', 'update', 'delete'])) {
     die('illegal request');
 }
-if (1 == $indexId) {
+if (in_array($indexId, [0, 1])) {
     die('illegal request');
 }
 
