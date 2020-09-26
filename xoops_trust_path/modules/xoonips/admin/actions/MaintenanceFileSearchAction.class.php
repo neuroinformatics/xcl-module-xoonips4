@@ -38,19 +38,19 @@ class Xoonips_Admin_MaintenanceFileSearchAction extends Xoonips_AbstractAction
         $trustDirname = $this->mAsset->mTrustDirname;
         $constpref = '_AD_'.strtoupper($dirname);
         // breadcrumbs
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => constant($constpref.'_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_MAINTENANCE_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=Maintenance',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_MAINTENANCE_FILESEARCH_TITLE'),
-            ),
-        );
+            ],
+        ];
         $xoonipsFile = new Xoonips_File($dirname, $trustDirname, true);
         $plugins = $xoonipsFile->fsearch_plugins;
         $fileBean = Xoonips_BeanFactory::getBean('ItemFileBean', $dirname, $trustDirname);

@@ -98,7 +98,7 @@ abstract class Xoonips_ViewType
 
     public function isMulti()
     {
-        if ($this->multi == 0) {
+        if (0 == $this->multi) {
             return false;
         }
 
@@ -126,11 +126,11 @@ abstract class Xoonips_ViewType
      */
     protected function getFieldName($field, $groupLoopId, $id = null)
     {
-        if ($groupLoopId == 0) {
+        if (0 == $groupLoopId) {
             return '0'.Xoonips_Enum::ITEM_ID_SEPARATOR.$groupLoopId.Xoonips_Enum::ITEM_ID_SEPARATOR.$field->getId();
         }
 
-        if ($id == null) {
+        if (null == $id) {
             return $field->getFieldGroupId().Xoonips_Enum::ITEM_ID_SEPARATOR.$groupLoopId.Xoonips_Enum::ITEM_ID_SEPARATOR.$field->getId();
         } else {
             return $field->getFieldGroupId().Xoonips_Enum::ITEM_ID_SEPARATOR.$groupLoopId.Xoonips_Enum::ITEM_ID_SEPARATOR.$id;
@@ -297,8 +297,8 @@ abstract class Xoonips_ViewType
      */
     public function mustCheck(&$errors, $field, $value, $fieldName)
     {
-        if ($field->getEssential() == 1 && trim($value) == '') {
-            $parameters = array();
+        if (1 == $field->getEssential() && '' == trim($value)) {
+            $parameters = [];
             $parameters[] = $field->getName();
             $errors->addError('_MD_'.strtoupper($this->trustDirname).'_ERROR_REQUIRED', $fieldName, $parameters);
         }
@@ -370,30 +370,30 @@ abstract class Xoonips_ViewType
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];
         } else {
-            $tableData = array();
+            $tableData = [];
             $sqlStrings[$tableName] = &$tableData;
         }
 
-        if (strpos($tableName, '_extend') !== false) {
+        if (false !== strpos($tableName, '_extend')) {
             $groupid = $field->getFieldGroupId();
             if (isset($tableData[$groupid])) {
                 $groupData = &$tableData[$groupid];
             } else {
-                $groupData = array();
+                $groupData = [];
                 $tableData[$groupid] = &$groupData;
             }
 
             if (isset($groupData[$columnName])) {
                 $columnData = &$groupData[$columnName];
             } else {
-                $columnData = array();
+                $columnData = [];
                 $groupData[$columnName] = &$columnData;
             }
         } else {
             if (isset($tableData[$columnName])) {
                 $columnData = &$tableData[$columnName];
             } else {
-                $columnData = array();
+                $columnData = [];
                 $tableData[$columnName] = &$columnData;
             }
         }
@@ -426,9 +426,9 @@ abstract class Xoonips_ViewType
      */
     protected function getData($field, &$data, $groupLoopId)
     {
-        $ret = array();
+        $ret = [];
         foreach ($data as $key => $v) {
-            if (stristr($key, Xoonips_Enum::ITEM_ID_SEPARATOR) !== false) {
+            if (false !== stristr($key, Xoonips_Enum::ITEM_ID_SEPARATOR)) {
                 $idArray = explode(Xoonips_Enum::ITEM_ID_SEPARATOR, $key);
                 if ($idArray[2] == $field->getId() && $idArray[0] == $field->getFieldGroupId()) {
                     $ret[] = trim($v);
@@ -461,17 +461,17 @@ abstract class Xoonips_ViewType
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];
         } else {
-            $tableData = array();
+            $tableData = [];
             $sqlStrings[$tableName] = &$tableData;
         }
 
-        if ($value != '') {
-            if ($field->getScopeSearch() == 1 && $scopeSearchFlg) {
-                if ($value[0] != '') {
+        if ('' != $value) {
+            if (1 == $field->getScopeSearch() && $scopeSearchFlg) {
+                if ('' != $value[0]) {
                     $v = $field->getDataType()->convertSQLStr($value[0]);
                     $tableData[] = sprintf('"t1".%s>=%s', $columnName, $v);
                 }
-                if ($value[1] != '') {
+                if ('' != $value[1]) {
                     $v = $field->getDataType()->convertSQLStr($value[1]);
                     $tableData[] = sprintf('"t1".%s<=%s', $columnName, $v);
                 }
@@ -494,13 +494,13 @@ abstract class Xoonips_ViewType
     {
         $ret = $this->getSearchInputView($field, '', $groupLoopId);
         // scope search
-        if ($field->getScopeSearch() == 1) {
+        if (1 == $field->getScopeSearch()) {
             $fieldName = $field->getFieldGroupId().Xoonips_Enum::ITEM_ID_SEPARATOR.$groupLoopId.Xoonips_Enum::ITEM_ID_SEPARATOR.$field->getId();
             $ret = str_replace("name=\"$fieldName\"", "name=\"$fieldName".'[]"', $ret);
         }
         $this->getXoopsTpl()->assign('viewType', 'search');
         $this->getXoopsTpl()->assign('from', $ret);
-        if ($field->getScopeSearch() == 1) {
+        if (1 == $field->getScopeSearch()) {
             $this->getXoopsTpl()->assign('to', $ret);
         } else {
             $this->getXoopsTpl()->assign('to', null);
@@ -521,7 +521,7 @@ abstract class Xoonips_ViewType
      */
     public function getSearchViewWithData($field, $value, $groupLoopId)
     {
-        if ($field->getScopeSearch() == 1) {
+        if (1 == $field->getScopeSearch()) {
             $fieldName = $field->getFieldGroupId().Xoonips_Enum::ITEM_ID_SEPARATOR.$groupLoopId.Xoonips_Enum::ITEM_ID_SEPARATOR.$field->getId();
             if (is_array($value)) {
                 $from = $this->getSearchInputView($field, $value[0], $groupLoopId);
@@ -538,7 +538,7 @@ abstract class Xoonips_ViewType
         }
         $this->getXoopsTpl()->assign('viewType', 'search');
         $this->getXoopsTpl()->assign('from', $from);
-        if ($field->getScopeSearch() == 1 && is_array($value)) {
+        if (1 == $field->getScopeSearch() && is_array($value)) {
             $this->getXoopsTpl()->assign('to', $to);
         } else {
             $this->getXoopsTpl()->assign('to', null);
@@ -668,7 +668,7 @@ abstract class Xoonips_ViewType
             return $data[$table][$column];
         } else {
             $objs = $data[$table];
-            $ret = array();
+            $ret = [];
             foreach ($objs as $obj) {
                 $ret[] = $obj[$column];
             }

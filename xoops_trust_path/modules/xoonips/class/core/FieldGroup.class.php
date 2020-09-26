@@ -11,7 +11,7 @@ class Xoonips_FieldGroup
     protected $xmlTag;
     protected $occurrence = false;
     protected $updateId;
-    protected $fields = array();
+    protected $fields = [];
     private $dirname;
     private $trustDirname;
     private $xoopsTpl;
@@ -97,7 +97,7 @@ class Xoonips_FieldGroup
      */
     protected function getFieldName($field, $groupLoopId)
     {
-        if ($groupLoopId == 0) {
+        if (0 == $groupLoopId) {
             return '0'.Xoonips_Enum::ITEM_ID_SEPARATOR.$groupLoopId.Xoonips_Enum::ITEM_ID_SEPARATOR.$field->getId();
         } else {
             return $this->getId().Xoonips_Enum::ITEM_ID_SEPARATOR.$groupLoopId.Xoonips_Enum::ITEM_ID_SEPARATOR.$field->getId();
@@ -124,7 +124,7 @@ class Xoonips_FieldGroup
      */
     public function getRegistryView($cnt, $userType = Xoonips_Enum::USER_TYPE_USER, $op = Xoonips_Enum::OP_TYPE_REGISTRY)
     {
-        $fieldGroup = array();
+        $fieldGroup = [];
         foreach ($this->fields as $field) {
             if ($field->isDisplay($op, $userType)) {
                 $fieldGroup[] = $field->getRegistryView($cnt);
@@ -152,7 +152,7 @@ class Xoonips_FieldGroup
      */
     public function getRegistryViewWithData(&$data, $cnt, $userType = Xoonips_Enum::USER_TYPE_USER, $op = Xoonips_Enum::OP_TYPE_REGISTRY)
     {
-        $loopArray = array();
+        $loopArray = [];
         //get groupLoopId array
         foreach ($data as $key => $v) {
             $idArray = explode(Xoonips_Enum::ITEM_ID_SEPARATOR, $key);
@@ -161,18 +161,18 @@ class Xoonips_FieldGroup
             }
         }
         $loopArray = array_unique($loopArray);
-        $fieldGroups = array();
+        $fieldGroups = [];
         $num = 1;
         foreach ($loopArray as $groupLoopId) {
             if ($this->hasFieldGroupData($data, $groupLoopId)) {
-                $fieldGroup = array();
+                $fieldGroup = [];
                 foreach ($this->fields as $field) {
                     if ($field->isDisplay($op, $userType)) {
                         $value = $data[$this->getFieldName($field, $groupLoopId)];
                         $fieldGroup[] = $field->getRegistryViewWithData($value, $num, $cnt);
                     }
                 }
-                $fieldGroups[] = array('id' => $this->id.Xoonips_Enum::ITEM_ID_SEPARATOR.$num, 'fieldGroup' => $fieldGroup);
+                $fieldGroups[] = ['id' => $this->id.Xoonips_Enum::ITEM_ID_SEPARATOR.$num, 'fieldGroup' => $fieldGroup];
                 ++$num;
             }
         }
@@ -192,7 +192,7 @@ class Xoonips_FieldGroup
     public function fileUpload(&$data, $cnt, $userType = Xoonips_Enum::USER_TYPE_USER, $op = Xoonips_Enum::OP_TYPE_REGISTRY)
     {
         $ret = '';
-        $loopArray = array();
+        $loopArray = [];
         //get groupLoopId array
         foreach ($data as $key => $v) {
             $idArray = explode(Xoonips_Enum::ITEM_ID_SEPARATOR, $key);
@@ -227,7 +227,7 @@ class Xoonips_FieldGroup
      */
     public function getSearchViewWithData(&$data, $cnt, $groupLoopId = 1, $userType = Xoonips_Enum::USER_TYPE_USER)
     {
-        $fieldGroup = array();
+        $fieldGroup = [];
         $hasGroup = $this->hasFieldGroupData($data, $groupLoopId);
         if ($hasGroup) {
             foreach ($this->fields as $field) {
@@ -256,10 +256,10 @@ class Xoonips_FieldGroup
      */
     public function getEditView(&$data, $cnt, $userType = Xoonips_Enum::USER_TYPE_USER)
     {
-        $fieldGroups = array();
+        $fieldGroups = [];
         $groupLoopId = 1;
         do {
-            $fieldGroup = array();
+            $fieldGroup = [];
             foreach ($this->fields as $field) {
                 if ($field->isDisplay(Xoonips_Enum::OP_TYPE_EDIT, $userType)) {
                     if (!isset($data[$this->getFieldName($field, $groupLoopId)])) {
@@ -270,7 +270,7 @@ class Xoonips_FieldGroup
                     $fieldGroup[] = $field->getEditView($value, $groupLoopId, $cnt);
                 }
             }
-            $fieldGroups[] = array('id' => $this->id.Xoonips_Enum::ITEM_ID_SEPARATOR.$groupLoopId, 'fieldGroup' => $fieldGroup);
+            $fieldGroups[] = ['id' => $this->id.Xoonips_Enum::ITEM_ID_SEPARATOR.$groupLoopId, 'fieldGroup' => $fieldGroup];
             ++$groupLoopId;
         } while ($this->hasFieldGroupData($data, $groupLoopId));
 
@@ -288,7 +288,7 @@ class Xoonips_FieldGroup
      */
     public function getEditViewWithData(&$data, $cnt, $userType = Xoonips_Enum::USER_TYPE_USER)
     {
-        $loopArray = array();
+        $loopArray = [];
         //get groupLoopId array
         foreach ($data as $key => $v) {
             $idArray = explode(Xoonips_Enum::ITEM_ID_SEPARATOR, $key);
@@ -297,18 +297,18 @@ class Xoonips_FieldGroup
             }
         }
         $loopArray = array_unique($loopArray);
-        $fieldGroups = array();
+        $fieldGroups = [];
         $num = 1;
         foreach ($loopArray as $groupLoopId) {
             if ($this->hasFieldGroupData($data, $groupLoopId)) {
-                $fieldGroup = array();
+                $fieldGroup = [];
                 foreach ($this->fields as $field) {
                     if ($field->isDisplay(Xoonips_Enum::OP_TYPE_EDIT, $userType)) {
                         $value = $data[$this->getFieldName($field, $groupLoopId)];
                         $fieldGroup[] = $field->getEditViewWithData($value, $num, $cnt);
                     }
                 }
-                $fieldGroups[] = array('id' => $this->id.Xoonips_Enum::ITEM_ID_SEPARATOR.$num, 'fieldGroup' => $fieldGroup);
+                $fieldGroups[] = ['id' => $this->id.Xoonips_Enum::ITEM_ID_SEPARATOR.$num, 'fieldGroup' => $fieldGroup];
                 ++$num;
             }
         }
@@ -326,7 +326,7 @@ class Xoonips_FieldGroup
      */
     public function getEditViewWithDataForModerator(&$data, $cnt)
     {
-        $loopArray = array();
+        $loopArray = [];
         //get groupLoopId array
         foreach ($data as $key => $v) {
             $idArray = explode(Xoonips_Enum::ITEM_ID_SEPARATOR, $key);
@@ -335,18 +335,18 @@ class Xoonips_FieldGroup
             }
         }
         $loopArray = array_unique($loopArray);
-        $fieldGroups = array();
+        $fieldGroups = [];
         $num = 1;
         foreach ($loopArray as $groupLoopId) {
             if ($this->hasFieldGroupData($data, $groupLoopId)) {
-                $fieldGroup = array();
+                $fieldGroup = [];
                 foreach ($this->fields as $field) {
                     if ($field->isDisplay(Xoonips_Enum::OP_TYPE_MANAGER_EDIT, Xoonips_Enum::USER_TYPE_MODERATOR)) {
                         $value = $data[$this->getFieldName($field, $groupLoopId)];
                         $fieldGroup[] = $field->getEditViewWithDataForModerator($value, $num, $cnt);
                     }
                 }
-                $fieldGroups[] = array('id' => $this->id.Xoonips_Enum::ITEM_ID_SEPARATOR.$num, 'fieldGroup' => $fieldGroup);
+                $fieldGroups[] = ['id' => $this->id.Xoonips_Enum::ITEM_ID_SEPARATOR.$num, 'fieldGroup' => $fieldGroup];
                 ++$num;
             }
         }
@@ -365,10 +365,10 @@ class Xoonips_FieldGroup
      */
     public function getEditViewForModerator(&$data, $cnt)
     {
-        $fieldGroups = array();
+        $fieldGroups = [];
         $groupLoopId = 1;
         do {
-            $fieldGroup = array();
+            $fieldGroup = [];
             foreach ($this->fields as $field) {
                 if ($field->isDisplay(Xoonips_Enum::OP_TYPE_MANAGER_EDIT, Xoonips_Enum::USER_TYPE_MODERATOR)) {
                     if (isset($data[$this->getFieldName($field, $groupLoopId)])) {
@@ -380,7 +380,7 @@ class Xoonips_FieldGroup
                     $fieldGroup[] = $field->getEditViewForModerator($value, $groupLoopId, $cnt);
                 }
             }
-            $fieldGroups[] = array('id' => $this->id.Xoonips_Enum::ITEM_ID_SEPARATOR.$groupLoopId, 'fieldGroup' => $fieldGroup);
+            $fieldGroups[] = ['id' => $this->id.Xoonips_Enum::ITEM_ID_SEPARATOR.$groupLoopId, 'fieldGroup' => $fieldGroup];
             ++$groupLoopId;
         } while ($this->hasFieldGroupData($data, $groupLoopId));
 
@@ -436,7 +436,7 @@ class Xoonips_FieldGroup
     {
         $ret = 0;
         foreach ($this->fields as $field) {
-            if ($field->isDisplay($op, $userType) == true) {
+            if (true == $field->isDisplay($op, $userType)) {
                 ++$ret;
             }
         }
@@ -455,7 +455,7 @@ class Xoonips_FieldGroup
     {
         $ret = 0;
         foreach ($this->fields as $field) {
-            if ($field->getNonDisplay() == 0 && ($field->getDetailDisplay() > $displayFlg || $field->getDetailDisplay() == $displayFlg)) {
+            if (0 == $field->getNonDisplay() && ($field->getDetailDisplay() > $displayFlg || $field->getDetailDisplay() == $displayFlg)) {
                 ++$ret;
             }
         }
@@ -474,8 +474,8 @@ class Xoonips_FieldGroup
     public function isMust($op, $userType)
     {
         foreach ($this->fields as $field) {
-            if ($field->isDisplay($op, $userType) == true) {
-                if ($field->getEssential() == 1) {
+            if (true == $field->isDisplay($op, $userType)) {
+                if (1 == $field->getEssential()) {
                     return true;
                 }
             }
@@ -629,7 +629,7 @@ class Xoonips_FieldGroup
      */
     public function getSearchView($cnt, $userType = Xoonips_Enum::USER_TYPE_USER, $groupLoopId = 1)
     {
-        $fieldGroup = array();
+        $fieldGroup = [];
         foreach ($this->fields as $field) {
             if ($field->isDisplay(Xoonips_Enum::OP_TYPE_SEARCH, $userType)) {
                 $fieldGroup[] = $field->getSearchView($cnt, $groupLoopId);
@@ -674,7 +674,7 @@ class Xoonips_FieldGroup
      */
     public function getConfirmView(&$data, $cnt, $op, $userType = Xoonips_Enum::USER_TYPE_USER)
     {
-        $loopArray = array();
+        $loopArray = [];
         //get groupLoopId array
         foreach ($data as $key => $v) {
             $idArray = explode(Xoonips_Enum::ITEM_ID_SEPARATOR, $key);
@@ -683,10 +683,10 @@ class Xoonips_FieldGroup
             }
         }
         $loopArray = array_unique($loopArray);
-        $fieldGroups = array();
+        $fieldGroups = [];
         foreach ($loopArray as $groupLoopId) {
             if ($this->hasFieldGroupData($data, $groupLoopId)) {
-                $fieldGroup = array();
+                $fieldGroup = [];
                 foreach ($this->fields as $field) {
                     if ($field->isDisplay($op, $userType)) {
                         $value = $data[$this->getFieldName($field, $groupLoopId)];
@@ -714,10 +714,10 @@ class Xoonips_FieldGroup
      */
     public function getDetailView(&$data, $cnt, $userType = Xoonips_Enum::USER_TYPE_USER, $display = true)
     {
-        $fieldGroups = array();
+        $fieldGroups = [];
         $groupLoopId = 1;
         do {
-            $fieldGroup = array();
+            $fieldGroup = [];
             foreach ($this->fields as $field) {
                 if ($field->isDisplay(Xoonips_Enum::OP_TYPE_DETAIL, $userType)) {
                     if (!isset($data[$this->getFieldName($field, $groupLoopId)])) {
@@ -750,10 +750,10 @@ class Xoonips_FieldGroup
      */
     public function getDetailViewForModerator(&$data, $cnt, $userType = Xoonips_Enum::USER_TYPE_MODERATOR)
     {
-        $fieldGroups = array();
+        $fieldGroups = [];
         $groupLoopId = 1;
         do {
-            $fieldGroup = array();
+            $fieldGroup = [];
             foreach ($this->fields as $field) {
                 if ($field->isDisplay(Xoonips_Enum::OP_TYPE_DETAIL, $userType)) {
                     if (!isset($data[$this->getFieldName($field, $groupLoopId)])) {
@@ -786,10 +786,10 @@ class Xoonips_FieldGroup
      */
     public function getDetailViewForCertify(&$data, $cnt, $userType = Xoonips_Enum::USER_TYPE_USER)
     {
-        $fieldGroups = array();
+        $fieldGroups = [];
         $groupLoopId = 1;
         do {
-            $fieldGroup = array();
+            $fieldGroup = [];
             foreach ($this->fields as $field) {
                 if ($field->isDisplay(Xoonips_Enum::OP_TYPE_DETAIL, $userType)) {
                     if (!isset($data[$this->getFieldName($field, $groupLoopId)])) {

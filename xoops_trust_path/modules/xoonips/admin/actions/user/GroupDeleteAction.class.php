@@ -19,12 +19,12 @@ class Xoonips_GroupDeleteAction extends User_GroupDeleteAction
     {
         $handler = &xoops_gethandler('group');
         $group = &$handler->get($this->mObject->get('groupid'));
-        if ($group->get('group_type') != Xoonips_Enum::GROUP_TYPE) {
+        if (Xoonips_Enum::GROUP_TYPE != $group->get('group_type')) {
             return parent::_doExecute();
         }
         $groupbean = Xoonips_BeanFactory::getBean('GroupsBean', $this->mDirname, $this->mTrustDirname);
         $group = $groupbean->getGroup($this->mObject->get('groupid'));
-        if ($group['activate'] == Xoonips_Enum::GRP_DELETE_REQUIRED) {
+        if (Xoonips_Enum::GRP_DELETE_REQUIRED == $group['activate']) {
             return USER_FRAME_VIEW_ERROR;
         }
         $transaction = Xoonips_Transaction::getInstance();
@@ -43,11 +43,11 @@ class Xoonips_GroupDeleteAction extends User_GroupDeleteAction
     {
         parent::executeViewInput($controller, $xoopsUser, $render);
         $deleteRequired = false;
-        $isExtended = ($this->mObject->get('group_type') == Xoonips_Enum::GROUP_TYPE);
+        $isExtended = (Xoonips_Enum::GROUP_TYPE == $this->mObject->get('group_type'));
         if ($isExtended) {
             $groupbean = Xoonips_BeanFactory::getBean('GroupsBean', $this->mDirname, $this->mTrustDirname);
             $group = $groupbean->getGroup($this->mObject->get('groupid'));
-            if ($group['activate'] == Xoonips_Enum::GRP_DELETE_REQUIRED) {
+            if (Xoonips_Enum::GRP_DELETE_REQUIRED == $group['activate']) {
                 $deleteRequired = true;
             }
         }

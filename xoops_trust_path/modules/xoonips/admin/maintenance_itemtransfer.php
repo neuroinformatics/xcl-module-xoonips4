@@ -9,17 +9,17 @@ require_once __DIR__.'/class/action/MaintenanceItemTransferAction.class.php';
 $request = new Xoonips_Request();
 $response = new Xoonips_Response();
 $op = $request->getParameter('op');
-if ($op == null) {
+if (null == $op) {
     $op = 'init';
 }
 
 // check request
-if (!in_array($op, array('init', 'index', 'confirm', 'execute'))) {
+if (!in_array($op, ['init', 'index', 'confirm', 'execute'])) {
     die('illegal request');
 }
 
 // set action map
-$actionMap = array();
+$actionMap = [];
 $actionMap['init_success'] = 'maintenance_itemtransfer.html';
 $actionMap['index_success'] = 'maintenance_itemtransfer.html';
 $actionMap['confirm_success'] = 'maintenance_itemtransfer_confirm.html';

@@ -65,13 +65,13 @@ class Xoonips_Admin_PolicyItemSortEditAction extends Xoonips_AbstractEditAction
         $id = $this->_getId();
         $this->mObjectHandler = &$this->_getHandler();
         $obj = &$this->mObjectHandler->get($id);
-        if ($obj == null) {
+        if (null == $obj) {
             $obj = &$this->mObjectHandler->create();
         }
-        $this->mObject = array(
+        $this->mObject = [
             'obj' => &$obj,
             'fields' => $this->mObjectHandler->getSortFields($obj),
-        );
+        ];
     }
 
     /**
@@ -103,27 +103,27 @@ class Xoonips_Admin_PolicyItemSortEditAction extends Xoonips_AbstractEditAction
         $dirname = $this->mAsset->mDirname;
         $constpref = '_AD_'.strtoupper($dirname);
         // breadcrumbs
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => constant($constpref.'_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=Policy',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_ITEM_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=PolicyItem',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_ITEM_SORT_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=PolicyItemSort',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_ITEM_SORT_EDIT_TITLE'),
-            ),
-        );
+            ],
+        ];
         $render->setTemplateName('policy_item_sort_edit.html');
         $render->setAttribute('title', constant($constpref.'_POLICY_ITEM_SORT_EDIT_TITLE'));
         $render->setAttribute('description', constant($constpref.'_POLICY_ITEM_SORT_EDIT_DESC'));

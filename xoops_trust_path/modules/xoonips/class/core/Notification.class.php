@@ -39,7 +39,7 @@ class Xoonips_Notification extends XoopsNotificationHandler
     }
 
     private function triggerEvent2($category, $item_id, $event, $subject,
-    $template, $extra_tags = array(), $user_list = array())
+    $template, $extra_tags = [], $user_list = [])
     {
         $module_handler = &xoops_gethandler('module');
         $module = &$module_handler->getByDirname($this->dirname);
@@ -101,7 +101,7 @@ class Xoonips_Notification extends XoopsNotificationHandler
         // Add some tag substitutions here
 
         $not_config = $module->getInfo('notification');
-        $tags = array();
+        $tags = [];
         if (!empty($not_config)) {
             if (!empty($not_config['tags_file'])) {
                 $tags_file = XOOPS_ROOT_PATH.'/modules/'
@@ -190,8 +190,8 @@ class Xoonips_Notification extends XoopsNotificationHandler
         if (false === $itemUsersInfo) {
             return false;
         }
-        $itemUsersName = array();
-        $itemUsersUname = array();
+        $itemUsersName = [];
+        $itemUsersUname = [];
         foreach ($itemUsersInfo as $itemUser) {
             $xoops_user = $userBean->getUserBasicInfo($itemUser['uid']);
             $itemName = '';
@@ -207,12 +207,12 @@ class Xoonips_Notification extends XoopsNotificationHandler
             return false;
         }
 
-        $keyword_strings = array();
+        $keyword_strings = [];
         for ($i = 0; $i < count($keywords); ++$i) {
             $keyword_strings[] = $keywords[$i]['keyword'];
         }
 
-        $tags = array(
+        $tags = [
             'ITEM_DOI' => strval($item_basic['doi']),
             'ITEM_ITEMTYPE' => strval($item_type['name']),
             'ITEM_TITLE' => (empty($titles) ? '' : strval($titles[0]['title'])),
@@ -220,7 +220,7 @@ class Xoonips_Notification extends XoopsNotificationHandler
             'ITEM_NAME' => '',
             'ITEM_KEYWORDS' => implode(',', $keyword_strings),
             'ITEM_DESCRIPTION' => '',
-        );
+        ];
         $tags['ITEM_DETAIL_URL'] = XOOPS_URL.'/modules/'.$this->dirname
             .'/detail.php?item_id='.$item_id;
 
@@ -469,7 +469,7 @@ class Xoonips_Notification extends XoopsNotificationHandler
 
     private function getDescendantIndexIds($index_id)
     {
-        $result = array($index_id);
+        $result = [$index_id];
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         $indexes = $indexBean->getChildIndexes($index_id);
         if (!empty($indexes)) {
@@ -488,7 +488,7 @@ class Xoonips_Notification extends XoopsNotificationHandler
         $index_ids = $this->getDescendantIndexIds($start_index_id);
 
         // get all affected item_id
-        $result = array();
+        $result = [];
 
         $itemUsersBean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $this->dirname, $this->trustDirname);
         $indexItemLinkBean = Xoonips_BeanFactory::getBean('IndexItemLinkBean', $this->dirname, $this->trustDirname);
@@ -496,10 +496,10 @@ class Xoonips_Notification extends XoopsNotificationHandler
             $links = $indexItemLinkBean->getIndexItemLinkInfo2($index_id);
             foreach ($links as $link) {
                 $itemUserInfo = $itemUsersBean->getItemUsersInfo($link['item_id']);
-                $itemUsersId = array();
+                $itemUsersId = [];
                 foreach ($itemUserInfo as $itemUser) {
                     if (!isset($result[$itemUser['uid']])) {
-                        $result[$itemUser['uid']] = array();
+                        $result[$itemUser['uid']] = [];
                     }
                     $result[$itemUser['uid']][] = $itemUser['item_id'];
                 }
@@ -517,7 +517,7 @@ class Xoonips_Notification extends XoopsNotificationHandler
         $new_index_path = $this->getIndexPathString($context['index_id']);
 
         foreach ($context['affected_items'] as $uid => $item_ids) {
-            $item_list = array();
+            $item_list = [];
             foreach ($item_ids as $item_id) {
                 $tags = $this->getItemTags($item_id);
                 $item_list[] =
@@ -530,30 +530,30 @@ class Xoonips_Notification extends XoopsNotificationHandler
             if (empty($parentIndexId)) {
                 $parentIndexId = $context['listitem_index_id'];
             }
-            $tags = array(
+            $tags = [
                 'OLD_INDEX_PATH' => $context['old_index_path'],
                 'NEW_INDEX_PATH' => $new_index_path,
                 'LISTITEM_URL' => XOOPS_URL.'/modules/'.$this->dirname
                  .'/'.Functions::getItemListUrl($this->dirname).'?index_id='.$parentIndexId,
                 'ITEM_LIST' => implode("\n\n", $item_list),
-            );
+            ];
             $tags['SITENAME'] = XoopsUtils::getXoopsConfig('sitename');
             $tags['ADMINMAIL'] = XoopsUtils::getXoopsConfig('adminmail');
             $tags['SITEURL'] = XOOPS_URL.'/modules/'.$this->dirname.'/';
 
             $this->triggerEvent2('common', 0, 'item',
-            $subject, $template_name, $tags, array($uid));
+            $subject, $template_name, $tags, [$uid]);
         }
     }
 
     public function beforeUserIndexRenamed($index_id)
     {
-        return array(
+        return [
             'index_id' => $index_id,
             'listitem_index_id' => $index_id,
             'affected_items' => $this->getAffectedItems($index_id),
             'old_index_path' => $this->getIndexPathString($index_id),
-        );
+        ];
     }
 
     // index renamed notification
@@ -566,12 +566,12 @@ class Xoonips_Notification extends XoopsNotificationHandler
 
     public function beforeUserIndexMoved($index_id)
     {
-        return array(
+        return [
             'index_id' => $index_id,
             'listitem_index_id' => $index_id,
             'affected_items' => $this->getAffectedItems($index_id),
             'old_index_path' => $this->getIndexPathString($index_id),
-        );
+        ];
     }
 
     // index moved notification
@@ -587,12 +587,12 @@ class Xoonips_Notification extends XoopsNotificationHandler
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         $index = $indexBean->getIndex($index_id);
 
-        return array(
+        return [
             'index_id' => $index_id,
             'listitem_index_id' => $index['parent_index_id'],
             'affected_items' => $this->getAffectedItems($index_id),
             'old_index_path' => $this->getIndexPathString($index_id),
-        );
+        ];
     }
 
     // index deleted notification
@@ -620,7 +620,7 @@ class Xoonips_Notification extends XoopsNotificationHandler
 
         $itemUsersBean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $this->dirname, $this->trustDirname);
         $itemUsers = $itemUsersBean->getItemUsersInfo($file['item_id']);
-        $users = array();
+        $users = [];
         if ($itemUsers) {
             foreach ($itemUsers as $itemUser) {
                 $users[] = $itemUser['uid'];

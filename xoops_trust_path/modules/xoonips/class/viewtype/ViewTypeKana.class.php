@@ -66,14 +66,14 @@ class Xoonips_ViewTypeKana extends Xoonips_ViewType
             if (isset($sqlStrings[$tableName])) {
                 $tableData = &$sqlStrings[$tableName];
             } else {
-                $tableData = array();
+                $tableData = [];
                 $sqlStrings[$tableName] = &$tableData;
             }
 
             if (isset($tableData[$columnName])) {
                 $columnData = &$tableData[$columnName];
             } else {
-                $columnData = array();
+                $columnData = [];
                 $tableData[$columnName] = &$columnData;
             }
             $columnData[] = $field->getDataType()->convertSQLStr(trim($value));
@@ -86,29 +86,29 @@ class Xoonips_ViewTypeKana extends Xoonips_ViewType
             if (isset($sqlStrings[$tableName])) {
                 $tableData = &$sqlStrings[$tableName];
             } else {
-                $tableData = array();
+                $tableData = [];
                 $sqlStrings[$tableName] = &$tableData;
             }
-            if (strpos($tableName, '_extend') !== false) {
+            if (false !== strpos($tableName, '_extend')) {
                 $groupid = $field->getFieldGroupId();
                 if (isset($tableData[$groupid])) {
                     $groupData = &$tableData[$groupid];
                 } else {
-                    $groupData = array();
+                    $groupData = [];
                     $tableData[$groupid] = &$groupData;
                 }
 
                 if (isset($groupData[$columnName])) {
                     $columnData = &$groupData[$columnName];
                 } else {
-                    $columnData = array();
+                    $columnData = [];
                     $groupData[$columnName] = &$columnData;
                 }
             } else {
                 if (isset($tableData[$columnName])) {
                     $columnData = &$tableData[$columnName];
                 } else {
-                    $columnData = array();
+                    $columnData = [];
                     $tableData[$columnName] = &$columnData;
                 }
             }

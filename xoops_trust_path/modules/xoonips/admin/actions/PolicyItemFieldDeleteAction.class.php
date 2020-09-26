@@ -87,27 +87,27 @@ class Xoonips_Admin_PolicyItemFieldDeleteAction extends Xoonips_AbstractDeleteAc
         $dirname = $this->mAsset->mDirname;
         $constpref = '_AD_'.strtoupper($dirname);
         // breadcrumbs
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => constant($constpref.'_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=Policy',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_ITEM_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=PolicyItem',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_ITEM_FIELD_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=PolicyItemField',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_ITEM_FIELD_DELETE_TITLE'),
-            ),
-        );
+            ],
+        ];
         $render->setTemplateName('policy_item_field_delete.html');
         $render->setAttribute('title', constant($constpref.'_POLICY_ITEM_FIELD_DELETE_TITLE'));
         $render->setAttribute('description', constant($constpref.'_POLICY_ITEM_FIELD_DELETE_DESC'));

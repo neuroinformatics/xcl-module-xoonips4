@@ -16,7 +16,7 @@ function b_xoonips_user_show($options)
 
     $uid = $xoopsUser->getVar('uid');
 
-    $block = array();
+    $block = [];
 
     // get xoonips module id
     $module_handler = &xoops_gethandler('module');
@@ -53,7 +53,7 @@ function b_xoonips_user_show($options)
     $workflow_myitemcount = Xoonips_Workflow::countInProgressItems($uid);
 
     // assign block template variables
-    $block = array(
+    $block = [
         'is_su' => isset($_SESSION[$dirname.'_old_uid']),
         'uid' => $uid,
         'new_messages' => $new_messages,
@@ -62,7 +62,7 @@ function b_xoonips_user_show($options)
         'workflow_myitemcount' => $workflow_myitemcount,
         'lang_su_end' => sprintf(_MB_XOONIPS_USER_SU_END, $uname),
         'xoonips_isadmin' => $is_admin,
-        'dirname' => $dirname, );
+        'dirname' => $dirname, ];
 
     return $block;
 }

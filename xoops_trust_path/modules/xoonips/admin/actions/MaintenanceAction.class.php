@@ -35,33 +35,33 @@ class Xoonips_Admin_MaintenanceAction extends Xoonips_AbstractAction
         $dirname = $this->mAsset->mDirname;
         $constpref = '_AD_'.strtoupper($dirname);
         // breadcrumbs
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => constant($constpref.'_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_MAINTENANCE_TITLE'),
-            ),
-        );
-        $menu = array(
-            array(
+            ],
+        ];
+        $menu = [
+            [
                 'title' => constant($constpref.'_MAINTENANCE_USER_TITLE'),
                 'link' => XOOPS_URL.'/modules/user/admin/index.php?action=UserList',
-            ),
-            array(
+            ],
+            [
                 'title' => constant($constpref.'_MAINTENANCE_GROUP_TITLE'),
                 'link' => XOOPS_URL.'/modules/user/admin/index.php?action=GroupList',
-            ),
-            array(
+            ],
+            [
                 'title' => constant($constpref.'_MAINTENANCE_ITEM_TITLE'),
                 'link' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=MaintenanceItem',
-            ),
-            array(
+            ],
+            [
                 'title' => constant($constpref.'_MAINTENANCE_FILESEARCH_TITLE'),
                 'link' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=MaintenanceFileSearch',
-            ),
-        );
+            ],
+        ];
         $render->setTemplateName('admin_menu.html');
         $render->setAttribute('title', constant($constpref.'_MAINTENANCE_TITLE'));
         $render->setAttribute('description', constant($constpref.'_MAINTENANCE_DESC'));

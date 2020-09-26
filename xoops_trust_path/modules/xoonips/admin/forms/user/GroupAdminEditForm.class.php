@@ -35,76 +35,76 @@ class Xoonips_GroupAdminEditForm extends XCube_ActionForm
     public function getFormParams()
     {
         static $params = null;
-        if ($params !== null) {
+        if (null !== $params) {
             return $params;
         }
         $constpref = '_AD_'.strtoupper($this->mDirname);
-        $params = array(
-            'groupid' => array(
+        $params = [
+            'groupid' => [
                 'type' => 'i',
                 'label' => _AD_USER_LANG_GROUP_GID,
-                'depends' => array(
+                'depends' => [
                     'required' => true,
-                ),
-            ),
+                ],
+            ],
             // activate
-            'name' => array(
+            'name' => [
                 'type' => 's',
                 'label' => _AD_USER_LANG_GROUP_NAME,
-                'depends' => array(
+                'depends' => [
                     'required' => true,
                     'maxlength' => 50,
-                ),
-            ),
-            'description' => array(
+                ],
+            ],
+            'description' => [
                 'type' => 't',
-            ),
+            ],
             // icon
             // mime_type
-            'is_public' => array(
+            'is_public' => [
                 'type' => 'i',
-            ),
-            'can_join' => array(
+            ],
+            'can_join' => [
                 'type' => 'i',
-            ),
-            'is_hidden' => array(
+            ],
+            'is_hidden' => [
                 'type' => 'i',
-            ),
-            'member_accept' => array(
+            ],
+            'member_accept' => [
                 'type' => 'i',
-            ),
-            'item_accept' => array(
+            ],
+            'item_accept' => [
                 'type' => 'i',
-            ),
-            'item_number_limit' => array(
+            ],
+            'item_number_limit' => [
                 'type' => 'i',
-            ),
-            'index_number_limit' => array(
+            ],
+            'index_number_limit' => [
                 'type' => 'i',
-            ),
-            'item_storage_limit' => array(
+            ],
+            'item_storage_limit' => [
                 'type' => 'f',
-            ),
+            ],
             // index_id
-            'group_type' => array(
+            'group_type' => [
                 'type' => 's',
                 'label' => _AD_USER_LANG_GROUP_TYPE,
-                'depends' => array(
+                'depends' => [
                     'required' => true,
                     'maxlength' => 10,
-                ),
-            ),
+                ],
+            ],
             // additional informations
-            'adminUids' => array(
+            'adminUids' => [
                 'type' => 'ai',
-            ),
-            'iconDelete' => array(
+            ],
+            'iconDelete' => [
                 'type' => 'i',
-            ),
-            'iconFile' => array(
+            ],
+            'iconFile' => [
                 'type' => 'I',
-            ),
-        );
+            ],
+        ];
 
         return $params;
     }
@@ -220,7 +220,7 @@ class Xoonips_GroupAdminEditForm extends XCube_ActionForm
     {
         $type = $this->get('group_type');
         $uids = $this->get('adminUids');
-        if ($type == Xoonips_Enum::GROUP_TYPE && empty($uids)) {
+        if (Xoonips_Enum::GROUP_TYPE == $type && empty($uids)) {
             $constpref = '_AD_'.strtoupper($this->mDirname);
             $this->addErrorMessage(XCube_Utils::formatString(constant($constpref.'_ERROR_REQUIRED'), constant($constpref.'_USER_LANG_GROUP_ADMINS')));
         }
@@ -232,7 +232,7 @@ class Xoonips_GroupAdminEditForm extends XCube_ActionForm
     public function validateIconFile()
     {
         $iconFile = $this->get('iconFile');
-        if (isset($_FILES['iconFile']['error']) && $_FILES['iconFile']['error'] == UPLOAD_ERR_OK && $iconFile === null) {
+        if (isset($_FILES['iconFile']['error']) && UPLOAD_ERR_OK == $_FILES['iconFile']['error'] && null === $iconFile) {
             $constpref = '_AD_'.strtoupper($this->mDirname);
             $this->addErrorMessage(XCube_Utils::formatString(constant($constpref.'_ERROR_INPUTFILE'), constant($constpref.'_USER_LANG_GROUP_ICON')));
         }
@@ -243,7 +243,7 @@ class Xoonips_GroupAdminEditForm extends XCube_ActionForm
      */
     public function validateIs_hidden()
     {
-        if ($this->get('is_hidden') == 1) {
+        if (1 == $this->get('is_hidden')) {
             $this->set('is_public', 0);
             $this->set('can_join', 0);
         }
@@ -268,7 +268,7 @@ class Xoonips_GroupAdminEditForm extends XCube_ActionForm
      */
     public function load(&$params)
     {
-        $skipTypes = array('F', 'I', 'aF', 'aI');
+        $skipTypes = ['F', 'I', 'aF', 'aI'];
         $keys = $this->getFormParams();
         foreach (array_keys($params) as $key) {
             if (isset($keys[$key]) && !in_array($keys[$key]['type'], $skipTypes)) {
@@ -286,8 +286,8 @@ class Xoonips_GroupAdminEditForm extends XCube_ActionForm
      */
     public function update(&$params)
     {
-        $skipKeysOnPending = array('is_public', 'can_join', 'is_hidden');
-        $isPending = ($params['group_type'] == Xoonips_Enum::GROUP_TYPE && $params['activate'] != Xoonips_Enum::GRP_CERTIFIED);
+        $skipKeysOnPending = ['is_public', 'can_join', 'is_hidden'];
+        $isPending = (Xoonips_Enum::GROUP_TYPE == $params['group_type'] && Xoonips_Enum::GRP_CERTIFIED != $params['activate']);
         $keys = $this->getFormParams();
         foreach ($keys as $key => $info) {
             if (!$isPending || !in_array($key, $skipKeysOnPending)) {

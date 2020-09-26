@@ -29,7 +29,7 @@ class Xoonips_ViewTypeComboBox extends Xoonips_ViewType
     {
         $ret = '';
         $list = $field->getList();
-        if ($value !== '') {
+        if ('' !== $value) {
             $ret = isset($list[$value]) ? $list[$value] : '';
         }
         $fieldName = $this->getFieldName($field, $groupLoopId);
@@ -45,7 +45,7 @@ class Xoonips_ViewTypeComboBox extends Xoonips_ViewType
     {
         $ret = '';
         $list = $field->getList();
-        if ($value !== '') {
+        if ('' !== $value) {
             $ret = isset($list[$value]) ? $list[$value] : '';
         }
         $this->getXoopsTpl()->assign('viewType', 'detail');
@@ -58,7 +58,7 @@ class Xoonips_ViewTypeComboBox extends Xoonips_ViewType
     {
         $ret = '';
         $list = $field->getList();
-        if ($value !== '') {
+        if ('' !== $value) {
             $ret = isset($list[$value]) ? $list[$value] : '';
         }
 
@@ -94,7 +94,7 @@ class Xoonips_ViewTypeComboBox extends Xoonips_ViewType
     {
         $selectValues = $this->getItemtypeValueDetail($list);
         foreach ($selectValues as $selectValue) {
-            if ($value == '') {
+            if ('' == $value) {
                 $value = $selectValue['title_id'];
             }
             break;

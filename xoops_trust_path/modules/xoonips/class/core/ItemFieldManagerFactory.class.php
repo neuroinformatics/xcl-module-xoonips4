@@ -5,7 +5,7 @@ require_once __DIR__.'/ItemFieldManager.class.php';
 class Xoonips_ItemFieldManagerFactory
 {
     private static $instance;
-    private $itemFieldManagerInstances = array();
+    private $itemFieldManagerInstances = [];
     private $dirname;
     private $trustDirname;
     private $xoopsTpl;

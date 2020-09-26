@@ -28,21 +28,21 @@ class UnzipFile
      *
      * @var array
      */
-    private $_ecdirecty = array();
+    private $_ecdirecty = [];
 
     /**
      * central directories.
      *
      * @var array
      */
-    private $_cdirecties = array();
+    private $_cdirecties = [];
 
     /**
      * zip file entries.
      *
      * @var array
      */
-    private $_entries = array();
+    private $_entries = [];
 
     /**
      * error message.
@@ -65,7 +65,7 @@ class UnzipFile
             $this->close();
         }
         $fh = @fopen($zip_filename, 'rb');
-        if ($fh === false) {
+        if (false === $fh) {
             $this->_error = 'failed to open file';
 
             return false;
@@ -90,7 +90,7 @@ class UnzipFile
      */
     public function close()
     {
-        if ($this->_zfhandle === false) {
+        if (false === $this->_zfhandle) {
             // zip file not opened
             $this->_error = 'zip file not opned';
 
@@ -100,9 +100,9 @@ class UnzipFile
         // initialize local resouces
         $this->_zfname = '';
         $this->_zfhandle = false;
-        $this->_ecdirectory = array();
-        $this->_cdirectories = array();
-        $this->_entries = array();
+        $this->_ecdirectory = [];
+        $this->_cdirectories = [];
+        $this->_entries = [];
 
         return true;
     }
@@ -204,7 +204,7 @@ class UnzipFile
             $entry = &$this->_entries[$fname];
         }
         $data_offset = $this->_entries[$fname]['data_offset'];
-        if (substr($entry['filename'], -1) == '/') {
+        if ('/' == substr($entry['filename'], -1)) {
             // this is directory
             $this->_error = 'directory entry found';
 
@@ -268,11 +268,11 @@ class UnzipFile
         // use unix path separator
         $basedir = str_replace('\\', '/', $basedir);
         // remove absolute path separator, this is dangerous.
-        if (substr($fname, 0, 1) == '/') {
+        if ('/' == substr($fname, 0, 1)) {
             $fname = substr($fname, 1);
         }
         $filepath = $basedir.'/'.$fname;
-        if (substr($entry['filename'], -1) == '/') {
+        if ('/' == substr($entry['filename'], -1)) {
             // this is directory
             if (!$this->_create_directory($filepath)) {
                 $this->_error = 'failed to create directory';
@@ -306,7 +306,7 @@ class UnzipFile
 
         // open out put file
         $ofh = @fopen($filepath, 'wb');
-        if ($ofh === false) {
+        if (false === $ofh) {
             $this->_error = 'failed to open output file';
 
             return false;
@@ -317,7 +317,7 @@ class UnzipFile
             while (!feof($this->_zfhandle) && $size > 0) {
                 $len = $unit < $size ? $unit : $size;
                 $buf = fread($this->_zfhandle, $len);
-                if ($buf === false) {
+                if (false === $buf) {
                     fclose($ofh);
                     unlink($filepath);
                     $this->_error = 'failed to read input file';
@@ -339,7 +339,7 @@ class UnzipFile
             // create temporary file
             $tfn = tempnam('/tmp', 'XooNIpsUnzip');
             $tfh = fopen($tfn, 'wb');
-            if ($tfh === false) {
+            if (false === $tfh) {
                 fclose($ofh);
                 unlink($filepath);
                 $this->_error = 'failed to create temporary directory';
@@ -363,7 +363,7 @@ class UnzipFile
             while (!feof($this->_zfhandle) && $size > 0) {
                 $len = $unit < $size ? $unit : $size;
                 $buf = fread($this->_zfhandle, $len);
-                if ($buf === false) {
+                if (false === $buf) {
                     fclose($tfh);
                     unlink($tfn);
                     fclose($ofh);
@@ -392,7 +392,7 @@ class UnzipFile
             $size = $entry['uncompsize'];
             $result = true;
             $tfh = gzopen($tfn, 'rb');
-            if ($tfh === false) {
+            if (false === $tfh) {
                 unlink($tfn);
                 fclose($ofh);
                 unlink($filepath);
@@ -403,7 +403,7 @@ class UnzipFile
             while (!gzeof($tfh) && $size > 0) {
                 $len = $unit < $size ? $unit : $size;
                 $buf = gzread($tfh, $len);
-                if ($buf == '' || false === fwrite($ofh, $buf)) {
+                if ('' == $buf || false === fwrite($ofh, $buf)) {
                     // maybe corrupt zip file
                     fclose($tfh);
                     unlink($tfn);
@@ -483,7 +483,7 @@ class UnzipFile
             }
             $sig = substr($sig, 1).fread($this->_zfhandle, 1);
         }
-        $entry = array();
+        $entry = [];
         // number of this disk
         $entry['numofdisk'] = $this->_fread_unpack('us');
         // number of the disk with the start of the central directory
@@ -518,7 +518,7 @@ class UnzipFile
         if ($sig != $signature) {
             return false;
         }
-        $cdir = array();
+        $cdir = [];
         // version made by
         $cdir['versionmadeby'] = $this->_fread_unpack('us');
         // version needed to extract
@@ -558,7 +558,7 @@ class UnzipFile
         // file comment (variable size)
         $cdir['comment'] = ($cdir['commentlen'] > 0) ? fread($this->_zfhandle, $cdir['commentlen']) : '';
 
-        if ($cdir['filename'] != '') {
+        if ('' != $cdir['filename']) {
             $this->_cdirectories[$cdir['filename']] = $cdir;
         }
 
@@ -573,7 +573,7 @@ class UnzipFile
     private function _read_local_file_header()
     {
         static $signature = "\x50\x4b\x03\x04";
-        $entry = array();
+        $entry = [];
         $entry['offset'] = ftell($this->_zfhandle);
         $sig = fread($this->_zfhandle, 4);
         if ($sig != $signature) {
@@ -622,7 +622,7 @@ class UnzipFile
             $entry['uncompsize'] = $this->_fread_unpack('ul');
         }
 
-        if ($entry['filename'] != '') {
+        if ('' != $entry['filename']) {
             $this->_entries[$entry['filename']] = $entry;
         }
 
@@ -636,18 +636,18 @@ class UnzipFile
      */
     private function _fread_unpack($type)
     {
-        static $types = array(
+        static $types = [
             // unsigned short integer of little endian
-            'us' => array(
+            'us' => [
                 'format' => 'v',
                 'length' => 2,
-             ),
+            ],
             // unsigned long integer of little endian
-            'ul' => array(
+            'ul' => [
                 'format' => 'V',
                 'length' => 4,
-            ),
-        );
+            ],
+        ];
         if (!isset($types[$type])) {
             return false;
         }
@@ -667,7 +667,7 @@ class UnzipFile
     private function _create_directory($filepath)
     {
         $pos = strrpos($filepath, '/');
-        if ($pos === false) {
+        if (false === $pos) {
             // $filepath doesn't contain directory path
             return true;
         }
@@ -675,14 +675,14 @@ class UnzipFile
         $dirnames = explode('/', $dirpath);
         $path = '';
         foreach ($dirnames as $dirname) {
-            if ($dirname == '') {
-                if ($path == '') {
+            if ('' == $dirname) {
+                if ('' == $path) {
                     $path = '/';
                 } else {
                     // ignore double /
                 }
             } else {
-                if ($path == '') {
+                if ('' == $path) {
                     $path = $dirname;
                 } else {
                     $path .= '/'.$dirname;

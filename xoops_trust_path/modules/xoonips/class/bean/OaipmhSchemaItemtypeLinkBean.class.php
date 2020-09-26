@@ -24,7 +24,7 @@ class Xoonips_OaipmhSchemaItemtypeLinkBean extends Xoonips_BeanBase
      */
     public function get($metadataPrefix, $itemType)
     {
-        $ret = array();
+        $ret = [];
         $schemaTable = $this->prefix($this->modulePrefix('oaipmh_schema'));
         $sql = "SELECT a.* FROM $this->table a WHERE a.item_type_id=$itemType AND a.schema_id IN ";
         $sql = $sql." (SELECT schema_id FROM $schemaTable b WHERE metadata_prefix='$metadataPrefix')";
@@ -88,7 +88,7 @@ class Xoonips_OaipmhSchemaItemtypeLinkBean extends Xoonips_BeanBase
 
     private function chk_dup_cache($link, $dup_cache)
     {
-        return in_array(array($link['schema_id'], $link['item_field_detail_id'], $link['group_id']), $dup_cache);
+        return in_array([$link['schema_id'], $link['item_field_detail_id'], $link['group_id']], $dup_cache);
     }
 
     /**
@@ -114,24 +114,24 @@ class Xoonips_OaipmhSchemaItemtypeLinkBean extends Xoonips_BeanBase
         $schemaBean = Xoonips_BeanFactory::getBean('OaipmhSchemaBean', $this->dirname, $this->trustDirname);
         $valuesets = $schemaBean->getSchemaValueSetList('junii2');
         $pre_row = false;
-        $dup_cache = array();
+        $dup_cache = [];
         while ($row = $this->fetchArray($result)) {
             if ($this->hasValueset($valuesets, $row['schema_id1'])) {
                 $row['item_field_detail_id'] = $schemaBean->convertValueset($row['schema_id1'], $row['schema_id2'], $row['item_field_detail_id']);
             }
-            if ($pre_row == false) {
+            if (false == $pre_row) {
                 $link['schema_id'] = $row['schema_id2'];
                 $link['item_type_id'] = $itemType;
                 $link['item_field_detail_id'] = $row['item_field_detail_id'];
                 $link['value'] = $row['value'];
                 $link['group_id'] = $row['group_id'];
             } elseif ($link['schema_id'] != $row['schema_id2'] || $pre_row['number'] != $row['number'] || $pre_row['schema_id1'] == $row['schema_id1']) {
-                if ($this->chk_dup_cache($link, $dup_cache) == false) {
+                if (false == $this->chk_dup_cache($link, $dup_cache)) {
                     if (!$this->insert($link)) {
                         return false;
                     }
                 }
-                $dup_cache[] = array($link['schema_id'], $link['item_field_detail_id'], $link['group_id']);
+                $dup_cache[] = [$link['schema_id'], $link['item_field_detail_id'], $link['group_id']];
                 $link['schema_id'] = $row['schema_id2'];
                 $link['item_type_id'] = $itemType;
                 $link['item_field_detail_id'] = $row['item_field_detail_id'];
@@ -143,7 +143,7 @@ class Xoonips_OaipmhSchemaItemtypeLinkBean extends Xoonips_BeanBase
             }
             $pre_row = $row;
         }
-        if ($this->chk_dup_cache($link, $dup_cache) == false && $link != null && !$this->insert($link)) {
+        if (false == $this->chk_dup_cache($link, $dup_cache) && null != $link && !$this->insert($link)) {
             return false;
         }
 
@@ -185,13 +185,13 @@ class Xoonips_OaipmhSchemaItemtypeLinkBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchRow($result)) {
-            $oaipmh = array(
+            $oaipmh = [
                 'schema_id' => '',
                 'item_field_detail_id' => '',
                 'value' => '',
-                );
+            ];
             $oaipmh['schema_id'] = $row[0].':'.$row[1];
             $item_field_detail_id = $this->getExportItemFieldDetailId($row[1], $row[2], $row[3]);
             if (!$item_field_detail_id) {
@@ -216,8 +216,8 @@ class Xoonips_OaipmhSchemaItemtypeLinkBean extends Xoonips_BeanBase
      **/
     private function getExportItemFieldDetailId($name, $group_id, $item_field_detail_id)
     {
-        if ($group_id == null) {
-            if ($name == 'NIItype' || $name == 'type:NIItype') {
+        if (null == $group_id) {
+            if ('NIItype' == $name || 'type:NIItype' == $name) {
                 return $this->getValueBySeqId($item_field_detail_id);
             } else {
                 return $item_field_detail_id;
@@ -227,7 +227,7 @@ class Xoonips_OaipmhSchemaItemtypeLinkBean extends Xoonips_BeanBase
         if (preg_match('/,/', $group_id)) {
             $groupIds = explode(',', $group_id);
             $detaiIds = explode(',', $item_field_detail_id);
-            $ret = array();
+            $ret = [];
             for ($i = 0; $i < count($detaiIds); ++$i) {
                 if (empty($groupIds[$i])) {
                     $ret[] = $detaiIds[$i];

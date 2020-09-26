@@ -11,7 +11,7 @@ class Xoonips_WorkflowClientGroupJoin extends Xoonips_WorkflowClientBase
     public function doCertify($linkId, $comment)
     {
         $groupsUsersLinkBean = Xoonips_BeanFactory::getBean('GroupsUsersLinkBean', $this->dirname, $this->trustDirname);
-        if (($info = $groupsUsersLinkBean->getGroupUserLinkInfoByLinkId($linkId)) === false || empty($info)) {
+        if (false === ($info = $groupsUsersLinkBean->getGroupUserLinkInfoByLinkId($linkId)) || empty($info)) {
             return false;
         }
         $gid = $info['groupid'];
@@ -29,13 +29,13 @@ class Xoonips_WorkflowClientGroupJoin extends Xoonips_WorkflowClientBase
     public function doProgress($linkId)
     {
         $groupsUsersLinkBean = Xoonips_BeanFactory::getBean('GroupsUsersLinkBean', $this->dirname, $this->trustDirname);
-        if (($info = $groupsUsersLinkBean->getGroupUserLinkInfoByLinkId($linkId)) === false || empty($info)) {
+        if (false === ($info = $groupsUsersLinkBean->getGroupUserLinkInfoByLinkId($linkId)) || empty($info)) {
             return false;
         }
         $gid = $info['groupid'];
         $uid = $info['uid'];
         //send to group admins and certifyUsers
-        $sendToUsers = array();
+        $sendToUsers = [];
         $sendToUsers[] = $uid;
         foreach ($groupsUsersLinkBean->getAdminUserIds($gid) as $id) {
             $sendToUsers[] = $id;
@@ -48,7 +48,7 @@ class Xoonips_WorkflowClientGroupJoin extends Xoonips_WorkflowClientBase
     public function doRefuse($linkId, $comment)
     {
         $groupsUsersLinkBean = Xoonips_BeanFactory::getBean('GroupsUsersLinkBean', $this->dirname, $this->trustDirname);
-        if (($info = $groupsUsersLinkBean->getGroupUserLinkInfoByLinkId($linkId)) === false || empty($info)) {
+        if (false === ($info = $groupsUsersLinkBean->getGroupUserLinkInfoByLinkId($linkId)) || empty($info)) {
             return false;
         }
         $gid = $info['groupid'];
@@ -62,7 +62,7 @@ class Xoonips_WorkflowClientGroupJoin extends Xoonips_WorkflowClientBase
         //event log
         XCube_DelegateUtils::call('Module.Xoonips.Event.Group.Member.JoinReject', $xoopsUser, $xoopsGroup);
         //send to group admins and certifyUsers
-        $sendToUsers = array();
+        $sendToUsers = [];
         $sendToUsers[] = $uid;
         foreach ($groupsUsersLinkBean->getAdminUserIds($gid) as $id) {
             $sendToUsers[] = $id;

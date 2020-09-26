@@ -11,13 +11,13 @@ class Xoonips_GetUserInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
      */
     public function execute()
     {
-        static $keys = array('uid', 'uname', 'name');
-        $ret = array();
-        if (XoopsUtils::getUid() == XOONIPS_UID_GUEST) {
+        static $keys = ['uid', 'uname', 'name'];
+        $ret = [];
+        if (XOONIPS_UID_GUEST == XoopsUtils::getUid()) {
             return false;
         }
         $uid = intval($this->mRequest->getRequest('uid'));
-        if ($uid == 0) {
+        if (0 == $uid) {
             return false;
         }
         $userHandler = &xoops_gethandler('user');

@@ -10,7 +10,7 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
     {
         global $xoopsUser;
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-        $viewData = array();
+        $viewData = [];
         $indexId = $request->getParameter('index_id');
         $uid = $xoopsUser->getVar('uid');
         if (null == $indexId) {
@@ -44,11 +44,11 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
         } else {
             $breadcrumbsName = _MD_XOONIPS_INDEX_PANKUZU_EDIT_PUBLIC_INDEX_KEYWORD;
         }
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => $breadcrumbsName,
-            ),
-        );
+            ],
+        ];
         $viewData['xoops_breadcrumbs'] = $breadcrumbs;
         // if not public index
         if (XOONIPS_OL_PUBLIC != $index['open_level']) {
@@ -121,7 +121,7 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
     {
         global $xoopsUser;
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-        $viewData = array();
+        $viewData = [];
         $indexId = $request->getParameter('index_id');
         $parentIndexId = $request->getParameter('parent_index_id');
         $uid = $xoopsUser->getVar('uid');
@@ -184,8 +184,8 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
         global $xoopsDB;
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         $errors = new Xoonips_Errors();
-        $viewData = array();
-        $index = array();
+        $viewData = [];
+        $index = [];
         $indexId = $request->getParameter('index_id');
         $parentIndexId = $request->getParameter('parent_index_id');
         $title = $request->getParameter('title');
@@ -284,7 +284,7 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
         global $xoopsUser;
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         $errors = new Xoonips_Errors();
-        $viewData = array();
+        $viewData = [];
         $indexId = $request->getParameter('index_id');
         $uid = $xoopsUser->getVar('uid');
 
@@ -388,7 +388,7 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
         global $xoopsUser;
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         $errors = new Xoonips_Errors();
-        $viewData = array();
+        $viewData = [];
         $indexId = $request->getParameter('index_id');
         $uid = $xoopsUser->getVar('uid');
         $index = $indexBean->getIndex($indexId);
@@ -425,7 +425,7 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
     protected function doDelete(&$request, &$response)
     {
         global $xoopsUser;
-        $viewData = array();
+        $viewData = [];
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         $uid = $xoopsUser->getVar('uid');
         $indexId = $request->getParameter('index_id');
@@ -456,7 +456,7 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
             $indexIds[] = $idx['index_id'];
         }
 
-        $notification_contexts = array();
+        $notification_contexts = [];
         foreach ($indexIds as $xid) {
             $notification_contexts[$xid] = $this->notification->beforeUserIndexDeleted($xid);
         }

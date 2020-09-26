@@ -12,25 +12,25 @@ class Xoonips_WorkflowClientGroupItemsWithdrawal extends Xoonips_WorkflowClientB
     {
         $indexItemLinkBean = Xoonips_BeanFactory::getBean('IndexItemLinkBean', $this->dirname, $this->trustDirname);
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-        if (($info = $indexItemLinkBean->getIndexItemLinkInfoByIndexItemLinkId($indexItemLinkId)) === false || empty($info)) {
+        if (false === ($info = $indexItemLinkBean->getIndexItemLinkInfoByIndexItemLinkId($indexItemLinkId)) || empty($info)) {
             return false;
         }
         $itemId = $info['item_id'];
         $indexId = $info['index_id'];
-        if (($info = $indexBean->getIndex($indexId)) === false) {
+        if (false === ($info = $indexBean->getIndex($indexId))) {
             return false;
         }
         $groupId = $info['groupid'];
         // delete xoonip_index_item_link info by index_id and item_id
-        if ($groupId == 0 || !$indexItemLinkBean->deleteById($indexId, $itemId)) {
+        if (0 == $groupId || !$indexItemLinkBean->deleteById($indexId, $itemId)) {
             return false;
         }
         //update xoonips_oaipmh_item_status
         $openIndexIds = $indexItemLinkBean->getOpenIndexIds($itemId);
-        if ($openIndexIds === false) {
+        if (false === $openIndexIds) {
             return false;
         }
-        if (count($openIndexIds) == 0) {
+        if (0 == count($openIndexIds)) {
             $itemStatusBean = Xoonips_BeanFactory::getBean('OaipmhItemStatusBean', $this->dirname, $this->trustDirname);
             if (!$itemStatusBean->delete($itemId)) {
                 return false;
@@ -42,7 +42,7 @@ class Xoonips_WorkflowClientGroupItemsWithdrawal extends Xoonips_WorkflowClientB
         $groupsUsersLinkBean = Xoonips_BeanFactory::getBean('GroupsUsersLinkBean', $this->dirname);
         $itemUsersBean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $this->dirname, $this->trustDirname);
         $itemUsersInfo = $itemUsersBean->getItemUsersInfo($itemId);
-        $sendToUsers = array();
+        $sendToUsers = [];
         foreach ($groupsUsersLinkBean->getAdminUserIds($groupId) as $id) {
             $sendToUsers[] = $id;
         }
@@ -58,16 +58,16 @@ class Xoonips_WorkflowClientGroupItemsWithdrawal extends Xoonips_WorkflowClientB
     {
         $indexItemLinkBean = Xoonips_BeanFactory::getBean('IndexItemLinkBean', $this->dirname, $this->trustDirname);
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-        if (($info = $indexItemLinkBean->getIndexItemLinkInfoByIndexItemLinkId($indexItemLinkId)) === false || empty($info)) {
+        if (false === ($info = $indexItemLinkBean->getIndexItemLinkInfoByIndexItemLinkId($indexItemLinkId)) || empty($info)) {
             return false;
         }
         $itemId = $info['item_id'];
         $indexId = $info['index_id'];
-        if (($info = $indexBean->getIndex($indexId)) === false) {
+        if (false === ($info = $indexBean->getIndex($indexId))) {
             return false;
         }
         $groupId = $info['groupid'];
-        if ($groupId == 0) {
+        if (0 == $groupId) {
             return;
         }
         $sendToUsers = Xoonips_Workflow::getCurrentApproverUserIds($this->dirname, $this->dataname, $indexItemLinkId);
@@ -78,17 +78,17 @@ class Xoonips_WorkflowClientGroupItemsWithdrawal extends Xoonips_WorkflowClientB
     {
         $indexItemLinkBean = Xoonips_BeanFactory::getBean('IndexItemLinkBean', $this->dirname, $this->trustDirname);
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-        if (($info = $indexItemLinkBean->getIndexItemLinkInfoByIndexItemLinkId($indexItemLinkId)) === false || empty($info)) {
+        if (false === ($info = $indexItemLinkBean->getIndexItemLinkInfoByIndexItemLinkId($indexItemLinkId)) || empty($info)) {
             return false;
         }
         $itemId = $info['item_id'];
         $indexId = $info['index_id'];
-        if (($info = $indexBean->getIndex($indexId)) === false) {
+        if (false === ($info = $indexBean->getIndex($indexId))) {
             return false;
         }
         $groupId = $info['groupid'];
         // update xoonip_index_item_link
-        if ($groupId == 0 || !$indexItemLinkBean->update($indexId, $itemId, XOONIPS_CERTIFIED)) {
+        if (0 == $groupId || !$indexItemLinkBean->update($indexId, $itemId, XOONIPS_CERTIFIED)) {
             return false;
         }
         $groupId = $indexInfo['groupid'];
@@ -98,7 +98,7 @@ class Xoonips_WorkflowClientGroupItemsWithdrawal extends Xoonips_WorkflowClientB
         $groupsUsersLinkBean = Xoonips_BeanFactory::getBean('GroupsUsersLinkBean', $this->dirname);
         $itemUsersBean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $this->dirname, $this->trustDirname);
         $itemUsersInfo = $itemUsersBean->getItemUsersInfo($itemId);
-        $sendToUsers = array();
+        $sendToUsers = [];
         foreach ($groupsUsersLinkBean->getAdminUserIds($groupId) as $id) {
             $sendToUsers[] = $id;
         }

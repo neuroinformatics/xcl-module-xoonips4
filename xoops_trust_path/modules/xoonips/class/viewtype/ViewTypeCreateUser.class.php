@@ -12,18 +12,18 @@ class Xoonips_ViewTypeCreateUser extends Xoonips_ViewType
     public function getInputView($field, $value, $groupLoopId)
     {
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
-        $userInfos = array();
+        $userInfos = [];
         if (!empty($value)) {
             $vas = explode(',', $value);
             foreach ($vas as $va) {
                 $userInfo = $userBean->getUserBasicInfo($va);
-                $userInfos[] = array('name' => $userInfo['name'], 'uname' => $userInfo['uname'], 'uid' => $va);
+                $userInfos[] = ['name' => $userInfo['name'], 'uname' => $userInfo['uname'], 'uid' => $va];
             }
         } else {
             global $xoopsUser;
             $value = $xoopsUser->getVar('uid');
             $userInfo = $userBean->getUserBasicInfo($value);
-            $userInfos[] = array('name' => $userInfo['name'], 'uname' => $userInfo['uname'], 'uid' => $value);
+            $userInfos[] = ['name' => $userInfo['name'], 'uname' => $userInfo['uname'], 'uid' => $value];
         }
         $fieldName = $this->getFieldName($field, $groupLoopId);
         $divName = $fieldName.'_div';
@@ -41,13 +41,13 @@ class Xoonips_ViewTypeCreateUser extends Xoonips_ViewType
     public function getDisplayView($field, $value, $groupLoopId)
     {
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
-        $userInfos = array();
+        $userInfos = [];
         if (!empty($value)) {
             $vas = explode(',', $value);
             foreach ($vas as $va) {
                 $userInfo = $userBean->getUserBasicInfo($va);
                 if ($userInfo) {
-                    $userInfos[] = array('name' => $userInfo['name'], 'uname' => $userInfo['uname']);
+                    $userInfos[] = ['name' => $userInfo['name'], 'uname' => $userInfo['uname']];
                 }
             }
         }
@@ -72,13 +72,13 @@ class Xoonips_ViewTypeCreateUser extends Xoonips_ViewType
     public function getDetailDisplayView($field, $value, $display)
     {
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
-        $userInfos = array();
+        $userInfos = [];
         if (!empty($value)) {
             $vas = explode(',', $value);
             foreach ($vas as $va) {
                 $userInfo = $userBean->getUserBasicInfo($va);
                 if ($userInfo) {
-                    $userInfos[] = array('name' => $userInfo['name'], 'uname' => $userInfo['uname']);
+                    $userInfos[] = ['name' => $userInfo['name'], 'uname' => $userInfo['uname']];
                 }
             }
         }
@@ -93,18 +93,18 @@ class Xoonips_ViewTypeCreateUser extends Xoonips_ViewType
     public function getItemOwnersEditView($field, $value, $groupLoopId)
     {
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
-        $userInfos = array();
+        $userInfos = [];
         if (!empty($value)) {
             $vas = explode(',', $value);
             foreach ($vas as $va) {
                 $userInfo = $userBean->getUserBasicInfo($va);
-                $userInfos[] = array('name' => $userInfo['name'], 'uname' => $userInfo['uname'], 'uid' => $va);
+                $userInfos[] = ['name' => $userInfo['name'], 'uname' => $userInfo['uname'], 'uid' => $va];
             }
         } else {
             global $xoopsUser;
             $value = $xoopsUser->getVar('uid');
             $userInfo = $userBean->getUserBasicInfo($value);
-            $userInfos[] = array('name' => $userInfo['name'], 'uname' => $userInfo['uname'], 'uid' => $value);
+            $userInfos[] = ['name' => $userInfo['name'], 'uname' => $userInfo['uname'], 'uid' => $value];
         }
         $fieldName = $this->getFieldName($field, $groupLoopId);
         $divName = $fieldName.'_div';
@@ -131,7 +131,7 @@ class Xoonips_ViewTypeCreateUser extends Xoonips_ViewType
     public function getMetaInfo($field, $value)
     {
         $ret = '';
-        $users = array();
+        $users = [];
         if (!empty($value)) {
             $vas = explode(',', $value);
             foreach ($vas as $va) {
@@ -154,8 +154,8 @@ class Xoonips_ViewTypeCreateUser extends Xoonips_ViewType
 
     public function ownersEditCheck(&$errors, $field, $value, $fieldName)
     {
-        if (trim($value) == '') {
-            $parameters = array();
+        if ('' == trim($value)) {
+            $parameters = [];
             $parameters[] = $field->getName();
             $errors->addError('_MD_XOONIPS_ERROR_REQUIRED', $fieldName, $parameters);
         }
@@ -171,7 +171,7 @@ class Xoonips_ViewTypeCreateUser extends Xoonips_ViewType
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
         $userInfo = $userBean->getUserBasicInfo($uid);
         if ($userInfo) {
-            if ($userInfo['name'] == null) {
+            if (null == $userInfo['name']) {
                 return $userInfo['uname'];
             } else {
                 return $userInfo['name'].' ('.$userInfo['uname'].') ';
@@ -191,14 +191,14 @@ class Xoonips_ViewTypeCreateUser extends Xoonips_ViewType
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];
         } else {
-            $tableData = array();
+            $tableData = [];
             $sqlStrings[$tableName] = &$tableData;
         }
 
         if (isset($tableData[$columnName])) {
             $columnData = &$tableData[$columnName];
         } else {
-            $columnData = array();
+            $columnData = [];
             $tableData[$columnName] = &$columnData;
         }
 
@@ -217,10 +217,10 @@ class Xoonips_ViewTypeCreateUser extends Xoonips_ViewType
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];
         } else {
-            $tableData = array();
+            $tableData = [];
             $sqlStrings[$tableName] = &$tableData;
         }
-        if ($value != '') {
+        if ('' != $value) {
             require_once dirname(__DIR__).'/core/DataTypeVarchar.class.php';
             $dataType = new Xoonips_DataTypeVarchar();
             $query1 = $this->search->getSearchSql('name', $value, _CHARSET, $dataType, $isExact);
@@ -233,7 +233,7 @@ class Xoonips_ViewTypeCreateUser extends Xoonips_ViewType
     {
         $table = $field->getTableName();
         $column = $field->getColumnName();
-        $users = array();
+        $users = [];
         foreach ($data[$table] as $data) {
             $users[] = $this->getUserInfo($data[$column]);
         }
@@ -290,7 +290,7 @@ class Xoonips_ViewTypeCreateUser extends Xoonips_ViewType
      */
     public function getEntitydata($field, &$data)
     {
-        $ret = array();
+        $ret = [];
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
         $table = $field->getTableName();
         $column = $field->getColumnName();

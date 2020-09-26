@@ -12,7 +12,7 @@ class Xoonips_ViewTypeFactory
      *
      * @var {Trustdirname}_ViewType[]
      */
-    private $viewTypeInstances = array();
+    private $viewTypeInstances = [];
 
     /**
      * constructor.
@@ -64,7 +64,7 @@ class Xoonips_ViewTypeFactory
      */
     public static function getInstance($dirname, $trustDirname)
     {
-        static $instance = array();
+        static $instance = [];
         if (!isset($instance[$dirname])) {
             $instance[$dirname] = new self($dirname, $trustDirname);
         }

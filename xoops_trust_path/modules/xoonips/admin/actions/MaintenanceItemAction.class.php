@@ -35,33 +35,33 @@ class Xoonips_Admin_MaintenanceItemAction extends Xoonips_AbstractAction
         $dirname = $this->mAsset->mDirname;
         $constpref = '_AD_'.strtoupper($dirname);
         // breadcrumbs
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => constant($constpref.'_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_MAINTENANCE_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=Maintenance',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_MAINTENANCE_ITEM_TITLE'),
-            ),
-        );
-        $menu = array(
-            array(
+            ],
+        ];
+        $menu = [
+            [
                 'title' => constant($constpref.'_MAINTENANCE_ITEM_DELETE_TITLE'),
                 'link' => XOOPS_URL.'/modules/'.$dirname.'/admin/maintenance_itemdelete.php',
-            ),
-            array(
+            ],
+            [
                 'title' => constant($constpref.'_MAINTENANCE_ITEM_WITHDRAW_TITLE'),
                 'link' => XOOPS_URL.'/modules/'.$dirname.'/admin/maintenance_itemwithdraw.php',
-            ),
-            array(
+            ],
+            [
                 'title' => constant($constpref.'_MAINTENANCE_ITEM_TRANSFER_TITLE'),
                 'link' => XOOPS_URL.'/modules/'.$dirname.'/admin/maintenance_itemtransfer.php',
-            ),
-        );
+            ],
+        ];
         $render->setTemplateName('admin_menu.html');
         $render->setAttribute('title', constant($constpref.'_MAINTENANCE_ITEM_TITLE'));
         $render->setAttribute('description', constant($constpref.'_MAINTENANCE_ITEM_DESC'));

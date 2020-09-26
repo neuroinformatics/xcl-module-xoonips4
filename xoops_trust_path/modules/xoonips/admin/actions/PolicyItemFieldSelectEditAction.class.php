@@ -82,18 +82,18 @@ class Xoonips_Admin_PolicyItemFieldSelectEditAction extends Xoonips_AbstractEdit
         $name = $this->_getId();
         $this->mObjectHandler = &$this->_getHandler();
         $values = $this->mObjectHandler->getValueSet($name);
-        $codes = array();
-        $names = array();
+        $codes = [];
+        $names = [];
         foreach ($values as $value) {
             $codes[] = $value['title_id'];
             $names[] = $value['title'];
         }
-        $this->mObject = array(
+        $this->mObject = [
             'name' => $name,
             'select_name' => $name,
             'codes' => $codes,
             'names' => $names,
-        );
+        ];
     }
 
     /**
@@ -103,21 +103,21 @@ class Xoonips_Admin_PolicyItemFieldSelectEditAction extends Xoonips_AbstractEdit
      */
     protected function _saveObject()
     {
-        $values = array();
+        $values = [];
         $name = $this->mObject['name'];
         $selectName = $this->mObject['select_name'];
         $num = count($this->mObject['codes']);
         for ($i = 0; $i < $num; ++$i) {
-            $values[] = array(
+            $values[] = [
                 'title_id' => $this->mObject['codes'][$i],
                 'title' => $this->mObject['names'][$i],
                 'weight' => $i + 1,
-            );
+            ];
         }
         if (!$this->mObjectHandler->setValueSet($selectName, $values)) {
             return false;
         }
-        if ($name != '' && $name != $selectName) {
+        if ('' != $name && $name != $selectName) {
             if (!$this->mObjectHandler->deleteByName($name)) {
                 return false;
             }
@@ -137,27 +137,27 @@ class Xoonips_Admin_PolicyItemFieldSelectEditAction extends Xoonips_AbstractEdit
         $trustDirname = $this->mAsset->mTrustDirname;
         $constpref = '_AD_'.strtoupper($dirname);
         // breadcrumbs
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => constant($constpref.'_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=Policy',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_ITEM_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=PolicyItem',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_ITEM_FIELD_SELECT_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=PolicyItemFieldSelect',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_ITEM_FIELD_SELECT_EDIT_TITLE'),
-            ),
-        );
+            ],
+        ];
         $render->setTemplateName('policy_item_field_select_edit.html');
         $render->setAttribute('title', constant($constpref.'_POLICY_ITEM_FIELD_SELECT_EDIT_TITLE'));
         $render->setAttribute('description', constant($constpref.'_POLICY_ITEM_FIELD_SELECT_EDIT_DESC'));

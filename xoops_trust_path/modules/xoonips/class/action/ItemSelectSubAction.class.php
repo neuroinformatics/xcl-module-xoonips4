@@ -53,10 +53,10 @@ class Xoonips_ItemSelectSubAction extends Xoonips_ActionBase
         $order_dir = '' != $request->getParameter('order_dir') ? $request->getParameter('order_dir') : XOONIPS_ASC;
         $itemcount = '' != $request->getParameter('itemcount') ? $request->getParameter('itemcount') : 2;
 
-        $cri = array('start' => ($page - 1) * $itemcount,
-                'rows' => $itemcount,
-                'orderby' => $orderby,
-                'orderdir' => $order_dir, );
+        $cri = ['start' => ($page - 1) * $itemcount,
+            'rows' => $itemcount,
+            'orderby' => $orderby,
+            'orderdir' => $order_dir, ];
 
         $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
         $itemList = $itemBean->getItemsList($itemIds, $cri);
@@ -82,7 +82,7 @@ class Xoonips_ItemSelectSubAction extends Xoonips_ActionBase
         }
 
         $response->setViewDataByKey('order_by_select', $sortTitles);
-        $response->setViewDataByKey('item_count_select', array('2', '5', '10'));
+        $response->setViewDataByKey('item_count_select', ['2', '5', '10']);
 
         //centering current page number(5th of $pages)
         $response->setViewDataByKey('pages', $this->getSelectablePageNumber($page, ceil($num_of_items / $itemcount)));
@@ -109,7 +109,7 @@ class Xoonips_ItemSelectSubAction extends Xoonips_ActionBase
         global $xoopsUser;
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         $uid = $xoopsUser->getVar('uid');
-        $groupIndexes = array();
+        $groupIndexes = [];
         $privateIndex = false;
         $publicIndex = $indexBean->getPublicIndex();
         $publicGroupIndexes = $indexBean->getPublicGroupIndex();
@@ -118,12 +118,12 @@ class Xoonips_ItemSelectSubAction extends Xoonips_ActionBase
             $privateIndex = $indexBean->getPrivateIndex($uid);
         }
         $groupIndexes = $indexBean->mergeIndexes($publicGroupIndexes, $groupIndexes);
-        $indexes = array();
-        $trees = array();
+        $indexes = [];
+        $trees = [];
         // public index
         if ($publicIndex) {
             $indexes[] = $publicIndex;
-            $tree = array();
+            $tree = [];
             $tree['index_id'] = $publicIndex['index_id'];
             $trees[] = $tree;
         }
@@ -131,7 +131,7 @@ class Xoonips_ItemSelectSubAction extends Xoonips_ActionBase
         if ($groupIndexes) {
             foreach ($groupIndexes as $index) {
                 $indexes[] = $index;
-                $tree = array();
+                $tree = [];
                 $tree['index_id'] = $index['index_id'];
                 $trees[] = $tree;
             }
@@ -140,7 +140,7 @@ class Xoonips_ItemSelectSubAction extends Xoonips_ActionBase
         if ($privateIndex) {
             $privateIndex['title'] = 'Private';
             $indexes[] = $privateIndex;
-            $tree = array();
+            $tree = [];
             $tree['index_id'] = $privateIndex['index_id'];
             $trees[] = $tree;
         }
@@ -154,7 +154,7 @@ class Xoonips_ItemSelectSubAction extends Xoonips_ActionBase
     private function getSelectablePageNumber($page, $maxpage)
     {
         //centering current page number(5th of $pages)
-        $pages = array(min(max(1, $page - 4), max(1, $maxpage - 9)));
+        $pages = [min(max(1, $page - 4), max(1, $maxpage - 9))];
         for ($i = 1; $i < 10 && $pages[$i - 1] < $maxpage; ++$i) {
             $pages[$i] = $pages[$i - 1] + 1;
         }

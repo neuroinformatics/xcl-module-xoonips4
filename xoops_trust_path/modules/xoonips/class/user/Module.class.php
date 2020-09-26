@@ -41,16 +41,16 @@ class Xoonips_UserModule extends User_Module
             // register self admin render system at once
             $root = &XCube_Root::getSingleton();
             $root->overrideSiteConfig(
-                array(
-                    'RenderSystems' => array(
+                [
+                    'RenderSystems' => [
                         $adminRenderSystem => $adminRenderSystem,
-                    ),
-                    $adminRenderSystem => array(
+                    ],
+                    $adminRenderSystem => [
                         'root' => XOOPS_TRUST_PATH.'/modules/'.$trustDirname,
                         'path' => '/admin/class/user/AdminRenderSystem.class.php',
                         'class' => $adminRenderSystem,
-                    ),
-                )
+                    ],
+                ]
             );
             $isFirst = false;
         }

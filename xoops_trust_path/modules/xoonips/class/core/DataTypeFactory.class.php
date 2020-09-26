@@ -10,7 +10,7 @@ class Xoonips_DataTypeFactory
      *
      * @var {Trustdirname}_DataType[]
      */
-    private $dataTypeInstances = array();
+    private $dataTypeInstances = [];
 
     /**
      * constructor.
@@ -55,7 +55,7 @@ class Xoonips_DataTypeFactory
      */
     public static function getInstance($dirname, $trustDirname)
     {
-        static $instance = array();
+        static $instance = [];
         if (!isset($instance[$dirname])) {
             $instance[$dirname] = new self($dirname, $trustDirname);
         }

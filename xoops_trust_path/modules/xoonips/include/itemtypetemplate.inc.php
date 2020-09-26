@@ -4,13 +4,13 @@
 function createItemTypeTemplate($resource_type, $resource_name, &$template_source, &$template_timestamp, &$smarty_obj)
 {
     $parameter = explode(',', $resource_name);
-    if ($resource_type != $parameter[1].'_itemtype') {
+    if ($parameter[1].'_itemtype' != $resource_type) {
         return false;
     }
     $itemTypeBean = Xoonips_BeanFactory::getBean('ItemTypeBean', $parameter[1]);
     $itemType = $itemTypeBean->getItemTypeInfo($parameter[0]);
 
-    if ($itemType == false) {
+    if (false == $itemType) {
         return false;
     }
     $template_source = $itemType['template'];

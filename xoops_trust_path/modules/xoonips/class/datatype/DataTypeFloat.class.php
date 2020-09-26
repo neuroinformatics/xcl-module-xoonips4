@@ -9,13 +9,13 @@ class Xoonips_DataTypeFloat extends Xoonips_DataType
         $ret = true;
         if (is_array($value)) {
             return true;
-        } elseif (trim($value) != '' && !is_numeric($value)) {
-            $parameters = array();
+        } elseif ('' != trim($value) && !is_numeric($value)) {
+            $parameters = [];
             $parameters[] = $field->getName();
             $errors->addError('_MD_'.strtoupper($this->trustDirname).'_MESSAGE_INPUT_FLOAT', $fieldName, $parameters);
             $ret = false;
         } elseif ($field->getLen() > 0 && strlen(trim($value)) > $field->getLen()) {
-            $parameters = array();
+            $parameters = [];
             $parameters[] = $field->getName();
             $parameters[] = $field->getLen();
             $errors->addError('_MD_'.strtoupper($this->trustDirname).'_ERROR_MAXLENGTH', $fieldName, $parameters);
@@ -27,12 +27,12 @@ class Xoonips_DataTypeFloat extends Xoonips_DataType
 
     public function getValueSql($field)
     {
-        $value = array();
+        $value = [];
         $len = $field->getLen();
-        $decimalPlaces = ($field->getDecimalPlaces() == '') ? 0 : $field->getDecimalPlaces();
-        $essential = ($field->getEssential() == 1) ? 'NOT NULL' : '';
+        $decimalPlaces = ('' == $field->getDecimalPlaces()) ? 0 : $field->getDecimalPlaces();
+        $essential = (1 == $field->getEssential()) ? 'NOT NULL' : '';
         $defaultValue = $field->getDefault();
-        $default = ($defaultValue != '') ? " default '$defaultValue'" : "  default '0'";
+        $default = ('' != $defaultValue) ? " default '$defaultValue'" : "  default '0'";
         $value[0] = " float($len,$decimalPlaces) ".$essential.$default;
         $value[1] = '';
 
@@ -41,26 +41,26 @@ class Xoonips_DataTypeFloat extends Xoonips_DataType
 
     public function valueAttrCheck($field, &$errors)
     {
-        if ($field->getLen() == '') {
-            $parameters = array();
+        if ('' == $field->getLen()) {
+            $parameters = [];
             $parameters[] = constant('_AM_'.strtoupper($this->trustDirname).'_LABEL_ITEMTYPE_DATA_LENGTH');
             $errors->addError('_MD_'.strtoupper($this->trustDirname).'_ERROR_REQUIRED', '', $parameters);
-        } elseif ($field->getLen() == 0) {
-            $parameters = array();
+        } elseif (0 == $field->getLen()) {
+            $parameters = [];
             $parameters[] = constant('_AM_'.strtoupper($this->trustDirname).'_LABEL_ITEMTYPE_DATA_LENGTH');
             $errors->addError('_MD_'.strtoupper($this->trustDirname).'_CHECK_INPUT_ERROR_MSG', '', $parameters);
-        } elseif ($field->getDecimalPlaces() == '') {
-            $parameters = array();
+        } elseif ('' == $field->getDecimalPlaces()) {
+            $parameters = [];
             $parameters[] = constant('_AM_'.strtoupper($this->trustDirname).'_LABEL_ITEMTYPE_DATA_LENGTH2');
             $errors->addError('_MD_'.strtoupper($this->trustDirname).'_ERROR_REQUIRED', '', $parameters);
         } elseif ($field->getDecimalPlaces() < 0) {
-            $parameters = array();
+            $parameters = [];
             $parameters[] = constant('_AM_'.strtoupper($this->trustDirname).'_LABEL_ITEMTYPE_DATA_LENGTH2');
             $errors->addError('_MD_'.strtoupper($this->trustDirname).'_CHECK_INPUT_ERROR_MSG', '', $parameters);
         } else {
-            if ($field->getDefault() != '' && (!is_numeric($field->getDefault()) ||
+            if ('' != $field->getDefault() && (!is_numeric($field->getDefault()) ||
             strlen($field->getDefault()) > $field->getLen() + $field->getDecimalPlaces() + 1)) {
-                $parameters = array();
+                $parameters = [];
                 $parameters[] = constant('_AM_'.strtoupper($this->trustDirname).'_LABEL_ITEMTYPE_DEFAULT_VALUE');
                 $errors->addError('_MD_'.strtoupper($this->trustDirname).'_CHECK_INPUT_ERROR_MSG', '', $parameters);
             }

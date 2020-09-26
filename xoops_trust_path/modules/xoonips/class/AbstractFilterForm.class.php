@@ -17,7 +17,7 @@ class Xoonips_AbstractFilterForm
      *
      * @var array
      */
-    protected $mSortKeys = array();
+    protected $mSortKeys = [];
 
     /**
      * criteria.
@@ -51,7 +51,7 @@ class Xoonips_AbstractFilterForm
         $this->mNavi = &$navi;
         $this->_mHandler = &$handler;
         $this->_mCriteria = new CriteriaCompo();
-        $this->mNavi->mGetTotalItems->add(array(&$this, 'getTotalItems'));
+        $this->mNavi->mGetTotalItems->add([&$this, 'getTotalItems']);
     }
 
     /**
@@ -131,13 +131,13 @@ class Xoonips_AbstractFilterForm
     {
         $t_start = 0;
         $t_limit = 0;
-        if ($start === null) {
+        if (null === $start) {
             $t_start = $this->mNavi->getStart();
         } else {
             $t_start = intval($start);
             $this->mNavi->setStart($t_start);
         }
-        if ($limit === null) {
+        if (null === $limit) {
             $t_limit = $this->mNavi->getPerpage();
         } else {
             $t_limit = intval($limit);

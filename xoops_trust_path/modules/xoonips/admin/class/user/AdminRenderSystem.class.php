@@ -20,17 +20,17 @@ class Xoonips_UserAdminRenderSystem extends Xoonips_AdminRenderSystem
     {
         $root = &XCube_Root::getSingleton();
         $module = &$root->mContext->mXoopsModule;
-        if (!is_object($module) || $module->get('dirname') != 'user') {
+        if (!is_object($module) || 'user' != $module->get('dirname')) {
             return parent::getOverrideFileInfo($file, $prefix, $isSpDirName);
         }
-        $ret = array(
+        $ret = [
             'url' => null,
             'path' => null,
             'theme' => null,
             'dirname' => null,
             'file' => null,
-        );
-        if (strpos($file, '..') !== false || strpos($prefix, '..' !== false)) {
+        ];
+        if (false !== strpos($file, '..') || strpos($prefix, '..' !== false)) {
             return $ret;
         }
         $trustDirname = basename(dirname(dirname(dirname(__DIR__))));

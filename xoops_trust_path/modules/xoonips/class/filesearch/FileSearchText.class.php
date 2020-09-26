@@ -24,13 +24,13 @@ class Xoonips_FileSearchText extends Xoonips_FileSearchBase
      */
     public function getSearchInstance()
     {
-        return array(
+        return [
             'name' => 'text',
             'display_name' => 'Plain Text',
-            'mime_type' => array('text/plain'),
-            'extensions' => array('txt', 'text'),
+            'mime_type' => ['text/plain'],
+            'extensions' => ['txt', 'text'],
             'version' => '2.0',
-        );
+        ];
     }
 
     /**

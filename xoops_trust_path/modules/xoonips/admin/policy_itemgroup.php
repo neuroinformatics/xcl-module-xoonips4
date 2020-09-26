@@ -8,19 +8,19 @@ require_once __DIR__.'/class/action/PolicyItemGroupAction.class.php';
 $request = new Xoonips_Request();
 $response = new Xoonips_Response();
 $op = $request->getParameter('op');
-if ($op == null) {
+if (null == $op) {
     $op = 'init';
 }
 
 // check request
-if (!in_array($op, array('init', 'register', 'registersave', 'edit', 'editsave', 'delete',
-    'release', 'detailregister', 'detailregistersave', 'sorteditsave', ))) {
+if (!in_array($op, ['init', 'register', 'registersave', 'edit', 'editsave', 'delete',
+    'release', 'detailregister', 'detailregistersave', 'sorteditsave', ])) {
     die('illegal request');
 }
 
 // set action map
-$actionMap = array();
-$actionMap = array();
+$actionMap = [];
+$actionMap = [];
 $actionMap['init_success'] = 'policy_itemgroup.html';
 $actionMap['register_success'] = 'policy_itemgroup_register.html';
 $actionMap['registersave_success'] = 'redirect_header';

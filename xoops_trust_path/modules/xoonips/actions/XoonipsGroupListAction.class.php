@@ -9,7 +9,7 @@ class Xoonips_GroupListAction extends Xoonips_UserActionBase
     {
         global $xoopsUser;
         $uid = $xoopsUser->getVar('uid');
-        $viewData = array();
+        $viewData = [];
 
         $groupbean = Xoonips_BeanFactory::getBean('GroupsBean', $this->dirname, $this->trustDirname);
         $groups = $groupbean->getGroups(Xoonips_Enum::GROUP_TYPE);
@@ -22,11 +22,11 @@ class Xoonips_GroupListAction extends Xoonips_UserActionBase
         $viewData['newflag'] = $newflag;
         $token_ticket = $this->createToken('user_group_list');
         $viewData['token_ticket'] = $token_ticket;
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => _MD_XOONIPS_LANG_GROUP_LIST,
-            ),
-        );
+            ],
+        ];
         $viewData['xoops_breadcrumbs'] = $breadcrumbs;
         $viewData['grpNotCertified'] = Xoonips_Enum::GRP_NOT_CERTIFIED;
         $viewData['grpOpenRequired'] = Xoonips_Enum::GRP_OPEN_REQUIRED;
@@ -44,7 +44,7 @@ class Xoonips_GroupListAction extends Xoonips_UserActionBase
     {
         global $xoopsUser;
         $uid = $xoopsUser->getVar('uid');
-        $viewData = array();
+        $viewData = [];
 
         if (!$this->validateToken('user_group_list')) {
             $response->setSystemError('Ticket error');
@@ -71,7 +71,7 @@ class Xoonips_GroupListAction extends Xoonips_UserActionBase
             } else {
                 $viewData['redirect_msg'] = $message;
             }
-        } elseif ($message != '') {
+        } elseif ('' != $message) {
             $viewData['redirect_msg'] = $message;
         }
 
@@ -88,7 +88,7 @@ class Xoonips_GroupListAction extends Xoonips_UserActionBase
     {
         global $xoopsUser;
         $uid = $xoopsUser->getVar('uid');
-        $viewData = array();
+        $viewData = [];
 
         if (!$this->validateToken('user_group_list')) {
             $response->setSystemError('Ticket error');
@@ -115,7 +115,7 @@ class Xoonips_GroupListAction extends Xoonips_UserActionBase
             } else {
                 $viewData['redirect_msg'] = $message;
             }
-        } elseif ($message != '') {
+        } elseif ('' != $message) {
             $viewData['redirect_msg'] = $message;
         }
 
@@ -130,7 +130,7 @@ class Xoonips_GroupListAction extends Xoonips_UserActionBase
 
     protected function doDelete(&$request, &$response)
     {
-        $viewData = array();
+        $viewData = [];
 
         if (!$this->validateToken('user_group_list')) {
             $response->setSystemError('Ticket error');
@@ -157,7 +157,7 @@ class Xoonips_GroupListAction extends Xoonips_UserActionBase
             } else {
                 $viewData['redirect_msg'] = $message;
             }
-        } elseif ($message != '') {
+        } elseif ('' != $message) {
             $viewData['redirect_msg'] = $message;
         }
 
@@ -181,16 +181,16 @@ class Xoonips_GroupListAction extends Xoonips_UserActionBase
         $groupuserlinkbean = Xoonips_BeanFactory::getBean('GroupsUsersLinkBean', $this->dirname, $this->trustDirname);
         $groupUserList = $groupuserlinkbean->getGroupUserLinkInfo($group['groupid'], $uid);
         $isGroupManager = $userbean->isGroupManager($group['groupid'], $uid);
-        if ($group['activate'] != Xoonips_Enum::GRP_NOT_CERTIFIED && $group['activate'] != Xoonips_Enum::GRP_DELETE_REQUIRED) {
-            if ($group['can_join'] == 1) {
-                if ($type == 'join') {
+        if (Xoonips_Enum::GRP_NOT_CERTIFIED != $group['activate'] && Xoonips_Enum::GRP_DELETE_REQUIRED != $group['activate']) {
+            if (1 == $group['can_join']) {
+                if ('join' == $type) {
                     if (empty($groupUserList)) {
                         return true;
                     }
                 }
-                if ($type == 'leave') {
+                if ('leave' == $type) {
                     if (!$isGroupManager && !empty($groupUserList)) {
-                        if ($groupUserList['activate'] == 0) {
+                        if (0 == $groupUserList['activate']) {
                             return true;
                         }
                     }

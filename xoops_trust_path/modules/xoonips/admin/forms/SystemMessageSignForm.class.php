@@ -24,14 +24,14 @@ class Xoonips_Admin_SystemMessageSignForm extends Xoonips_AbstractActionForm
     {
         $constpref = '_AD_'.strtoupper($this->mDirname);
 
-        return array(
-            'message_sign' => array(
+        return [
+            'message_sign' => [
                 'type' => self::TYPE_TEXT,
                 'label' => constant($constpref.'_SYSTEM_MSGSIGN_SIGN_TITLE'),
-                'depends' => array(
+                'depends' => [
                     'required' => true,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 }

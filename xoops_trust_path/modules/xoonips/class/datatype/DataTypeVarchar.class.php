@@ -14,7 +14,7 @@ class Xoonips_DataTypeVarchar extends Xoonips_DataType
         if (is_array($value)) {
             return true;
         } elseif ($field->getLen() > 0 && strlen(trim($value)) > $field->getLen()) {
-            $parameters = array();
+            $parameters = [];
             $parameters[] = $field->getName();
             $parameters[] = $field->getLen();
             $errors->addError('_MD_'.strtoupper($this->trustDirname).'_ERROR_MAXLENGTH', $fieldName, $parameters);
@@ -31,15 +31,15 @@ class Xoonips_DataTypeVarchar extends Xoonips_DataType
 
     public function getValueSql($field)
     {
-        $value = array();
+        $value = [];
         $length = $field->getLen();
-        $essential = ($field->getEssential() == 1) ? 'NOT NULL' : '';
+        $essential = (1 == $field->getEssential()) ? 'NOT NULL' : '';
         $defaultValue = $field->getDefault();
         $default = ' default NULL';
-        if ($defaultValue != '') {
+        if ('' != $defaultValue) {
             $default = " default '$defaultValue'";
         } else {
-            if ($field->getEssential() == 1) {
+            if (1 == $field->getEssential()) {
                 $default = '';
             }
         }
@@ -51,15 +51,15 @@ class Xoonips_DataTypeVarchar extends Xoonips_DataType
 
     public function valueAttrCheck($field, &$errors)
     {
-        $parameters = array();
+        $parameters = [];
         $parameters[] = constant('_AM_'.strtoupper($this->trustDirname).'_LABEL_ITEMTYPE_DATA_LENGTH');
-        if ($field->getLen() == '') {
+        if ('' == $field->getLen()) {
             $errors->addError('_MD_'.strtoupper($this->trustDirname).'_ERROR_REQUIRED', '', $parameters);
-        } elseif ($field->getLen() == 0) {
+        } elseif (0 == $field->getLen()) {
             $errors->addError('_MD_'.strtoupper($this->trustDirname).'_CHECK_INPUT_ERROR_MSG', '', $parameters);
         } else {
-            if ($field->getDefault() != '' && strlen($field->getDefault()) > $field->getLen()) {
-                $parameters = array();
+            if ('' != $field->getDefault() && strlen($field->getDefault()) > $field->getLen()) {
+                $parameters = [];
                 $parameters[] = constant('_AM_'.strtoupper($this->trustDirname).'_LABEL_ITEMTYPE_DEFAULT_VALUE');
                 $errors->addError('_MD_'.strtoupper($this->trustDirname).'_CHECK_INPUT_ERROR_MSG', '', $parameters);
             }

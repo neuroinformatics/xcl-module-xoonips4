@@ -13,7 +13,7 @@ class Xoonips_GroupRegisterAction extends Xoonips_UserActionBase
     {
         global $xoopsUser;
         $uid = $xoopsUser->getVar('uid');
-        $viewData = array();
+        $viewData = [];
 
         $userbean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
         $isModerator = $userbean->isModerator($uid);
@@ -21,20 +21,20 @@ class Xoonips_GroupRegisterAction extends Xoonips_UserActionBase
         $configVal = Functions::getXoonipsConfig($this->dirname, 'group_making');
 
         //right check
-        if (!$isModerator && $configVal != 'on') {
+        if (!$isModerator && 'on' != $configVal) {
             $response->setSystemError(_MD_XOONIPS_ERROR_GROUP_NEW);
 
             return false;
         }
 
-        $user = array();
+        $user = [];
         if (!$isModerator) {
             $user[] = $userbean->getUserBasicInfo($uid);
         }
 
         //init view
-        $group = array();
-        $result = array();
+        $group = [];
+        $result = [];
         XCube_DelegateUtils::call('Module.Xoonips.GetGroupMaximumResources', new XCube_Ref($result), null);
         if (count($result) > 0) {
             foreach ($result as $limit) {
@@ -53,15 +53,15 @@ class Xoonips_GroupRegisterAction extends Xoonips_UserActionBase
         $group['member_accept'] = 0;
         $group['item_accept'] = 0;
         $token_ticket = $this->createToken('user_group_new');
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => _MD_XOONIPS_LANG_GROUP_LIST,
                 'url' => 'user.php?op=groupList',
-            ),
-            array(
+            ],
+            [
                 'name' => _MD_XOONIPS_LANG_GROUP_REGISTER,
-            ),
-        );
+            ],
+        ];
         $viewData['xoops_breadcrumbs'] = $breadcrumbs;
         $viewData['token_ticket'] = $token_ticket;
         $viewData['group'] = $group;
@@ -78,7 +78,7 @@ class Xoonips_GroupRegisterAction extends Xoonips_UserActionBase
     protected function doRegister(&$request, &$response)
     {
         $errors = new Xoonips_Errors();
-        $viewData = array();
+        $viewData = [];
 
         if (!$this->validateToken('user_group_new')) {
             $response->setSystemError('Ticket error');
@@ -87,15 +87,15 @@ class Xoonips_GroupRegisterAction extends Xoonips_UserActionBase
         }
 
         $token_ticket = $this->createToken('user_group_new');
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => _MD_XOONIPS_LANG_GROUP_LIST,
                 'url' => 'user.php?op=groupList',
-            ),
-            array(
+            ],
+            [
                 'name' => _MD_XOONIPS_LANG_GROUP_REGISTER,
-            ),
-        );
+            ],
+        ];
 
         //get parameter
         $uids = $request->getParameter('uid');
@@ -107,7 +107,7 @@ class Xoonips_GroupRegisterAction extends Xoonips_UserActionBase
 
         //get group manager
         $userbean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
-        $admins = array();
+        $admins = [];
         if (!empty($uids)) {
             foreach ($uids as $uid) {
                 $manager = $userbean->getUserBasicInfo($uid);
@@ -178,7 +178,7 @@ class Xoonips_GroupRegisterAction extends Xoonips_UserActionBase
                 return false;
             }
         }
-        if ($message != '') {
+        if ('' != $message) {
             $viewData['redirect_msg'] = $message;
         }
 
@@ -192,7 +192,7 @@ class Xoonips_GroupRegisterAction extends Xoonips_UserActionBase
 
     protected function doSearch(&$request, &$response)
     {
-        $viewData = array();
+        $viewData = [];
 
         if (!$this->validateToken('user_group_new')) {
             $response->setSystemError('Ticket error');
@@ -206,8 +206,8 @@ class Xoonips_GroupRegisterAction extends Xoonips_UserActionBase
 
         //get group manager information
         $userbean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
-        $uids = array();
-        $user = array();
+        $uids = [];
+        $user = [];
         if (!empty($users)) {
             foreach ($users as $u) {
                 $uids[] = $u;
@@ -229,15 +229,15 @@ class Xoonips_GroupRegisterAction extends Xoonips_UserActionBase
         $group = $this->setGroup($request);
 
         $token_ticket = $this->createToken('user_group_new');
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => _MD_XOONIPS_LANG_GROUP_LIST,
                 'url' => 'user.php?op=groupList',
-            ),
-            array(
+            ],
+            [
                 'name' => _MD_XOONIPS_LANG_GROUP_REGISTER,
-            ),
-        );
+            ],
+        ];
 
         $viewData['xoops_breadcrumbs'] = $breadcrumbs;
         $viewData['token_ticket'] = $token_ticket;
@@ -254,7 +254,7 @@ class Xoonips_GroupRegisterAction extends Xoonips_UserActionBase
 
     private function setGroup($request)
     {
-        $group = array();
+        $group = [];
         $group['name'] = $request->getParameter('name');
         $group['description'] = $request->getParameter('description');
         $group['item_number_limit'] = $request->getParameter('item_number_limit');
@@ -274,37 +274,37 @@ class Xoonips_GroupRegisterAction extends Xoonips_UserActionBase
     {
         //input check
         $inputError = false;
-        if (trim($group['name']) == '') {
-            $parameters = array();
+        if ('' == trim($group['name'])) {
+            $parameters = [];
             $parameters[] = _MD_XOONIPS_LANG_GROUP_NAME;
             $errors->addError('_MD_XOONIPS_ERROR_REQUIRED', 'name', $parameters);
             $inputError = true;
         }
         if (strlen(trim($group['name'])) > 50) {
-            $parameters = array();
+            $parameters = [];
             $parameters[] = _MD_XOONIPS_LANG_GROUP_NAME;
             $parameters[] = 50;
             $errors->addError('_MD_XOONIPS_ERROR_MAXLENGTH', 'name', $parameters);
             $inputError = true;
         }
         if (empty($admins)) {
-            $parameters = array();
+            $parameters = [];
             $parameters[] = _MD_XOONIPS_LANG_GROUP_ADMIN;
             $errors->addError('_MD_XOONIPS_ERROR_REQUIRED', 'administrator', $parameters);
             $inputError = true;
         }
-        if (trim($group['name']) != '') {
+        if ('' != trim($group['name'])) {
             $groupbean = Xoonips_BeanFactory::getBean('GroupsBean', $this->dirname, $this->trustDirname);
             if ($groupbean->existsGroup($group['name'])) {
-                $parameters = array();
+                $parameters = [];
                 $errors->addError('_MD_XOONIPS_ERROR_GROUP_NAME_EXISTS', 'name', $parameters);
                 $inputError = true;
             }
         }
         if (!empty($file)) {
             $info = FileUtils::getFileInfo($file['tmp_name'], $file['name']);
-            if ($info === false || !array_key_exists('width', $info)) {
-                $parameters = array();
+            if (false === $info || !array_key_exists('width', $info)) {
+                $parameters = [];
                 $errors->addError('_MD_XOONIPS_ERROR_GROUP_ICON', 'icon', $parameters);
                 $inputError = true;
             }

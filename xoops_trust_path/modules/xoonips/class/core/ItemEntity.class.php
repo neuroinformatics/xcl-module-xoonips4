@@ -165,16 +165,16 @@ class Xoonips_ItemEntity
 
     public function getData($table)
     {
-        $beanList = array();
-        $beanList[$this->dirname.'_item'] = array('ItemBean', 'getItemBasicInfo');
-        $beanList[$this->dirname.'_item_users_link'] = array('ItemUsersLinkBean', 'getItemUsersInfo');
-        $beanList[$this->dirname.'_item_related_to'] = array('ItemRelatedToBean', 'getRelatedToInfo');
-        $beanList[$this->dirname.'_item_title'] = array('ItemTitleBean', 'getItemTitleInfo');
-        $beanList[$this->dirname.'_item_keyword'] = array('ItemKeywordBean', 'getKeywords');
-        $beanList[$this->dirname.'_item_file'] = array('ItemFileBean', 'getFilesByItemId');
-        $beanList[$this->dirname.'_index_item_link'] = array('IndexItemLinkBean', 'getIndexItemLinkInfo');
-        $beanList[$this->dirname.'_item_changelog'] = array('ItemChangeLogBean', 'getChangeLogs');
-        $info = array();
+        $beanList = [];
+        $beanList[$this->dirname.'_item'] = ['ItemBean', 'getItemBasicInfo'];
+        $beanList[$this->dirname.'_item_users_link'] = ['ItemUsersLinkBean', 'getItemUsersInfo'];
+        $beanList[$this->dirname.'_item_related_to'] = ['ItemRelatedToBean', 'getRelatedToInfo'];
+        $beanList[$this->dirname.'_item_title'] = ['ItemTitleBean', 'getItemTitleInfo'];
+        $beanList[$this->dirname.'_item_keyword'] = ['ItemKeywordBean', 'getKeywords'];
+        $beanList[$this->dirname.'_item_file'] = ['ItemFileBean', 'getFilesByItemId'];
+        $beanList[$this->dirname.'_index_item_link'] = ['IndexItemLinkBean', 'getIndexItemLinkInfo'];
+        $beanList[$this->dirname.'_item_changelog'] = ['ItemChangeLogBean', 'getChangeLogs'];
+        $info = [];
         if (0 == strncmp($table, $this->dirname.'_item_extend', strlen($this->dirname) + 12)) {
             $itemExtendBean = Xoonips_BeanFactory::getBean('ItemExtendBean', $this->dirname, $this->trustDirname);
             $info = $itemExtendBean->getItemExtendInfo($this->item_id, $table, $this->item_gid);

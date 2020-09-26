@@ -24,7 +24,7 @@ class Xoonips_Admin_SystemOaipmhAction extends Xoonips_Admin_AbstractConfigActio
      */
     protected function getConfigKeys()
     {
-        return array('repository_name', 'repository_nijc_code', 'repository_deletion_track');
+        return ['repository_name', 'repository_nijc_code', 'repository_deletion_track'];
     }
 
     /**
@@ -47,19 +47,19 @@ class Xoonips_Admin_SystemOaipmhAction extends Xoonips_Admin_AbstractConfigActio
         $dirname = $this->mAsset->mDirname;
         $constpref = '_AD_'.strtoupper($dirname);
         // breadcrumbs
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => constant($constpref.'_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_SYSTEM_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=System',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_SYSTEM_OAIPMH_TITLE'),
-            ),
-        );
+            ],
+        ];
         $render->setTemplateName('system_oaipmh.html');
         $render->setAttribute('title', constant($constpref.'_SYSTEM_OAIPMH_TITLE'));
         $render->setAttribute('description', constant($constpref.'_SYSTEM_OAIPMH_DESC'));

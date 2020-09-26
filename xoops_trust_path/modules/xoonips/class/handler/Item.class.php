@@ -120,7 +120,7 @@ class Xoonips_ItemHandler extends XoopsObjectGenericHandler
      */
     public function &getMostViewedItems($limit)
     {
-        $ret = array();
+        $ret = [];
         $tableItemTitle = $this->db->prefix($this->mDirname.'_item_title');
         $tableIndex = $this->db->prefix($this->mDirname.'_index');
         $tableIndexItemLink = $this->db->prefix($this->mDirname.'_index_item_link');
@@ -133,7 +133,7 @@ class Xoonips_ItemHandler extends XoopsObjectGenericHandler
         $sql .= sprintf(' ORDER BY `%1$s`.`count` DESC limit %2$d', $tableRanking, $limit);
         if ($result = $this->db->query($sql)) {
             while ($row = $this->db->fetchArray($result)) {
-                $r = array();
+                $r = [];
                 $r['title'] = $row['title'];
                 $r['count'] = $row['count'];
                 $obj = new $this->mClass();
@@ -157,7 +157,7 @@ class Xoonips_ItemHandler extends XoopsObjectGenericHandler
      */
     public function &getMostDownloadedItems($limit)
     {
-        $ret = array();
+        $ret = [];
         $tableItemTitle = $this->db->prefix($this->mDirname.'_item_title');
         $tableIndex = $this->db->prefix($this->mDirname.'_index');
         $tableIndexItemLink = $this->db->prefix($this->mDirname.'_index_item_link');
@@ -170,7 +170,7 @@ class Xoonips_ItemHandler extends XoopsObjectGenericHandler
         $sql .= sprintf(' ORDER BY `%1$s`.`count` DESC limit %2$d', $tableRanking, $limit);
         if ($result = $this->db->query($sql)) {
             while ($row = $this->db->fetchArray($result)) {
-                $r = array();
+                $r = [];
                 $r['title'] = $row['title'];
                 $r['count'] = $row['count'];
                 $obj = new $this->mClass();

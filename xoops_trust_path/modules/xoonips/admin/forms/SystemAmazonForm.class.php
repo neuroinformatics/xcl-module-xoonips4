@@ -26,14 +26,14 @@ class Xoonips_Admin_SystemAmazonForm extends Xoonips_AbstractActionForm
     {
         $constpref = '_AD_'.strtoupper($this->mDirname);
 
-        return array(
-            'access_key' => array(
+        return [
+            'access_key' => [
                 'type' => self::TYPE_TEXT,
-            ),
-            'secret_access_key' => array(
+            ],
+            'secret_access_key' => [
                 'type' => self::TYPE_TEXT,
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -46,7 +46,7 @@ class Xoonips_Admin_SystemAmazonForm extends Xoonips_AbstractActionForm
      */
     protected function _getObjectValue(&$obj, $key)
     {
-        if ($key == 'secret_access_key' && !empty($obj[$key])) {
+        if ('secret_access_key' == $key && !empty($obj[$key])) {
             return self::PASSWORD_MASK;
         }
 
@@ -62,7 +62,7 @@ class Xoonips_Admin_SystemAmazonForm extends Xoonips_AbstractActionForm
      */
     protected function _setObjectValue(&$obj, $key, $value)
     {
-        if ($key == 'secret_access_key' && $value == self::PASSWORD_MASK) {
+        if ('secret_access_key' == $key && self::PASSWORD_MASK == $value) {
             return;
         }
         $obj[$key] = $value;

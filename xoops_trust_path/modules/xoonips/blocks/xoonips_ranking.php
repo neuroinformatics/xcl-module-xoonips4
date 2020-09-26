@@ -42,7 +42,7 @@ function b_xoonips_ranking_show($options)
     }
 
     // get configs
-    $config = array();
+    $config = [];
     $config['num_rows'] = XOONIPS_BLOCK_RANKING_NUM_ROWS;
     $config['visible'] = explode(',', XOONIPS_BLOCK_RANKING_VISIBLE);
     $config['order'] = explode(',', XOONIPS_BLOCK_RANKING_ORDER);
@@ -77,59 +77,59 @@ function b_xoonips_ranking_show($options)
 
     // - set ranking number label
     $rank_tmp = explode(',', _MB_XOONIPS_RANKING_RANK_STR);
-    $rank_str = array();
+    $rank_str = [];
     for ($i = 0; $i < $config['num_rows']; ++$i) {
         $rank_str[] = ($i + 1).$rank_tmp[min($i, count($rank_tmp) - 1)];
     }
 
-    $block['rankings'] = array();
+    $block['rankings'] = [];
     $itemHandler = Functions::getXoonipsHandler('Item', $dirname);
 
     // ranking block
     // ranking viewed item
     if ($config['visible'][0]) {
-        $items = array();
+        $items = [];
         $itemObjs = $itemHandler->getMostViewedItems($config['num_rows']);
         $i = 0;
         foreach ($itemObjs as $itemObj) {
             $title = StringUtils::htmlSpecialChars($itemObj['title']);
             $title = StringUtils::truncate($title, $maxlen, $etc);
-            $items[] = array(
+            $items[] = [
                 'title' => $title,
                 'url' => $itemObj['url'],
                 'num' => $itemObj['count'],
                 'rank_str' => $rank_str[$i],
-            );
+            ];
             ++$i;
         }
 
-        $block['rankings'][$config['order'][0]] = array(
+        $block['rankings'][$config['order'][0]] = [
             'items' => $items,
             'title' => _MB_XOONIPS_RANKING_VIEWED_ITEM,
-        );
+        ];
         unset($items);
     }
 
     // ranking downloaded item
     if ($config['visible'][1]) {
-        $items = array();
+        $items = [];
         $itemObjs = $itemHandler->getMostDownloadedItems($config['num_rows']);
         $i = 0;
         foreach ($itemObjs as $itemObj) {
             $title = StringUtils::htmlSpecialChars($itemObj['title']);
             $title = StringUtils::truncate($title, $maxlen, $etc);
-            $items[] = array(
+            $items[] = [
                 'title' => $title,
                 'url' => $itemObj['url'],
                 'num' => $itemObj['count'],
                 'rank_str' => $rank_str[$i],
-            );
+            ];
             ++$i;
         }
-        $block['rankings'][$config['order'][1]] = array(
+        $block['rankings'][$config['order'][1]] = [
             'items' => $items,
             'title' => _MB_XOONIPS_RANKING_DOWNLOADED_ITEM,
-        );
+        ];
         unset($items);
     }
 

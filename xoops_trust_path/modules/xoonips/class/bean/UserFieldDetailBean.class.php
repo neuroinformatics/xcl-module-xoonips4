@@ -66,7 +66,7 @@ class Xoonips_UserFieldDetailBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -92,7 +92,7 @@ class Xoonips_UserFieldDetailBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -265,7 +265,7 @@ class Xoonips_UserFieldDetailBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -291,7 +291,7 @@ class Xoonips_UserFieldDetailBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -442,7 +442,7 @@ class Xoonips_UserFieldDetailBean extends Xoonips_BeanBase
             // view type to confirm create user extend table, except (id, title, keyword, file upload, create date,
             // last update, create user, change log, index, relation user, preview)
             $viewtypeObj = Xoonips_ViewTypeFactory::getInstance($this->dirname, $this->trustDirname)->getViewType($detail['view_type_id']);
-            if (!$viewtypeObj->mustCreateUserExtendTable() || strpos($detail['table_name'], 'user_extend') === false) {
+            if (!$viewtypeObj->mustCreateUserExtendTable() || false === strpos($detail['table_name'], 'user_extend')) {
                 continue;
             }
 
@@ -522,7 +522,7 @@ class Xoonips_UserFieldDetailBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -544,7 +544,7 @@ class Xoonips_UserFieldDetailBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -652,7 +652,7 @@ class Xoonips_UserFieldDetailBean extends Xoonips_BeanBase
      */
     public function copyById($userfieldId, &$map, $update = false, $import = false)
     {
-        $detailObj = array();
+        $detailObj = [];
 
         // get copy information
         $detailObj[] = $this->getUserTypeDetailById($userfieldId, false);

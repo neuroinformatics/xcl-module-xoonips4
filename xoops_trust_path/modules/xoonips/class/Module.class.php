@@ -82,7 +82,7 @@ class Xoonips_Module extends Legacy_ModuleAdapter
         $dirname = $this->mXoopsModule->get('dirname');
         $trustDirname = $this->mXoopsModule->getInfo('trust_dirname');
         $prefix = strtoupper($trustDirname).'_FRAME_VIEW_';
-        $this->_mAllowViewNames = array(
+        $this->_mAllowViewNames = [
             constant($prefix.'NONE'),
             constant($prefix.'SUCCESS'),
             constant($prefix.'ERROR'),
@@ -90,10 +90,10 @@ class Xoonips_Module extends Legacy_ModuleAdapter
             constant($prefix.'INPUT'),
             constant($prefix.'PREVIEW'),
             constant($prefix.'CANCEL'),
-        );
+        ];
         XCube_DelegateUtils::call('Module.'.$trustDirname.'.Global.Event.GetAssetManager', new XCube_Ref($this->mAssetManager), $dirname);
         $root = &XCube_Root::getSingleton();
-        $root->mController->mExecute->add(array(&$this, 'execute'));
+        $root->mController->mExecute->add([&$this, 'execute']);
     }
 
     /**
@@ -131,7 +131,7 @@ class Xoonips_Module extends Legacy_ModuleAdapter
             $action = $req->getRequest(_REQUESTED_ACTION_NAME);
         }
         $dataname = isset($dataname) ? $dataname : 'index';
-        if ($dataname == 'index') {
+        if ('index' == $dataname) {
             $actionName = ucfirst($dataname);
         } elseif (isset($dataId)) {
             if (isset($action)) {
@@ -177,16 +177,16 @@ class Xoonips_Module extends Legacy_ModuleAdapter
             // register self admin render system at once
             $root = &XCube_Root::getSingleton();
             $root->overrideSiteConfig(
-                array(
-                    'RenderSystems' => array(
+                [
+                    'RenderSystems' => [
                         $adminRenderSystem => $adminRenderSystem,
-                    ),
-                    $adminRenderSystem => array(
+                    ],
+                    $adminRenderSystem => [
                         'root' => XOOPS_TRUST_PATH.'/modules/'.$trustDirname,
                         'path' => '/admin/class/AdminRenderSystem.class.php',
                         'class' => $adminRenderSystem,
-                    ),
-                )
+                    ],
+                ]
             );
             $isFirst = false;
         }
@@ -211,7 +211,7 @@ class Xoonips_Module extends Legacy_ModuleAdapter
         $adminMenu = $this->mXoopsModule->getInfo('adminmenu');
         if (!is_array($adminMenu)) {
             $fname = trim($adminMenu);
-            $adminMenu = array();
+            $adminMenu = [];
             if (!empty($fname)) {
                 if (file_exists($path = XOOPS_ROOT_PATH.'/modules/'.$dirname.'/'.$fname)) {
                     include $path;
@@ -224,21 +224,21 @@ class Xoonips_Module extends Legacy_ModuleAdapter
         }
         // add preference menu
         if ($url = $this->getPreferenceEditUrl()) {
-            $adminMenu[] = array(
+            $adminMenu[] = [
                 'title' => _PREFERENCES,
                 'link' => $url,
                 'absolute' => true,
-            );
+            ];
         }
         // add help menu
         if ($url = $this->getHelpViewUrl()) {
-            $adminMenu[] = array(
+            $adminMenu[] = [
                 'title' => _HELP,
                 'link' => $url,
                 'absolute' => true,
-            );
+            ];
         }
-        $this->mAdminMenu = array();
+        $this->mAdminMenu = [];
         foreach ($adminMenu as $menu) {
             if (!(isset($menu['absolute']) && $menu['absolute'])) {
                 $menu['link'] = XOOPS_MODULE_URL.'/'.$dirname.'/'.$menu['link'];
@@ -256,7 +256,7 @@ class Xoonips_Module extends Legacy_ModuleAdapter
      */
     public function getPreferenceEditUrl()
     {
-        if ($this->_mPreferenceEditUrl === null) {
+        if (null === $this->_mPreferenceEditUrl) {
             if ($this->mXoopsModule->getInfo('hidePreference')) {
                 $this->_mPreferenceEditUrl = false;
             } elseif (is_array($this->mXoopsModule->getInfo('config')) && count($this->mXoopsModule->getInfo('config')) > 0) {
@@ -279,7 +279,7 @@ class Xoonips_Module extends Legacy_ModuleAdapter
     {
         $dirname = $this->mXoopsModule->get('dirname');
         $trustDirname = $this->mXoopsModule->getInfo('trust_dirname');
-        if ($this->_mHelpViewUrl === null) {
+        if (null === $this->_mHelpViewUrl) {
             if ($this->mXoopsModule->hasHelp()) {
                 if (file_exists(XOOPS_TRUST_PATH.'/modules/'.$trustDirname.'/admin/actions/HelpAction.class.php')) {
                     $this->_mHelpViewUrl = XOOPS_MODULE_URL.'/'.$dirname.'/admin/index.php?action=Help';
@@ -304,29 +304,29 @@ class Xoonips_Module extends Legacy_ModuleAdapter
     {
         $dirname = $this->mXoopsModule->get('dirname');
         $trustDirname = $this->mXoopsModule->getInfo('trust_dirname');
-        if ($this->_createAction() === false) {
+        if (false === $this->_createAction()) {
             $this->doActionNotFoundError();
             die();
         }
-        if ($this->mAction->prepare() === false) {
+        if (false === $this->mAction->prepare()) {
             $this->doPreparationError();
             die();
         }
-        if ($this->mAction->hasPermission() === false) {
+        if (false === $this->mAction->hasPermission()) {
             $this->doPermissionError();
             die();
         }
-        $viewStatus = (XoopsUtils::getEnv('REQUEST_METHOD') == 'POST') ? $this->mAction->execute() : $this->mAction->getDefaultView();
+        $viewStatus = ('POST' == XoopsUtils::getEnv('REQUEST_METHOD')) ? $this->mAction->execute() : $this->mAction->getDefaultView();
         if (in_array($viewStatus, $this->_mAllowViewNames)) {
             $methodName = 'executeView'.ucfirst($viewStatus);
-            if (is_callable(array($this->mAction, $methodName))) {
+            if (is_callable([$this->mAction, $methodName])) {
                 $render = $this->getRenderTarget();
                 $render->setAttribute('xoops_pagetitle', $this->mAction->getPagetitle());
                 $render->setAttribute('xoops_dirname', $dirname);
                 $render->setAttribute('mytrustdirname', $trustDirname);
                 $constpref = '_MD_'.strtoupper($dirname);
                 $render->setAttribute('constpref', $constpref);
-                $coolUriEnabled = (XCube_Root::getSingleton()->mContext->getXoopsConfig('cool_uri') == true);
+                $coolUriEnabled = (true == XCube_Root::getSingleton()->mContext->getXoopsConfig('cool_uri'));
                 $render->setAttribute('coolUriEnabled', $coolUriEnabled);
                 $this->mAction->$methodName($render);
                 $this->mAction->setHeaderScript();
@@ -344,9 +344,9 @@ class Xoonips_Module extends Legacy_ModuleAdapter
         $dirname = $this->mXoopsModule->get('dirname');
         $trustDirname = $this->mXoopsModule->getInfo('trust_dirname');
         $root = &XCube_Root::getSingleton();
-        if ($this->mActionName == null) {
+        if (null == $this->mActionName) {
             $this->mActionName = $root->mContext->mRequest->getRequest('action');
-            if ($this->mActionName == null) {
+            if (null == $this->mActionName) {
                 $this->mActionName = $this->_getDefaultActionName();
             }
         }

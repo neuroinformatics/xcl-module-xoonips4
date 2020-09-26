@@ -7,7 +7,7 @@ function b_xoonips_login_show($options)
 {
     // hide block during site login
     $uid = XoopsUtils::getUid();
-    if ($uid != XoopsUtils::UID_GUEST) {
+    if (XoopsUtils::UID_GUEST != $uid) {
         return false;
     }
 
@@ -19,11 +19,11 @@ function b_xoonips_login_show($options)
     $sslloginlink = XoopsUtils::getXoopsConfig('sslloginlink');
 
     // set variables
-    $block = array(
-        'unamevalue' => ($usercookie != '' && isset($_COOKIE[$usercookie])) ? $_COOKIE[$usercookie] : '',
+    $block = [
+        'unamevalue' => ('' != $usercookie && isset($_COOKIE[$usercookie])) ? $_COOKIE[$usercookie] : '',
         'dirname' => $dirname,
-    );
-    if ($use_ssl == 1 && $sslloginlink != '') {
+    ];
+    if (1 == $use_ssl && '' != $sslloginlink) {
         $block['use_ssl'] = $use_ssl;
         $block['sslloginlink'] = $sslloginlink;
     }

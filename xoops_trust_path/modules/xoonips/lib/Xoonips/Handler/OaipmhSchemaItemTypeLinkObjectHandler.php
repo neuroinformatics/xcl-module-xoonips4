@@ -17,7 +17,7 @@ class OaipmhSchemaItemTypeLinkObjectHandler extends AbstractObjectHandler
     {
         parent::__construct($db, $dirname);
         $this->mTable = $db->prefix($dirname.'_oaipmh_schema_item_type_link');
-        $this->mPrimaryKey = array('schema_id', 'item_type_id', 'item_field_detail_id');
+        $this->mPrimaryKey = ['schema_id', 'item_type_id', 'item_field_detail_id'];
         $this->mIsAutoIncrement = false;
     }
 }

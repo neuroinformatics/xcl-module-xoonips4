@@ -114,17 +114,17 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
         $xml = '';
         if (!isset($args['verb'])) {
             $xml = $this->error('badVerb', 'no verb');
-        } elseif ($args['verb'] == 'GetRecord') {
+        } elseif ('GetRecord' == $args['verb']) {
             $xml = $this->getRecord($args);
-        } elseif ($args['verb'] == 'Identify') {
+        } elseif ('Identify' == $args['verb']) {
             $xml = $this->identify($args);
-        } elseif ($args['verb'] == 'ListIdentifiers') {
+        } elseif ('ListIdentifiers' == $args['verb']) {
             $xml = $this->listIdentifiers($args);
-        } elseif ($args['verb'] == 'ListMetadataFormats') {
+        } elseif ('ListMetadataFormats' == $args['verb']) {
             $xml = $this->listMetadataFormats($args);
-        } elseif ($args['verb'] == 'ListRecords') {
+        } elseif ('ListRecords' == $args['verb']) {
             $xml = $this->listRecords($args);
-        } elseif ($args['verb'] == 'ListSets') {
+        } elseif ('ListSets' == $args['verb']) {
             $xml = $this->listSets($args);
         } else {
             $xml = $this->error('badVerb', 'illegal verb');
@@ -157,7 +157,7 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
         } elseif (empty($this->repositoryId)) {
             $error = $this->error('idDoesNotExist', 'it maps to no known item');
         }
-        if ($error != '') {
+        if ('' != $error) {
             return $error;
         }
 
@@ -167,10 +167,10 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
 
         // identifier exist check
         $parsed = $this->parseIdentifier($this->convertIdentifierFormat($args['identifier']));
-        if ($parsed !== false) {
+        if (false !== $parsed) {
             $identifiers = $this->itemStatusBean->getOpenItem4Oaipmh(0, 0, null, $parsed['item_id'], 1, $this->repositoryDeletionTrack);
         }
-        if (!$parsed || !$identifiers || count($identifiers) == 0) {
+        if (!$parsed || !$identifiers || 0 == count($identifiers)) {
             return $this->error('idDoesNotExist', 'it maps to no known item');
         }
 
@@ -204,7 +204,7 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
         }
 
         // retrieve admin's e-mail
-        $adminEmails = array();
+        $adminEmails = [];
         $member_handler = &xoops_gethandler('member');
         $members = $member_handler->getUsersByGroup($this->moderator_gid, false);
         foreach ($members as $userid) {
@@ -239,12 +239,12 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
 
         // parameters check
         list($error, $metadataPrefix, $result) = $this->checkParameters($args);
-        if ($error != '') {
+        if ('' != $error) {
             return $error;
         }
 
         list($error, $cursor, $identifiers) = $this->listIdentifiersAndRecords($args, $result);
-        if ($error != '') {
+        if ('' != $error) {
             return $error;
         }
 
@@ -256,7 +256,7 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
 
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         $index_tree_list = $indexBean->getPublicFullPath(true);
-        $headers = array();
+        $headers = [];
         for ($i = $cursor; $i < ($cursor + $this->limit_row) && $i < $cnt; ++$i) {
             $headers[] = $this->oaipmhHeader($identifiers[$i], $index_tree_list);
         }
@@ -289,14 +289,14 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
         // identifier exist check
         if (isset($args['identifier'])) {
             $parsed = $this->parseIdentifier($this->convertIdentifierFormat($args['identifier']));
-            if ($parsed !== false) {
+            if (false !== $parsed) {
                 $identifiers = $this->itemStatusBean->getOpenItem4Oaipmh(0, 0, null, $parsed['item_id'], 1, $this->repositoryDeletionTrack);
             }
-            if (!$parsed || !$identifiers || count($identifiers) == 0) {
+            if (!$parsed || !$identifiers || 0 == count($identifiers)) {
                 return $this->error('idDoesNotExist', 'it maps to no known item');
             }
         }
-        $lines = array($this->junii2Xml, $this->oaidcXml);
+        $lines = [$this->junii2Xml, $this->oaidcXml];
         $xml = "<ListMetadataFormats>\n".implode("\n", $lines)."</ListMetadataFormats>\n";
 
         return $xml;
@@ -319,13 +319,13 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
         $this->itemBean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
 
         list($error, $metadataPrefix, $result) = $this->checkParameters($args);
-        if ($error != '') {
+        if ('' != $error) {
             return $error;
         }
         $this->metadata = new Xoonips_Metadata($this->dirname, $this->trustDirname, $metadataPrefix);
 
         list($error, $cursor, $identifiers) = $this->listIdentifiersAndRecords($args, $result);
-        if ($error != '') {
+        if ('' != $error) {
             return $error;
         }
 
@@ -338,7 +338,7 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         $index_tree_list = $indexBean->getPublicFullPath(true);
 
-        $records = array();
+        $records = [];
         for ($i = $cursor; $i < ($cursor + $this->limit_row) && $i < $cnt; ++$i) {
             list($xml, $result) = $this->record($identifiers[$i], $index_tree_list);
             if ($result) {
@@ -393,7 +393,7 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
             } else {
                 $error = $this->error('badResumptionToken', '');
             }
-            if ($error != '') {
+            if ('' != $error) {
                 return $error;
             }
         }
@@ -453,11 +453,11 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
      */
     private function parseIdentifier($identifier)
     {
-        if (preg_match("/([^\/]+)\/([0-9]+)\.([0-9]+)/", $identifier, $match) == 0) {
+        if (0 == preg_match("/([^\/]+)\/([0-9]+)\.([0-9]+)/", $identifier, $match)) {
             return false;
         }
 
-        return array('nijc_code' => $match[1], 'item_type_id' => $match[2], 'item_id' => $match[3]);
+        return ['nijc_code' => $match[1], 'item_type_id' => $match[2], 'item_id' => $match[3]];
     }
 
     /**
@@ -471,11 +471,11 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
      */
     private function parseIdentifierDoi($identifier)
     {
-        if (preg_match("/([^\/]+):".XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME.'\\/([^<>]+)/', $identifier, $match) == 0) {
+        if (0 == preg_match("/([^\/]+):".XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME.'\\/([^<>]+)/', $identifier, $match)) {
             return false;
         }
 
-        return array('nijc_code' => $match[1], 'doi' => $match[2]);
+        return ['nijc_code' => $match[1], 'doi' => $match[2]];
     }
 
     /**
@@ -532,12 +532,12 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
             } elseif (isset($args['from']) && isset($args['until'])) {
                 $from_type = $this->typeOfISO8601($args['from']);
                 $until_type = $this->typeOfISO8601($args['until']);
-                if ($from_type != $until_type || $from_type == 0) {
+                if ($from_type != $until_type || 0 == $from_type) {
                     $error = $this->error('badArgument', '');
                 }
-            } elseif (isset($args['from']) && $this->typeOfISO8601($args['from']) == 0) {
+            } elseif (isset($args['from']) && 0 == $this->typeOfISO8601($args['from'])) {
                 $error = $this->error('badArgument', '');
-            } elseif (isset($args['until']) && $this->typeOfISO8601($args['until']) == 0) {
+            } elseif (isset($args['until']) && 0 == $this->typeOfISO8601($args['until'])) {
                 $error = $this->error('badArgument', '');
             } elseif (empty($this->repositoryId)) {
                 $error = $this->error('noRecordsMatch', 'database_id is not configured');
@@ -551,7 +551,7 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
                 $error = $this->error('badArgument', '');
             } else {
                 $result = $this->getResumptionToken($args['resumptionToken']);
-                if (count($result) == 0 || $result['args'] == false) {
+                if (0 == count($result) || false == $result['args']) {
                     $this->deleteResumptionToken($resumptionToken);
                     $error = $this->error('badResumptionToken', '');
                 } elseif (isset($result['publish_date'])) {
@@ -566,7 +566,7 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
             $metadataPrefix = $result['metadata_prefix'];
         }
 
-        return array($error, $metadataPrefix, $result);
+        return [$error, $metadataPrefix, $result];
     }
 
     /**
@@ -578,9 +578,9 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
      */
     private function typeOfISO8601($str)
     {
-        if (preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/', $str) == 1) {
+        if (1 == preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/', $str)) {
             return 1;
-        } elseif (preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$/', $str) == 1) {
+        } elseif (1 == preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$/', $str)) {
             return 2;
         } else {
             return 0;
@@ -627,7 +627,7 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
             }
         }
         $identifiers = $this->itemStatusBean->getOpenItem4Oaipmh((int) $from, (int) $until, $set, 0, 0, $this->repositoryDeletionTrack);
-        if (!$identifiers || count($identifiers) == 0) {
+        if (!$identifiers || 0 == count($identifiers)) {
             $error = $this->error('noRecordsMatch', '');
         }
 
@@ -640,7 +640,7 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
             }
         }
 
-        return array($error, $cursor, $identifiers);
+        return [$error, $cursor, $identifiers];
     }
 
     /**
@@ -654,12 +654,12 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
     private function oaipmhHeader($identifier, $index_tree_list)
     {
         global $xoopsDB;
-        $lines = array();
-        $status = array();
+        $lines = [];
+        $status = [];
 
         $status = $this->itemStatusBean->select($identifier['item_id']);
         if ($status) {
-            if ($status[0]['is_deleted'] == 1) {
+            if (1 == $status[0]['is_deleted']) {
                 if (time() > ($status[0]['deleted_timestamp'] + 60 * 60 * 24 * $this->repositoryDeletionTrack)) {
                     return '';
                 }
@@ -668,7 +668,7 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
                 $lines[] = '<header>';
             }
             $item = $this->itemBean->getItemBasicInfo($identifier['item_id']);
-            if ($item && $item['doi'] != '' && !empty($this->repositoryId)) {
+            if ($item && '' != $item['doi'] && !empty($this->repositoryId)) {
                 $id = "$this->repositoryId:".XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME.'/'.$item['doi'];
             } else {
                 $id = $this->repositoryId.'/'.$identifier['item_type_id'].'.'.$identifier['item_id'];
@@ -713,21 +713,21 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
     private function record($identifier, $index_tree_list)
     {
         //return only header if item is deleted
-        if ($identifier['is_deleted'] == 1) {
-            return array("<record>\n".$this->oaipmhHeader($identifier, $index_tree_list)
-                ."</record>\n", true, );
+        if (1 == $identifier['is_deleted']) {
+            return ["<record>\n".$this->oaipmhHeader($identifier, $index_tree_list)
+                ."</record>\n", true, ];
         }
 
-        $item = array();
+        $item = [];
         $item = $this->itemBean->getItemBasicInfo($identifier['item_id']);
         //return error if item_type_id mismatched
         if ($item['item_type_id'] != $identifier['item_type_id']) {
-            return array($this->error('idDoesNotExist', 'item_type_id not found'), false);
+            return [$this->error('idDoesNotExist', 'item_type_id not found'), false];
         }
 
-        return array("<record>\n".$this->oaipmhHeader($identifier, $index_tree_list)
+        return ["<record>\n".$this->oaipmhHeader($identifier, $index_tree_list)
             .$this->metadata->getMetadata($identifier['item_type_id'], $identifier['item_id'])
-            ."</record>\n", true, );
+            ."</record>\n", true, ];
     }
 
     private function resumptionTokenXml($cnt, $cursor, $args, $metadataPrefix, $last_item_id)
@@ -787,7 +787,7 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
     {
         global $xoopsDB;
 
-        if ($publish_date == null) {
+        if (null == $publish_date) {
             $publish_date = time();
         }
             (method_exists('MyTextSanitizer', 'sGetInstance') and $myts = &MyTextSanitizer::sGetInstance()) || $myts = &MyTextSanitizer::getInstance();
@@ -819,7 +819,7 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
 
     private function ISO8601toUTC($str)
     {
-        if (preg_match('/([0-9]{4})-([0-9]{2})-([0-9]{2})(T([0-9]{2}):([0-9]{2}):([0-9]{2})Z)?/', $str, $match) == 0) {
+        if (0 == preg_match('/([0-9]{4})-([0-9]{2})-([0-9]{2})(T([0-9]{2}):([0-9]{2}):([0-9]{2})Z)?/', $str, $match)) {
             return 0;
         }
         if (!isset($match[5])) {

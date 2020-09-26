@@ -24,16 +24,16 @@ class Xoonips_Admin_PolicyItemFieldDeleteForm extends Xoonips_AbstractActionForm
     {
         $constpref = '_AD_'.strtoupper($this->mDirname);
 
-        return array(
-            'field_id' => array(
+        return [
+            'field_id' => [
                 'type' => self::TYPE_INT,
                 'label' => constant($constpref.'_LANG_ITEM_FIELD_ID'),
-                'depends' => array(
+                'depends' => [
                     'required' => true,
                     'min' => 2,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
@@ -46,7 +46,7 @@ class Xoonips_Admin_PolicyItemFieldDeleteForm extends Xoonips_AbstractActionForm
      */
     protected function _getObjectValue(&$obj, $key)
     {
-        if ($key == 'field_id') {
+        if ('field_id' == $key) {
             $key = 'item_field_detail_id';
         }
 
@@ -62,7 +62,7 @@ class Xoonips_Admin_PolicyItemFieldDeleteForm extends Xoonips_AbstractActionForm
      */
     protected function _setObjectValue(&$obj, $key, $value)
     {
-        if ($key == 'field_id') {
+        if ('field_id' == $key) {
             $key = 'item_field_detail_id';
         }
         $obj->set($key, $value);

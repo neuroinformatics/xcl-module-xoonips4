@@ -56,10 +56,10 @@ class Xoonips_ViewTypeGroupName extends Xoonips_ViewType
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];
         } else {
-            $tableData = array();
+            $tableData = [];
             $sqlStrings[$tableName] = &$tableData;
         }
-        if ($value != '') {
+        if ('' != $value) {
             $tableData[] = $value;
         }
     }
@@ -68,7 +68,7 @@ class Xoonips_ViewTypeGroupName extends Xoonips_ViewType
     {
         $tableName = $field->getTableName();
         $value = $data[$this->getFieldName($field, $groupLoopId)];
-        if ($value !== '') {
+        if ('' !== $value) {
             $sqlStrings[$tableName] = $value;
         } else {
             $sqlStrings[$tableName] = 2;
@@ -79,7 +79,7 @@ class Xoonips_ViewTypeGroupName extends Xoonips_ViewType
     {
         $tableName = $field->getTableName();
         $value = $data[$this->getFieldName($field, $groupLoopId)];
-        if ($value !== '') {
+        if ('' !== $value) {
             $sqlStrings[$tableName] = $value;
         } else {
             $sqlStrings[$tableName] = 2;
@@ -103,9 +103,9 @@ class Xoonips_ViewTypeGroupName extends Xoonips_ViewType
 
     public function isDisplay($op)
     {
-        if ($op == Xoonips_Enum::OP_TYPE_REGISTRY ||
-            $op == Xoonips_Enum::OP_TYPE_EDIT ||
-            $op == Xoonips_Enum::OP_TYPE_SEARCHLIST) {
+        if (Xoonips_Enum::OP_TYPE_REGISTRY == $op ||
+            Xoonips_Enum::OP_TYPE_EDIT == $op ||
+            Xoonips_Enum::OP_TYPE_SEARCHLIST == $op) {
             return false;
         }
 

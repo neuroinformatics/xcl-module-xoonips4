@@ -21,13 +21,13 @@ class Xoonips_AjaxAction extends Xoonips_AbstractAction
      *
      * @var array
      */
-    protected $mKnownTypes = array(
+    protected $mKnownTypes = [
         'json' => 'application/json',
         'jsonp' => 'application/javascript',
         'script' => 'application/javascript',
         'xml' => 'text/xml',
         'html' => 'text/html',
-    );
+    ];
 
     /**
      * get method.
@@ -68,11 +68,11 @@ class Xoonips_AjaxAction extends Xoonips_AbstractAction
     {
         $dirname = $this->mAsset->mDirname;
         $trustDirname = $this->mAsset->mTrustDirname;
-        if (!isset($_SERVER['HTTP_REFERER']) || strpos($_SERVER['HTTP_REFERER'], XOOPS_URL) !== 0) {
+        if (!isset($_SERVER['HTTP_REFERER']) || 0 !== strpos($_SERVER['HTTP_REFERER'], XOOPS_URL)) {
             return $this->_getFrameViewStatus('ERROR');
         }
         $this->mMethod = $this->_getMethod();
-        if ($this->mMethod === false) {
+        if (false === $this->mMethod) {
             return $this->_getFrameViewStatus('ERROR');
         }
         $this->mType = $this->mMethod->getType();

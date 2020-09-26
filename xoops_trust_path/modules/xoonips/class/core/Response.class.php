@@ -62,7 +62,7 @@ class Xoonips_Response
         global $xoopsTpl;
 
         // if have system error
-        if ($this->systemError != false) {
+        if (false != $this->systemError) {
             redirect_header(XOOPS_URL.'/index.php', 3, $this->systemError);
             exit;
         }
@@ -70,7 +70,7 @@ class Xoonips_Response
         $target = $actionMap[$this->forward];
 
         // if redirect
-        if ($target == 'redirect_header') {
+        if ('redirect_header' == $target) {
             if (isset($this->viewData['redirect_msg'])) {
                 redirect_header($this->viewData['url'], 3, $this->viewData['redirect_msg']);
             } else {
@@ -78,11 +78,11 @@ class Xoonips_Response
             }
             exit;
         }
-        if ($target == 'redirect') {
+        if ('redirect' == $target) {
             header('Location:'.$this->viewData['url']);
             exit;
         }
-        if (substr($target, -4, 4) == '.php') {
+        if ('.php' == substr($target, -4, 4)) {
             require_once $target;
             exit;
         }
@@ -115,7 +115,7 @@ class Xoonips_Response
         $lw = new Xoonips_LayeredWindow();
 
         // if have system error
-        if ($this->systemError != false) {
+        if (false != $this->systemError) {
             $errors[] = $this->systemError;
             if ($isAdmin) {
                 $root = &XCube_Root::getSingleton();
@@ -136,12 +136,12 @@ class Xoonips_Response
                 $xoopsTpl->assign('errors', $errors);
                 echo $lw->getHtml();
             }
-        // if normal page
+            // if normal page
         } else {
             $target = $actionMap[$this->forward];
 
             // if redirect
-            if ($target == 'redirect_header') {
+            if ('redirect_header' == $target) {
                 if (isset($this->viewData['redirect_msg'])) {
                     redirect_header($this->viewData['url'], 3, $this->viewData['redirect_msg']);
                 } else {
@@ -150,7 +150,7 @@ class Xoonips_Response
                 exit;
             }
 
-            if (substr($target, -4, 4) == '.php') {
+            if ('.php' == substr($target, -4, 4)) {
                 require_once $target;
                 exit;
             }

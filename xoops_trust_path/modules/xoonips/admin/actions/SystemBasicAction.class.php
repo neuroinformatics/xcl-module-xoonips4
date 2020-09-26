@@ -24,7 +24,7 @@ class Xoonips_Admin_SystemBasicAction extends Xoonips_Admin_AbstractConfigAction
      */
     protected function getConfigKeys()
     {
-        return array('moderator_gid', 'upload_dir', 'url_compatible');
+        return ['moderator_gid', 'upload_dir', 'url_compatible'];
     }
 
     /**
@@ -47,19 +47,19 @@ class Xoonips_Admin_SystemBasicAction extends Xoonips_Admin_AbstractConfigAction
         $dirname = $this->mAsset->mDirname;
         $constpref = '_AD_'.strtoupper($dirname);
         // breadcrumbs
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => constant($constpref.'_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_SYSTEM_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=System',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_SYSTEM_BASIC_TITLE'),
-            ),
-        );
+            ],
+        ];
         $render->setTemplateName('system_basic.html');
         $render->setAttribute('title', constant($constpref.'_SYSTEM_BASIC_TITLE'));
         $render->setAttribute('description', constant($constpref.'_SYSTEM_BASIC_DESC'));
@@ -78,7 +78,7 @@ class Xoonips_Admin_SystemBasicAction extends Xoonips_Admin_AbstractConfigAction
     {
         $memberHandler = &xoops_gethandler('member');
         $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('groupid', array(XOOPS_GROUP_USERS, XOOPS_GROUP_ANONYMOUS), 'NOT IN'));
+        $criteria->add(new Criteria('groupid', [XOOPS_GROUP_USERS, XOOPS_GROUP_ANONYMOUS], 'NOT IN'));
         $groups = &$memberHandler->getGroupList($criteria);
 
         return $groups;

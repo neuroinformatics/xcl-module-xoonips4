@@ -24,21 +24,21 @@ class Xoonips_Admin_SystemOaipmhForm extends Xoonips_AbstractActionForm
     {
         $constpref = '_AD_'.strtoupper($this->mDirname);
 
-        return array(
-            'repository_name' => array(
+        return [
+            'repository_name' => [
                 'type' => self::TYPE_STRING,
-            ),
-            'repository_nijc_code' => array(
+            ],
+            'repository_nijc_code' => [
                 'type' => self::TYPE_STRING,
-            ),
-            'repository_deletion_track' => array(
+            ],
+            'repository_deletion_track' => [
                 'type' => self::TYPE_INT,
                 'label' => constant($constpref.'_SYSTEM_OAIPMH_REPOSITORY_DELETION_TRACK_TITLE'),
-                'depends' => array(
+                'depends' => [
                     'required' => true,
                     'min' => 1,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 }

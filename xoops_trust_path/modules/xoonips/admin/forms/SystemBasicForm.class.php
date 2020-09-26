@@ -24,32 +24,32 @@ class Xoonips_Admin_SystemBasicForm extends Xoonips_AbstractActionForm
     {
         $constpref = '_AD_'.strtoupper($this->mDirname);
 
-        return array(
-            'moderator_gid' => array(
+        return [
+            'moderator_gid' => [
                 'type' => self::TYPE_INT,
                 'label' => constant($constpref.'_SYSTEM_BASIC_MODERATOR_GROUP_TITLE'),
-                'depends' => array(
+                'depends' => [
                     'required' => true,
                     'min' => 1,
-                ),
-            ),
-            'upload_dir' => array(
+                ],
+            ],
+            'upload_dir' => [
                 'type' => self::TYPE_STRING,
-'s',
+                's',
                 'label' => constant($constpref.'_SYSTEM_BASIC_UPLOAD_DIR_TITLE'),
-                'depends' => array(
+                'depends' => [
                     'required' => true,
-                ),
-            ),
-            'url_compatible' => array(
+                ],
+            ],
+            'url_compatible' => [
                 'type' => self::TYPE_STRING,
                 'label' => constant($constpref.'_SYSTEM_BASIC_URL_COMPATIBLE_TITLE'),
-                'depends' => array(
+                'depends' => [
                     'required' => true,
-                        'mask' => '/^(?:on|off)$/',
-                    ),
-            ),
-        );
+                    'mask' => '/^(?:on|off)$/',
+                ],
+            ],
+        ];
     }
 
     /**
@@ -60,7 +60,7 @@ class Xoonips_Admin_SystemBasicForm extends Xoonips_AbstractActionForm
         $constpref = '_AD_'.strtoupper($this->mDirname);
         $memberHandler = &xoops_gethandler('member');
         $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('groupid', array(XOOPS_GROUP_USERS, XOOPS_GROUP_ANONYMOUS), 'NOT IN'));
+        $criteria->add(new Criteria('groupid', [XOOPS_GROUP_USERS, XOOPS_GROUP_ANONYMOUS], 'NOT IN'));
         $groups = &$memberHandler->getGroupList($criteria);
         if (!isset($groups[$this->get('moderator_gid')])) {
             $this->addErrorMessage(XCube_Utils::formatString(constant($constpref.'_ERROR_INPUTVALUE'), constant($constpref.'_SYSTEM_BASIC_MODERATOR_GROUP_TITLE')));

@@ -35,7 +35,7 @@ function b_xoonips_tree_show($options)
     if (!empty($xoonipsItemId) && $is_moderator) {
         $itemUserInfo = $itemUserBean->getItemUsersInfo($xoonipsItemId);
         if ($itemUserInfo) {
-            $puid = array();
+            $puid = [];
             foreach ($itemUserInfo as $obj) {
                 $puid[] = $obj['uid'];
             }
@@ -45,9 +45,9 @@ function b_xoonips_tree_show($options)
     // get indexes
     $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $dirname, $trustDirname);
     $publicIndex = false;
-    $publicGroupIndexes = array();
-    $groupIndexes = array();
-    $privateIndexes = array();
+    $publicGroupIndexes = [];
+    $groupIndexes = [];
+    $privateIndexes = [];
 
     if (XOONIPS_UID_GUEST == $uid) {
         $publicIndex = $indexBean->getPublicIndex();
@@ -80,12 +80,12 @@ function b_xoonips_tree_show($options)
         $checkbox = true;
     }
 
-    $trees = array();
-    $indexes = array();
+    $trees = [];
+    $indexes = [];
     // public index
     if ($publicIndex && count($publicIndex) > 0) {
         $indexes[] = $publicIndex;
-        $tree = array();
+        $tree = [];
         $tree['index_id'] = $publicIndex['index_id'];
         $trees[] = $tree;
     }
@@ -112,7 +112,7 @@ function b_xoonips_tree_show($options)
     if ($groupIndexes) {
         foreach ($groupIndexes as $index) {
             $indexes[] = $index;
-            $tree = array();
+            $tree = [];
             $tree['index_id'] = $index['index_id'];
             $trees[] = $tree;
         }
@@ -124,7 +124,7 @@ function b_xoonips_tree_show($options)
                 $index['title'] = 'Private';
             }
             $indexes[] = $index;
-            $tree = array();
+            $tree = [];
             $tree['index_id'] = $index['index_id'];
             $trees[] = $tree;
         }
@@ -133,12 +133,12 @@ function b_xoonips_tree_show($options)
     foreach ($indexes as $key => $value) {
         $indexes[$key]['title'] = $value['title'];
     }
-    $block = array(
+    $block = [
         'checkbox' => $checkbox,
         'indexes' => $indexes,
         'trees' => $trees,
         'dirname' => $dirname,
-        'itemListUrl' => Functions::getItemListUrl($dirname), );
+        'itemListUrl' => Functions::getItemListUrl($dirname), ];
 
     return $block;
 }

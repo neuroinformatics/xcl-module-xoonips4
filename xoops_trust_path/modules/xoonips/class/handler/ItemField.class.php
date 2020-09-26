@@ -52,7 +52,7 @@ class Xoonips_ItemFieldObject extends XoopsSimpleObject
         $objs = $handler->getObjects($criteria);
         if (count($objs) > 0) {
             $obj = array_shift($objs);
-            $keys = array('name', 'xml', 'view_type_id', 'data_type_id', 'data_length', 'data_decimal_places', 'default_value', 'list', 'essential', 'detail_display', 'detail_target', 'scope_search', 'nondisplay');
+            $keys = ['name', 'xml', 'view_type_id', 'data_type_id', 'data_length', 'data_decimal_places', 'default_value', 'list', 'essential', 'detail_display', 'detail_target', 'scope_search', 'nondisplay'];
             foreach ($keys as $key) {
                 if ($this->get($key) != $obj->get($key)) {
                     return true;
@@ -133,7 +133,7 @@ class Xoonips_ItemFieldHandler extends XoopsObjectGenericHandler
      */
     public function __construct(&$db, $dirname)
     {
-        $this->mTable = strtr($this->mTable, array('{dirname}' => $dirname));
+        $this->mTable = strtr($this->mTable, ['{dirname}' => $dirname]);
         $this->mDirname = $dirname;
         $this->mClass = preg_replace('/Handler$/', 'Object', get_class());
         parent::__construct($db);
@@ -262,7 +262,7 @@ class Xoonips_ItemFieldHandler extends XoopsObjectGenericHandler
         $criteria->getSort('item_field_detail_id');
         $criteria->getOrder('ASC');
         $objs = $this->getObjects($criteria, null, null, true);
-        $ret = array();
+        $ret = [];
         foreach ($objs as $obj) {
             $ret[] = $obj->get('update_id');
         }
@@ -282,7 +282,7 @@ class Xoonips_ItemFieldHandler extends XoopsObjectGenericHandler
         if (null != $cache) {
             return $cache;
         }
-        $ret = array();
+        $ret = [];
         $sql = sprintf('SELECT DISTINCT `list` FROM `%s` WHERE `list` IS NOT NULL', $this->mTable);
         if (!$result = $this->db->query($sql)) {
             return $ret;
@@ -303,7 +303,7 @@ class Xoonips_ItemFieldHandler extends XoopsObjectGenericHandler
      */
     private function _getDataTypeIdsForQuickSearch()
     {
-        $names = array('varchar', 'text');
+        $names = ['varchar', 'text'];
         $handler = Functions::getXoonipsHandler('DataTypeObject', $this->mDirname);
         $criteria = new Criteria('name', $names, 'IN');
         $objs = &$handler->getObjects($criteria, null, null, true);
@@ -318,7 +318,7 @@ class Xoonips_ItemFieldHandler extends XoopsObjectGenericHandler
      */
     private function _getViewTypeIdsForQuickSearch()
     {
-        $names = array('change_log', 'preview', 'file_upload', 'rights');
+        $names = ['change_log', 'preview', 'file_upload', 'rights'];
         $handler = Functions::getXoonipsHandler('ViewType', $this->mDirname);
         $criteria = new Criteria('name', $names, 'NOT IN');
         $objs = &$handler->getObjects($criteria, null, null, true);

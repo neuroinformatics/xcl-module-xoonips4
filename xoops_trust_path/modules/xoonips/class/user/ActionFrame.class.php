@@ -1,6 +1,5 @@
 <?php
 
-
 require_once XOOPS_MODULE_PATH.'/user/class/ActionFrame.class.php';
 
 class Xoonips_UserActionFrame extends User_ActionFrame

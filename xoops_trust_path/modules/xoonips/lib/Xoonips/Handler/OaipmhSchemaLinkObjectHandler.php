@@ -17,7 +17,7 @@ class OaipmhSchemaLinkObjectHandler extends AbstractObjectHandler
     {
         parent::__construct($db, $dirname);
         $this->mTable = $db->prefix($dirname.'_oaipmh_schema_link');
-        $this->mPrimaryKey = array('schema_id1', 'schema_id2');
+        $this->mPrimaryKey = ['schema_id1', 'schema_id2'];
         $this->mIsAutoIncrement = false;
     }
 }

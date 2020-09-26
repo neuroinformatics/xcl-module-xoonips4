@@ -35,7 +35,7 @@ class Xoonips_UserFieldGroupBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -57,7 +57,7 @@ class Xoonips_UserFieldGroupBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -149,7 +149,7 @@ class Xoonips_UserFieldGroupBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -368,7 +368,7 @@ class Xoonips_UserFieldGroupBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -417,7 +417,7 @@ class Xoonips_UserFieldGroupBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -550,7 +550,7 @@ class Xoonips_UserFieldGroupBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -657,7 +657,7 @@ class Xoonips_UserFieldGroupBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -839,7 +839,7 @@ class Xoonips_UserFieldGroupBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -866,7 +866,7 @@ class Xoonips_UserFieldGroupBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row['user_detail_id'];
         }

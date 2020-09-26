@@ -5,7 +5,7 @@
  */
 class Xoonips_IndexBean extends Xoonips_BeanBase
 {
-    private static $index_cache = array();
+    private static $index_cache = [];
 
     private $groupBean;
     private $indexItemLinkBean;
@@ -35,7 +35,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
      */
     public function getPublicIndex()
     {
-        $ret = array();
+        $ret = [];
 
         $sql = "SELECT a.* FROM $this->table a";
         $sql = $sql.' WHERE a.open_level='.XOONIPS_OL_PUBLIC.' AND a.parent_index_id='.XOONIPS_IID_ROOT;
@@ -62,7 +62,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
      */
     public function getPublicGroupIndex()
     {
-        $ret = array();
+        $ret = [];
 
         $tblGroup = $this->prefix('groups');
 
@@ -93,7 +93,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
      */
     public function getGroupIndex($uid)
     {
-        $ret = array();
+        $ret = [];
         $tblGroupUser = $this->prefix('groups_users_link');
         $tblGroup = $this->prefix('groups');
         $sql = "SELECT a.* FROM $this->table a";
@@ -126,7 +126,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
      */
     public function getGroupIndex2($uids)
     {
-        $ret = array();
+        $ret = [];
         $tblGroupUser = $this->prefix('groups_users_link');
         $tblGroup = $this->prefix('groups');
         $sql = "SELECT a.* FROM $this->table a";
@@ -159,7 +159,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
      */
     public function getPrivateIndex($uid)
     {
-        $ret = array();
+        $ret = [];
 
         $sql = "SELECT a.* FROM $this->table a";
         $sql = $sql." WHERE a.uid=$uid AND a.open_level=".XOONIPS_OL_PRIVATE.' AND a.parent_index_id='.XOONIPS_IID_ROOT;
@@ -186,7 +186,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
      */
     public function getPrivateIndex2($uids)
     {
-        $ret = array();
+        $ret = [];
 
         $sql = "SELECT a.* FROM $this->table a";
         $sql = $sql.' WHERE a.uid IN('.implode(',', $uids);
@@ -215,12 +215,12 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
      */
     public function mergeIndexes($idxs1, $idxs2)
     {
-        if ($idxs1 == false) {
+        if (false == $idxs1) {
             return $idxs2;
         } else {
             $ret = $idxs1;
         }
-        if ($idxs2 != false) {
+        if (false != $idxs2) {
             foreach ($idxs2 as $idx2) {
                 $flg = false;
                 foreach ($idxs1 as $idx1) {
@@ -229,7 +229,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
                         break;
                     }
                 }
-                if ($flg == false) {
+                if (false == $flg) {
                     $ret[] = $idx2;
                 }
             }
@@ -247,7 +247,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
      */
     public function getPublicIndexes()
     {
-        $ret = array();
+        $ret = [];
 
         $sql = "SELECT a.* FROM $this->table a";
         $sql = $sql.' WHERE a.open_level='.XOONIPS_OL_PUBLIC.' AND a.index_id<>'.XOONIPS_IID_ROOT;
@@ -275,7 +275,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
      */
     public function getPublicGroupIndexes()
     {
-        $ret = array();
+        $ret = [];
         $tblGroup = $this->prefix('groups');
 
         $sql = "SELECT a.* FROM $this->table a LEFT JOIN $tblGroup b ON(a.groupid=b.groupid)";
@@ -305,7 +305,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
      */
     public function getGroupIndexes($uid)
     {
-        $ret = array();
+        $ret = [];
         $tblGroupUser = $this->prefix('groups_users_link');
         $tblGroup = $this->prefix('groups');
 
@@ -339,7 +339,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
      */
     public function getPrivateIndexes($uid)
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT a.* FROM $this->table a";
         $sql = $sql." WHERE a.uid=$uid AND a.open_level=".XOONIPS_OL_PRIVATE;
         $sql = $sql.' ORDER BY a.index_id';
@@ -367,7 +367,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
      */
     public function getChilds(&$indexes, $indexId)
     {
-        $ret = array();
+        $ret = [];
         foreach ($indexes as $index) {
             if ($index['parent_index_id'] == $indexId) {
                 $ret[] = $index['index_id'];
@@ -387,7 +387,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     public function getIndex($indexId, $force = false)
     {
         $ret = false;
-        if ($force == false && isset(self::$index_cache[$indexId])) {
+        if (false == $force && isset(self::$index_cache[$indexId])) {
             return self::$index_cache[$indexId];
         }
         $sql = "SELECT a.* FROM $this->table a";
@@ -415,10 +415,10 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
      */
     public function getFullPathIndexes($indexId, $force = false)
     {
-        $ret = array();
-        while ($indexId != 1) {
+        $ret = [];
+        while (1 != $indexId) {
             $index = $this->getIndex($indexId, $force);
-            if ($index == false) {
+            if (false == $index) {
                 return false;
             }
             $index['html_title'] = $index['title'];
@@ -439,7 +439,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
      */
     public function getChildIndexes($indexId)
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT a.* FROM $this->table a";
         $sql = $sql." WHERE a.parent_index_id=$indexId ORDER BY weight";
 
@@ -494,7 +494,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
             return $ret;
         }
         if ($row = $this->fetchArray($result)) {
-            if ($row['weight'] != null) {
+            if (null != $row['weight']) {
                 $ret = $row['weight'];
             }
         }
@@ -626,7 +626,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
         do {
             $ret = $this->getIndex($indexId);
             $indexId = $ret['parent_index_id'];
-        } while ($indexId != 1);
+        } while (1 != $indexId);
 
         return $ret;
     }
@@ -646,7 +646,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
         $len = count($indexes);
         for ($i = 0; $i < $len; ++$i) {
             $index = &$indexes[$i];
-            if ($index === false) {
+            if (false === $index) {
                 continue;
             }
             if (!is_array($admin_gids) || !in_array($index['groupid'], $admin_gids)) {
@@ -664,7 +664,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
      */
     public function getAllChildIndexes($indexId)
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT * FROM $this->table";
         $sql = $sql." WHERE parent_index_id=$indexId";
 
@@ -694,7 +694,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
      */
     public function getItemIds($indexIds)
     {
-        $ret = array();
+        $ret = [];
         $tblIndexItem = $this->prefix($this->modulePrefix('index_item_link'));
         $sql = "SELECT item_id FROM $tblIndexItem";
         $sql = $sql.' WHERE index_id IN ('.implode(',', $indexIds).')';
@@ -821,7 +821,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
      */
     public function getIndexPath($rootIndexId, $indexId)
     {
-        $ret = array();
+        $ret = [];
         static $level = -1;
         if ($rootIndexId == $indexId) {
             return $ret;
@@ -833,7 +833,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
 
         $result = $this->execute($sql);
         if ($row = $this->fetchArray($result)) {
-            if ($row['open_level'] == XOONIPS_OL_PRIVATE && $row['parent_index_id'] == XOONIPS_IID_ROOT) {
+            if (XOONIPS_OL_PRIVATE == $row['open_level'] && XOONIPS_IID_ROOT == $row['parent_index_id']) {
                 $row['title'] = 'Private';
             }
             $row['title'] = str_repeat('&nbsp;&nbsp;', $level).$row['title'];
@@ -871,7 +871,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     {
         $tblIndexItem = $this->prefix($this->dirname.'_index_item_link');
         $index = $this->getIndex($indexId);
-        if ($index['open_level'] == XOONIPS_OL_PRIVATE) {
+        if (XOONIPS_OL_PRIVATE == $index['open_level']) {
             return false;
         }
 
@@ -966,7 +966,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     {
         $ret = '';
         $sql = "SELECT index_id FROM $this->table WHERE parent_index_id=".XOONIPS_IID_ROOT;
-        if ($uid == XOONIPS_UID_GUEST) {
+        if (XOONIPS_UID_GUEST == $uid) {
             $sql .= ' AND open_level='.XOONIPS_OL_PUBLIC;
         } else {
             $sql .= ' AND open_level='.XOONIPS_OL_PRIVATE." AND uid=$uid";
@@ -1055,7 +1055,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
             return 0;
         }
         if ($row = $this->fetchArray($result)) {
-            if ($row['count'] != 0) {
+            if (0 != $row['count']) {
                 $ret = $row['count'];
             }
         }
@@ -1080,7 +1080,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
             return 0;
         }
         if ($row = $this->fetchArray($result)) {
-            if ($row['count'] != 0) {
+            if (0 != $row['count']) {
                 $ret = $row['count'];
             }
         }
@@ -1129,7 +1129,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
             return $ret;
         }
         if ($row = $this->fetchArray($result)) {
-            if ($row['weight'] != null) {
+            if (null != $row['weight']) {
                 $ret = $row['weight'];
             }
         }
@@ -1147,7 +1147,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
      */
     public function getIndexWithState($itemId, $indexIds)
     {
-        $ret = array();
+        $ret = [];
         $tblIndexItem = $this->prefix($this->modulePrefix('index_item_link'));
         $sql = 'SELECT t1.index_id, t1.certify_state, t2.open_level, t2.title, t2.parent_index_id, t2.uid '
             ." FROM $tblIndexItem t1, $this->table t2 WHERE t1.index_id=t2.index_id "
@@ -1173,7 +1173,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
      */
     public function getIndexesByCheckedIndex($indexIds)
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT DISTINCT index_id, open_level, title, parent_index_id, uid FROM $this->table "
             ." WHERE index_id in ($indexIds) ORDER BY open_level";
         $result = $this->execute($sql);
@@ -1221,22 +1221,22 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
      */
     public function checkWriteRight($indexId, $uid)
     {
-        if ($uid == XOONIPS_UID_GUEST) {
+        if (XOONIPS_UID_GUEST == $uid) {
             return false;
         }
         $index = $this->getIndex($indexId);
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
         // if public index
-        if ($index['open_level'] == XOONIPS_OL_PUBLIC) {
+        if (XOONIPS_OL_PUBLIC == $index['open_level']) {
             if (!$userBean->isModerator($uid)) {
                 return false;
             }
-        // if group index
-        } elseif ($index['open_level'] == XOONIPS_OL_GROUP_ONLY) {
+            // if group index
+        } elseif (XOONIPS_OL_GROUP_ONLY == $index['open_level']) {
             if (!$userBean->isGroupManager($index['groupid'], $uid)) {
                 return false;
             }
-        // if private index
+            // if private index
         } else {
             if ($index['uid'] != $uid) {
                 return false;
@@ -1266,10 +1266,10 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
         }
 
         // if public index
-        if ($index['open_level'] == XOONIPS_OL_PUBLIC) {
+        if (XOONIPS_OL_PUBLIC == $index['open_level']) {
             return true;
         // if group index
-        } elseif ($index['open_level'] == XOONIPS_OL_GROUP_ONLY) {
+        } elseif (XOONIPS_OL_GROUP_ONLY == $index['open_level']) {
             // if group public
             if ($groupBean->isPublic($index['groupid'])) {
                 return true;
@@ -1279,7 +1279,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
                     return true;
                 }
             }
-        // if private index
+            // if private index
         } else {
             if ($index['uid'] == $uid) {
                 return true;
@@ -1331,7 +1331,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
             return $ret;
         }
         if ($row = $this->fetchRow($result)) {
-            if ($row[0] != null) {
+            if (null != $row[0]) {
                 $ret = $row[0];
             }
         }
@@ -1353,18 +1353,18 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
         $publicIndex = $this->mergeIndexes($publicIndex, $publicGroupIndexes);
         foreach ($publicIndex as $index) {
             $indexes = $this->getFullPathIndexes($index['index_id']);
-            if ($indexes != false) {
+            if (false != $indexes) {
                 $fullpath = '';
-                $ids = array();
+                $ids = [];
                 foreach ($indexes as $idx) {
                     $fullpath = $fullpath.'/'.$idx['title'];
                     $ids[] = $idx['index_id'];
                 }
                 $id_fullpath = implode(',', $ids);
                 if ($assoc_array_mode) {
-                    $ret[$index['index_id']] = array('id' => $index['index_id'], 'fullpath' => $fullpath, 'id_fullpath' => $id_fullpath);
+                    $ret[$index['index_id']] = ['id' => $index['index_id'], 'fullpath' => $fullpath, 'id_fullpath' => $id_fullpath];
                 } else {
-                    $ret[] = array('id' => $index['index_id'], 'fullpath' => $fullpath, 'id_fullpath' => $id_fullpath);
+                    $ret[] = ['id' => $index['index_id'], 'fullpath' => $fullpath, 'id_fullpath' => $id_fullpath];
                 }
             }
         }
@@ -1385,7 +1385,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
         $itemUserBean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $this->dirname, $this->trustDirname);
         foreach ($index_ids as $key => $index_id) {
             $index = $this->getIndex($index_id);
-            if ($index['open_level'] == XOONIPS_OL_PRIVATE) {
+            if (XOONIPS_OL_PRIVATE == $index['open_level']) {
                 if (!$itemUserBean->isLink($item_id, $index['uid'])) {
                     unset($index_ids[$key]);
                 }
@@ -1404,7 +1404,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
      */
     public function getCanVeiwIndexes($item_id, $uid)
     {
-        $ret = array();
+        $ret = [];
         /*
          $authen_list[index_level][index_state][group_state]=user_type
             index_level
@@ -1469,16 +1469,16 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
             $index = $this->getIndex($obj['index_id']);
             $index_level = $index['open_level'];
             $index_state = $obj['certify_state'];
-            if ($index['open_level'] == XOONIPS_OL_PRIVATE) {
+            if (XOONIPS_OL_PRIVATE == $index['open_level']) {
                 $index_state = 0;
                 $group_state = 0;
-            } elseif ($index['open_level'] == XOONIPS_OL_GROUP_ONLY) {
+            } elseif (XOONIPS_OL_GROUP_ONLY == $index['open_level']) {
                 if ($groupBean->isPublic($index['groupid'])) {
                     $group_state = 3;
                 } else {
                     $group_state = 0;
                 }
-            } elseif ($index['open_level'] == XOONIPS_OL_PUBLIC) {
+            } elseif (XOONIPS_OL_PUBLIC == $index['open_level']) {
                 $group_state = 0;
             }
             if (isset($authen_list[$index_level][$index_state][$group_state])) {
@@ -1512,10 +1512,10 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
      */
     private function parseUser($item_id, $index_id, $uid)
     {
-        $ret = array();
+        $ret = [];
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
         $itemUserBean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $this->dirname, $this->trustDirname);
-        if ($uid == XOONIPS_UID_GUEST) {
+        if (XOONIPS_UID_GUEST == $uid) {
             $ret[] = 1;
 
             return $ret;
@@ -1524,12 +1524,12 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
             $ret[] = 7;
         }
         $index = $this->getIndex($index_id);
-        if ($index['open_level'] == XOONIPS_OL_PRIVATE && $index['uid'] == $uid) {
+        if (XOONIPS_OL_PRIVATE == $index['open_level'] && $index['uid'] == $uid) {
             $ret[] = 8;
 
             return $ret;
         }
-        if ($index['open_level'] == XOONIPS_OL_GROUP_ONLY) {
+        if (XOONIPS_OL_GROUP_ONLY == $index['open_level']) {
             // if group admin
             if ($userBean->isGroupManager($index['groupid'], $uid)) {
                 $ret[] = 6;
@@ -1554,7 +1554,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
             }
         }
         // if public
-        if ($index['open_level'] == XOONIPS_OL_PUBLIC) {
+        if (XOONIPS_OL_PUBLIC == $index['open_level']) {
             if ($itemUserBean->isLink($item_id, $uid)) {
                 $ret[] = 3;
 
@@ -1568,8 +1568,8 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
 
     public function getCanViewItemIds($index_id, $uid)
     {
-        $ret = array();
-        static $authen_list = array();
+        $ret = [];
+        static $authen_list = [];
         /*
          $authen_list[index_level][index_state][group_state]=user_type
             index_level
@@ -1597,32 +1597,32 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
         //---------------------- detail--------------------------
         if (empty($authen_list)) {
             // public request
-            $authen_list[1][1][0] = array(3, 7);
+            $authen_list[1][1][0] = [3, 7];
             // public withdraw request
-            $authen_list[1][3][0] = array(1, 2, 3, 4, 5, 6, 7, 8);
+            $authen_list[1][3][0] = [1, 2, 3, 4, 5, 6, 7, 8];
             // public
-            $authen_list[1][2][0] = array(1, 2, 3, 4, 5, 6, 7, 8);
+            $authen_list[1][2][0] = [1, 2, 3, 4, 5, 6, 7, 8];
 
             // public group share request
-            $authen_list[2][1][3] = array(3, 5, 6, 7);
+            $authen_list[2][1][3] = [3, 5, 6, 7];
 
             // public group share withdraw request
-            $authen_list[2][3][3] = array(1, 2, 3, 4, 5, 6, 7, 8);
+            $authen_list[2][3][3] = [1, 2, 3, 4, 5, 6, 7, 8];
 
             // public group share
-            $authen_list[2][2][3] = array(1, 2, 3, 4, 5, 6, 7, 8);
+            $authen_list[2][2][3] = [1, 2, 3, 4, 5, 6, 7, 8];
 
             // group share request
-            $authen_list[2][1][0] = array(5, 6, 7);
+            $authen_list[2][1][0] = [5, 6, 7];
 
             // group share withdraw request
-            $authen_list[2][3][0] = array(4, 5, 6, 7);
+            $authen_list[2][3][0] = [4, 5, 6, 7];
 
             // group share
-            $authen_list[2][2][0] = array(4, 5, 6, 7);
+            $authen_list[2][2][0] = [4, 5, 6, 7];
 
             // private
-            $authen_list[3][0][0] = array(7, 8);
+            $authen_list[3][0][0] = [7, 8];
         }
 
         // get can view indexes
@@ -1631,7 +1631,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
             $user_type = $user_check;
         } else {
             $user_type = 2;
-            if ($uid == XOONIPS_UID_GUEST) {
+            if (XOONIPS_UID_GUEST == $uid) {
                 $user_type = 1;
             }
             if ($this->usersBean->isModerator($uid)) {
@@ -1642,14 +1642,14 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
 
         foreach ($this->indexItemLinkBean->getIndexItemLinkInfo2($index_id) as $obj) {
             $index = $this->getIndex($obj['index_id']);
-            if ($user_type == 2) {
-                if ($index['open_level'] == XOONIPS_OL_PRIVATE) {
+            if (2 == $user_type) {
+                if (XOONIPS_OL_PRIVATE == $index['open_level']) {
                     $obj['certify_state'] = 0;
                     $group_state = 0;
                     if ($index['uid'] == $uid) {
                         $user_type = 8;
                     }
-                } elseif ($index['open_level'] == XOONIPS_OL_GROUP_ONLY) {
+                } elseif (XOONIPS_OL_GROUP_ONLY == $index['open_level']) {
                     if ($this->groupBean->isPublic($index['groupid'])) {
                         $group_state = 3;
                     } else {
@@ -1672,23 +1672,23 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
                             }
                         }
                     }
-                } elseif ($index['open_level'] == XOONIPS_OL_PUBLIC) {
+                } elseif (XOONIPS_OL_PUBLIC == $index['open_level']) {
                     $group_state = 0;
                     if ($this->itemUsersLinkBean->isLink($obj['item_id'], $uid)) {
                         $user_type = 3;
                     }
                 }
             } else {
-                if ($index['open_level'] == XOONIPS_OL_PRIVATE) {
+                if (XOONIPS_OL_PRIVATE == $index['open_level']) {
                     $obj['certify_state'] = 0;
                     $group_state = 0;
-                } elseif ($index['open_level'] == XOONIPS_OL_GROUP_ONLY) {
+                } elseif (XOONIPS_OL_GROUP_ONLY == $index['open_level']) {
                     if ($this->groupBean->isPublic($index['groupid'])) {
                         $group_state = 3;
                     } else {
                         $group_state = 0;
                     }
-                } elseif ($index['open_level'] == XOONIPS_OL_PUBLIC) {
+                } elseif (XOONIPS_OL_PUBLIC == $index['open_level']) {
                     $group_state = 0;
                 }
             }
@@ -1720,12 +1720,12 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     {
         global $xoopsUser;
         $ret = '';
-        if ($uid == 0) {
+        if (0 == $uid) {
             $uid = $xoopsUser->getVar('uid');
         }
         $indexes = $this->getFullPathIndexes($indexId);
         foreach ($indexes as $index) {
-            if ($index['uid'] == $uid && $index['open_level'] == XOONIPS_OL_PRIVATE && $index['parent_index_id'] == XOONIPS_IID_ROOT) {
+            if ($index['uid'] == $uid && XOONIPS_OL_PRIVATE == $index['open_level'] && XOONIPS_IID_ROOT == $index['parent_index_id']) {
                 $title = 'Private';
             } else {
                 $title = $index['title'];
@@ -1739,9 +1739,9 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     public function getAllChildIds($indexId)
     {
         if (!$indexId) {
-            return array();
+            return [];
         }
-        $ret = array($indexId);
+        $ret = [$indexId];
         $childs = $this->getAllChildIndexes($indexId);
         foreach ($childs as $index) {
             $ret[] = $index['index_id'];
@@ -1759,7 +1759,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
      */
     public function getIndexAll()
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT * FROM $this->table";
 
         $result = $this->execute($sql);
@@ -1797,7 +1797,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
             }
 
             $index = $this->getIndex($pid, true);
-            if ($index == false) {
+            if (false == $index) {
                 return false;
             }
             $pid = $index['parent_index_id'];
@@ -1816,7 +1816,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
      */
     public function getIndexID($indexes, $root, $indexType, $isManager, $isModerator)
     {
-        $ret = array();
+        $ret = [];
         $parent = $root;
         for ($i = 0; $i < sizeof($indexes); ++$i) {
             $title = $indexes[$i];
@@ -1829,11 +1829,11 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
                     continue;
                 }
             } else {
-                if ($indexType == 1 && empty($isModerator)) {
+                if (1 == $indexType && empty($isModerator)) {
                     // error if index is public and user is not moderator
                     return false;
                 }
-                if ($indexType == 2 && empty($isModerator) && empty($isManager)) {
+                if (2 == $indexType && empty($isModerator) && empty($isManager)) {
                     // error if index is group and user is not moderator or manager
                     return false;
                 }
@@ -1894,7 +1894,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
      */
     private function getChildsIndex($parent, $title)
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT a.* FROM $this->table a";
         if (is_numeric($parent['uid'])) {
             $sql = $sql.' WHERE a.uid='.intval($parent['uid']);

@@ -144,7 +144,7 @@ class Xoonips_OaipmhItemStatusBean extends Xoonips_BeanBase
      */
     public function select($itemId)
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT * FROM $this->table WHERE item_id=$itemId";
         $result = $this->execute($sql);
         if (!$result) {
@@ -252,7 +252,7 @@ class Xoonips_OaipmhItemStatusBean extends Xoonips_BeanBase
     public function updateItemStatus($itemId)
     {
         $statusInfo = $this->select($itemId);
-        if ($statusInfo === false) {
+        if (false === $statusInfo) {
             return false;
         }
         if (count($statusInfo) > 0) {
@@ -270,7 +270,7 @@ class Xoonips_OaipmhItemStatusBean extends Xoonips_BeanBase
 
     public function getOpenItem4Oaipmh($from, $until, $set, $startIID, $limit, $deletion_track)
     {
-        $ret = array();
+        $ret = [];
         $itemTable = $this->prefix($this->modulePrefix('item'));
         $itemtypeTable = $this->prefix($this->modulePrefix('item_type'));
         if ($limit < 0) {
@@ -281,15 +281,15 @@ class Xoonips_OaipmhItemStatusBean extends Xoonips_BeanBase
             .$itemTable.' AS item LEFT JOIN '.$itemtypeTable
             .' AS itemtype on item.item_type_id=itemtype.item_type_id ';
         $where = '';
-        $child_xids = array();
-        if ($set && substr($set, 0, 5) != 'index') {  // item type mode
+        $child_xids = [];
+        if ($set && 'index' != substr($set, 0, 5)) {  // item type mode
             $itemTypeBean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
             $itemTypeInfo = $itemTypeBean->getItemTypeByName($set);
             if (!$itemTypeInfo) {
                 return false;
             }
             $where .= ' itemtype.item_type_id='.$itemTypeInfo['item_type_id'].' AND ';
-        } elseif ($set && substr($set, 0, 5) == 'index') {  // index number mode
+        } elseif ($set && 'index' == substr($set, 0, 5)) {  // index number mode
             $set_indexes = explode(':', $set);
             if (count($set_indexes) > 0) {
                 $base_xid = substr($set_indexes[count($set_indexes) - 1], 5, strlen($set_indexes[count($set_indexes) - 1]));
@@ -308,10 +308,10 @@ class Xoonips_OaipmhItemStatusBean extends Xoonips_BeanBase
             .' WHERE item.item_id=stat.item_id AND '
             .' item.item_type_id=itemtype.item_type_id AND '
             .$where;
-        if ($from != 0) {
+        if (0 != $from) {
             $sql .= "$from <= stat.timestamp AND ";
         }
-        if ($until != 0) {
+        if (0 != $until) {
             $sql .= " stat.timestamp <= $until AND ";
         }
         $sql .= " stat.item_id >= $startIID ";

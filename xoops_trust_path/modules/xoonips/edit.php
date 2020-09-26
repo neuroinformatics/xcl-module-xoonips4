@@ -14,12 +14,12 @@ $request = new Xoonips_Request();
 $response = new Xoonips_Response();
 $op = $request->getParameter('op');
 $item_id = $request->getParameter('item_id');
-if ($op == null) {
+if (null == $op) {
     $op = 'init';
 }
 
 // check request
-if (!in_array($op, array(
+if (!in_array($op, [
     'init',
     'complete',
     'addFieldGroup',
@@ -43,11 +43,11 @@ if (!in_array($op, array(
     'saveOwners',
     'deleteConfirm',
     'delete',
-))) {
+])) {
     die('illegal request');
 }
 
-if ($op == 'editIndex') {
+if ('editIndex' == $op) {
     global $xoonipsItemId;
     $xoonipsItemId = $item_id;
     $xoonipsTreeCheckBox = true;
@@ -55,7 +55,7 @@ if ($op == 'editIndex') {
 }
 
 // set action map
-$actionMap = array();
+$actionMap = [];
 $actionMap['init_success'] = $mydirname.'_edit.html';
 $actionMap['complete_success'] = $mydirname.'_edit.html';
 $actionMap['addFieldGroup_success'] = $mydirname.'_edit.html';
@@ -81,7 +81,7 @@ $actionMap['saveOwners_success'] = 'redirect_header';
 $actionMap['deleteConfirm_success'] = $mydirname.'_delete_confirm.html';
 $actionMap['delete_success'] = 'redirect_header';
 
-$checkOp = in_array($op, array(
+$checkOp = in_array($op, [
     'editIndex',
     'confirmIndex',
     'saveIndex',
@@ -91,7 +91,7 @@ $checkOp = in_array($op, array(
     'saveOwners',
     'deleteConfirm',
     'delete',
-));
+]);
 
 if ($checkOp) {
     include XOOPS_ROOT_PATH.'/header.php';

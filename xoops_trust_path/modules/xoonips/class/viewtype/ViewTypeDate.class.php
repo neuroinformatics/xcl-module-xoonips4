@@ -17,8 +17,8 @@ class Xoonips_ViewTypeDate extends Xoonips_ViewType
         $yearValue = '';
         $monthValue = '';
         $dayValue = '';
-        if ($value != '') {
-            if (count(explode('-', $value)) == 1) {
+        if ('' != $value) {
+            if (1 == count(explode('-', $value))) {
                 $value = date('Y-m-d', $value);
             }
             $dateArray = explode('-', $value);
@@ -71,14 +71,14 @@ class Xoonips_ViewTypeDate extends Xoonips_ViewType
         $dateToValue = '';
         if (is_array($value)) {
             $_ENVyearFromValue = '';
-            if ($value[0] != '') {
+            if ('' != $value[0]) {
                 $dateArrayFrom = explode('-', $value[0]);
                 $yearFromValue = $dateArrayFrom[0];
                 $monthFromValue = $dateArrayFrom[1];
                 $dayFromValue = $dateArrayFrom[2];
                 $dateFromValue = $yearFromValue.'-'.$monthFromValue.'-'.$dayFromValue;
             }
-            if ($value[1] != '') {
+            if ('' != $value[1]) {
                 $dateArrayTo = explode('-', $value[1]);
                 $yearToValue = $dateArrayTo[0];
                 $monthToValue = $dateArrayTo[1];
@@ -138,7 +138,7 @@ class Xoonips_ViewTypeDate extends Xoonips_ViewType
     private function formatDatetime($str)
     {
         $ret = '';
-        if (strlen($str) == 10) {
+        if (10 == strlen($str)) {
             $ret = $this->getDate(substr($str, 0, 4), substr($str, 5, 2), substr($str, 8, 2));
         }
 
@@ -150,10 +150,10 @@ class Xoonips_ViewTypeDate extends Xoonips_ViewType
         $int_year = intval($year);
         $int_month = intval($month);
         $int_day = intval($day);
-        if ($int_month == 0) {
+        if (0 == $int_month) {
             $date = date(constant($this->trustDirname.'_YEAR_FORMAT'), mktime(0, 0, 0, 1, 1, $int_year));
         } else {
-            if ($int_day == 0) {
+            if (0 == $int_day) {
                 $date = date(constant($this->trustDirname.'_YEAR_MONTH_FORMAT'), mktime(0, 0, 0, $int_month, 1, $int_year));
             } else {
                 $date = date(constant($this->trustDirname.'_DATE_FORMAT'), mktime(0, 0, 0, $int_month, $int_day, $int_year));
@@ -173,15 +173,15 @@ class Xoonips_ViewTypeDate extends Xoonips_ViewType
 
     protected function getMonths()
     {
-        $ret = array('01' => 'Jan', '02' => 'Feb', '03' => 'Mar', '04' => 'Apr', '05' => 'May', '06' => 'Jun',
-             '07' => 'Jul', '08' => 'Aug', '09' => 'Sep', '10' => 'Oct', '11' => 'Nov', '12' => 'Dec', );
+        $ret = ['01' => 'Jan', '02' => 'Feb', '03' => 'Mar', '04' => 'Apr', '05' => 'May', '06' => 'Jun',
+            '07' => 'Jul', '08' => 'Aug', '09' => 'Sep', '10' => 'Oct', '11' => 'Nov', '12' => 'Dec', ];
 
         return $ret;
     }
 
     protected function getDays()
     {
-        $ret = array();
+        $ret = [];
         for ($i = 1; $i < 32; ++$i) {
             $value = $i;
             if ($i < 10) {
@@ -202,19 +202,19 @@ class Xoonips_ViewTypeDate extends Xoonips_ViewType
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];
         } else {
-            $tableData = array();
+            $tableData = [];
             $sqlStrings[$tableName] = &$tableData;
         }
-        if ($value != '') {
-            if ($field->getScopeSearch() == 1 && $scopeSearchFlg) {
+        if ('' != $value) {
+            if (1 == $field->getScopeSearch() && $scopeSearchFlg) {
                 $value[0] = trim($value[0]);
                 $value[1] = trim($value[1]);
-                if ($value[0] != '') {
+                if ('' != $value[0]) {
                     $value[0] = $this->getTimes($value[0]);
                     $v = $field->getDataType()->convertSQLStr($value[0]);
                     $tableData[] = "$columnName>=$v";
                 }
-                if ($value[1] != '') {
+                if ('' != $value[1]) {
                     $value[1] = $this->getTimes($value[1]);
                     $v = $field->getDataType()->convertSQLStr($value[1]);
                     $tableData[] = "$columnName<=$v";
@@ -234,7 +234,7 @@ class Xoonips_ViewTypeDate extends Xoonips_ViewType
         if (!preg_match($char, $value)) {
             return $value;
         }
-        $valueArr = array();
+        $valueArr = [];
         $valueArr = explode('-', $value);
 
         return mktime(0, 0, 0, $valueArr[1], $valueArr[2], $valueArr[0]);
@@ -267,43 +267,43 @@ class Xoonips_ViewTypeDate extends Xoonips_ViewType
         if (is_array($value)) {
             $value[0] = trim($value[0]);
             $value[1] = trim($value[1]);
-            if ($value[0] !== '') {
+            if ('' !== $value[0]) {
                 $dateArray = explode('-', $value[0]);
                 $yearValue = $dateArray[0];
                 $monthValue = $dateArray[1];
                 $dayValue = $dateArray[2];
                 if (!ctype_digit($yearValue) || !checkdate($monthValue, $dayValue, $yearValue)) {
-                    $parameters = array();
+                    $parameters = [];
                     $parameters[] = $field->getName().'[from]';
                     $errors->addError('_MD_XOONIPS_ERROR_DATE', $fieldName, $parameters);
                 }
             }
-            if ($value[1] !== '') {
+            if ('' !== $value[1]) {
                 $dateArray = explode('-', $value[0]);
                 $yearValue = $dateArray[0];
                 $monthValue = $dateArray[1];
                 $dayValue = $dateArray[2];
                 if (!ctype_digit($yearValue) || !checkdate($monthValue, $dayValue, $yearValue)) {
-                    $parameters = array();
+                    $parameters = [];
                     $parameters[] = $field->getName().'[to]';
                     $errors->addError('_MD_XOONIPS_ERROR_DATE', $fieldName, $parameters);
                 }
             }
         } else {
             $value = trim($value);
-            if ($value !== '') {
+            if ('' !== $value) {
                 $dateArray = explode('-', $value);
                 $yearValue = $dateArray[0];
                 $monthValue = $dateArray[1];
                 $dayValue = $dateArray[2];
-                if (!(ctype_digit($yearValue) && strlen($yearValue) == 4) || !checkdate($monthValue, $dayValue, $yearValue)) {
-                    $parameters = array();
+                if (!(ctype_digit($yearValue) && 4 == strlen($yearValue)) || !checkdate($monthValue, $dayValue, $yearValue)) {
+                    $parameters = [];
                     $parameters[] = $field->getName();
                     $errors->addError('_MD_XOONIPS_ERROR_DATE', $fieldName, $parameters);
                 }
             }
             if ($field->getLen() > 0 && strlen($value) > $field->getLen()) {
-                $parameters = array();
+                $parameters = [];
                 $parameters[] = $field->getName();
                 $parameters[] = $field->getLen();
                 $errors->addError('_MD_XOONIPS_ERROR_MAXLENGTH', $fieldName, $parameters);
@@ -329,30 +329,30 @@ class Xoonips_ViewTypeDate extends Xoonips_ViewType
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];
         } else {
-            $tableData = array();
+            $tableData = [];
             $sqlStrings[$tableName] = &$tableData;
         }
 
-        if (strpos($tableName, '_extend') !== false) {
+        if (false !== strpos($tableName, '_extend')) {
             $groupid = $field->getFieldGroupId();
             if (isset($tableData[$groupid])) {
                 $groupData = &$tableData[$groupid];
             } else {
-                $groupData = array();
+                $groupData = [];
                 $tableData[$groupid] = &$groupData;
             }
 
             if (isset($groupData[$columnName])) {
                 $columnData = &$groupData[$columnName];
             } else {
-                $columnData = array();
+                $columnData = [];
                 $groupData[$columnName] = &$columnData;
             }
         } else {
             if (isset($tableData[$columnName])) {
                 $columnData = &$tableData[$columnName];
             } else {
-                $columnData = array();
+                $columnData = [];
                 $tableData[$columnName] = &$columnData;
             }
         }
@@ -364,7 +364,7 @@ class Xoonips_ViewTypeDate extends Xoonips_ViewType
     private function convertTime($str)
     {
         $ret = '';
-        if (strlen($str) == 10) {
+        if (10 == strlen($str)) {
             $int_year = intval(substr($str, 0, 4));
             $int_month = intval(substr($str, 5, 2));
             $int_day = intval(substr($str, 8, 2));
@@ -384,7 +384,7 @@ class Xoonips_ViewTypeDate extends Xoonips_ViewType
         $uid = XoopsUtils::getUid();
         $server_TZ = XoopsUtils::getXoopsConfig('server_TZ');
         $default_TZ = XoopsUtils::getXoopsConfig('default_TZ');
-        if ($uid != XoopsUtils::UID_GUEST) {
+        if (XoopsUtils::UID_GUEST != $uid) {
             $userbean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
             $userInfo = $userbean->getUserBasicInfo($uid);
 

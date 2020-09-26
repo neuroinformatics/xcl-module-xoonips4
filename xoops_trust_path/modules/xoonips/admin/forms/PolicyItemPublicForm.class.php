@@ -24,22 +24,22 @@ class Xoonips_Admin_PolicyItemPublicForm extends Xoonips_AbstractActionForm
     {
         $constpref = '_AD_'.strtoupper($this->mDirname);
 
-        return array(
-            'certify_item' => array(
+        return [
+            'certify_item' => [
                 'type' => self::TYPE_STRING,
                 'label' => constant($constpref.'_POLICY_ITEM_PUBLIC_CERTIFY_ITEM_TITLE'),
-                'depends' => array(
+                'depends' => [
                     'required' => true,
-                ),
-            ),
-            'download_file_compression' => array(
+                ],
+            ],
+            'download_file_compression' => [
                 'type' => self::TYPE_STRING,
                 'label' => constant($constpref.'_POLICY_ITEM_PUBLIC_DOWNLOAD_FILE_TITLE'),
-                'depends' => array(
+                'depends' => [
                     'required' => true,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
@@ -48,7 +48,7 @@ class Xoonips_Admin_PolicyItemPublicForm extends Xoonips_AbstractActionForm
     public function validateItem_certify()
     {
         $constpref = '_AD_'.strtoupper($this->mDirname);
-        if (!in_array($this->get('item_certify'), array('on', 'auto'))) {
+        if (!in_array($this->get('item_certify'), ['on', 'auto'])) {
             $this->addErrorMessage(XCube_Utils::formatString(constant($constpref.'_ERROR_INPUTVALUE'), constant($constpref.'_POLICY_ITEM_PUBLIC_CERTIFY_ITEM_TITLE')));
         }
     }
@@ -59,7 +59,7 @@ class Xoonips_Admin_PolicyItemPublicForm extends Xoonips_AbstractActionForm
     public function validateDownload_file_compression()
     {
         $constpref = '_AD_'.strtoupper($this->mDirname);
-        if (!in_array($this->get('download_file_compression'), array('on', 'off'))) {
+        if (!in_array($this->get('download_file_compression'), ['on', 'off'])) {
             $this->addErrorMessage(XCube_Utils::formatString(constant($constpref.'_ERROR_INPUTVALUE'), constant($constpref.'_POLICY_ITEM_PUBLIC_DOWNLOAD_FILE_TITLE')));
         }
     }

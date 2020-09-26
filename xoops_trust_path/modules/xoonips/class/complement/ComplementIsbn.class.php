@@ -27,7 +27,7 @@ class Xoonips_ComplementIsbn extends Xoonips_Complement
 
         $asin = $data[$id];
         $isbnData = $this->getAmazonData($asin);
-        if (count($isbnData) === 0) {
+        if (0 === count($isbnData)) {
             return false;
         }
 
@@ -64,13 +64,13 @@ class Xoonips_ComplementIsbn extends Xoonips_Complement
      */
     public function &getAmazonData($isbn)
     {
-        $ret = array();
+        $ret = [];
         $amazon = new Xoonips_AmazonService();
         if (!$amazon->setIsbn($isbn) || !$amazon->fetch() || !$amazon->parse() || !isset($amazon->data[$isbn])) {
             return $ret;
         }
         $item = &$amazon->data[$isbn];
-        $ret = array(
+        $ret = [
             'asin' => $item['ASIN'],
             'isbn' => $item['ISBN'],
             'ean' => $item['EAN'],
@@ -79,11 +79,11 @@ class Xoonips_ComplementIsbn extends Xoonips_Complement
             'publicationyear' => '',
             'publisher' => $item['Publisher'],
             'title' => $item['Title'],
-        );
+        ];
         // - PublicationDate is yyyy-mm-dd or yyyy-mm form
         $pdate = explode('-', $item['PublicationDate']);
         $pdate_count = count($pdate);
-        if ($pdate_count == 2 || $pdate_count == 3) {
+        if (2 == $pdate_count || 3 == $pdate_count) {
             $ret['publicationyear'] = sscanf($pdate[0], '%d');
         }
 

@@ -36,7 +36,7 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
             return false;
         }
 
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -114,7 +114,7 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -132,7 +132,7 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
      */
     public function getDefaultItemTypeDetail($groupId)
     {
-        $ret = array();
+        $ret = [];
         $table = $this->prefix($this->modulePrefix('default_item_field_detail'));
         $sql = 'SELECT * FROM '.$table." WHERE group_id=$groupId ORDER BY weight";
         $result = $this->execute($sql);
@@ -156,7 +156,7 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
      */
     public function getItemTypeGroupDetail($groupId)
     {
-        $ret = array();
+        $ret = [];
         $sql = 'SELECT * FROM '.$this->table." WHERE group_id=$groupId ORDER BY item_field_detail_id";
         $result = $this->execute($sql);
         if (!$result) {
@@ -371,7 +371,7 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
      */
     public function getNewItemTypeDetail($itemtypeId)
     {
-        $ret = array();
+        $ret = [];
         $sql = 'SELECT * FROM '.$this->table." WHERE update_id IS NULL AND released='0' AND item_type_id=$itemtypeId";
         $result = $this->execute($sql);
         if (!$result) {
@@ -394,7 +394,7 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
      */
     public function getReleasedDetail($itemtypeId)
     {
-        $ret = array();
+        $ret = [];
         $sql = 'SELECT d.* FROM '.$this->table.' AS d'
         .' LEFT JOIN '.$this->grouplinktable.' AS lg ON d.item_field_detail_id=lg.item_field_detail_id'
         .' LEFT JOIN '.$this->typelinktable.' AS lt ON lg.group_id=lt.group_id'
@@ -431,7 +431,7 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
      */
     public function getReleasedDetailByDetailId($detailid)
     {
-        $ret = array();
+        $ret = [];
         $sql = 'SELECT * FROM '.$this->table." WHERE update_id IS NULL AND item_field_detail_id=$detailid";
         $result = $this->execute($sql);
         if (!$result) {
@@ -454,7 +454,7 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
      */
     public function getGroupDetails($groupId)
     {
-        $ret = array();
+        $ret = [];
         $sql = 'SELECT d.* FROM '.$this->table.' AS d'
         .' INNER JOIN '.$this->grouplinktable.' AS l ON d.item_field_detail_id=l.item_field_detail_id'
         ." WHERE l.group_id=$groupId ORDER BY weight";
@@ -598,7 +598,7 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
             // view type to confirm create item extend table, except (id, title, keyword, file upload, create date,
             // last update, create user, change log, index, relation item, preview)
             $viewtypeObj = Xoonips_ViewTypeFactory::getInstance($this->dirname, $this->trustDirname)->getViewType($detail['view_type_id']);
-            if (!$viewtypeObj->mustCreateItemExtendTable() || strpos($detail['table_name'], $this->dirname.'_item_extend') === false) {
+            if (!$viewtypeObj->mustCreateItemExtendTable() || false === strpos($detail['table_name'], $this->dirname.'_item_extend')) {
                 continue;
             }
 
@@ -659,7 +659,7 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
     // get itemfield objs
     public function getItemfieldlist($limit = 0, $start = 0)
     {
-        $ret = array();
+        $ret = [];
         $sql = 'SELECT at.*, bt.update_id as upid FROM '.$this->table.' at LEFT JOIN '.$this->table.' bt'
         .' ON at.item_field_detail_id=bt.update_id WHERE at.update_id IS NULL '
         .' LIMIT '.(int) $start.', '.(int) $limit;
@@ -754,7 +754,7 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
      */
     public function copyById($itemfieldId, &$map, $update = false, $import = false)
     {
-        $detailObj = array();
+        $detailObj = [];
 
         // get copy information
         $detailObj[] = $this->getItemTypeDetailById($itemfieldId, false);
@@ -900,7 +900,7 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
      */
     public function getDetailByXml($xml)
     {
-        $ret = array();
+        $ret = [];
         $sql = 'SELECT * FROM '.$this->table
         .' WHERE xml='.Xoonips_Utils::convertSQLStr($xml).' AND update_id IS NULL';
         $result = $this->execute($sql);
@@ -957,25 +957,25 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchRow($result)) {
-            $detail = array(
-            'item_field_detail_id' => '',
-            'table_name' => '',
-            'column_name' => '',
-            'group_id' => '',
-            'name' => '',
-            'xml' => '',
-            'view_type_id' => '',
-            'data_type_id' => '',
-            'data_length' => '',
-            'data_decimal_places' => '',
-            'default_value' => '',
-            'list' => '',
-            'essential' => '',
-            'detail_target' => '',
-            'scope_search' => '',
-            );
+            $detail = [
+                'item_field_detail_id' => '',
+                'table_name' => '',
+                'column_name' => '',
+                'group_id' => '',
+                'name' => '',
+                'xml' => '',
+                'view_type_id' => '',
+                'data_type_id' => '',
+                'data_length' => '',
+                'data_decimal_places' => '',
+                'default_value' => '',
+                'list' => '',
+                'essential' => '',
+                'detail_target' => '',
+                'scope_search' => '',
+            ];
             $detail['item_field_detail_id'] = $row[0];
             $pattern = '/'.$this->dirname.'_(.+)/';
             if (preg_match($pattern, $row[1], $matches)) {

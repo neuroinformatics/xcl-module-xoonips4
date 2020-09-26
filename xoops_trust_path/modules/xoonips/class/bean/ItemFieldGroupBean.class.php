@@ -31,7 +31,7 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -40,34 +40,34 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
         return $ret;
     }
 
-        /**
-         * get item group data for Export Item Type XML Element.
-         *
-         * @param item type id
-         *
-         * @return array
-         */
-        public function getExportItemTypeGroup($itemtypeId)
-        {
-            $sql = 'SELECT '.$this->prefix($this->modulePrefix('item_type_field_group_link')).'.group_id, ';
-            $sql .= $this->table.'.name, ';
-            $sql .= $this->table.'.xml, ';
-            $sql .= $this->table.'.occurrence ';
-            $sql .= 'FROM '.$this->prefix($this->modulePrefix('item_type_field_group_link')).', '.$this->table.' ';
-            $sql .= 'WHERE '.$this->prefix($this->modulePrefix('item_type_field_group_link')).'.item_type_id='.$itemtypeId.' ';
-            $sql .= 'AND '.$this->prefix($this->modulePrefix('item_type_field_group_link')).'.group_id='.$this->table.'.group_id';
-            $result = $this->execute($sql);
-            if (!$result) {
-                return false;
-            }
-            $ret = array();
-            while ($row = $this->fetchArray($result)) {
-                $ret[] = $row;
-            }
-            $this->freeRecordSet($result);
-
-            return $ret;
+    /**
+     * get item group data for Export Item Type XML Element.
+     *
+     * @param item type id
+     *
+     * @return array
+     */
+    public function getExportItemTypeGroup($itemtypeId)
+    {
+        $sql = 'SELECT '.$this->prefix($this->modulePrefix('item_type_field_group_link')).'.group_id, ';
+        $sql .= $this->table.'.name, ';
+        $sql .= $this->table.'.xml, ';
+        $sql .= $this->table.'.occurrence ';
+        $sql .= 'FROM '.$this->prefix($this->modulePrefix('item_type_field_group_link')).', '.$this->table.' ';
+        $sql .= 'WHERE '.$this->prefix($this->modulePrefix('item_type_field_group_link')).'.item_type_id='.$itemtypeId.' ';
+        $sql .= 'AND '.$this->prefix($this->modulePrefix('item_type_field_group_link')).'.group_id='.$this->table.'.group_id';
+        $result = $this->execute($sql);
+        if (!$result) {
+            return false;
         }
+        $ret = [];
+        while ($row = $this->fetchArray($result)) {
+            $ret[] = $row;
+        }
+        $this->freeRecordSet($result);
+
+        return $ret;
+    }
 
     /**
      * get default item type group list for ng.
@@ -78,7 +78,7 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function getDefaultItemTypeGroup($preselect_flg = true)
     {
-        $ret = array();
+        $ret = [];
         $sql = 'SELECT * FROM '.$this->table;
         if ($preselect_flg) {
             $sql .= ' WHERE preselect=1';
@@ -156,7 +156,7 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function getItemtypeGroupEditInfo($itemtypeId)
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT a.* FROM $this->table a LEFT JOIN $this->table b ON a.update_id=b.group_id WHERE a.item_type_id=$itemtypeId ORDER BY a.weight";
         $result = $this->execute($sql);
         if (!$result) {
@@ -362,7 +362,7 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
         ." AND dt.item_field_detail_id<>${baseId} ORDER BY dt.weight";
 
         $result = $this->execute($sql);
-        $ret = array();
+        $ret = [];
         if (!$result) {
             return $ret;
         }
@@ -392,7 +392,7 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
     // getItemgrouplist
     public function getItemgrouplist($limit = 0, $start = 0)
     {
-        $ret = array();
+        $ret = [];
         $sql = 'SELECT at.*, bt.update_id as upid FROM '.$this->table.' at LEFT JOIN '.$this->table.' bt'
         .' ON at.group_id=bt.update_id WHERE at.update_id IS NULL '
         .' LIMIT '.(int) $start.', '.(int) $limit;
@@ -517,7 +517,7 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -600,7 +600,7 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function getGroupDetails($groupId)
     {
-        $ret = array();
+        $ret = [];
         $sql = 'SELECT d.item_field_detail_id,d.name,d.xml,g.weight,g.edit_weight'
         .' ,g.edit,g.released as link_release FROM '.$this->detailtable.' AS d'
         .' LEFT JOIN '.$this->grouplinktable.' AS g ON d.item_field_detail_id=g.item_field_detail_id'
@@ -749,7 +749,7 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function getGroupByDetailId($detailid)
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT g.* FROM $this->table AS g"
         ." LEFT JOIN $this->grouplinktable AS l ON g.group_id=l.group_id"
         ." WHERE l.item_field_detail_id=$detailid AND l.edit=1";
@@ -767,7 +767,7 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
 
     public function getDetailIdbyXml($xml)
     {
-        $ret = array();
+        $ret = [];
         $sql = 'select item_field_detail_id from '.$this->table.' AS g,';
         $sql .= $this->grouplinktable.' AS l where ';
         $sql .= ' g.released = 1 and l.released = 1 and';
@@ -793,7 +793,7 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function getGroupByXml($xml)
     {
-        $ret = array();
+        $ret = [];
         $sql = 'SELECT * FROM '.$this->table
         .' WHERE xml='.Xoonips_Utils::convertSQLStr($xml).' AND update_id IS NULL';
         $result = $this->execute($sql);
@@ -816,7 +816,7 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function getGroupDetailById($groupId, $detailId)
     {
-        $ret = array();
+        $ret = [];
         $sql = 'SELECT * FROM '.$this->grouplinktable
         ." WHERE group_id=$groupId AND item_field_detail_id=$detailId";
         $result = $this->execute($sql);

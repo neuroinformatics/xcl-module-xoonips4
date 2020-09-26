@@ -31,7 +31,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
      */
     public function getItem($itemId)
     {
-        $ret = array();
+        $ret = [];
         $itemUsersBean = false;
         $itemRelationBean = false;
         $itemTitleBean = false;
@@ -127,7 +127,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
 
     public function getItem2($itemId)
     {
-        $ret = array();
+        $ret = [];
         // item table
         $itemBean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
         $info = $itemBean->getItemBasicInfo($itemId);
@@ -191,7 +191,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
             foreach ($linkInfos as $linkInfo) {
                 $index = $indexBean->getIndex($linkInfo['index_id']);
                 if (XOONIPS_OL_PUBLIC == $index['open_level']) {
-                    if (in_array($linkInfo['certify_state'], array(XOONIPS_CERTIFIED, XOONIPS_WITHDRAW_REQUIRED))) {
+                    if (in_array($linkInfo['certify_state'], [XOONIPS_CERTIFIED, XOONIPS_WITHDRAW_REQUIRED])) {
                         return true;
                     }
                 } elseif (XOONIPS_OL_GROUP_ONLY == $index['open_level']) {
@@ -199,7 +199,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
                         return true;
                     }
                     if ($groupBean->isPublic($index['groupid']) || $userBean->isGroupMember($index['groupid'], $uid)) {
-                        if (in_array($linkInfo['certify_state'], array(XOONIPS_CERTIFIED, XOONIPS_WITHDRAW_REQUIRED))) {
+                        if (in_array($linkInfo['certify_state'], [XOONIPS_CERTIFIED, XOONIPS_WITHDRAW_REQUIRED])) {
                             return true;
                         }
                     }
@@ -242,7 +242,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
      */
     public function getItemsList($item_ids, $criteria)
     {
-        $items = array();
+        $items = [];
         if (0 == count($item_ids)) {
             return $items;
         }
@@ -257,7 +257,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
             $sortObj = &$sortHandler->get($criteria['orderby']);
             $sortFields = $sortHandler->getSortFields($sortObj);
             $itemtypeDetailBean = Xoonips_BeanFactory::getBean('ItemFieldDetailBean', $this->dirname, $this->trustDirname);
-            $unionSql = array();
+            $unionSql = [];
             $tableUsers = $this->prefix('users');
             $groupby_item_ids = $itemBean->groupby($item_ids);
             foreach ($sortFields as $sortField) {
@@ -353,7 +353,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
     private function getCsvStr($descXID)
     {
         if (count($descXID)) {
-            $ar = array();
+            $ar = [];
             foreach ($descXID as $val) {
                 $ar[] = (int) $val;
             }
@@ -405,7 +405,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
      */
     public function getItemExtendTableByItemtypeId($itemtypeId)
     {
-        $ret = array();
+        $ret = [];
         $table = $this->prefix($this->modulePrefix('item_field_detail'));
         $sql = "SELECT DISTINCT table_name FROM $table WHERE released=1 AND item_type_id=0";
         $result = $this->execute($sql);
@@ -481,7 +481,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
      */
     public function getDownloadNotify($itemId, $itemtypeId)
     {
-        $ret = array();
+        $ret = [];
         $table = $this->prefix($this->modulePrefix('item_field_detail'));
         $viewTypeBean = Xoonips_BeanFactory::getBean('ViewTypeBean', $this->dirname, $this->trustDirname);
         $sql = "SELECT DISTINCT table_name FROM $table where view_type_id=";
@@ -518,7 +518,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
      */
     public function getRights($itemId, $itemtypeId)
     {
-        $ret = array();
+        $ret = [];
         $table = $this->prefix($this->modulePrefix('item_field_detail'));
         $viewTypeBean = Xoonips_BeanFactory::getBean('ViewTypeBean', $this->dirname, $this->trustDirname);
         $sql = "SELECT DISTINCT table_name FROM $table where view_type_id=";
@@ -555,7 +555,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
      */
     public function getDownloadLimit($itemId, $itemtypeId)
     {
-        $ret = array();
+        $ret = [];
         $table = $this->prefix($this->modulePrefix('item_field_detail'));
         $viewTypeBean = Xoonips_BeanFactory::getBean('ViewTypeBean', $this->dirname, $this->trustDirname);
         $sql = "SELECT DISTINCT table_name FROM $table where view_type_id=";
@@ -613,10 +613,10 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
      */
     public function getPrivateItemLimit($uid)
     {
-        return array(
-                    'itemNumber' => Functions::getXoonipsConfig($this->dirname, 'private_item_number_limit'),
-                    'itemStorage' => Functions::getXoonipsConfig($this->dirname, 'private_item_storage_limit'),
-                );
+        return [
+            'itemNumber' => Functions::getXoonipsConfig($this->dirname, 'private_item_number_limit'),
+            'itemStorage' => Functions::getXoonipsConfig($this->dirname, 'private_item_storage_limit'),
+        ];
     }
 
     /**
@@ -695,7 +695,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
      */
     public function getItemtypeSearch($itemtype_id)
     {
-        $items = array();
+        $items = [];
         $itemTable = $this->prefix($this->modulePrefix('item'));
         $sql = "SELECT item_id FROM $itemTable WHERE item_type_id=$itemtype_id";
         $result = $this->execute($sql);
@@ -718,7 +718,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
      */
     public function getItemsubtypeSearch($itemtype_id, $itemsubtype)
     {
-        $items = array();
+        $items = [];
         $itemFieldManager = Xoonips_ItemFieldManagerFactory::getInstance($this->dirname, $this->trustDirname)->getItemFieldManager($itemtype_id);
         $itemFields = $itemFieldManager->getFields();
         $tableName = '';
@@ -761,7 +761,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
      */
     public function getIndexChangeInfo($itemId, $checkedIndexes)
     {
-        $ret = array();
+        $ret = [];
         global $xoopsUser;
         $xoopsUid = $xoopsUser->getVar('uid');
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
@@ -868,7 +868,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
     public function updateIndexChangeInfo($itemId, $checkedIndexes, &$certify_msg, $certify_item = null)
     {
         $changeInfo = $this->getIndexChangeInfo($itemId, $checkedIndexes);
-        $typeInfo = array();
+        $typeInfo = [];
 
         if (!$this->prepareUpdateIndex($changeInfo, $typeInfo, $certify_msg)) {
             return false;
@@ -1168,11 +1168,11 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
             // add index
             foreach ($changeInfo[0] as $indexId => $msg) {
                 $index = $indexBean->getIndex($indexId);
-                $info = array(
+                $info = [
                     'type' => 'add',
                     'indexId' => $indexId,
                     'open_level' => $index['open_level'],
-                );
+                ];
                 if (XOONIPS_OL_GROUP_ONLY == $index['open_level']) {
                     $groupId = $index['groupid'];
                     $groupInfo = $groupBean->getGroup($groupId);
@@ -1197,11 +1197,11 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
             // delete index
             foreach ($changeInfo[1] as $indexId => $msg) {
                 $index = $indexBean->getIndex($indexId);
-                $info = array(
+                $info = [
                     'type' => 'delete',
                     'indexId' => $indexId,
                     'open_level' => $index['open_level'],
-                );
+                ];
                 if (XOONIPS_OL_GROUP_ONLY == $index['open_level']) {
                     $groupId = $index['groupid'];
                     $groupInfo = $groupBean->getGroup($groupId);
@@ -1216,11 +1216,11 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
             // update public index
             foreach ($changeInfo[3] as $indexId => $msg) {
                 $index = $indexBean->getIndex($indexId);
-                $info = array(
+                $info = [
                     'type' => 'update',
                     'indexId' => $indexId,
                     'open_level' => $index['open_level'],
-                );
+                ];
                 if (XOONIPS_OL_GROUP_ONLY == $index['open_level']) {
                     $groupId = $index['groupid'];
                     $groupInfo = $groupBean->getGroup($groupId);

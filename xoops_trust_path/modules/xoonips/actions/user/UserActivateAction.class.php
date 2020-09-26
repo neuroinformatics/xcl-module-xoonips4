@@ -60,7 +60,7 @@ class Xoonips_UserActivateAction extends Xoonips_UserAbstractEditAction
         $user_certify_date = Functions::getXoonipsConfig($this->dirname, 'user_certify_date');
         $activation_type = XoopsUtils::getXoopsConfig('activation_type', XOOPS_CONF_USER);
 
-        $result = array();
+        $result = [];
         $dataname = Xoonips_Enum::WORKFLOW_USER;
 
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
@@ -74,7 +74,7 @@ class Xoonips_UserActivateAction extends Xoonips_UserAbstractEditAction
             $controller->executeRedirect(XOOPS_URL.'/', 3, _MD_USER_MESSAGE_ACTKEYNOT);
         }
 
-        if ($user['level'] == 1) {
+        if (1 == $user['level']) {
             $controller->executeRedirect(XOOPS_URL.'/user.php', 3, _MD_XOONIPS_MESSAGE_ACTIVATED_NOT_APPROVE);
         }
 
@@ -102,7 +102,7 @@ class Xoonips_UserActivateAction extends Xoonips_UserAbstractEditAction
         $groupUserLinkBean = Xoonips_BeanFactory::getBean('GroupsUsersLinkBean', $this->dirname, $this->trustDirname);
         $moderatorUids = $groupUserLinkBean->getModeratorUserIds();
 
-        if ($certify_user == 'on') {
+        if ('on' == $certify_user) {
             // certification request
             $title = $user['uname'];
             $url = XOOPS_URL.'/userinfo.php?uid='.$uid;
@@ -111,7 +111,7 @@ class Xoonips_UserActivateAction extends Xoonips_UserAbstractEditAction
                 XCube_DelegateUtils::call('Module.Xoonips.Event.User.CertifyRequest', new XoopsUser($uid));
                 $sendToUsers = Xoonips_Workflow::getCurrentApproverUserIds($this->dirname, $dataname, $uid);
                 $notification->accountCertifyRequest($uid, $sendToUsers);
-                if ($activation_type == 2) {
+                if (2 == $activation_type) {
                     // activate by xoops admin & certify manual
                     $controller->executeRedirect(XOOPS_URL.'/user.php', 5, _MD_XOONIPS_MESSAGE_ACTIVATED_ADMIN_CERTIFY);
                 } elseif ($activation_type <= 1) {
@@ -140,7 +140,7 @@ class Xoonips_UserActivateAction extends Xoonips_UserAbstractEditAction
             $sendToUsers = array_merge($sendToUsers, Xoonips_Workflow::getAllApproverUserIds($this->dirname, $dataname, $uid));
             $notification->accountCertifiedAuto($uid, $sendToUsers);
 
-            if ($activation_type == 2) {
+            if (2 == $activation_type) {
                 // activate xoops account by xoops administrator
                 $sitename = XoopsUtils::getXoopsConfig('sitename');
                 $adminmail = XoopsUtils::getXoopsConfig('adminmail');

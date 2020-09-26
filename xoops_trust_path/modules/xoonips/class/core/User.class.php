@@ -14,9 +14,9 @@ require_once dirname(__DIR__).'/user/Notification.class.php';
 class Xoonips_User
 {
     private $id;
-    private $fields = array();   //TODO DELETE
-    private $fieldGroups = array(); //TODO DELETE
-    private $data = array();
+    private $fields = [];   //TODO DELETE
+    private $fieldGroups = []; //TODO DELETE
+    private $data = [];
     private $notification = null;
     private static $instance;
     private $dirname;
@@ -97,10 +97,10 @@ class Xoonips_User
      */
     protected function getFieldName($field, $groupLoopId, $id = null, $gid = 0)
     {
-        if ($gid == 0) {
+        if (0 == $gid) {
             $gid = $field->getFieldGroupId();
         }
-        if ($id == null) {
+        if (null == $id) {
             return $gid.Xoonips_Enum::ITEM_ID_SEPARATOR.$groupLoopId.Xoonips_Enum::ITEM_ID_SEPARATOR.$field->getId();
         } else {
             return $gid.Xoonips_Enum::ITEM_ID_SEPARATOR.$groupLoopId.Xoonips_Enum::ITEM_ID_SEPARATOR.$id;
@@ -118,7 +118,7 @@ class Xoonips_User
     {
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
         $userType = $userBean->getUserType($uid);
-        $fieldGroup = array();
+        $fieldGroup = [];
         //FIXME
         foreach ($this->fieldGroups as $group) {
             //$op:registry
@@ -126,9 +126,9 @@ class Xoonips_User
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_REGISTRY, $userType);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = array('name' => $groupName,
-                     'isMust' => $group->isMust(Xoonips_Enum::OP_TYPE_REGISTRY, $userType),
-                     'view' => $group->getRegistryView($cnt, $userType), );
+                $fieldGroup[] = ['name' => $groupName,
+                    'isMust' => $group->isMust(Xoonips_Enum::OP_TYPE_REGISTRY, $userType),
+                    'view' => $group->getRegistryView($cnt, $userType), ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'input');
@@ -149,15 +149,15 @@ class Xoonips_User
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
         //$userType:guest
         $userType = $userBean->getUserType($uid);
-        $fieldGroup = array();
+        $fieldGroup = [];
         //FIXME
         foreach ($this->fieldGroups as $group) {
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_REGISTRY, $userType);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = array('name' => $groupName,
-                     'isMust' => $group->isMust(Xoonips_Enum::OP_TYPE_REGISTRY, $userType),
-                     'view' => $group->getRegistryViewWithData($this->data, $cnt, $userType), );
+                $fieldGroup[] = ['name' => $groupName,
+                    'isMust' => $group->isMust(Xoonips_Enum::OP_TYPE_REGISTRY, $userType),
+                    'view' => $group->getRegistryViewWithData($this->data, $cnt, $userType), ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'input');
@@ -179,15 +179,15 @@ class Xoonips_User
         $data = $this->getUserDetailInfo($uid);
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
         $userType = $userBean->getUserType($uid);
-        $fieldGroup = array();
+        $fieldGroup = [];
         //FIXME
         foreach ($this->fieldGroups as $group) {
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_EDIT, $userType);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = array('name' => $groupName,
-                     'isMust' => $group->isMust(Xoonips_Enum::OP_TYPE_EDIT, $userType),
-                     'view' => $group->getEditView($data, $cnt, $userType), );
+                $fieldGroup[] = ['name' => $groupName,
+                    'isMust' => $group->isMust(Xoonips_Enum::OP_TYPE_EDIT, $userType),
+                    'view' => $group->getEditView($data, $cnt, $userType), ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'input');
@@ -207,15 +207,15 @@ class Xoonips_User
     {
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
         $userType = $userBean->getUserType($uid);
-        $fieldGroup = array();
+        $fieldGroup = [];
         //FIXME
         foreach ($this->fieldGroups as $group) {
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_EDIT, $userType);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = array('name' => $groupName,
-                     'isMust' => $group->isMust(Xoonips_Enum::OP_TYPE_EDIT, $userType),
-                     'view' => $group->getEditViewWithData($this->data, $cnt, $userType), );
+                $fieldGroup[] = ['name' => $groupName,
+                    'isMust' => $group->isMust(Xoonips_Enum::OP_TYPE_EDIT, $userType),
+                    'view' => $group->getEditViewWithData($this->data, $cnt, $userType), ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'input');
@@ -234,15 +234,15 @@ class Xoonips_User
     public function getEditViewForModerator($uid)
     {
         $data = $this->getUserDetailInfo($uid);
-        $fieldGroup = array();
+        $fieldGroup = [];
         //FIXME
         foreach ($this->fieldGroups as $group) {
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_MANAGER_EDIT, Xoonips_Enum::USER_TYPE_MODERATOR);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = array('name' => $groupName,
-                     'isMust' => $group->isMust(Xoonips_Enum::OP_TYPE_MANAGER_EDIT, Xoonips_Enum::USER_TYPE_MODERATOR),
-                     'view' => $group->getEditViewForModerator($data, $cnt), );
+                $fieldGroup[] = ['name' => $groupName,
+                    'isMust' => $group->isMust(Xoonips_Enum::OP_TYPE_MANAGER_EDIT, Xoonips_Enum::USER_TYPE_MODERATOR),
+                    'view' => $group->getEditViewForModerator($data, $cnt), ];
             }
         }
         //TODO Admin UserEdit
@@ -261,15 +261,15 @@ class Xoonips_User
      */
     public function getEditViewWithDataForModerator()
     {
-        $fieldGroup = array();
+        $fieldGroup = [];
         //FIXME
         foreach ($this->fieldGroups as $group) {
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_MANAGER_EDIT, Xoonips_Enum::USER_TYPE_MODERATOR);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = array('name' => $groupName,
-                     'isMust' => $group->isMust(Xoonips_Enum::OP_TYPE_MANAGER_EDIT, Xoonips_Enum::USER_TYPE_MODERATOR),
-                     'view' => $group->getEditViewWithDataForModerator($this->data, $cnt), );
+                $fieldGroup[] = ['name' => $groupName,
+                    'isMust' => $group->isMust(Xoonips_Enum::OP_TYPE_MANAGER_EDIT, Xoonips_Enum::USER_TYPE_MODERATOR),
+                    'view' => $group->getEditViewWithDataForModerator($this->data, $cnt), ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'input');
@@ -287,14 +287,14 @@ class Xoonips_User
      */
     public function getSearchView()
     {
-        $fieldGroup = array();
+        $fieldGroup = [];
         //FIXME
         foreach ($this->fieldGroups as $group) {
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_SEARCH, Xoonips_Enum::USER_TYPE_USER);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = array('name' => $groupName,
-                     'view' => $group->getSearchView($cnt), );
+                $fieldGroup[] = ['name' => $groupName,
+                    'view' => $group->getSearchView($cnt), ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'detail');
@@ -312,14 +312,14 @@ class Xoonips_User
      */
     public function getSearchViewWithData()
     {
-        $fieldGroup = array();
+        $fieldGroup = [];
         //FIXME
         foreach ($this->fieldGroups as $group) {
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_SEARCH, Xoonips_Enum::USER_TYPE_USER);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = array('name' => $groupName,
-                     'view' => $group->getSearchViewWithData($this->data, $cnt), );
+                $fieldGroup[] = ['name' => $groupName,
+                    'view' => $group->getSearchViewWithData($this->data, $cnt), ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'detail');
@@ -355,14 +355,14 @@ class Xoonips_User
     {
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
         $userType = $userBean->getUserType($uid);
-        $fieldGroup = array();
+        $fieldGroup = [];
         //FIXME
         foreach ($this->fieldGroups as $group) {
             $cnt = $group->countDisplayField($op, $userType);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = array('name' => $groupName,
-                     'view' => $group->getConfirmView($this->data, $cnt, $op, $userType), );
+                $fieldGroup[] = ['name' => $groupName,
+                    'view' => $group->getConfirmView($this->data, $cnt, $op, $userType), ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'detail');
@@ -383,14 +383,14 @@ class Xoonips_User
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
         $userType = $userBean->getUserType($xoopsUserId);
         $data = $this->getUserDetailInfo($uid);
-        $fieldGroup = array();
+        $fieldGroup = [];
         //FIXME
         foreach ($this->fieldGroups as $group) {
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_DETAIL, $userType);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = array('name' => $groupName,
-                     'view' => $group->getDetailView($data, $cnt, $userType), );
+                $fieldGroup[] = ['name' => $groupName,
+                    'view' => $group->getDetailView($data, $cnt, $userType), ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'detail');
@@ -405,14 +405,14 @@ class Xoonips_User
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
         $userType = $userBean->getUserType($xoopsUserId);
         $data = $this->getUserDetailInfo($uid);
-        $fieldGroup = array();
+        $fieldGroup = [];
         //FIXME
         foreach ($this->fieldGroups as $group) {
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_DETAIL, $userType);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = array('name' => $groupName,
-                     'view' => $group->getDetailViewForCertify($data, $cnt), );
+                $fieldGroup[] = ['name' => $groupName,
+                    'view' => $group->getDetailViewForCertify($data, $cnt), ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'detail');
@@ -431,14 +431,14 @@ class Xoonips_User
     public function getDetailViewForModerator($uid)
     {
         $data = $this->getUserDetailInfo($uid);
-        $fieldGroup = array();
+        $fieldGroup = [];
         //FIXME
         foreach ($this->fieldGroups as $group) {
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_DETAIL, Xoonips_Enum::USER_TYPE_MODERATOR);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = array('name' => $groupName,
-                     'view' => $group->getDetailViewForModerator($data, $cnt, Xoonips_Enum::USER_TYPE_MODERATOR), );
+                $fieldGroup[] = ['name' => $groupName,
+                    'view' => $group->getDetailViewForModerator($data, $cnt, Xoonips_Enum::USER_TYPE_MODERATOR), ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'detail');
@@ -456,14 +456,14 @@ class Xoonips_User
      */
     private function getUserDetailInfo($uid)
     {
-        $ret = array();
+        $ret = [];
 
         //get table name array
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', 'xoonips', 'xoonips');
         $tableList = $this->getItemTableName();
         foreach ($tableList as $tblIndex) {
             //if users table
-            if ($tblIndex == 'users') {
+            if ('users' == $tblIndex) {
                 $row = $userBean->getUserBasicInfo($uid, false);
                 if (!$row) {
                     return false;
@@ -478,14 +478,14 @@ class Xoonips_User
                         }
                     }
                     //if NULL
-                    if ($v === null) {
+                    if (null === $v) {
                         $v = '';
                     }
                     $ret[$retKey] = $v;
                 }
             }
             //if user_extend[999] table
-            if (strpos($tblIndex, $this->dirname.'_extend') !== false) {
+            if (false !== strpos($tblIndex, $this->dirname.'_extend')) {
                 //get detail id
                 $len = strlen($this->dirname) + 7;
                 $detailId = substr($tblIndex, $len, strlen($tblIndex) - $len);
@@ -506,7 +506,7 @@ class Xoonips_User
                 }
             }
             //if groups_users_link table
-            if ($tblIndex == 'groups_users_link') {
+            if ('groups_users_link' == $tblIndex) {
                 $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
                 $viewTypeBean = Xoonips_BeanFactory::getBean('ViewTypeBean', $this->dirname, $this->trustDirname);
 
@@ -541,7 +541,7 @@ class Xoonips_User
      */
     private function getItemTableName()
     {
-        $tableList = array();
+        $tableList = [];
         foreach ($this->fields as $field) {
             $tableName = $field->getTableName();
             $tableList[] = $tableName;
@@ -600,12 +600,12 @@ class Xoonips_User
         $transaction->start();
 
         $moderatorUids = $groupsUsersLinkBean->getModeratorUserIds();
-        $groupIds = array();
+        $groupIds = [];
         $groupIds = $userBean->getGroupsUsers($uid, Xoonips_Enum::GRP_US_CERTIFIED);
         $group_handler = &xoops_gethandler('group');
         $xoopsUser = new XoopsUser($uid);
-        if ($groupIds != false && count($groupIds) != 0) {
-            $groupsUsersLinkIds = array();
+        if (false != $groupIds && 0 != count($groupIds)) {
+            $groupsUsersLinkIds = [];
             foreach ($groupIds as $groupId) {
                 $groupsUsersLinkInfo = $groupsUsersLinkBean->getGroupUserLinkInfo($groupId, $uid);
                 $groupsUsersLinkIds[$groupId] = $groupsUsersLinkInfo['linkid'];
@@ -617,7 +617,7 @@ class Xoonips_User
             }
             foreach ($groupIds as $groupId) {
                 $xoopsGroup = $group_handler->get($groupId);
-                if ($xoopsGroup->getVar('group_type') == Xoonips_Enum::GROUP_TYPE) {
+                if (Xoonips_Enum::GROUP_TYPE == $xoopsGroup->getVar('group_type')) {
                     XCube_DelegateUtils::call('Module.Xoonips.Event.Group.Member.Leave', $xoopsUser, $xoopsGroup);
                     $dataname = Xoonips_Enum::WORKFLOW_GROUP_LEAVE;
                     $sendToUsers = Xoonips_Workflow::getAllApproverUserIds($this->dirname, $dataname, $groupsUsersLinkIds[$groupId]);
@@ -625,10 +625,10 @@ class Xoonips_User
                 }
             }
         }
-        $groupIds = array();
+        $groupIds = [];
         $groupIds = $userBean->getGroupsUsers($uid, Xoonips_Enum::GRP_US_JOIN_REQUIRED);
-        if ($groupIds != false && count($groupIds) != 0) {
-            $groupsUsersLinkIds = array();
+        if (false != $groupIds && 0 != count($groupIds)) {
+            $groupsUsersLinkIds = [];
             foreach ($groupIds as $groupId) {
                 $groupsUsersLinkInfo = $groupsUsersLinkBean->getGroupUserLinkInfo($groupId, $uid);
                 $groupsUsersLinkIds[$groupId] = $groupsUsersLinkInfo['linkid'];
@@ -651,10 +651,10 @@ class Xoonips_User
                 Xoonips_Workflow::deleteItem($this->dirname, $dataname, $groupsUsersLinkIds[$groupId]);
             }
         }
-        $groupIds = array();
+        $groupIds = [];
         $groupIds = $userBean->getGroupsUsers($uid, Xoonips_Enum::GRP_US_LEAVE_REQUIRED);
-        if ($groupIds != false && count($groupIds) != 0) {
-            $groupsUsersLinkIds = array();
+        if (false != $groupIds && 0 != count($groupIds)) {
+            $groupsUsersLinkIds = [];
             foreach ($groupIds as $groupId) {
                 $groupsUsersLinkInfo = $groupsUsersLinkBean->getGroupUserLinkInfo($groupId, $uid);
                 $groupsUsersLinkIds[$groupId] = $groupsUsersLinkInfo['linkid'];
@@ -681,7 +681,7 @@ class Xoonips_User
 
         // delete user
         $deleteUserInfo = new XoopsUser($uid);
-        if ($userInfo['level'] == 1) {
+        if (1 == $userInfo['level']) {
             // not certified user
             $dataname = Xoonips_Enum::WORKFLOW_USER;
             if (Xoonips_Workflow::isInProgressItem($this->dirname, $dataname, $uid)) {
@@ -732,13 +732,13 @@ class Xoonips_User
         $configVal = Functions::getXoonipsConfig($this->dirname, 'group_making_certify');
 
         //insert group
-        if ($group['is_hidden'] == '') {
+        if ('' == $group['is_hidden']) {
             $group['is_hidden'] = 0;
         }
-        if ($group['is_hidden'] == 1) {
+        if (1 == $group['is_hidden']) {
             $group['can_join'] = 0;
         }
-        if ($configVal == 'off') {
+        if ('off' == $configVal) {
             $group['activate'] = 1;
         } else {
             $group['activate'] = 0;
@@ -763,7 +763,7 @@ class Xoonips_User
         $groupsUsersLinkBean = Xoonips_BeanFactory::getBean('GroupsUsersLinkBean', $this->dirname, $this->trustDirname);
         //insert group user link
         foreach ($uids as $uid) {
-            $groupsUsersLink = array();
+            $groupsUsersLink = [];
             $groupsUsersLink['activate'] = 0;
             $groupsUsersLink['groupid'] = $group_id;
             $groupsUsersLink['uid'] = $uid;
@@ -780,7 +780,7 @@ class Xoonips_User
         }
 
         //$certifyGroups = Xoonips_Enum::certifyGroups();
-        if ($configVal == 'off') {
+        if ('off' == $configVal) {
             XCube_DelegateUtils::call('Module.Xoonips.Event.Group.CertifyRequest', $xoopsGroup);
             $this->doGroupCertified($group_id, $xoopsGroup, true, '');
             $message = _MD_XOONIPS_MESSAGE_GROUP_NEW_SUCCESS;
@@ -834,8 +834,8 @@ class Xoonips_User
         $certifyTitle = $xoopsGroup->get('name');
         $url = XOOPS_URL.'/user.php?op=groupInfo&groupid='.$groupId;
 
-        if ($group['is_public'] == 1 && $groupPublic == 0) {
-            if ($configVal == 'off') {
+        if (1 == $group['is_public'] && 0 == $groupPublic) {
+            if ('off' == $configVal) {
                 $group['activate'] = Xoonips_Enum::GRP_PUBLIC;
                 XCube_DelegateUtils::call('Module.Xoonips.Event.Group.OpenRequest', $xoopsGroup);
                 $this->doGroupOpened($groupId, $xoopsGroup, true, '');
@@ -859,8 +859,8 @@ class Xoonips_User
                 }
             }
         }
-        if ($group['is_public'] == 0 && $groupPublic == 1) {
-            if ($configVal == 'off') {
+        if (0 == $group['is_public'] && 1 == $groupPublic) {
+            if ('off' == $configVal) {
                 $group['activate'] = Xoonips_Enum::GRP_CERTIFIED;
                 XCube_DelegateUtils::call('Module.Xoonips.Event.Group.CloseRequest', $xoopsGroup);
                 $this->doGroupClosed($groupId, $xoopsGroup, true, '');
@@ -916,7 +916,7 @@ class Xoonips_User
                     }
                 }
             } else {
-                $groupUser = array();
+                $groupUser = [];
                 $groupUser['activate'] = Xoonips_Enum::GRP_US_CERTIFIED;
                 $groupUser['groupid'] = $groupId;
                 $groupUser['uid'] = $uid;
@@ -1014,7 +1014,7 @@ class Xoonips_User
 
     private function doGroupMemberJoined($groupId, $uid, $xoopsGroup, &$message)
     {
-        $groupUser = array();
+        $groupUser = [];
         $groupUser['activate'] = Xoonips_Enum::GRP_US_CERTIFIED;
         $groupUser['groupid'] = $groupId;
         $groupUser['uid'] = $uid;
@@ -1062,7 +1062,7 @@ class Xoonips_User
 
         //join group
         $groupsUsersLinkBean = Xoonips_BeanFactory::getBean('GroupsUsersLinkBean', $this->dirname, $this->trustDirname);
-        if ($group['member_accept'] == 1) {
+        if (1 == $group['member_accept']) {
             $groupsUsersLink['activate'] = Xoonips_Enum::GRP_US_CERTIFIED;
         } else {
             $groupsUsersLink['activate'] = Xoonips_Enum::GRP_US_JOIN_REQUIRED;
@@ -1082,7 +1082,7 @@ class Xoonips_User
 
         $group_handler = &xoops_gethandler('group');
         $xoopsGroup = $group_handler->get($groupId);
-        if ($group['member_accept'] == 0) {
+        if (0 == $group['member_accept']) {
             //group member certify
             $groupsBean = Xoonips_BeanFactory::getBean('GroupsBean', $this->dirname, $this->trustDirname);
             $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
@@ -1091,7 +1091,7 @@ class Xoonips_User
             $userInfo = $userBean->getUserBasicInfo($uid);
             $uname = $userInfo['uname'];
             $name = $userInfo['name'];
-            $certifyTitle = ($name == '') ? $uname : $uname."($name)";
+            $certifyTitle = ('' == $name) ? $uname : $uname."($name)";
             $certifyTitle = $groupName.':'.$certifyTitle;
             $dataname = Xoonips_Enum::WORKFLOW_GROUP_JOIN;
             $url = XOOPS_URL.'/userinfo.php?uid='.$uid;
@@ -1167,7 +1167,7 @@ class Xoonips_User
         $groupsUsersLinkInfo = $groupsUsersLinkBean->getGroupUserLinkInfo($groupId, $uid);
         $groupsUsersLinkId = $groupsUsersLinkInfo['linkid'];
         // leave group
-        if ($group['member_accept'] == 1) {
+        if (1 == $group['member_accept']) {
             if (!$groupsUsersLinkBean->delete($groupId, $uid)) {
                 $message = _MD_XOONIPS_ERROR_GROUP_LEAVE;
 
@@ -1188,7 +1188,7 @@ class Xoonips_User
             $userInfo = $userBean->getUserBasicInfo($uid);
             $uname = $userInfo['uname'];
             $name = $userInfo['name'];
-            $certifyTitle = ($name == '') ? $uname : $uname."($name)";
+            $certifyTitle = ('' == $name) ? $uname : $uname."($name)";
             $certifyTitle = $groupName.':'.$certifyTitle;
             $dataname = Xoonips_Enum::WORKFLOW_GROUP_LEAVE;
             $url = XOOPS_URL.'/userinfo.php?uid='.$uid;
@@ -1236,22 +1236,22 @@ class Xoonips_User
         $configVal = Functions::getXoonipsConfig($this->dirname, 'group_making');
         $userbean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
         $isModerator = $userbean->isModerator($uid);
-        if ($isModerator || $configVal == 'on') {
+        if ($isModerator || 'on' == $configVal) {
             $newflag = true;
         }
         //display group list
         $groupsUsersLinkBean = Xoonips_BeanFactory::getBean('GroupsUsersLinkBean', $this->dirname, $this->trustDirname);
-        $groupLists = array();
+        $groupLists = [];
         foreach ($groups as $group) {
             $groupUserList = $groupsUsersLinkBean->getGroupUserLinkInfo($group['groupid'], $uid);
             $isGroupManager = $userbean->isGroupManager($group['groupid'], $uid);
 
             //group name edit
-            if ($group['is_hidden'] == 1) {
+            if (1 == $group['is_hidden']) {
                 if ($isModerator) {
                     $group['secret'] = 1;
                 } elseif (!empty($groupUserList)) {
-                    if ($groupUserList['activate'] == Xoonips_Enum::GRP_US_CERTIFIED || $groupUserList['activate'] == Xoonips_Enum::GRP_US_LEAVE_REQUIRED) {
+                    if (Xoonips_Enum::GRP_US_CERTIFIED == $groupUserList['activate'] || Xoonips_Enum::GRP_US_LEAVE_REQUIRED == $groupUserList['activate']) {
                         $group['secret'] = 1;
                     } else {
                         continue;
@@ -1263,10 +1263,10 @@ class Xoonips_User
             //edit button,member button flag
             $group['editflag'] = false;
             $group['memberflag'] = false;
-            if ($group['activate'] == Xoonips_Enum::GRP_CERTIFIED
-                    || $group['activate'] == Xoonips_Enum::GRP_OPEN_REQUIRED
-                    || $group['activate'] == Xoonips_Enum::GRP_PUBLIC
-                    || $group['activate'] == Xoonips_Enum::GRP_CLOSE_REQUIRED) {
+            if (Xoonips_Enum::GRP_CERTIFIED == $group['activate']
+                    || Xoonips_Enum::GRP_OPEN_REQUIRED == $group['activate']
+                    || Xoonips_Enum::GRP_PUBLIC == $group['activate']
+                    || Xoonips_Enum::GRP_CLOSE_REQUIRED == $group['activate']) {
                 if ($isModerator || $isGroupManager) {
                     $group['editflag'] = true;
                     $group['memberflag'] = true;
@@ -1279,7 +1279,7 @@ class Xoonips_User
 
             //delete button flag
             $group['deleteflag'] = false;
-            if ($group['activate'] == Xoonips_Enum::GRP_CERTIFIED || $group['activate'] == Xoonips_Enum::GRP_PUBLIC) {
+            if (Xoonips_Enum::GRP_CERTIFIED == $group['activate'] || Xoonips_Enum::GRP_PUBLIC == $group['activate']) {
                 if ($isModerator || $isGroupManager) {
                     $group['deleteflag'] = true;
                 }
@@ -1313,7 +1313,7 @@ class Xoonips_User
 
         //delete check
         $check = false;
-        if ($group['activate'] == Xoonips_Enum::GRP_CERTIFIED || $group['activate'] == Xoonips_Enum::GRP_PUBLIC) {
+        if (Xoonips_Enum::GRP_CERTIFIED == $group['activate'] || Xoonips_Enum::GRP_PUBLIC == $group['activate']) {
             if ($isModerator || $isGroupManager) {
                 $check = true;
             }
@@ -1328,7 +1328,7 @@ class Xoonips_User
         $configVal = Functions::getXoonipsConfig($this->dirname, 'group_making_certify');
         $group_handler = &xoops_gethandler('group');
         $xoopsGroup = $group_handler->get($groupId);
-        if ($configVal == 'off') {
+        if ('off' == $configVal) {
             XCube_DelegateUtils::call('Module.Xoonips.Event.Group.DeleteRequest', $xoopsGroup);
             if (!$this->doGroupDeleted($group, $xoopsGroup, true, $message, '')) {
                 return false;
@@ -1423,7 +1423,7 @@ class Xoonips_User
     private function limitCheck($limit, $isInteger)
     {
         $limit = trim($limit);
-        if ($limit == '' || !is_numeric($limit)) {
+        if ('' == $limit || !is_numeric($limit)) {
             $limit = 0;
         }
         if ($isInteger && strpos($limit, '.')) {
@@ -1444,19 +1444,19 @@ class Xoonips_User
         $groupsUsersLinkBean = Xoonips_BeanFactory::getBean('GroupsUsersLinkBean', $this->dirname, $this->trustDirname);
         $groupUserList = $groupsUsersLinkBean->getGroupUserLinkInfo($group['groupid'], $uid);
         $isGroupManager = $userbean->isGroupManager($group['groupid'], $uid);
-        if ($group['activate'] == Xoonips_Enum::GRP_CERTIFIED
-                || $group['activate'] == Xoonips_Enum::GRP_OPEN_REQUIRED
-                || $group['activate'] == Xoonips_Enum::GRP_PUBLIC
-                || $group['activate'] == Xoonips_Enum::GRP_CLOSE_REQUIRED) {
-            if ($group['can_join'] == 1) {
-                if ($type == 'join') {
+        if (Xoonips_Enum::GRP_CERTIFIED == $group['activate']
+                || Xoonips_Enum::GRP_OPEN_REQUIRED == $group['activate']
+                || Xoonips_Enum::GRP_PUBLIC == $group['activate']
+                || Xoonips_Enum::GRP_CLOSE_REQUIRED == $group['activate']) {
+            if (1 == $group['can_join']) {
+                if ('join' == $type) {
                     if (empty($groupUserList)) {
                         return true;
                     }
                 }
-                if ($type == 'leave') {
+                if ('leave' == $type) {
                     if (!$isGroupManager && !empty($groupUserList)) {
-                        if ($groupUserList['activate'] == Xoonips_Enum::GRP_US_CERTIFIED) {
+                        if (Xoonips_Enum::GRP_US_CERTIFIED == $groupUserList['activate']) {
                             return true;
                         }
                     }

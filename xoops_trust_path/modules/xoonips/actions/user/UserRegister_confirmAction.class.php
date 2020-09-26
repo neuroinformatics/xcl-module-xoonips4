@@ -19,13 +19,13 @@ class Xoonips_UserRegister_confirmAction extends User_UserRegister_confirmAction
 
     public function execute(&$controller, &$xoopsUser)
     {
-        if (XCube_Root::getSingleton()->mContext->mRequest->getRequest('_form_control_cancel') != null) {
+        if (null != XCube_Root::getSingleton()->mContext->mRequest->getRequest('_form_control_cancel')) {
             return USER_FRAME_VIEW_CANCEL;
         }
 
         // get xoonips module configs
         $certify_user = Functions::getXoonipsConfig($this->mDirname, 'certify_user');
-        $is_certify_auto = ($certify_user == 'auto');
+        $is_certify_auto = ('auto' == $certify_user);
 
         $memberHandler = &xoops_gethandler('member');
         $this->mNewUser = &$memberHandler->createUser();
@@ -33,7 +33,7 @@ class Xoonips_UserRegister_confirmAction extends User_UserRegister_confirmAction
         $this->mNewUser->set('uorder', $controller->mRoot->mContext->getXoopsConfig('com_order'), true);
         $this->mNewUser->set('umode', $controller->mRoot->mContext->getXoopsConfig('com_mode'), true);
 
-        if ($this->mConfig['activation_type'] == 1) {
+        if (1 == $this->mConfig['activation_type']) {
             // activate automatically
             if ($is_certify_auto) {
                 // certify automatically
@@ -60,7 +60,7 @@ class Xoonips_UserRegister_confirmAction extends User_UserRegister_confirmAction
             return USER_FRAME_VIEW_ERROR;
         }
 
-        if ($this->mConfig['activation_type'] == 1 && !$is_certify_auto) {
+        if (1 == $this->mConfig['activation_type'] && !$is_certify_auto) {
             // activate automatically and certify required by moderator
             $dataname = Xoonips_Enum::WORKFLOW_USER;
             $url = XOOPS_URL.'/userinfo.php?uid='.$uid;
@@ -84,7 +84,7 @@ class Xoonips_UserRegister_confirmAction extends User_UserRegister_confirmAction
         XCube_DelegateUtils::call('Legacy.Event.RegistUser.Success', new XCube_Ref($this->mNewUser));
 
         XCube_DelegateUtils::call('Module.Xoonips.Event.User.CertifyRequest', new XoopsUser($uid));
-        if ($this->mNewUser->get('level') == 2) {
+        if (2 == $this->mNewUser->get('level')) {
             XCube_DelegateUtils::call('Module.Xoonips.Event.User.Certify', new XoopsUser($uid));
         }
 
@@ -94,7 +94,7 @@ class Xoonips_UserRegister_confirmAction extends User_UserRegister_confirmAction
     public function executeViewSuccess(&$controller, &$xoopsUser, &$render)
     {
         $activationType = $this->mConfig['activation_type'];
-        if ($activationType == 1 && $xoopsUser->get('level') == 1) {
+        if (1 == $activationType && 1 == $xoopsUser->get('level')) {
             // activate automatically and certify required by moderator
             $render->setTemplateName('user_register_finish.html');
             $render->setAttribute('complete_message', _MD_XOONIPS_MESSAGE_ACTIVATE_BY_USER_CERTIFY_MANUAL);

@@ -89,7 +89,7 @@ class Xoonips_AbstractActionForm extends XCube_ActionForm
         //      ),...
         //    ),...
         //  );
-        return array();
+        return [];
     }
 
     /**
@@ -174,7 +174,7 @@ class Xoonips_AbstractActionForm extends XCube_ActionForm
         $isObj = is_object($obj);
         $params = $this->_getFormParams();
         if (!$this->_isMultipleMode()) {
-            $params = array($params);
+            $params = [$params];
         }
         foreach ($params as $type => $param) {
             foreach (array_keys($param) as $key) {
@@ -270,11 +270,11 @@ class Xoonips_AbstractActionForm extends XCube_ActionForm
                 $this->mFieldProperties[$key] = new XCube_FieldProperty($this);
                 $dependKeys = array_keys($depends);
                 if (in_array('intRange', $dependKeys)) {
-                    $dependKeys = array_diff($dependKeys, array('min', 'max'));
+                    $dependKeys = array_diff($dependKeys, ['min', 'max']);
                 }
                 $this->mFieldProperties[$key]->setDependsByArray($dependKeys);
                 foreach ($depends as $depend => $value) {
-                    if (!in_array($depend, array('required', 'intRange', 'email', 'objectExist'))) {
+                    if (!in_array($depend, ['required', 'intRange', 'email', 'objectExist'])) {
                         $this->mFieldProperties[$key]->addVar($depend, $value);
                     }
                     switch ($depend) {

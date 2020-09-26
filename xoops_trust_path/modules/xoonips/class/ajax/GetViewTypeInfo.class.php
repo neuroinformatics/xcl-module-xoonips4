@@ -27,14 +27,14 @@ class Xoonips_GetViewTypeInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
             return false;
         } // view type object not found
         $mode = trim($this->mRequest->getRequest('mode'));
-        if (!in_array($mode, array('', 'default'))) {
+        if (!in_array($mode, ['', 'default'])) {
             return false;
         }
         if ('' == $mode) {
-            $ret = array(
+            $ret = [
                 'hasSelectionList' => $vtObj->hasSelectionList(),
                 'dataTypesInfo' => $vtObj->getDataTypesInfo(),
-            );
+            ];
         } else {
             $list = trim($this->mRequest->getRequest('list'));
             $default = trim($this->mRequest->getRequest('default'));

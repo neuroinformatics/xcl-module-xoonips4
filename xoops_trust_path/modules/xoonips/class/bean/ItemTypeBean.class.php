@@ -26,7 +26,7 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
      */
     public function getItemType($id)
     {
-        $ret = array();
+        $ret = [];
         $id = Xoonips_Utils::convertSQLNum($id);
         $sql = "SELECT * FROM $this->table WHERE item_type_id=$id";
         $result = $this->execute($sql);
@@ -50,7 +50,7 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
      */
     public function getItemTypeByName($name)
     {
-        $ret = array();
+        $ret = [];
         $name = Xoonips_Utils::convertSQLStr($name);
         $sql = "SELECT * FROM $this->table WHERE name=".$name;
         $result = $this->execute($sql);
@@ -74,7 +74,7 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
      */
     public function getItemTypeInfo($id)
     {
-        $ret = array();
+        $ret = [];
         $id = Xoonips_Utils::convertSQLNum($id);
         $sql = "SELECT * FROM $this->table WHERE released='1' AND item_type_id=$id";
         $result = $this->execute($sql);
@@ -103,7 +103,7 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -150,7 +150,7 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -192,7 +192,7 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
         $id = Xoonips_Utils::convertSQLNum($id);
         $name = Xoonips_Utils::convertSQLStr($name);
         $sql = "SELECT name FROM $this->table WHERE item_type_id<>$id AND name=".$name;
-        if ($id != 0) {
+        if (0 != $id) {
             $itemtypeInfo = $this->getItemType($id);
             $update_id = Xoonips_Utils::convertSQLNum($itemtypeInfo['update_id']);
             if (!empty($update_id)) {
@@ -412,7 +412,7 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
     // get itemtype objs
     public function itemtypeGetItemtypelist($limit = 0, $start = 0)
     {
-        $ret = array();
+        $ret = [];
         $limit = Xoonips_Utils::convertSQLNum($limit);
         $start = Xoonips_Utils::convertSQLNum($start);
         $sql = "SELECT at.*, bt.update_id as upid FROM $this->table at LEFT JOIN $this->table bt "
@@ -455,7 +455,7 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
      */
     public function getTypeGroups($typeId)
     {
-        $ret = array();
+        $ret = [];
         $typeId = Xoonips_Utils::convertSQLNum($typeId);
         $sql = 'SELECT g.group_id,g.name,g.xml,t.weight,t.edit_weight '
         ." ,t.edit,t.released as link_release FROM $this->grouptable AS g "
@@ -482,7 +482,7 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
      */
     public function getTypeByGroupId($groupId)
     {
-        $ret = array();
+        $ret = [];
         $groupId = Xoonips_Utils::convertSQLNum($groupId);
         $sql = "SELECT t.* FROM $this->table AS t"
         ." LEFT JOIN $this->typelinktable AS l ON t.item_type_id=l.item_type_id"
@@ -641,7 +641,7 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row['item_type_id'];
         }

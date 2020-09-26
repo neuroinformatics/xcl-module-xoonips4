@@ -34,7 +34,7 @@ class Xoonips_Admin_SystemNotificationAction extends Xoonips_AbstractEditAction
      */
     protected function getConfigKeys()
     {
-        return array('notification_enabled', 'notification_events');
+        return ['notification_enabled', 'notification_events'];
     }
 
     /**
@@ -85,20 +85,20 @@ class Xoonips_Admin_SystemNotificationAction extends Xoonips_AbstractEditAction
         $dirname = $this->mAsset->mDirname;
         $constpref = '_AD_'.strtoupper($dirname);
         // breadcrumbs
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => constant($constpref.'_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_SYSTEM_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=System',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_SYSTEM_NOTIFICATION_TITLE'),
-            ),
-        );
-        $events = array();
+            ],
+        ];
+        $events = [];
         $optionObjs = $this->mObject['notification_events']->getOptionItems();
         foreach ($optionObjs as $optionObj) {
             $key = $optionObj->get('confop_value');
@@ -136,7 +136,7 @@ class Xoonips_Admin_SystemNotificationAction extends Xoonips_AbstractEditAction
         }
         $criteria->add($criteria2);
         $configObjs = $configHandler->getConfigs($criteria, true);
-        $ret = array();
+        $ret = [];
         foreach ($configObjs as $configObj) {
             $key = $configObj->get('conf_name');
             $ret[$key] = $configObj;

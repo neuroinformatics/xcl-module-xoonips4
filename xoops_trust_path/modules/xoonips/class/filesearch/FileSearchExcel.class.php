@@ -22,13 +22,13 @@ class Xoonips_FileSearchExcel extends Xoonips_FileSearchBase
      */
     public function getSearchInstance()
     {
-        return array(
+        return [
             'name' => 'excel',
             'display_name' => 'MS-Excel 95/97/2000/XP/2003',
-            'mime_type' => array('application/vnd.ms-excel', 'application/msword'),
-            'extensions' => array('xls', 'xlt', 'xlm', 'xld', 'xla', 'xlc', 'xlw', 'xll'),
+            'mime_type' => ['application/vnd.ms-excel', 'application/msword'],
+            'extensions' => ['xls', 'xlt', 'xlm', 'xld', 'xla', 'xlc', 'xlw', 'xll'],
             'version' => '2.0',
-        );
+        ];
     }
 
     /**

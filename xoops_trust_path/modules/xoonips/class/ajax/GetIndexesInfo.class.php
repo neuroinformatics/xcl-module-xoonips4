@@ -15,7 +15,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
     {
         $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
 
-        $trees = array();
+        $trees = [];
         // public index
         $trees[] = $this->_getPublicIndexTree($indexHandler, $uid);
 
@@ -28,7 +28,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
         // private index
         $trees[] = $this->_getPrivateIndexTree($indexHandler, $uid);
 
-        $ret = array();
+        $ret = [];
         $ret['dirname'] = $dirname;
         $ret['trees'] = $trees;
         $this->mResult = json_encode($ret);
@@ -46,18 +46,18 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
         $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
 
         // get checked_indexes
-        $register_checked_indexes = array();
+        $register_checked_indexes = [];
         if (isset($_COOKIE['register_checked_indexes'])) {
             $register_checked_indexes = explode(':', $_COOKIE['register_checked_indexes']);
         }
 
         // get opened_indexes
-        $register_opened_indexes = array();
+        $register_opened_indexes = [];
         if (isset($_COOKIE['register_opened_indexes'])) {
             $register_opened_indexes = explode(':', $_COOKIE['register_opened_indexes']);
         }
 
-        $trees = array();
+        $trees = [];
         // public index
         $trees[] = $this->_getPublicIndexTree($indexHandler, $uid, $register_checked_indexes, $register_opened_indexes);
 
@@ -70,7 +70,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
         // private index
         $trees[] = $this->_getPrivateIndexTree($indexHandler, $uid, $register_checked_indexes, $register_opened_indexes);
 
-        $ret = array();
+        $ret = [];
         $ret['dirname'] = $dirname;
         $ret['trees'] = $trees;
         $this->mResult = json_encode($ret);
@@ -88,7 +88,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
         $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
 
         // get checked_indexes
-        $checkedIndexes = array();
+        $checkedIndexes = [];
         if (isset($_COOKIE['edit_checked_indexes'])) {
             $checkedIndexes = explode(':', $_COOKIE['edit_checked_indexes']);
         } else {
@@ -102,12 +102,12 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
         }
 
         // get opened_indexes
-        $edit_opened_indexes = array();
+        $edit_opened_indexes = [];
         if (isset($_COOKIE['edit_opened_indexes'])) {
             $edit_opened_indexes = explode(':', $_COOKIE['edit_opened_indexes']);
         }
 
-        $trees = array();
+        $trees = [];
         // public index
         $trees[] = $this->_getPublicIndexTree($indexHandler, $uid, $checkedIndexes, $edit_opened_indexes);
 
@@ -120,7 +120,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
         // private index
         $trees[] = $this->_getPrivateIndexTree($indexHandler, $uid, $checkedIndexes, $edit_opened_indexes);
 
-        $ret = array();
+        $ret = [];
         $ret['dirname'] = $dirname;
         $ret['trees'] = $trees;
         $this->mResult = json_encode($ret);
@@ -141,7 +141,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
             $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
         }
 
-        $trees = array();
+        $trees = [];
         if (1 == $public_flg) {
             // public index
             $trees[] = $this->_getPublicIndexTree($indexHandler, $uid, $checkedIndexes, $openedIndexes);
@@ -155,7 +155,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
             $trees[] = $this->_getPrivateIndexTree($indexHandler, $uid, $checkedIndexes, $openedIndexes);
         }
 
-        $ret = array();
+        $ret = [];
         $ret['dirname'] = $dirname;
         $ret['trees'] = $trees;
         $this->mResult = json_encode($ret);
@@ -188,8 +188,8 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
             $xoonipsItemId = $itemBean->getItemIdBydoi($request->getParameter(XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME));
         }
         $functionName = $request->getParameter('function');
-        $checkedIndexes = array();
-        $openedIndexes = array();
+        $checkedIndexes = [];
+        $openedIndexes = [];
         if ('itemimport' == $functionName) {
             return self::itemImport($dirname, $trustDirname, $xoopsUser, $indexHandler);
         } elseif ('register' == $functionName) {
@@ -237,12 +237,12 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
         $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
 
         // get opened_indexes
-        $opened_indexes = array();
+        $opened_indexes = [];
         if (isset($_COOKIE['opened_indexes'])) {
             $opened_indexes = explode(':', $_COOKIE['opened_indexes']);
         }
         // get checked indexes if item_id found.
-        $checked_indexes = array();
+        $checked_indexes = [];
         if (!empty($xoonipsItemId)) {
             $indexItemLinkBean = Xoonips_BeanFactory::getBean('IndexItemLinkBean', $dirname, $trustDirname);
             $links = $indexItemLinkBean->getIndexItemLinkInfo($xoonipsItemId);
@@ -251,7 +251,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
             }
         }
 
-        $trees = array();
+        $trees = [];
         // public index
         $trees[] = $this->_getPublicIndexTree($indexHandler, $uid, $checked_indexes, $opened_indexes);
 
@@ -264,7 +264,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
         // private index
         $trees[] = $this->_getPrivateIndexTree($indexHandler, $uid, $checked_indexes, $opened_indexes);
 
-        $ret = array();
+        $ret = [];
         $ret['dirname'] = $dirname;
         $ret['trees'] = $trees;
         $this->mResult = json_encode($ret);
@@ -282,16 +282,16 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
      *
      * return $obj tree
      */
-    private function _getPublicIndexTree($indexHandler, $uid, $checkedIndexes = array(), $openedIndexes = array())
+    private function _getPublicIndexTree($indexHandler, $uid, $checkedIndexes = [], $openedIndexes = [])
     {
-        $htmls = array();
+        $htmls = [];
         $public_index_id = '';
         $publicIndexes = $indexHandler->getPublicIndexList($uid);
         foreach ($publicIndexes as $index) {
             if (XOONIPS_IID_ROOT == $index['index_id']) {
                 continue;
             }
-            $html = array();
+            $html = [];
             // id
             $html['id'] = $index['index_id'];
             // parent
@@ -299,7 +299,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
             if (XOONIPS_IID_ROOT == $index['parent_index_id']) {
                 $parent = '#';
                 $public_index_id = $index['index_id'];
-                $html['state'] = array('opened' => true);
+                $html['state'] = ['opened' => true];
             }
             $html['parent'] = $parent;
             // text
@@ -312,22 +312,22 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
             if (!empty($checkedIndexes)) {
                 if (in_array($index['index_id'], $checkedIndexes)) {
                     if (!empty($html['state'])) {
-                        $html['state'] = array('opened' => true, 'selected' => true);
+                        $html['state'] = ['opened' => true, 'selected' => true];
                     } else {
-                        $html['state'] = array('selected' => true);
+                        $html['state'] = ['selected' => true];
                     }
                 }
             }
             // opened
             if (!empty($openedIndexes)) {
                 if (in_array($index['index_id'], $openedIndexes)) {
-                    $html['state'] = array('opened' => true);
+                    $html['state'] = ['opened' => true];
                 }
             }
             $htmls[] = $html;
         }
 
-        $tree = array();
+        $tree = [];
         $tree['index_id'] = $public_index_id;
         $tree['html'] = $htmls;
 
@@ -352,20 +352,20 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
         if (XOONIPS_UID_GUEST != $uid) {
             $is_moderator = $userBean->isModerator($uid);
         }
-        $puid = array();
+        $puid = [];
         $puid[] = $uid;
         // if has item id && moderator
         if (!empty($xoonipsItemId) && $is_moderator) {
             $itemUserInfo = $itemUserBean->getItemUsersInfo($xoonipsItemId);
             if ($itemUserInfo) {
-                $puid = array();
+                $puid = [];
                 foreach ($itemUserInfo as $obj) {
                     $puid[] = $obj['uid'];
                 }
             }
         }
 
-        $gids = array();
+        $gids = [];
         $allGroupIndexes = array_merge($indexBean->getGroupIndex2($puid), $indexBean->getPublicGroupIndex());
         foreach ($allGroupIndexes as $allGroupIndex) {
             if (!empty($allGroupIndex['groupid'])) {
@@ -387,17 +387,17 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
      *
      * return $obj tree
      */
-    private function _getGroupIndexTree($indexHandler, $uid, $gid, $checkedIndexes = array(), $openedIndexes = array())
+    private function _getGroupIndexTree($indexHandler, $uid, $gid, $checkedIndexes = [], $openedIndexes = [])
     {
-        $opened_indexes = array();
+        $opened_indexes = [];
         if (isset($_COOKIE['opened_indexes'])) {
             $opened_indexes = explode(':', $_COOKIE['opened_indexes']);
         }
         $group_index_id = '';
         $groupIndexes = $indexHandler->getGroupIndexList($uid, $gid);
-        $htmls = array();
+        $htmls = [];
         foreach ($groupIndexes as $index) {
-            $html = array();
+            $html = [];
             // id
             $html['id'] = $index['index_id'];
             // parent
@@ -405,7 +405,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
             if (XOONIPS_IID_ROOT == $index['parent_index_id']) {
                 $parent = '#';
                 $group_index_id = $index['index_id'];
-                $html['state'] = array('opened' => true);
+                $html['state'] = ['opened' => true];
             }
             $html['parent'] = $parent;
             // text
@@ -418,22 +418,22 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
             if (!empty($checkedIndexes)) {
                 if (in_array($index['index_id'], $checkedIndexes)) {
                     if (!empty($html['state'])) {
-                        $html['state'] = array('opened' => true, 'selected' => true);
+                        $html['state'] = ['opened' => true, 'selected' => true];
                     } else {
-                        $html['state'] = array('selected' => true);
+                        $html['state'] = ['selected' => true];
                     }
                 }
             }
             // opened
             if (!empty($openedIndexes)) {
                 if (in_array($index['index_id'], $openedIndexes)) {
-                    $html['state'] = array('opened' => true);
+                    $html['state'] = ['opened' => true];
                 }
             }
             $htmls[] = $html;
         }
 
-        $tree = array();
+        $tree = [];
         $tree['index_id'] = $group_index_id;
         $tree['html'] = $htmls;
 
@@ -450,17 +450,17 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
      *
      * return $obj tree
      */
-    private function _getPrivateIndexTree($indexHandler, $uid, $checkedIndexes = array(), $openedIndexes = array())
+    private function _getPrivateIndexTree($indexHandler, $uid, $checkedIndexes = [], $openedIndexes = [])
     {
-        $opened_indexes = array();
+        $opened_indexes = [];
         if (isset($_COOKIE['opened_indexes'])) {
             $opened_indexes = explode(':', $_COOKIE['opened_indexes']);
         }
-        $htmls = array();
+        $htmls = [];
         $private_index_id = '';
         $privateIndexes = $indexHandler->getPrivateIndexList($uid);
         foreach ($privateIndexes as $index) {
-            $html = array();
+            $html = [];
             // id
             $html['id'] = $index['index_id'];
             // parent
@@ -469,7 +469,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
                 $parent = '#';
                 $private_index_id = $index['index_id'];
                 $index['title'] = 'Private';
-                $html['state'] = array('opened' => true);
+                $html['state'] = ['opened' => true];
             }
             $html['parent'] = $parent;
             // text
@@ -482,22 +482,22 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
             if (!empty($checkedIndexes)) {
                 if (in_array($index['index_id'], $checkedIndexes)) {
                     if (!empty($html['state'])) {
-                        $html['state'] = array('opened' => true, 'selected' => true);
+                        $html['state'] = ['opened' => true, 'selected' => true];
                     } else {
-                        $html['state'] = array('selected' => true);
+                        $html['state'] = ['selected' => true];
                     }
                 }
             }
             // opened
             if (!empty($openedIndexes)) {
                 if (in_array($index['index_id'], $openedIndexes)) {
-                    $html['state'] = array('opened' => true);
+                    $html['state'] = ['opened' => true];
                 }
             }
             $htmls[] = $html;
         }
 
-        $tree = array();
+        $tree = [];
         $tree['index_id'] = $private_index_id;
         $tree['html'] = $htmls;
 

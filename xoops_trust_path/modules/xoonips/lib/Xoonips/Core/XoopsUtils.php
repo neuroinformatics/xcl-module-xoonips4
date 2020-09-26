@@ -14,14 +14,14 @@ class XoopsUtils
      *
      * @var array
      */
-    private static $mConfigs = array();
+    private static $mConfigs = [];
 
     /**
      * user membership cache.
      *
      * @var array
      */
-    private static $mGroupIds = array();
+    private static $mGroupIds = [];
 
     /**
      * get trust dirname by dirname.
@@ -32,7 +32,7 @@ class XoopsUtils
      */
     public static function getTrustDirnameByDirname($dirname)
     {
-        static $cache = array();
+        static $cache = [];
         if (array_key_exists($dirname, $cache)) {
             return $cache[$dirname];
         }
@@ -40,7 +40,7 @@ class XoopsUtils
         $module = &$handler->getByDirname($dirname);
         if (is_object($module)) {
             $ret = $module->get('trust_dirname');
-            if ($ret !== false) {
+            if (false !== $ret) {
                 $cache[$dirname] = $ret;
 
                 return $ret;
@@ -59,7 +59,7 @@ class XoopsUtils
      */
     public static function getDirnameListByTrustDirname($trustDirname)
     {
-        $ret = array();
+        $ret = [];
         $criteria = new \CriteriaCompo();
         $criteria->add(new \Criteria('isactive', 0, '>'));
         $criteria->add(new \Criteria('trust_dirname', $trustDirname));
@@ -85,7 +85,7 @@ class XoopsUtils
      */
     public static function &getModuleHandler($name, $dirname, $trustDirname = null)
     {
-        static $cache = array();
+        static $cache = [];
         $key = $dirname.':'.$name;
         if (!array_key_exists($key, $cache)) {
             $db = &\XoopsDatabaseFactory::getDatabaseConnection();
@@ -137,10 +137,10 @@ class XoopsUtils
             if (defined('XOOPS_CUBE_LEGACY')) {
                 switch ($catId) {
                 case XOOPS_CONF:
-                    static $maps = array(
-                        'user' => array('avatar_minposts', 'maxuname', 'sslloginlink', 'sslpost_name', 'use_ssl', 'usercookie'),
-                        'legacyRender' => array('banners'),
-                    );
+                    static $maps = [
+                        'user' => ['avatar_minposts', 'maxuname', 'sslloginlink', 'sslpost_name', 'use_ssl', 'usercookie'],
+                        'legacyRender' => ['banners'],
+                    ];
                     foreach ($maps as $dirname => $mkeys) {
                         foreach ($mkeys as $mkey) {
                             self::$mConfigs[$cat][$mkey] = self::getModuleConfig($dirname, $mkey);
@@ -149,7 +149,7 @@ class XoopsUtils
                     break;
                 case XOOPS_CONF_USER:
                 case XOOPS_CONF_METAFOOTER:
-                    static $dirnames = array(XOOPS_CONF_USER => 'user', XOOPS_CONF_METAFOOTER => 'legacyRender');
+                    static $dirnames = [XOOPS_CONF_USER => 'user', XOOPS_CONF_METAFOOTER => 'legacyRender'];
                     $dirname = $dirnames[$catId];
                     if (!array_key_exists($dirname, self::$mConfigs)) {
                         self::$mConfigs[$dirname] = $configHandler->getConfigsByDirname($dirname);
@@ -204,7 +204,7 @@ class XoopsUtils
         $criteria->add(new \Criteria('conf_modid', $mid));
         $criteria->add(new \Criteria('conf_name', $key));
         $configObjs = $configHandler->getConfigs($criteria);
-        if (count($configObjs) != 1) {
+        if (1 != count($configObjs)) {
             return false;
         }
         $configObj = array_shift($configObjs);
@@ -235,8 +235,8 @@ class XoopsUtils
         if (is_null($format)) {
             $format = '{modulename} {action} [pagetitle]:[/pagetitle] {pagetitle}';
         }
-        $search = array('{modulename}', '{pagetitle}', '{action}');
-        $replace = array($moduleName, $pageTitle, $action);
+        $search = ['{modulename}', '{pagetitle}', '{action}'];
+        $replace = [$moduleName, $pageTitle, $action];
         $ret = str_replace($search, $replace, $format);
         $ret = preg_replace('/\[modulename\](.*)\[\/modulename\]/U', (empty($moduleName) ? '' : '$1'), $ret);
         $ret = preg_replace('/\[pagetitle\](.*)\[\/pagetitle\]/U', (empty($pageTitle) ? '' : '$1'), $ret);
@@ -259,7 +259,7 @@ class XoopsUtils
     public static function renderUri($dirname, $dataname = null, $dataId = 0, $action = null, $query = null)
     {
         $uri = null;
-        if (self::getXoopsConfig('cool_uri') == true) {
+        if (true == self::getXoopsConfig('cool_uri')) {
             if (isset($dataname)) {
                 if ($dataId > 0) {
                     if (isset($action)) {
@@ -389,7 +389,7 @@ class XoopsUtils
      */
     public static function isSiteAdmin($uid)
     {
-        if ($uid == self::UID_GUEST) {
+        if (self::UID_GUEST == $uid) {
             return false;
         }
         if (!array_key_exists($uid, self::$mGroupIds)) {
@@ -410,7 +410,7 @@ class XoopsUtils
      */
     public static function isModuleAdmin($uid, $dirname)
     {
-        if ($uid == self::UID_GUEST) {
+        if (self::UID_GUEST == $uid) {
             return false;
         }
         $moduleHandler = &xoops_gethandler('module');

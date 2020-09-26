@@ -24,121 +24,121 @@ class Xoonips_Admin_PolicyItemFieldEditForm extends Xoonips_AbstractActionForm
     {
         $constpref = '_AD_'.strtoupper($this->mDirname);
 
-        return array(
-            'field_id' => array(
+        return [
+            'field_id' => [
                 'type' => self::TYPE_INT,
                 'label' => constant($constpref.'_LANG_ITEM_FIELD_ID'),
-                'depends' => array(
+                'depends' => [
                     'required' => true,
                     'min' => 0,
-                ),
-            ),
-            'xml' => array(
+                ],
+            ],
+            'xml' => [
                 'type' => self::TYPE_STRING,
                 'label' => constant($constpref.'_LANG_ITEM_FIELD_ID'),
-                'depends' => array(
+                'depends' => [
                     'required' => true,
                     'maxlength' => 30,
                     'mask' => '/^(?:[a-zA-Z][a-zA-Z0-9_]*)$/',
-                ),
-            ),
-            'name' => array(
+                ],
+            ],
+            'name' => [
                 'type' => self::TYPE_STRING,
                 'label' => constant($constpref.'_LANG_ITEM_FIELD_NAME'),
-                'depends' => array(
+                'depends' => [
                     'required' => true,
                     'maxlength' => 255,
-                ),
-            ),
-            'view_type_id' => array(
+                ],
+            ],
+            'view_type_id' => [
                 'type' => self::TYPE_INT,
                 'label' => constant($constpref.'_LANG_ITEM_FIELD_VIEW_TYPE'),
-                'depends' => array(
+                'depends' => [
                     'required' => true,
                     'min' => 1,
-                ),
-            ),
-            'list' => array(
+                ],
+            ],
+            'list' => [
                 'type' => self::TYPE_STRING,
                 'label' => constant($constpref.'_LANG_ITEM_FIELD_LIST'),
-            ),
-            'data_type_id' => array(
+            ],
+            'data_type_id' => [
                 'type' => self::TYPE_INT,
                 'label' => constant($constpref.'_LANG_ITEM_FIELD_DATA_TYPE'),
-                'depends' => array(
+                'depends' => [
                     'required' => true,
                     'min' => 1,
-                ),
-            ),
-            'data_length' => array(
+                ],
+            ],
+            'data_length' => [
                 'type' => self::TYPE_INT,
                 'label' => constant($constpref.'_LANG_ITEM_FIELD_DATA_LENGTH'),
-                'depends' => array(
+                'depends' => [
                     'required' => true,
                     'max' => 255,
                     'min' => -1,
-                ),
-            ),
-            'data_decimal_places' => array(
+                ],
+            ],
+            'data_decimal_places' => [
                 'type' => self::TYPE_INT,
                 'label' => constant($constpref.'_LANG_ITEM_FIELD_DATA_SCALE'),
-                'depends' => array(
+                'depends' => [
                     'required' => true,
                     'min' => -1,
-                ),
-            ),
-            'default_value' => array(
+                ],
+            ],
+            'default_value' => [
                 'type' => self::TYPE_STRING,
                 'label' => constant($constpref.'_LANG_ITEM_FIELD_DEFAULT'),
-            ),
-            'essential' => array(
+            ],
+            'essential' => [
                 'type' => self::TYPE_INT,
                 'label' => constant($constpref.'_LANG_ITEM_FIELD_ESSENTIAL'),
-                'depends' => array(
+                'depends' => [
                     'min' => 0,
                     'max' => 1,
-                ),
-            ),
-            'detail_display' => array(
+                ],
+            ],
+            'detail_display' => [
                 'type' => self::TYPE_INT,
                 'label' => constant($constpref.'_LANG_ITEM_FIELD_OTHER_DISPLAY'),
-                'depends' => array(
+                'depends' => [
                     'min' => 0,
                     'max' => 1,
-                ),
-            ),
-            'detail_target' => array(
+                ],
+            ],
+            'detail_target' => [
                 'type' => self::TYPE_INT,
                 'label' => constant($constpref.'_LANG_ITEM_FIELD_OTHER_DETAIL_SEARCH'),
-                'depends' => array(
+                'depends' => [
                     'min' => 0,
                     'max' => 1,
-                ),
-            ),
-            'scope_search' => array(
+                ],
+            ],
+            'scope_search' => [
                 'type' => self::TYPE_INT,
                 'label' => constant($constpref.'_LANG_ITEM_FIELD_OTHER_SCOPE_SEARCH'),
-                'depends' => array(
+                'depends' => [
                     'min' => 0,
                     'max' => 1,
-                ),
-            ),
-            'nondisplay' => array(
+                ],
+            ],
+            'nondisplay' => [
                 'type' => self::TYPE_INT,
                 'label' => constant($constpref.'_LANG_ITEM_FIELD_HIDE'),
-                'depends' => array(
+                'depends' => [
                     'min' => 0,
                     'max' => 1,
-                ),
-            ),
-            'update_id' => array(
+                ],
+            ],
+            'update_id' => [
                 'type' => self::TYPE_INT,
                 'label' => constant($constpref.'_LANG_ITEM_FIELD_HIDE'), // TODO
-                'depends' => array(
+                'depends' => [
                     'min' => 0,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
@@ -151,7 +151,7 @@ class Xoonips_Admin_PolicyItemFieldEditForm extends Xoonips_AbstractActionForm
      */
     protected function _getObjectValue(&$obj, $key)
     {
-        if ($key == 'field_id') {
+        if ('field_id' == $key) {
             $key = 'item_field_detail_id';
         }
 
@@ -167,13 +167,13 @@ class Xoonips_Admin_PolicyItemFieldEditForm extends Xoonips_AbstractActionForm
      */
     protected function _setObjectValue(&$obj, $key, $value)
     {
-        if ($key == 'field_id') {
+        if ('field_id' == $key) {
             $key = 'item_field_detail_id';
         }
         // for null checkbox
-        $keys = array('essential', 'detail_display', 'detail_target', 'scope_search', 'nondisplay');
+        $keys = ['essential', 'detail_display', 'detail_target', 'scope_search', 'nondisplay'];
         if (in_array($key, $keys)) {
-            $value = (is_null($value) || $value == 0) ? 0 : 1;
+            $value = (is_null($value) || 0 == $value) ? 0 : 1;
         }
         $obj->set($key, $value);
     }

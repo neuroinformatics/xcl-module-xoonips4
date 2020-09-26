@@ -34,59 +34,59 @@ class Xoonips_Admin_PolicyGroupForm extends Xoonips_AbstractActionForm
     {
         $constpref = '_AD_'.strtoupper($this->mDirname);
 
-        return array(
-            'general' => array(
-                'group_making' => array(
+        return [
+            'general' => [
+                'group_making' => [
                     'type' => self::TYPE_STRING,
                     'label' => constant($constpref.'_POLICY_GROUP_CONSTRUCT_PERMIT_TITLE'),
-                    'depends' => array(
+                    'depends' => [
                         'required' => true,
                         'mask' => '/^(?:on|off)$/',
-                    ),
-                ),
-                'group_making_certify' => array(
+                    ],
+                ],
+                'group_making_certify' => [
                     'type' => self::TYPE_STRING,
                     'label' => constant($constpref.'_POLICY_GROUP_CONSTRUCT_CERTIFY_TITLE'),
-                    'depends' => array(
+                    'depends' => [
                         'required' => true,
                         'mask' => '/^(?:on|off)$/',
-                    ),
-                ),
-                'group_publish_certify' => array(
+                    ],
+                ],
+                'group_publish_certify' => [
                     'type' => self::TYPE_STRING,
                     'label' => constant($constpref.'_POLICY_GROUP_PUBLISH_CERTIFY_TITLE'),
-                    'depends' => array(
+                    'depends' => [
                         'required' => true,
                         'mask' => '/^(?:on|off)$/',
-                    ),
-                ),
-            ),
-            'initval' => array(
-                'group_item_number_limit' => array(
+                    ],
+                ],
+            ],
+            'initval' => [
+                'group_item_number_limit' => [
                     'type' => self::TYPE_INT,
                     'label' => constant($constpref.'_POLICY_GROUP_INITVAL_MAXITEM_TITLE'),
-                    'depends' => array(
+                    'depends' => [
                         'required' => true,
                         'min' => 0,
-                    ),
-                ),
-                'group_index_number_limit' => array(
+                    ],
+                ],
+                'group_index_number_limit' => [
                     'type' => self::TYPE_INT,
                     'label' => constant($constpref.'_POLICY_GROUP_INITVAL_MAXINDEX_TITLE'),
-                    'depends' => array(
+                    'depends' => [
                         'required' => true,
                         'min' => 0,
-                    ),
-                ),
-                'group_item_storage_limit' => array(
+                    ],
+                ],
+                'group_item_storage_limit' => [
                     'type' => self::TYPE_FLOAT,
                     'label' => constant($constpref.'_POLICY_GROUP_INITVAL_MAXDISK_TITLE'),
-                    'depends' => array(
+                    'depends' => [
                         'required' => true,
                         'min' => 0,
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
     }
 }

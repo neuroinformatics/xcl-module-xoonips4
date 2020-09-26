@@ -38,7 +38,7 @@ class ItemTypeSortObjectHandler extends AbstractObjectHandler
         $criteria->setSort($this->mPrimaryKey);
         $criteria->setOrder('ASC');
         $objs = $this->getObjects($criteria);
-        $ret = array();
+        $ret = [];
         foreach ($objs as $obj) {
             $ret[$obj->get($this->mPrimaryKey)] = $obj->get('title');
         }
@@ -56,7 +56,7 @@ class ItemTypeSortObjectHandler extends AbstractObjectHandler
      */
     public function getSortFields(ItemTypeSortObject $obj)
     {
-        $ret = array();
+        $ret = [];
         $sortId = $obj->get($this->mPrimaryKey);
         $detailHandler = Functions::getXoonipsHandler('ItemTypeSortDetailObject', $this->mDirname);
         $criteria = new \Criteria('sort_id', $sortId);

@@ -45,7 +45,7 @@ class Xoonips_ViewTypeRadioBox extends Xoonips_ViewType
     {
         $ret = '';
         $list = $field->getList();
-        if ($value !== '') {
+        if ('' !== $value) {
             $ret = isset($list[$value]) ? $list[$value] : '';
         }
         $fieldName = $this->getFieldName($field, $groupLoopId);
@@ -62,7 +62,7 @@ class Xoonips_ViewTypeRadioBox extends Xoonips_ViewType
     {
         $ret = '';
         $list = $field->getList();
-        if ($value !== '') {
+        if ('' !== $value) {
             $ret = isset($list[$value]) ? $list[$value] : '';
         }
         $this->getXoopsTpl()->assign('viewType', 'detail');
@@ -77,7 +77,7 @@ class Xoonips_ViewTypeRadioBox extends Xoonips_ViewType
     {
         $ret = '';
         $list = $field->getList();
-        if ($value !== '') {
+        if ('' !== $value) {
             $ret = isset($list[$value]) ? $list[$value] : '';
         }
 
@@ -113,7 +113,7 @@ class Xoonips_ViewTypeRadioBox extends Xoonips_ViewType
     public function getDefaultValueBlockView($list, $value, $disabled = '')
     {
         $selectValues = $this->getItemtypeValueDetail($list);
-        $values = array();
+        $values = [];
         foreach ($selectValues as $selectValue) {
             $values[] = $selectValue['title_id'];
         }

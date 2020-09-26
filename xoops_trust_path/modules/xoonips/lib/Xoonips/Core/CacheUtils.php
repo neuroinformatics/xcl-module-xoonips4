@@ -19,11 +19,11 @@ class CacheUtils
     public static function check304($mtime, $etag)
     {
         $_mtime = -1;
-        $_etags = array();
-        if ($mtime !== false && isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
+        $_etags = [];
+        if (false !== $mtime && isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
             $_mtime = intval(@strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']));
         }
-        if ($etag !== false && isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
+        if (false !== $etag && isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
             if (preg_match_all('/"((?:\\"|[^"])*)"/U', $_SERVER['HTTP_IF_NONE_MATCH'], $matches, PREG_SET_ORDER)) {
                 foreach ($matches as $match) {
                     $_etags[] = stripslashes($match[1]);
@@ -265,7 +265,7 @@ class CacheUtils
      */
     protected static function _cleanupOutput()
     {
-        register_shutdown_function(array(get_class(), 'onShutdown'));
+        register_shutdown_function([get_class(), 'onShutdown']);
         ob_start();
         exit();
     }
@@ -302,7 +302,7 @@ class CacheUtils
      */
     protected static function _outputCacheHeader($mtime, $etag)
     {
-        if ($mtime === false || $etag === false) {
+        if (false === $mtime || false === $etag) {
             return;
         }
         header('Cache-Control: public, max-age='.self::CACHE_MAXAGE);
@@ -323,8 +323,8 @@ class CacheUtils
      */
     protected static function _outputDispositionHeader($fname, $encoding)
     {
-        if ($fname != '') {
-            if ($encoding != 'UTF-8') {
+        if ('' != $fname) {
+            if ('UTF-8' != $encoding) {
                 $fname = StringUtils::convertEncoding($fname, 'UTF-8', $encoding, 'h');
             }
             header('Content-Disposition: attachment; filename*=UTF-8\'\''.rawurlencode($fname));
@@ -347,13 +347,13 @@ class CacheUtils
      */
     protected static function _outputHttpStatusCodeHeader($code, $doEcho = false)
     {
-        $messages = array(
+        $messages = [
             206 => 'Partial Content',
             304 => 'Not Modified',
             403 => 'Forbidden',
             404 => 'Not Found',
             500 => 'Internal Server Error',
-        );
+        ];
         $text = sprintf('%s %u %s', $_SERVER['SERVER_PROTOCOL'], $code, $messages[$code]);
         header($text);
         if ($doEcho) {

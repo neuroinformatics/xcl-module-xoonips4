@@ -5,7 +5,7 @@ class Xoonips_Error
     private $msgId;
     private $isConst;
     private $fieldName;
-    private $parameters = array();
+    private $parameters = [];
 
     public function __construct($msgId, $fieldName, $parameters, $isConst)
     {

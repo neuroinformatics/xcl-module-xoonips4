@@ -9,8 +9,8 @@ class Xoonips_ItemTypeAction extends Xoonips_ActionBase
         $itemtypebean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
         $itemtypelist = $itemtypebean->getItemTypeList();
 
-        $block = array();
-        $block['explain'] = array();
+        $block = [];
+        $block['explain'] = [];
         if ($itemtypelist) {
             foreach ($itemtypelist as $itemtype) {
                 $itemtypeId = $itemtype['item_type_id'];
@@ -51,12 +51,12 @@ class Xoonips_ItemTypeAction extends Xoonips_ActionBase
         $tpl->assign('dirname', $this->dirname);
 
         if (!empty($subtypes)) {
-            $searchURLs = array();
+            $searchURLs = [];
             foreach ($subtypes as $subtypeId => $subtypeDisplayName) {
-                $searchURLs[] = array(
+                $searchURLs[] = [
                     'subtypeDisplayName' => $subtypeDisplayName,
                     'subtypeId' => $subtypeId,
-                );
+                ];
             }
             $tpl->assign('searchURLs', $searchURLs);
         }
@@ -68,7 +68,7 @@ class Xoonips_ItemTypeAction extends Xoonips_ActionBase
     {
         $detailbean = Xoonips_BeanFactory::getBean('ItemFieldDetailBean', $this->dirname, $this->trustDirname);
         $filetypelist = $detailbean->getFileTypeList($itemtypeId);
-        $ret = array();
+        $ret = [];
         foreach ($filetypelist as $filetype) {
             $ret[$filetype['title_id']] = $filetype['title'];
         }

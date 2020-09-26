@@ -17,7 +17,7 @@ class ItemTypeSearchConditionDetailObjectHandler extends AbstractObjectHandler
     {
         parent::__construct($db, $dirname);
         $this->mTable = $db->prefix($dirname.'_item_type_search_condition_detail');
-        $this->mPrimaryKey = array('condition_id', 'item_type_id', 'item_field_detail_id');
+        $this->mPrimaryKey = ['condition_id', 'item_type_id', 'item_field_detail_id'];
         $this->mIsAutoIncrement = false;
     }
 }

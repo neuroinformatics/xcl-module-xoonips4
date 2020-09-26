@@ -44,7 +44,7 @@ class Xoonips_ComplementPubmedId extends Xoonips_Complement
             if (is_array($pubmedData[$param])) {
                 $int = 1;
                 for ($i = 1; $i <= count($pubmedData[$param]); ++$i) {
-                    if ($param == 'keyword') {
+                    if ('keyword' == $param) {
                         $keywords = $pubmedData[$param][$i - 1];
                         $key = $groupId.Xoonips_Enum::ITEM_ID_SEPARATOR.$int.Xoonips_Enum::ITEM_ID_SEPARATOR.$detailId;
                         $data[$key] = StringUtils::convertEncoding(trim($keywords), _CHARSET, 'UTF-8', 'h');
@@ -72,7 +72,7 @@ class Xoonips_ComplementPubmedId extends Xoonips_Complement
      */
     private function &getPubmedData($pmid)
     {
-        $ret = array();
+        $ret = [];
         $pubmed = new Xoonips_PubmedService();
         $pubmed->setId($pmid);
         if (!$pubmed->fetch() || !$pubmed->parse() || !isset($pubmed->data[$pmid])) {
@@ -80,7 +80,7 @@ class Xoonips_ComplementPubmedId extends Xoonips_Complement
         }
         $article = &$pubmed->data[$pmid];
         // pubmed id
-        $ret = array(
+        $ret = [
             'pmid' => $pmid,
             'title' => $article['ArticleTitle'],
             'volume' => $article['Journal']['Volume'],
@@ -89,9 +89,9 @@ class Xoonips_ComplementPubmedId extends Xoonips_Complement
             'journal' => $article['Journal']['Title'],
             'page' => $article['MedlinePgn'],
             'abstract' => implode(' ', $article['AbstractText']),
-            'author' => array(),
-            'keyword' => array(),
-        );
+            'author' => [],
+            'keyword' => [],
+        ];
         // title
         if (preg_match('/^\\[(.*)\\]$/', $ret['title'], $matches)) {
             $ret['title'] = $matches[1];
@@ -101,7 +101,7 @@ class Xoonips_ComplementPubmedId extends Xoonips_Complement
             $ret['publicationyear'] = $matches[1];
         }
         // journal
-        if (empty($ret['journal']) && $article['MedlineTA'] != '') {
+        if (empty($ret['journal']) && '' != $article['MedlineTA']) {
             $journal_esearch = new Xoonips_PubmedService_JournalEsearch();
             $journal_esearch->setTerm($article['MedlineTA']);
             if ($journal_esearch->fetch() && $journal_esearch->parse() && isset($journal_esearch->data['Id'])) {
@@ -128,9 +128,9 @@ class Xoonips_ComplementPubmedId extends Xoonips_Complement
         if (!empty($article['AuthorList'])) {
             foreach ($article['AuthorList'] as $author) {
                 $str = $author['LastName'].' ';
-                if ($author['Initials'] != '') {
+                if ('' != $author['Initials']) {
                     $str .= $author['Initials'];
-                } elseif ($author['ForeName'] != '') {
+                } elseif ('' != $author['ForeName']) {
                     $str .= $author['ForeName'];
                 }
                 $ret['author'][] = $str;

@@ -43,7 +43,7 @@ class Xoonips_ItemChangeLogBean extends Xoonips_BeanBase
      */
     public function getChangeLogs($item_id)
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT * FROM $this->table WHERE item_id=$item_id ORDER BY log_date";
         $result = $this->execute($sql);
         if (!$result) {
@@ -106,7 +106,7 @@ class Xoonips_ItemChangeLogBean extends Xoonips_BeanBase
     public function update($changelog)
     {
         $fragment = '';
-        if ($changelog['log_date'] != 0) {
+        if (0 != $changelog['log_date']) {
             $fragment = 'log_date = '.Xoonips_Utils::convertSQLNum($changelog['log_date']);
         }
         if (!is_null($changelog['log'])) {

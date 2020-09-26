@@ -17,11 +17,11 @@ class Xoonips_Request
             return null;
         }
         $val = $_FILES[$name];
-        if ((isset($val['error']) && $val['error'] != 0) || !is_uploaded_file($val['tmp_name'])) {
+        if ((isset($val['error']) && 0 != $val['error']) || !is_uploaded_file($val['tmp_name'])) {
             return null;
         }
         $val['type'] = FileUtils::guessMimeType($val['tmp_name'], $val['name']);
-        if ($val['type'] === false) {
+        if (false === $val['type']) {
             return null;
         }
 

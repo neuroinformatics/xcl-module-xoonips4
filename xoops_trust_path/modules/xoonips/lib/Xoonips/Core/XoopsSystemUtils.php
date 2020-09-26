@@ -36,13 +36,13 @@ class XoopsSystemUtils
         if (!$result) {
             return false;
         }
-        $gids = array();
+        $gids = [];
         while ($myrow = $db->fetchArray($result)) {
             $gids[] = $myrow['gperm_groupid'];
         }
         $db->freeRecordSet($result);
         // remove all invalid group id entries
-        if (count($gids) != 0) {
+        if (0 != count($gids)) {
             $sql = sprintf('DELETE FROM `%s` WHERE `gperm_groupid` IN (%s) AND `gperm_modid`=1', $table, implode(',', $gids));
             $result = $db->query($sql);
             if (!$result) {
@@ -69,7 +69,7 @@ class XoopsSystemUtils
         if (!$result) {
             return false;
         }
-        $mids = array();
+        $mids = [];
         while ($myrow = $db->fetchArray($result)) {
             $mids[] = $myrow['conf_modid'];
         }
@@ -79,7 +79,7 @@ class XoopsSystemUtils
         foreach ($mids as $mid) {
             $configs = &$configHandler->getConfigs(new \Criteria('conf_modid', $mid));
             foreach ($configs as $config) {
-                if ($configHandler->deleteConfig($config) === false) {
+                if (false === $configHandler->deleteConfig($config)) {
                     return false;
                 }
             }
@@ -174,11 +174,11 @@ class XoopsSystemUtils
      */
     public static function setBlockInfo($bid, $side, $weight, $pages)
     {
-        if (self::_setBlockPosition($bid, $side, $weight) === false) {
+        if (false === self::_setBlockPosition($bid, $side, $weight)) {
             return false;
         }
-        if ($pages !== false) {
-            if (self::_setBlockShowPages($bid, $pages) === false) {
+        if (false !== $pages) {
+            if (false === self::_setBlockShowPages($bid, $pages)) {
                 return false;
             }
         }
@@ -204,7 +204,7 @@ class XoopsSystemUtils
         $criteria->add(new \Criteria('conf_catid', XOOPS_CONF));
         $criteria->add(new \Criteria('conf_name', 'startpage'));
         $configObjs = &$configHandler->getConfigs($criteria);
-        if (count($configObjs) != 1) {
+        if (1 != count($configObjs)) {
             return false;
         }
         list($configObj) = $configObjs;
@@ -230,7 +230,7 @@ class XoopsSystemUtils
         $criteria->add(new \Criteria('conf_modid', $mid));
         $criteria->add(new \Criteria('conf_catid', 0));
         $configItems = $configHandler->getConfigs($criteria);
-        if (count($configItems) != 1) {
+        if (1 != count($configItems)) {
             return false;
         } else {
             list($configItem) = $configItems;
@@ -285,7 +285,7 @@ class XoopsSystemUtils
     private static function _setBlockPosition($bid, $side, $weight)
     {
         $visible = ($side < 0) ? 0 : 1;
-        $side = ($visible == 0) ? 0 : $side;
+        $side = (0 == $visible) ? 0 : $side;
         $blockHandler = &xoops_gethandler('block');
         $blockObj = &$blockHandler->get($bid);
         if (!is_object($blockObj)) {
@@ -293,7 +293,7 @@ class XoopsSystemUtils
         }
         $blockObj->set('visible', $visible);
         $blockObj->set('side', $side);
-        if ($weight !== false) {
+        if (false !== $weight) {
             $blockObj->set('weight', $weight);
         }
 
@@ -316,7 +316,7 @@ class XoopsSystemUtils
         $db = &\XoopsDatabaseFactory::getDatabaseConnection();
         if (in_array(self::BLOCK_PAGE_ALL, $pages)) {
             // set only 0 if '0:all pages' found in pages.
-            $pages = array(self::BLOCK_PAGE_ALL);
+            $pages = [self::BLOCK_PAGE_ALL];
         }
         $table = $db->prefix('block_module_link');
         $sql = sprintf('SELECT `module_id` FROM `%s` WHERE `block_id`=%u AND `module_id` IN (%s)', $table, $bid, implode(',', $pages));
@@ -324,7 +324,7 @@ class XoopsSystemUtils
         if (!$result) {
             return false;
         }
-        $existPages = array();
+        $existPages = [];
         while ($myrow = $db->fetchArray($result)) {
             $existPages[] = $myrow['module_id'];
         }

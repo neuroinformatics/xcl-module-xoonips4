@@ -9,8 +9,8 @@ require_once XOOPS_ROOT_PATH.'/class/xoopsuser.php';
  */
 class Xoonips_UsersBean extends Xoonips_BeanBase
 {
-    private static $userCache = array();
-    private static $userNameCache = array();
+    private static $userCache = [];
+    private static $userNameCache = [];
     private $linkTable = null;
 
     /**
@@ -85,7 +85,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
      */
     public function getUserBasicInfoByName($uname, $name)
     {
-        $ret = array();
+        $ret = [];
         $uname = Xoonips_Utils::convertSQLStrLike($uname);
         $name = Xoonips_Utils::convertSQLStrLike($name);
         $sql = 'SELECT * FROM '.$this->table." WHERE uname LIKE '%$uname%' AND name LIKE '%$name%' ORDER BY uname";
@@ -182,7 +182,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
      */
     public function getAllUsers()
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT * FROM $this->table";
         $result = $this->execute($sql);
         if (!$result) {
@@ -201,14 +201,14 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
     {
         //get system time
         $regtime = time();
-        if ($userType == Xoonips_Enum::USER_TYPE_MODERATOR) {
+        if (Xoonips_Enum::USER_TYPE_MODERATOR == $userType) {
             $columns = $columns.'user_regdate';
             $values = $values."'$regtime'";
         } else {
             $columns = $columns.'actkey,user_regdate';
             $values = $values."'$actkey','$regtime'";
             $activation_type = XoopsUtils::getXoopsConfig('activation_type', XOOPS_CONF_USER);
-            if ($activation_type != 1) {
+            if (1 != $activation_type) {
                 $columns = $columns.',level';
                 $values = $values.',0';
             }
@@ -234,7 +234,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
     public function activateUser(&$user)
     {
         $uid = $user['uid'];
-        if ($user['level'] != Xoonips_Enum::USER_NOT_ACTIVATE) {
+        if (Xoonips_Enum::USER_NOT_ACTIVATE != $user['level']) {
             return true;
         }
 
@@ -260,7 +260,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
     public function inactivateUser(&$user)
     {
         $uid = $user['uid'];
-        if ($user['level'] != Xoonips_Enum::USER_NOT_ACTIVATE) {
+        if (Xoonips_Enum::USER_NOT_ACTIVATE != $user['level']) {
             return true;
         }
 
@@ -328,7 +328,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
     //TODO DELETE Check
     public function getUserExtend($tableName, $uid)
     {
-        $ret = array();
+        $ret = [];
         $table = $this->prefix($tableName);
         $sql = "SELECT * FROM $table WHERE uid=$uid ORDER BY occurrence_number";
         $result = $this->execute($sql);
@@ -353,7 +353,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
     public function getUserType($uid)
     {
         $ret = Xoonips_Enum::USER_TYPE_USER;
-        if ($uid == 0) {
+        if (0 == $uid) {
             $ret = Xoonips_Enum::USER_TYPE_GUEST;
         }
 
@@ -379,7 +379,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
             return false;
         }
         $row = $this->fetchArray($result);
-        if ($row && $row['count'] != 0) {
+        if ($row && 0 != $row['count']) {
             $ret = true;
         }
         $this->freeRecordSet($result);
@@ -397,7 +397,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
      */
     public function getGroupsUsers($uid, $activate)
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT groupid FROM $this->linkTable "
                 ."WHERE uid=$uid AND activate=$activate";
         $result = $this->execute($sql);
@@ -469,7 +469,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
 
     public function getGroupsUsersLinkByUid($uid)
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT * FROM $this->linkTable WHERE uid=$uid";
         $result = $this->execute($sql);
         if (!$result) {
@@ -485,7 +485,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
 
     public function getUsersGroups($groupId, $is_admin = false)
     {
-        $ret = array();
+        $ret = [];
         $tblUser = $this->prefix('users');
         if ($is_admin) {
             $sql = "SELECT b.* FROM $this->linkTable a INNER JOIN $tblUser b ON a.uid=b.uid WHERE a.groupid=$groupId AND a.is_admin=".Xoonips_Enum::GRP_ADMINISTRATOR;
@@ -506,7 +506,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
 
     public function getUsersInfoByGroupId($groupId)
     {
-        $ret = array();
+        $ret = [];
         $tblUser = $this->prefix('users');
         $sql = "SELECT b.* FROM $this->linkTable a INNER JOIN $tblUser b ON a.uid=b.uid WHERE a.groupid=$groupId";
         $result = $this->execute($sql);
@@ -534,11 +534,11 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         $fileBean = Xoonips_BeanFactory::getBean('ItemFileBean', $this->dirname, $this->trustDirname);
 
-        return array(
+        return [
             'itemNum' => $itemBean->countUserItems($uid),
             'indexNum' => $indexBean->countUserIndexes($uid),
             'fileSize' => $fileBean->countUserFileSizes($uid),
-        );
+        ];
     }
 
     /**
@@ -551,7 +551,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
     public function isCertified($uid)
     {
         $user = $this->getUserBasicInfo($uid);
-        if ($user != false && $user['level'] >= Xoonips_Enum::USER_CERTIFIED) {
+        if (false != $user && $user['level'] >= Xoonips_Enum::USER_CERTIFIED) {
             return true;
         } else {
             return false;
@@ -568,7 +568,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
     public function certifyUser(&$user)
     {
         $uid = $user['uid'];
-        if ($user['level'] == Xoonips_Enum::USER_CERTIFIED) {
+        if (Xoonips_Enum::USER_CERTIFIED == $user['level']) {
             return true;
         }
 

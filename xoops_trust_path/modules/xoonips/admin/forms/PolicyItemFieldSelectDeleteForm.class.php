@@ -26,15 +26,15 @@ class Xoonips_Admin_PolicyItemFieldSelectDeleteForm extends Xoonips_AbstractActi
     {
         $constpref = '_AD_'.strtoupper($this->mDirname);
 
-        return array(
-            'name' => array(
+        return [
+            'name' => [
                 'type' => self::TYPE_STRING,
                 'label' => constant($constpref.'_POLICY_ITEM_FIELD_SELECT_NAME'),
-                'depends' => array(
+                'depends' => [
                     'required' => true,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**

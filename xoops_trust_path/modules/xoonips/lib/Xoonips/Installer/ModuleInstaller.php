@@ -50,14 +50,14 @@ class ModuleInstaller
      *
      * @var array
      */
-    protected $mPreInstallHooks = array();
+    protected $mPreInstallHooks = [];
 
     /**
      * custom post-install hooks.
      *
      * @var array
      */
-    protected $mPostInstallHooks = array();
+    protected $mPostInstallHooks = [];
 
     /**
      * constructor.
@@ -189,7 +189,7 @@ class ModuleInstaller
                 }
             } else {
                 // grant module read privilages to XOOPS_GROUP_ADMIN and XOOPS_GROUP_USERS groups.
-                foreach (array(XOOPS_GROUP_ADMIN, XOOPS_GROUP_USERS) as $group) {
+                foreach ([XOOPS_GROUP_ADMIN, XOOPS_GROUP_USERS] as $group) {
                     $readPerm = $this->_createPermission($group);
                     $readPerm->set('gperm_name', 'module_read');
                     if (!$gpermHandler->insert($readPerm)) {
@@ -249,7 +249,7 @@ class ModuleInstaller
     protected function _executePreInstallHooks()
     {
         foreach ($this->mPreInstallHooks as $func) {
-            if (is_callable(array($this, $func))) {
+            if (is_callable([$this, $func])) {
                 $this->$func();
                 if (!$this->mForceMode && $this->mLog->hasError()) {
                     break;
@@ -269,7 +269,7 @@ class ModuleInstaller
     protected function _executePostInstallHooks()
     {
         foreach ($this->mPostInstallHooks as $func) {
-            if (is_callable(array($this, $func))) {
+            if (is_callable([$this, $func])) {
                 $this->$func();
                 if (!$this->mForceMode && $this->mLog->hasError()) {
                     break;

@@ -17,7 +17,7 @@ class ViewDataRelationObjectHandler extends AbstractObjectHandler
     {
         parent::__construct($db, $dirname);
         $this->mTable = $db->prefix($dirname.'_view_data_relation');
-        $this->mPrimaryKey = array('view_type_id', 'data_type_id');
+        $this->mPrimaryKey = ['view_type_id', 'data_type_id'];
         $this->mIsAutoIncrement = false;
     }
 }

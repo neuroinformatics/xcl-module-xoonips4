@@ -30,13 +30,13 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
         $bean->updateViewCount($itemId);
 
         // get common viewdata
-        $viewData = array();
+        $viewData = [];
         $this->getCommonViewData($itemId, $uid, $viewData);
 
         $token_ticket = $this->createToken($this->modulePrefix('detail'));
         $viewData['token_ticket'] = $token_ticket;
 
-        $buttonVisible = array();
+        $buttonVisible = [];
         if (is_object($xoopsUser)) {
             $buttonVisible = $this->setButtonVisible($itemId, $uid);
         } else {
@@ -74,10 +74,10 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
         }
 
         // get common viewdata
-        $viewData = array();
+        $viewData = [];
         $this->getCommonViewData($itemId, $uid, $viewData);
 
-        $buttonVisible = array();
+        $buttonVisible = [];
         $buttonVisible['item_edit'] = false;
         $buttonVisible['users_edit'] = false;
         $buttonVisible['item_delete'] = false;
@@ -97,15 +97,15 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         $indexId = $indexBean->getItemlistLinkIndex($uid);
 
-        $breadcrumbs = array(
-        array(
+        $breadcrumbs = [
+            [
                 'name' => _MD_XOONIPS_ITEM_LISTING_ITEM,
                 'url' => Functions::getItemListUrl($this->dirname).'?index_id='.$indexId,
-        ),
-        array(
+            ],
+            [
                 'name' => _MD_XOONIPS_ITEM_DETAIL_ITEM_TITLE,
-        ),
-        );
+            ],
+        ];
 
         $bean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
         $result = $bean->getItemBasicInfo($itemId);
@@ -162,7 +162,7 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
     // set button visible
     private function setButtonVisible($itemId, $uid)
     {
-        $buttonVisible = array();
+        $buttonVisible = [];
         $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
         $buttonVisible['item_edit'] = $itemBean->canItemEdit($itemId, $uid);
         $buttonVisible['users_edit'] = $itemBean->canItemUsersEdit($itemId, $uid);
@@ -238,7 +238,7 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
             return '';
         }
 
-        $ar = array();
+        $ar = [];
         foreach ($files as $file) {
             list($fileID, $fileName, $fileSize, $mimeType, $timestamp) = $file;
             if ($fileSize >= 1024 * 1024) {
@@ -248,13 +248,13 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
             } else {
                 $fileSizeStr = sprintf('%d bytes', $fileSize);
             }
-            $ar[] = array(
+            $ar[] = [
                 'fileID' => $fileID,
                 'fileName' => $fileName,
                 'fileSizeStr' => $fileSizeStr,
                 'mimeType' => $mimeType,
                 'lastUpdated' => $timestamp,
-            );
+            ];
         }
 
         global $xoopsTpl;
@@ -280,7 +280,7 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
         if (false == $result) {
             return false;
         }
-        $files = array();
+        $files = [];
         while (false != ($row = $xoopsDB->fetchRow($result))) {
             $files[] = $row;
         }
@@ -291,7 +291,7 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
     protected function doExport(&$request, &$response)
     {
         // get requests
-        $items = array();
+        $items = [];
         $items[] = $request->getParameter('item_id');
 
         // do export

@@ -28,7 +28,7 @@ class Xoonips_ItemTitleBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -46,7 +46,7 @@ class Xoonips_ItemTitleBean extends Xoonips_BeanBase
      */
     public function searchItemIdByTitle($title)
     {
-        $ret = array();
+        $ret = [];
         $title = Xoonips_Utils::convertSQLStrLike($title);
         $sql = 'SELECT distinct item_id FROM '.$this->table." WHERE title LIKE '%$title%'";
         $result = $this->execute($sql);
@@ -95,54 +95,54 @@ class Xoonips_ItemTitleBean extends Xoonips_BeanBase
         return $ret;
     }
 
-  /**
-   * insert item_title.
-   *
-   * @param type   $item_id
-   * @param type   $item_field_detail_id
-   * @param stirng $title
-   * @param int    $title_id
-   *
-   * @return bool true:Success,falase:Fail
-   */
-  public function insertTitle($item_id, $item_field_detail_id, $title, $title_id)
-  {
-      $sql = 'INSERT INTO '.$this->table.' (item_id,item_field_detail_id,title,title_id)';
-      $sql .= ' VALUES(';
-      $sql .= Xoonips_Utils::convertSQLNum($item_id);
-      $sql .= ','.Xoonips_Utils::convertSQLNum($item_field_detail_id);
-      $sql .= ','.Xoonips_Utils::convertSQLStr($title);
-      $sql .= ','.Xoonips_Utils::convertSQLNum($title_id);
-      $sql .= ')';
-      $result = $this->execute($sql);
-      if (!$result) {
-          return false;
-      }
+    /**
+     * insert item_title.
+     *
+     * @param type   $item_id
+     * @param type   $item_field_detail_id
+     * @param stirng $title
+     * @param int    $title_id
+     *
+     * @return bool true:Success,falase:Fail
+     */
+    public function insertTitle($item_id, $item_field_detail_id, $title, $title_id)
+    {
+        $sql = 'INSERT INTO '.$this->table.' (item_id,item_field_detail_id,title,title_id)';
+        $sql .= ' VALUES(';
+        $sql .= Xoonips_Utils::convertSQLNum($item_id);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($item_field_detail_id);
+        $sql .= ','.Xoonips_Utils::convertSQLStr($title);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($title_id);
+        $sql .= ')';
+        $result = $this->execute($sql);
+        if (!$result) {
+            return false;
+        }
 
-      return true;
-  }
+        return true;
+    }
 
-  /**
-   * update item_title.
-   *
-   * @param int    $item_id
-   * @param int    $item_field_detail_id
-   * @param string $title
-   * @param int    $title_id
-   *
-   * @return bool true:Success,falase:Fail
-   */
-  public function updateTitle($item_id, $item_field_detail_id, $title, $title_id)
-  {
-      $sql = 'UPDATE '.$this->table." SET title=\"${title}\" where ".
+    /**
+     * update item_title.
+     *
+     * @param int    $item_id
+     * @param int    $item_field_detail_id
+     * @param string $title
+     * @param int    $title_id
+     *
+     * @return bool true:Success,falase:Fail
+     */
+    public function updateTitle($item_id, $item_field_detail_id, $title, $title_id)
+    {
+        $sql = 'UPDATE '.$this->table." SET title=\"${title}\" where ".
     'item_id='.Xoonips_Utils::convertSQLNum($item_id).
     ' and item_field_detail_id = '.Xoonips_Utils::convertSQLNum($item_field_detail_id).
     ' and title_id = '.Xoonips_Utils::convertSQLNum($title_id);
-      $result = $this->execute($sql);
-      if (!$result) {
-          return false;
-      }
+        $result = $this->execute($sql);
+        if (!$result) {
+            return false;
+        }
 
-      return true;
-  }
+        return true;
+    }
 }

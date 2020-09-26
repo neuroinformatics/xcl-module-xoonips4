@@ -365,7 +365,7 @@ abstract class Xoonips_Field
     public function fileUpload($value, $groupLoopId, $cnt)
     {
         $ret = '';
-        if ($this->viewType->getModule() == 'ViewTypeFileUpload' || $this->viewType->getModule() == 'ViewTypePreview') {
+        if ('ViewTypeFileUpload' == $this->viewType->getModule() || 'ViewTypePreview' == $this->viewType->getModule()) {
             $ret = $this->viewType->fileUpload($this, $value, $groupLoopId);
         }
 
@@ -448,7 +448,7 @@ abstract class Xoonips_Field
         $essential = false;
         if ($cnt > 1 && $this->getViewType()->isDisplayFieldName()) {
             $fieldName = $this->getName();
-            $essential = ($this->getEssential() == 1);
+            $essential = (1 == $this->getEssential());
         }
         $this->xoopsTpl->assign('viewType', 'input');
         $this->xoopsTpl->assign('fieldName', $fieldName);

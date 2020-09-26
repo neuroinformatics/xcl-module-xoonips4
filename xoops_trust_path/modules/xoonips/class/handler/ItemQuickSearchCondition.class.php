@@ -65,11 +65,11 @@ class Xoonips_ItemQuickSearchConditionHandler extends XoopsObjectGenericHandler
      */
     public function __construct(&$db, $dirname)
     {
-        $this->mTable = strtr($this->mTable, array('{dirname}' => $dirname));
+        $this->mTable = strtr($this->mTable, ['{dirname}' => $dirname]);
         $this->mDirname = $dirname;
         $this->mClass = preg_replace('/Handler$/', 'Object', get_class());
         parent::__construct($db);
-        $this->mTableDetail = strtr($this->mTableDetail, array('{dirname}' => $dirname));
+        $this->mTableDetail = strtr($this->mTableDetail, ['{dirname}' => $dirname]);
         $this->mTableDetail = $this->db->prefix($this->mTableDetail);
     }
 
@@ -139,7 +139,7 @@ class Xoonips_ItemQuickSearchConditionHandler extends XoopsObjectGenericHandler
         $criteria->setSort('condition_id');
         $criteria->setOrder('ASC');
         $objs = &$this->getObjects($criteria);
-        $ret = array();
+        $ret = [];
         foreach ($objs as $obj) {
             $ret[$obj->get('condition_id')] = $obj->get('title');
         }
@@ -173,7 +173,7 @@ class Xoonips_ItemQuickSearchConditionHandler extends XoopsObjectGenericHandler
      */
     public function getItemFieldIds($obj)
     {
-        $ret = array();
+        $ret = [];
         $pid = $obj->get($this->mPrimary);
         if (1 == $pid) {
             // return all field ids if condition_id is 1
@@ -263,7 +263,7 @@ class Xoonips_ItemQuickSearchConditionHandler extends XoopsObjectGenericHandler
     private function _deleteItemFieldId($cId = false, $dId = false, $force = false)
     {
         $sql = sprintf('DELETE FROM `%s`', $this->mTableDetail);
-        $where = array();
+        $where = [];
         if (false !== $cId) {
             $where[] = sprintf('`condition_id`=%u', $cId);
         }

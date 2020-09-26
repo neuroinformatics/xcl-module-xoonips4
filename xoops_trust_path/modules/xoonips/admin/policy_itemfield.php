@@ -8,17 +8,17 @@ require_once __DIR__.'/class/action/PolicyItemFieldAction.class.php';
 $request = new Xoonips_Request();
 $response = new Xoonips_Response();
 $op = $request->getParameter('op');
-if ($op == null) {
+if (null == $op) {
     $op = 'init';
 }
 
 // check request
-if (!in_array($op, array('register', 'registersave', 'edit', 'editsave', 'release'))) {
+if (!in_array($op, ['register', 'registersave', 'edit', 'editsave', 'release'])) {
     die('illegal request');
 }
 
 // set action map
-$actionMap = array();
+$actionMap = [];
 $actionMap['register_success'] = 'policy_itemfield_register.html';
 $actionMap['registersave_success'] = 'redirect_header';
 $actionMap['edit_success'] = 'policy_itemfield_edit.html';

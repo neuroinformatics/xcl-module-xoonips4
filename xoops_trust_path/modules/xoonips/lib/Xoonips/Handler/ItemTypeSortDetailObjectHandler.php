@@ -17,7 +17,7 @@ class ItemTypeSortDetailObjectHandler extends AbstractObjectHandler
     {
         parent::__construct($db, $dirname);
         $this->mTable = $db->prefix($dirname.'_item_type_sort_detail');
-        $this->mPrimaryKey = array('sort_id', 'item_type_id');
+        $this->mPrimaryKey = ['sort_id', 'item_type_id'];
         $this->mIsAutoIncrement = false;
     }
 }

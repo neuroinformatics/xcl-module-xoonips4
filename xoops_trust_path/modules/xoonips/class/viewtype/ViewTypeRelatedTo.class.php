@@ -14,11 +14,11 @@ class Xoonips_ViewTypeRelatedTo extends Xoonips_ViewType
 
     public function getInputView($field, $value, $groupLoopId)
     {
-        $itemInfo = array();
+        $itemInfo = [];
         if (!empty($value)) {
             $vas = explode(',', $value);
             foreach ($vas as $va) {
-                $itemInfo[] = array('listInfo' => $this->getItemInfo($va), 'id' => $va);
+                $itemInfo[] = ['listInfo' => $this->getItemInfo($va), 'id' => $va];
             }
         }
         $fieldName = $this->getFieldName($field, $groupLoopId);
@@ -40,7 +40,7 @@ class Xoonips_ViewTypeRelatedTo extends Xoonips_ViewType
 
     public function getDisplayView($field, $value, $groupLoopId)
     {
-        $itemInfo = array();
+        $itemInfo = [];
         if (!empty($value)) {
             $vas = explode(',', $value);
             foreach ($vas as $va) {
@@ -61,7 +61,7 @@ class Xoonips_ViewTypeRelatedTo extends Xoonips_ViewType
 
     public function getDetailDisplayView($field, $value, $display)
     {
-        $itemInfo = array();
+        $itemInfo = [];
         if (!empty($value)) {
             $vas = explode(',', $value);
             foreach ($vas as $va) {
@@ -78,7 +78,7 @@ class Xoonips_ViewTypeRelatedTo extends Xoonips_ViewType
     public function getMetaInfo($field, $value)
     {
         $ret = '';
-        $fields = array();
+        $fields = [];
         if (!empty($value)) {
             $vas = explode(',', $value);
             foreach ($vas as $va) {
@@ -128,18 +128,18 @@ class Xoonips_ViewTypeRelatedTo extends Xoonips_ViewType
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];
         } else {
-            $tableData = array();
+            $tableData = [];
             $sqlStrings[$tableName] = &$tableData;
         }
 
         if (isset($tableData[$columnName])) {
             $columnData = &$tableData[$columnName];
         } else {
-            $columnData = array();
+            $columnData = [];
             $tableData[$columnName] = &$columnData;
         }
 
-        if ($value != '') {
+        if ('' != $value) {
             $vas = explode(',', $value);
             foreach ($vas as $va) {
                 $columnData[] = $va;
@@ -153,11 +153,11 @@ class Xoonips_ViewTypeRelatedTo extends Xoonips_ViewType
         $column = $field->getColumnName();
         $itemBean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
         $database_id = Functions::getXoonipsConfig($this->dirname, XOONIPS_CONFIG_REPOSITORY_NIJC_CODE);
-        $fields = array();
+        $fields = [];
         foreach ($data[$table] as $value) {
             $item = $itemBean->getItemBasicInfo($value[$column]);
             $doi = $item['doi'];
-            if ($doi == null) {
+            if (null == $doi) {
                 $fields[] = "$database_id/$item_type_id.$item_id";
             } else {
                 $fields[] = "$database_id:".XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME."/$doi";

@@ -6,7 +6,7 @@ class Xoonips_GroupInfoAction extends Xoonips_UserActionBase
 {
     protected function doInit(&$request, &$response)
     {
-        $viewData = array();
+        $viewData = [];
         $groupbean = Xoonips_BeanFactory::getBean('GroupsBean', $this->dirname, $this->trustDirname);
         $userbean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
         $groupuserlinkbean = Xoonips_BeanFactory::getBean('GroupsUsersLinkBean', $this->dirname, $this->trustDirname);
@@ -34,7 +34,7 @@ class Xoonips_GroupInfoAction extends Xoonips_UserActionBase
         $thumbnail = sprintf('%s/modules/%s/image.php/group/%u/%s', XOOPS_URL, $this->dirname, $groupId, $group['icon']);
 
         // edit group member name
-        $users = array();
+        $users = [];
         foreach ($members as $member) {
             $groupUserLinkInfo = $groupuserlinkbean->getGroupUserLinkInfo($groupId, $member['uid']);
             $member['activate'] = $groupUserLinkInfo['activate'];
@@ -43,15 +43,15 @@ class Xoonips_GroupInfoAction extends Xoonips_UserActionBase
         // edit group storage
         $token_ticket = $this->createToken('group_detail');
         $viewData['token_ticket'] = $token_ticket;
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => _MD_XOONIPS_LANG_GROUP_LIST,
                 'url' => 'user.php?op=groupList',
-            ),
-            array(
+            ],
+            [
                 'name' => _MD_XOONIPS_LANG_GROUP_INFO,
-            ),
-        );
+            ],
+        ];
         $viewData['xoops_breadcrumbs'] = $breadcrumbs;
         $viewData['group'] = $group;
         $viewData['admins'] = $admins;

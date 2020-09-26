@@ -8,7 +8,7 @@ class Xoonips_Utils
     {
         if (is_null($v)) {
             $ret = 'NULL';
-        } elseif ($v === '') {
+        } elseif ('' === $v) {
             $ret = "''";
         } else {
             $v = addslashes($v);
@@ -22,7 +22,7 @@ class Xoonips_Utils
     {
         if (is_null($v)) {
             $ret = 'NULL';
-        } elseif ($v === '') {
+        } elseif ('' === $v) {
             $ret = '';
         } else {
             $v = addslashes($v);
@@ -84,15 +84,15 @@ class Xoonips_Utils
     {
         $trustDirname = Functions::getTrustDirname();
         $cc_version = '40';
-        static $cc_condition_map = array(
+        static $cc_condition_map = [
             '00' => 'BY\-NC\-ND',
             '01' => 'BY\-NC\-SA',
             '02' => 'BY\-NC',
             '10' => 'BY\-ND',
             '11' => 'BY\-SA',
             '12' => 'BY',
-        );
-        static $cc_cache = array();
+        ];
+        static $cc_cache = [];
         $condition = sprintf('%u%u', $cc_commercial_use, $cc_modification);
         if (!isset($cc_condition_map[$condition])) {
             // unknown condtion
@@ -115,12 +115,12 @@ class Xoonips_Utils
         }
         $fname = '';
         foreach ($fileNames as $fileName) {
-            if (preg_match($reg, $fileName, $matches) == 1) {
+            if (1 == preg_match($reg, $fileName, $matches)) {
                 $fname = $fileName;
                 break;
             }
         }
-        if ($fname == '') {
+        if ('' == $fname) {
             return false;
         }
         $fpath = self::ccTemplateDir($trustDirname).$fname;
@@ -130,7 +130,7 @@ class Xoonips_Utils
         }
         $cc_html = @file_get_contents($fpath);
         // failed to read file
-        if ($cc_html === false) {
+        if (false === $cc_html) {
             return false;
         }
         $cc_cache[$condition] = $cc_html;
@@ -162,7 +162,7 @@ class Xoonips_Utils
 
         $export_enabled = Functions::getXoonipsConfig($dirname, 'export_enabled');
 
-        return $export_enabled == 'on';
+        return 'on' == $export_enabled;
     }
 
     /**

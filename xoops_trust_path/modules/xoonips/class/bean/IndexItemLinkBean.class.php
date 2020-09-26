@@ -5,7 +5,7 @@
  */
 class Xoonips_IndexItemLinkBean extends Xoonips_BeanBase
 {
-    private static $cache = array();
+    private static $cache = [];
 
     /**
      * Constructor.
@@ -30,7 +30,7 @@ class Xoonips_IndexItemLinkBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
             self::$cache[$row['index_id']][$row['item_id']] = $row;
@@ -54,7 +54,7 @@ class Xoonips_IndexItemLinkBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
             self::$cache[$row['index_id']][$row['item_id']] = $row;
@@ -81,7 +81,7 @@ class Xoonips_IndexItemLinkBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
             self::$cache[$row['index_id']][$row['item_id']] = $row;
@@ -109,7 +109,7 @@ class Xoonips_IndexItemLinkBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         if ($row = $this->fetchArray($result)) {
             $ret = $row;
             self::$cache[$row['index_id']][$row['item_id']] = $row;
@@ -132,7 +132,7 @@ class Xoonips_IndexItemLinkBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         if ($row = $this->fetchArray($result)) {
             $ret = $row;
             self::$cache[$row['index_id']][$row['item_id']] = $row;
@@ -151,7 +151,7 @@ class Xoonips_IndexItemLinkBean extends Xoonips_BeanBase
      */
     public function getItemIdsByIndexId($id)
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT index_id, item_id FROM $this->table WHERE index_id=".$id;
         $result = $this->execute($sql);
         if (!$result) {
@@ -230,7 +230,7 @@ class Xoonips_IndexItemLinkBean extends Xoonips_BeanBase
      */
     public function exceptWithDraw($indexIds, $itemId)
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT DISTINCT index_id FROM $this->table WHERE index_id IN ( $indexIds ) AND";
         $sql = $sql." item_id=$itemId AND certify_state<>".XOONIPS_WITHDRAW_REQUIRED;
         $result = $this->execute($sql);
@@ -356,7 +356,7 @@ class Xoonips_IndexItemLinkBean extends Xoonips_BeanBase
     public function Link2UserRootIndex($item_id, $uid)
     {
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-        if ($this->isLinked2UserIndex($item_id, $uid) == false) {
+        if (false == $this->isLinked2UserIndex($item_id, $uid)) {
             $index = $indexBean->getPrivateIndex($uid);
 
             return $this->insert($index['index_id'], $item_id, XOONIPS_NOT_CERTIFIED);
@@ -374,7 +374,7 @@ class Xoonips_IndexItemLinkBean extends Xoonips_BeanBase
      */
     public function getOpenIndexIds($item_id)
     {
-        $ret = array();
+        $ret = [];
         $tblIndex = $this->prefix($this->modulePrefix('index'));
         $tblGroup = $this->prefix('groups');
         $sql = "SELECT a.index_id FROM ($this->table a";
@@ -411,13 +411,13 @@ class Xoonips_IndexItemLinkBean extends Xoonips_BeanBase
      */
     public function compareOpenIndex($newIndexIds, $oldIndexIds)
     {
-        $ret = array(1 => false, 2 => false);
-        if ($newIndexIds === false || $oldIndexIds === false) {
+        $ret = [1 => false, 2 => false];
+        if (false === $newIndexIds || false === $oldIndexIds) {
             return false;
         }
         if (count($oldIndexIds) > 0) {
             // public cancle
-            if (count($newIndexIds) == 0) {
+            if (0 == count($newIndexIds)) {
                 $ret[2] = true;
 
                 return $ret;
@@ -439,21 +439,21 @@ class Xoonips_IndexItemLinkBean extends Xoonips_BeanBase
         return $ret;
     }
 
-  /**
-   * updateIndexid.
-   *
-   * @param int $indexId:index_id,$itemId:item_id,$certifyState:certify_state
-   *
-   * @return bool true:success,false:failed
-   */
-  public function updateIndexid($indexId, $itemId, $certifyState, $indexItemLinkId)
-  {
-      $sql = 'UPDATE '.$this->table." SET index_id = ${indexId} ,certify_state = ${certifyState},item_id = ${itemId} where index_item_link_id = $indexItemLinkId";
-      $result = $this->execute($sql);
-      if (!$result) {
-          return false;
-      }
+    /**
+     * updateIndexid.
+     *
+     * @param int $indexId:index_id,$itemId:item_id,$certifyState:certify_state
+     *
+     * @return bool true:success,false:failed
+     */
+    public function updateIndexid($indexId, $itemId, $certifyState, $indexItemLinkId)
+    {
+        $sql = 'UPDATE '.$this->table." SET index_id = ${indexId} ,certify_state = ${certifyState},item_id = ${itemId} where index_item_link_id = $indexItemLinkId";
+        $result = $this->execute($sql);
+        if (!$result) {
+            return false;
+        }
 
-      return true;
-  }
+        return true;
+    }
 }

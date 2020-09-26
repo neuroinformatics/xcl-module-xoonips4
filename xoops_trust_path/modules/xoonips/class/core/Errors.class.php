@@ -4,7 +4,7 @@ require_once __DIR__.'/Error.class.php';
 
 class Xoonips_Errors
 {
-    private $errors = array();
+    private $errors = [];
 
     public function __construct()
     {
@@ -22,7 +22,7 @@ class Xoonips_Errors
 
     public function getView($dirname, $isAdmin = false)
     {
-        if (count($this->errors) == 0) {
+        if (0 == count($this->errors)) {
             return '';
         }
 

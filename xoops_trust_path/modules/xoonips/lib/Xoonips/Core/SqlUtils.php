@@ -19,7 +19,7 @@ class SqlUtils
         require_once XOOPS_ROOT_PATH.'/class/database/sqlutility.php';
         $db = &\XoopsDatabaseFactory::getDatabaseConnection();
         $sql = str_replace('{prefix}', $db->prefix(), $sql);
-        $queries = array();
+        $queries = [];
         \sqlutility::splitMySqlFile($queries, $sql);
         foreach ($queries as $query) {
             if (!$db->queryF($query)) {
@@ -48,7 +48,7 @@ class SqlUtils
         $num = $db->getRowsNum($result);
         $db->freeRecordSet($result);
 
-        return  $num != 0;
+        return  0 != $num;
     }
 
     /**
@@ -70,7 +70,7 @@ class SqlUtils
         $num = $db->getRowsNum($result);
         $db->freeRecordSet($result);
 
-        return  $num != 0;
+        return  0 != $num;
     }
 
     /**
@@ -92,7 +92,7 @@ class SqlUtils
         $num = $db->getRowsNum($result);
         $db->freeRecordSet($result);
 
-        return  $num != 0;
+        return  0 != $num;
     }
 
     /**

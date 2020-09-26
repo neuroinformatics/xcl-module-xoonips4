@@ -25,7 +25,7 @@ class ConfigObjectHandler extends AbstractObjectHandler
         parent::__construct($db, $dirname);
         $this->mTable = $db->prefix($dirname.'_config');
         $this->mPrimaryKey = 'id';
-        $this->mObjects = array();
+        $this->mObjects = [];
     }
 
     /**
@@ -82,7 +82,7 @@ class ConfigObjectHandler extends AbstractObjectHandler
         if (!$res = $this->open()) {
             return false;
         }
-        $this->mObjects = array();
+        $this->mObjects = [];
         while ($obj = $this->getNext($res)) {
             $name = $obj->get('name');
             $this->mObjects[$name] = $obj;

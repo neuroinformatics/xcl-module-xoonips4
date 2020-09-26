@@ -24,7 +24,7 @@ class Xoonips_Admin_PolicyIndexAction extends Xoonips_Admin_AbstractConfigAction
      */
     protected function getConfigKeys()
     {
-        return array('index_upload_dir');
+        return ['index_upload_dir'];
     }
 
     /**
@@ -57,19 +57,19 @@ class Xoonips_Admin_PolicyIndexAction extends Xoonips_Admin_AbstractConfigAction
         $dirname = $this->mAsset->mDirname;
         $constpref = '_AD_'.strtoupper($dirname);
         // breadcrumbs
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => constant($constpref.'_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=Policy',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_INDEX_TITLE'),
-            ),
-        );
+            ],
+        ];
         $render->setTemplateName('policy_index.html');
         $render->setAttribute('title', constant($constpref.'_POLICY_INDEX_TITLE'));
         $render->setAttribute('description', constant($constpref.'_POLICY_INDEX_DESC'));

@@ -5,7 +5,7 @@
  */
 class Xoonips_ItemUsersLinkBean extends Xoonips_BeanBase
 {
-    private static $cache = array();
+    private static $cache = [];
 
     /**
      * Constructor.
@@ -30,7 +30,7 @@ class Xoonips_ItemUsersLinkBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -41,7 +41,7 @@ class Xoonips_ItemUsersLinkBean extends Xoonips_BeanBase
 
     public function getLinkItemIds($uid)
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT item_id FROM $this->table WHERE uid=$uid";
         $result = $this->execute($sql);
         if (!$result) {
@@ -107,13 +107,13 @@ class Xoonips_ItemUsersLinkBean extends Xoonips_BeanBase
      */
     public function getUserChangeInfo($item_id, $selectedUids)
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT uid FROM $this->table WHERE item_id=$item_id";
         $result = $this->execute($sql);
         if (!$result) {
             return false;
         }
-        $uids = array();
+        $uids = [];
         while ($row = $this->fetchArray($result)) {
             $uids[] = $row['uid'];
         }
@@ -156,7 +156,7 @@ class Xoonips_ItemUsersLinkBean extends Xoonips_BeanBase
         $groupIndexes = $indexBean->getGroupIndexes($uid);
         $linkBean = Xoonips_BeanFactory::getBean('IndexItemLinkBean', $this->dirname, $this->trustDirname);
         foreach ($groupIndexes as $index) {
-            if (count($linkBean->getInfo($item_id, $index['index_id'])) != 0) {
+            if (0 != count($linkBean->getInfo($item_id, $index['index_id']))) {
                 $sql = "SELECT a.uid FROM $this->table a,$tblGroupLink b";
                 $sql = $sql."WHERE a.item_id=$item_id AND b.groupid=".$index['groupid'];
                 $sql = $sql." AND a.uid=b.uid AND b.activate<>1 AND a.uid<>$uid";
@@ -179,7 +179,7 @@ class Xoonips_ItemUsersLinkBean extends Xoonips_BeanBase
      */
     public function getItemsWithOwner($uid)
     {
-        $ret = array();
+        $ret = [];
         $sql = 'SELECT a.item_id,COUNT(a.item_id) AS cnt '
             ."FROM $this->table a "
             ."WHERE a.item_id in (SELECT item_id FROM $this->table where uid=$uid) "
@@ -206,7 +206,7 @@ class Xoonips_ItemUsersLinkBean extends Xoonips_BeanBase
      */
     public function getItemsWithOwners($uid)
     {
-        $ret = array();
+        $ret = [];
         $sql = 'SELECT a.item_id,COUNT(a.item_id) AS cnt '
             ."FROM $this->table a "
             ."WHERE a.item_id in (SELECT item_id FROM $this->table where uid=$uid) "
@@ -249,7 +249,7 @@ class Xoonips_ItemUsersLinkBean extends Xoonips_BeanBase
             return false;
         }
         $row = $this->fetchArray($result);
-        if ($row && $row['count'] != 0) {
+        if ($row && 0 != $row['count']) {
             $ret = true;
         }
         $this->freeRecordSet($result);
@@ -346,7 +346,7 @@ class Xoonips_ItemUsersLinkBean extends Xoonips_BeanBase
     {
         $item_id = $info['item_id'];
         $uid = $info['uid'];
-        if ($this->deleteByUid($item_id, $uid) == true) {
+        if (true == $this->deleteByUid($item_id, $uid)) {
             return $this->insert($info);
         }
 

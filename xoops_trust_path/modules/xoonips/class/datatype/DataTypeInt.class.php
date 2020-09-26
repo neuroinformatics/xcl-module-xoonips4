@@ -9,20 +9,20 @@ class Xoonips_DataTypeInt extends Xoonips_DataType
         $ret = true;
         if (is_array($value)) {
             foreach ($value as $v) {
-                if (trim($v) != '' && !is_numeric($v) || strpos($v, '.')) {
-                    $parameters = array();
+                if ('' != trim($v) && !is_numeric($v) || strpos($v, '.')) {
+                    $parameters = [];
                     $parameters[] = $field->getName();
                     $errors->addError('_MD_'.strtoupper($this->trustDirname).'_MESSAGE_INPUT_INT', $fieldName, $parameters);
                     $ret = false;
                 }
             }
-        } elseif (trim($value) != '' && !is_numeric($value) || strpos($value, '.')) {
-            $parameters = array();
+        } elseif ('' != trim($value) && !is_numeric($value) || strpos($value, '.')) {
+            $parameters = [];
             $parameters[] = $field->getName();
             $errors->addError('_MD_'.strtoupper($this->trustDirname).'_MESSAGE_INPUT_INT', $fieldName, $parameters);
             $ret = false;
         } elseif ($field->getLen() > 0 && strlen(trim($value)) > $field->getLen()) {
-            $parameters = array();
+            $parameters = [];
             $parameters[] = $field->getName();
             $parameters[] = $field->getLen();
             $errors->addError('_MD_'.strtoupper($this->trustDirname).'_ERROR_MAXLENGTH', $fieldName, $parameters);
@@ -39,10 +39,10 @@ class Xoonips_DataTypeInt extends Xoonips_DataType
 
     public function getValueSql($field)
     {
-        $value = array();
+        $value = [];
         $length = $field->getLen();
-        $essential = ($field->getEssential() == 1) ? 'NOT NULL' : '';
-        $defaultValue = ($field->getDefault() != '') ? $field->getDefault() : 0;
+        $essential = (1 == $field->getEssential()) ? 'NOT NULL' : '';
+        $defaultValue = ('' != $field->getDefault()) ? $field->getDefault() : 0;
         $default = ' default '."'$defaultValue'";
         $value[0] = " int($length) ".$essential.$default;
         $value[1] = '';
@@ -52,18 +52,18 @@ class Xoonips_DataTypeInt extends Xoonips_DataType
 
     public function valueAttrCheck($field, &$errors)
     {
-        if ($field->getLen() == '') {
-            $parameters = array();
+        if ('' == $field->getLen()) {
+            $parameters = [];
             $parameters[] = constant('_AM_'.strtoupper($this->trustDirname).'_LABEL_ITEMTYPE_DATA_LENGTH');
             $errors->addError('_MD_'.strtoupper($this->trustDirname).'_ERROR_REQUIRED', '', $parameters);
         } elseif ($field->getLen() <= 0) {
-            $parameters = array();
+            $parameters = [];
             $parameters[] = constant('_AM_'.strtoupper($this->trustDirname).'_LABEL_ITEMTYPE_DATA_LENGTH');
             $errors->addError('_MD_'.strtoupper($this->trustDirname).'_CHECK_INPUT_ERROR_MSG', '', $parameters);
         } else {
-            if ($field->getDefault() != '' && (!is_numeric($field->getDefault()) ||
+            if ('' != $field->getDefault() && (!is_numeric($field->getDefault()) ||
             strlen($field->getDefault()) > $field->getLen())) {
-                $parameters = array();
+                $parameters = [];
                 $parameters[] = constant('_AM_'.strtoupper($this->trustDirname).'_LABEL_ITEMTYPE_DEFAULT_VALUE');
                 $errors->addError('_MD_'.strtoupper($this->trustDirname).'_CHECK_INPUT_ERROR_MSG', '', $parameters);
             }

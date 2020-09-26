@@ -26,17 +26,17 @@ class Xoonips_ViewTypeObject extends XoopsSimpleObject
     {
         $root = &XCube_Root::getSingleton();
         $db = &$root->mController->getDB();
-        $ret = array();
+        $ret = [];
         $sql = sprintf('SELECT * FROM `%s` WHERE `view_type_id`=%u ORDER BY `data_type_id`', $db->prefix($this->mDirname.'_view_data_relation'), $this->get('view_type_id'));
         if (!$result = $db->query($sql)) {
             return $ret;
         }
         while ($row = $db->fetchArray($result)) {
             $dtId = $row['data_type_id'];
-            $ret[$dtId] = array(
+            $ret[$dtId] = [
                 'length' => $row['data_length'],
                 'decimal_places' => $row['data_decimal_places'],
-            );
+            ];
         }
         $db->freeRecordSet($result);
 
@@ -113,7 +113,7 @@ class Xoonips_ViewTypeHandler extends XoopsObjectGenericHandler
      */
     public function __construct(&$db, $dirname)
     {
-        $this->mTable = strtr($this->mTable, array('{dirname}' => $dirname));
+        $this->mTable = strtr($this->mTable, ['{dirname}' => $dirname]);
         $this->mDirname = $dirname;
         $this->mClass = preg_replace('/Handler$/', 'Object', get_class());
         parent::__construct($db);
@@ -140,25 +140,25 @@ class Xoonips_ViewTypeHandler extends XoopsObjectGenericHandler
     public function getTableInfo($viewTypeId)
     {
         // FIXME: this mapping should hold in the database or module class.
-        static $tableMap = array(
+        static $tableMap = [
             'ViewTypeHidden' => false,
             'ViewTypeText' => false,
             'ViewTypeTextArea' => false,
             'ViewTypeRadioBox' => false,
             'ViewTypeCheckBox' => false,
             'ViewTypeComboBox' => false,
-            'ViewTypeId' => array('item', 'doi'),
-            'ViewTypeTitle' => array('item_title', 'title'),
-            'ViewTypeKeyword' => array('item_keyword', 'keyword'),
-            'ViewTypeLastUpdate' => array('item', 'last_update_date'),
-            'ViewTypeCreationDate' => array('item', 'creation_date'),
-            'ViewTypeCreatUser' => array('item_users_link', 'uid'),
-            'ViewTypeChangeLog' => array('item_changelog', 'log'),
-            'ViewTypeIndex' => array('index_item_link', 'index_id'),
-            'ViewTypeRelatedTo' => array('item_related_to', 'child_item_id'),
+            'ViewTypeId' => ['item', 'doi'],
+            'ViewTypeTitle' => ['item_title', 'title'],
+            'ViewTypeKeyword' => ['item_keyword', 'keyword'],
+            'ViewTypeLastUpdate' => ['item', 'last_update_date'],
+            'ViewTypeCreationDate' => ['item', 'creation_date'],
+            'ViewTypeCreatUser' => ['item_users_link', 'uid'],
+            'ViewTypeChangeLog' => ['item_changelog', 'log'],
+            'ViewTypeIndex' => ['index_item_link', 'index_id'],
+            'ViewTypeRelatedTo' => ['item_related_to', 'child_item_id'],
             'ViewTypeDate' => false,
-            'ViewTypePreview' => array('item_file', 'file_id'),
-            'ViewTypeFileUpload' => array('item_file', 'file_id'),
+            'ViewTypePreview' => ['item_file', 'file_id'],
+            'ViewTypeFileUpload' => ['item_file', 'file_id'],
             'ViewTypeFileType' => false,
             'ViewTypeDownloadLimit', false,
             'ViewTypeDownloadNotify', false,
@@ -168,7 +168,7 @@ class Xoonips_ViewTypeHandler extends XoopsObjectGenericHandler
             'ViewTypePubmedId', false,
             'ViewTypeIsbn', false,
             'ViewTypeKana', false,
-        );
+        ];
         $ret = false;
         $obj = $this->get($viewTypeId);
         if (is_object($obj)) {

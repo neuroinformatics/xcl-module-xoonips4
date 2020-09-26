@@ -26,25 +26,25 @@ class Xoonips_Admin_PolicyItemSortEditForm extends Xoonips_AbstractActionForm
     {
         $constpref = '_AD_'.strtoupper($this->mDirname);
 
-        return array(
-            'sort_id' => array(
+        return [
+            'sort_id' => [
                 'type' => self::TYPE_INT,
-            ),
-            'title' => array(
+            ],
+            'title' => [
                 'type' => self::TYPE_STRING,
                 'label' => constant($constpref.'_POLICY_ITEM_SORT_LABEL'),
-                'depends' => array(
+                'depends' => [
                     'required' => true,
-                ),
-            ),
-            'fields' => array(
+                ],
+            ],
+            'fields' => [
                 'type' => self::TYPE_STRINGARRAY,
                 'label' => constant($constpref.'_POLICY_ITEM_SORT_FIELD'),
-                'depends' => array(
+                'depends' => [
                     'mask' => '/^\d+:\d+:\d+$/',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
@@ -72,7 +72,7 @@ class Xoonips_Admin_PolicyItemSortEditForm extends Xoonips_AbstractActionForm
                     }
                 }
             }
-            if ($found[$tId] === false) {
+            if (false === $found[$tId]) {
                 // not selectable field found
                 $this->addErrorMessage(XCube_Utils::formatString(constant($constpref.'_ERROR_INPUTVALUE'), constant($constpref.'_POLICY_ITEM_SORT_FIELD')));
                 break;
@@ -90,7 +90,7 @@ class Xoonips_Admin_PolicyItemSortEditForm extends Xoonips_AbstractActionForm
      */
     protected function _getObjectValue(&$obj, $key)
     {
-        if (in_array($key, array('sort_id', 'title'))) {
+        if (in_array($key, ['sort_id', 'title'])) {
             return $obj['obj']->get($key);
         }
 
@@ -106,7 +106,7 @@ class Xoonips_Admin_PolicyItemSortEditForm extends Xoonips_AbstractActionForm
      */
     protected function _setObjectValue(&$obj, $key, $value)
     {
-        if (in_array($key, array('sort_id', 'title'))) {
+        if (in_array($key, ['sort_id', 'title'])) {
             $obj['obj']->set($key, $value);
         } else {
             $obj[$key] = $value;

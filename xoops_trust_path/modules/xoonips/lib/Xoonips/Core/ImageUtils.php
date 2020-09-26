@@ -19,7 +19,7 @@ class ImageUtils
     public static function showImage($fpath, $fname)
     {
         $info = FileUtils::getFileInfo($fpath, $fname);
-        if ($info === false) {
+        if (false === $info) {
             CacheUtils::errorExit(404);
         }
         CacheUtils::check304($info['mtime'], $info['etag']);
@@ -41,7 +41,7 @@ class ImageUtils
     public static function showThumbnail($fpath, $fname, $maxWidth, $maxHeight)
     {
         $info = FileUtils::getFileInfo($fpath, $fname);
-        if ($info === false) {
+        if (false === $info) {
             CacheUtils::errorExit(404);
         }
         $etag = md5($info['etag'].$maxWidth.$maxHeight);
@@ -122,25 +122,25 @@ class ImageUtils
         }
         // detect icon type
         $type = 'unknown';
-        if (in_array($matches[1], array('audio', 'image', 'video', 'text'))) {
+        if (in_array($matches[1], ['audio', 'image', 'video', 'text'])) {
             $type = $matches[1];
-        } elseif ($matches[1] == 'application') {
+        } elseif ('application' == $matches[1]) {
             $type = 'application';
-            $subtypes = array(
-                'text' => array(
+            $subtypes = [
+                'text' => [
                     'pdf',
                     'xml',
                     'msword',
                     'vnd.ms-excel',
-                ),
-                'image' => array(
+                ],
+                'image' => [
                     'vnd.ms-powerpoint',
                     'postscript',
-                ),
-                'audio' => array(
+                ],
+                'audio' => [
                     'vnd.rn-realmedia',
-                ),
-            );
+                ],
+            ];
             foreach ($subtypes as $map => $subtype) {
                 if (in_array($matches[2], $subtype)) {
                     $type = $map;
@@ -183,7 +183,7 @@ class ImageUtils
         $imageIcon = imagecreatefrompng($ipath);
         imagecopy($image, $imageIcon, $width / 2 - 48 / 2, $height / 2 - 48 / 2, 0, 0, 48, 48);
         imagedestroy($imageIcon);
-        imagepolygon($image, array(0, 0, $width - 1, 0, $width - 1, $height - 1, 0, $height - 1), 4, $col_gray);
+        imagepolygon($image, [0, 0, $width - 1, 0, $width - 1, $height - 1, 0, $height - 1], 4, $col_gray);
         imagestring($image, $font, $lx, $ly, $label, $col_black);
         CacheUtils::outputImagePng($mtime, $etag, $image);
     }

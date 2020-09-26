@@ -20,9 +20,9 @@ class ModuleInstallUtils
      */
     public static function installSQLAutomatically(&$module, &$log)
     {
-        $dbTypeAliases = array(
+        $dbTypeAliases = [
             'mysqli' => 'mysql',
-        );
+        ];
         $dirname = $module->get('dirname');
         $trustDirname = $module->getInfo('trust_dirname');
         $langman = new LanguageManager($dirname, 'install');
@@ -104,17 +104,17 @@ class ModuleInstallUtils
      */
     public static function replaceDirname($from, $dirname, $trustDirname = null)
     {
-        if (strpos($from, '{dirname}') === false) {
-            return array(
+        if (false === strpos($from, '{dirname}')) {
+            return [
                 'public' => $dirname.'_'.$from,
-                'trust' => ($trustDirname != null) ? $from : null,
-            );
+                'trust' => (null != $trustDirname) ? $from : null,
+            ];
         }
 
-        return array(
+        return [
             'public' => str_replace('{dirname}', $dirname, $from),
-            'trust' => ($trustDirname != null) ? str_replace('{dirname}', $trustDirname, $from) : null,
-        );
+            'trust' => (null != $trustDirname) ? str_replace('{dirname}', $trustDirname, $from) : null,
+        ];
     }
 
     /**
@@ -180,14 +180,14 @@ class ModuleInstallUtils
         $tplHandler = &xoops_gethandler('tplfile');
         $filename = self::replaceDirname(trim($template['file']), $dirname, $trustDirname);
         $tplData = self::readTemplateFile($dirname, $trustDirname, $filename['trust']);
-        if ($tplData == false) {
+        if (false == $tplData) {
             return false;
         }
         $tplFile = &$tplHandler->create();
         $tplFile->set('tpl_refid', $module->get('mid'));
         $tplFile->set('tpl_lastimported', 0);
         $tplFile->set('tpl_lastmodified', time());
-        $tplFile->set('tpl_type', (substr($filename['trust'], -4) == '.css') ? 'css' : 'module');
+        $tplFile->set('tpl_type', ('.css' == substr($filename['trust'], -4)) ? 'css' : 'module');
         $tplFile->set('tpl_source', $tplData);
         $tplFile->set('tpl_module', $dirname);
         $tplFile->set('tpl_tplset', 'default');
@@ -337,7 +337,7 @@ class ModuleInstallUtils
                 }
             }
         } else {
-            foreach (array(XOOPS_GROUP_ADMIN, XOOPS_GROUP_USERS) as $group) {
+            foreach ([XOOPS_GROUP_ADMIN, XOOPS_GROUP_USERS] as $group) {
                 $perm->set('gperm_groupid', $group);
                 $perm->setNew();
                 if (!$gpermHandler->insert($perm)) {
@@ -363,7 +363,7 @@ class ModuleInstallUtils
         $dirname = $module->get('dirname');
         $trustDirname = $module->getInfo('trust_dirname');
         $langman = new LanguageManager($dirname, 'install');
-        if ($block->get('template') == null) {
+        if (null == $block->get('template')) {
             return true;
         }
         $info = &$module->getInfo('blocks');
@@ -645,7 +645,7 @@ class ModuleInstallUtils
         $langman = new LanguageManager($dirname, 'install');
         $fileReader = new \Legacy_ModinfoX2FileReader($dirname);
         $configs = $fileReader->loadPreferenceInformations();
-        foreach (array($configs->mPreferences, $configs->mComments, $configs->mNotifications) as $infos) {
+        foreach ([$configs->mPreferences, $configs->mComments, $configs->mNotifications] as $infos) {
             foreach ($infos as $info) {
                 $ret &= self::installConfigByInfo($info, $module, $log);
             }
@@ -707,7 +707,7 @@ class ModuleInstallUtils
         $langman = new LanguageManager($dirname, 'install');
         $configHandler = &xoops_gethandler('config');
         $configs = &$configHandler->getConfigs(new \Criteria('conf_modid', $module->get('mid')));
-        if (count($configs) == 0) {
+        if (0 == count($configs)) {
             return $ret;
         }
         foreach ($configs as $config) {
@@ -762,7 +762,7 @@ class ModuleInstallUtils
         $dbReader = new \Legacy_ModinfoX2DBReader($dirname);
         $configs = &$dbReader->loadPreferenceInformations();
         $configs->update($fileReader->loadPreferenceInformations());
-        foreach (array($configs->mPreferences, $configs->mComments, $configs->mNotifications) as $infos) {
+        foreach ([$configs->mPreferences, $configs->mComments, $configs->mNotifications] as $infos) {
             foreach ($infos as $info) {
                 switch ($info->mStatus) {
                 case LEGACY_INSTALLINFO_STATUS_UPDATED:

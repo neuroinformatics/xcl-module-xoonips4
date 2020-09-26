@@ -116,7 +116,7 @@ class Xoonips_ViewTypeFileUpload extends Xoonips_ViewType
             }
             global $xoopsUser;
             $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
-            $newFileInfo = array();
+            $newFileInfo = [];
             foreach ($fileInfo as $file) {
                 if (false === $file || (false === $rights && (false === $notify || '0' == $notify))) {
                     $file['notify'] = false;
@@ -160,6 +160,7 @@ class Xoonips_ViewTypeFileUpload extends Xoonips_ViewType
         if (Xoonips_Enum::OP_TYPE_METAINFO == $op) {
             return false;
         } //hidden when metainfo form
+
         return true;
     }
 
@@ -170,7 +171,7 @@ class Xoonips_ViewTypeFileUpload extends Xoonips_ViewType
             $request = new Xoonips_Request();
             $file = $request->getFile($fileName);
             if (empty($file)) {
-                $parameters = array();
+                $parameters = [];
                 $parameters[] = $field->getName();
                 $errors->addError('_MD_XOONIPS_ERROR_REQUIRED', $fieldName, $parameters);
             }
@@ -185,17 +186,17 @@ class Xoonips_ViewTypeFileUpload extends Xoonips_ViewType
             return true;
         }
 
-        $file_ids = array();
+        $file_ids = [];
         if (is_array($req_file)) {
             $file_ids = $req_file;
         } else {
             $file_ids[] = $req_file;
         }
 
-        $parameters = array();
+        $parameters = [];
         $parameters[] = '';
         //upload_max_filesize
-        if ($value == -1) {
+        if (-1 == $value) {
             $errors->addError('_MD_XOONIPS_ITEM_WARNING_UPLOAD_MAX_FILESIZE', '', $parameters);
         }
 
@@ -227,14 +228,14 @@ class Xoonips_ViewTypeFileUpload extends Xoonips_ViewType
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];
         } else {
-            $tableData = array();
+            $tableData = [];
             $sqlStrings[$tableName] = &$tableData;
         }
 
         if (isset($tableData[$columnName])) {
             $columnData = &$tableData[$columnName];
         } else {
-            $columnData = array();
+            $columnData = [];
             $tableData[$columnName] = &$columnData;
         }
         $columnData[0] = $field->getDataType()->convertSQLStr('');
@@ -250,7 +251,7 @@ class Xoonips_ViewTypeFileUpload extends Xoonips_ViewType
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];
         } else {
-            $tableData = array();
+            $tableData = [];
             $sqlStrings[$tableName] = &$tableData;
         }
         if ('' != $value) {
@@ -269,8 +270,8 @@ class Xoonips_ViewTypeFileUpload extends Xoonips_ViewType
         $table = $field->getTableName();
         $column = $field->getColumnName();
         $detail_id = $field->getId();
-        $original_file_name = array();
-        $mime_type = array();
+        $original_file_name = [];
+        $mime_type = [];
         foreach ($data[$table] as $value) {
             if ($value['item_field_detail_id'] == $detail_id) {
                 $original_file_name[] = $value['original_file_name'];
@@ -278,7 +279,7 @@ class Xoonips_ViewTypeFileUpload extends Xoonips_ViewType
             }
         }
 
-        return array(implode(',', $original_file_name), implode(',', $mime_type));
+        return [implode(',', $original_file_name), implode(',', $mime_type)];
     }
 
     /**
@@ -294,7 +295,7 @@ class Xoonips_ViewTypeFileUpload extends Xoonips_ViewType
         $table = $field->getTableName();
         $column = $field->getColumnName();
         $detail_id = $field->getId();
-        $ret = array();
+        $ret = [];
         $i = 0;
         foreach ($data[$table] as $value) {
             if ($value['item_field_detail_id'] == $detail_id) {

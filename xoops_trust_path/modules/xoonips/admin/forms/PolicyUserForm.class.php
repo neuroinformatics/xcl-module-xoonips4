@@ -34,61 +34,61 @@ class Xoonips_Admin_PolicyUserForm extends Xoonips_AbstractActionForm
     {
         $constpref = '_AD_'.strtoupper($this->mDirname);
 
-        return array(
-            'regist' => array(
-                'activate_user' => array(
+        return [
+            'regist' => [
+                'activate_user' => [
                     'type' => self::TYPE_INT,
                     'label' => constant($constpref.'_POLICY_USER_REGIST_ACTIVATE_TITLE'),
-                    'depends' => array(
+                    'depends' => [
                         'required' => true,
                         'intRange' => true,
                         'min' => 0,
                         'max' => 2,
-                    ),
-                ),
-                'certify_user' => array(
+                    ],
+                ],
+                'certify_user' => [
                     'type' => self::TYPE_STRING,
                     'label' => constant($constpref.'_POLICY_USER_REGIST_CERTIFY_TITLE'),
-                    'depends' => array(
+                    'depends' => [
                         'required' => true,
                         'mask' => '/^(?:on|auto)$/',
-                    ),
-                ),
-                'user_certify_date' => array(
+                    ],
+                ],
+                'user_certify_date' => [
                     'type' => self::TYPE_INT,
                     'label' => constant($constpref.'_POLICY_USER_REGIST_DATELIMIT_TITLE'),
-                    'depends' => array(
+                    'depends' => [
                         'required' => true,
                         'min' => 0,
-                    ),
-                ),
-            ),
-            'initval' => array(
-                'private_item_number_limit' => array(
+                    ],
+                ],
+            ],
+            'initval' => [
+                'private_item_number_limit' => [
                     'type' => self::TYPE_INT,
                     'label' => constant($constpref.'_POLICY_USER_INITVAL_MAXITEM_TITLE'),
-                    'depends' => array(
+                    'depends' => [
                         'required' => true,
                         'min' => 0,
-                    ),
-                ),
-                'private_index_number_limit' => array(
+                    ],
+                ],
+                'private_index_number_limit' => [
                     'type' => self::TYPE_INT,
                     'label' => constant($constpref.'_POLICY_USER_INITVAL_MAXINDEX_TITLE'),
-                    'depends' => array(
+                    'depends' => [
                         'required' => true,
                         'min' => 0,
-                    ),
-                ),
-                'private_item_storage_limit' => array(
+                    ],
+                ],
+                'private_item_storage_limit' => [
                     'type' => self::TYPE_FLOAT,
                     'label' => constant($constpref.'_POLICY_USER_INITVAL_MAXDISK_TITLE'),
-                    'depends' => array(
+                    'depends' => [
                         'required' => true,
                         'min' => 0,
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
     }
 }

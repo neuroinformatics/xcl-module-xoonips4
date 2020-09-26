@@ -27,7 +27,7 @@ class Xoonips_Admin_AbstractConfigAction extends Xoonips_AbstractEditAction
     protected function getConfigKeys()
     {
         // override
-        return array();
+        return [];
     }
 
     /**
@@ -46,7 +46,7 @@ class Xoonips_Admin_AbstractConfigAction extends Xoonips_AbstractEditAction
     protected function _setupObject()
     {
         $keys = $this->getConfigKeys();
-        $this->mObject = array();
+        $this->mObject = [];
         foreach ($keys as $key) {
             $this->mObject[$key] = Functions::getXoonipsConfig($this->mAsset->mDirname, $key);
         }

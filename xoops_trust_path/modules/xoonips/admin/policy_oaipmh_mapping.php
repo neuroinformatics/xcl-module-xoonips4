@@ -8,17 +8,17 @@ require_once __DIR__.'/class/action/PolicyOaipmhMappingAction.class.php';
 $request = new Xoonips_Request();
 $response = new Xoonips_Response();
 $op = $request->getParameter('op');
-if ($op == null) {
+if (null == $op) {
     $op = 'init';
 }
 
 // check request
-if (!in_array($op, array('init', 'change', 'join', 'add', 'delete', 'autocreate', 'update'))) {
+if (!in_array($op, ['init', 'change', 'join', 'add', 'delete', 'autocreate', 'update'])) {
     die('illegal request');
 }
 
 // set action map
-$actionMap = array();
+$actionMap = [];
 $actionMap['init_success'] = 'policy_oaipmh_mapping.html';
 $actionMap['change_success'] = 'policy_oaipmh_mapping.html';
 $actionMap['join_success'] = 'policy_oaipmh_mapping.html';

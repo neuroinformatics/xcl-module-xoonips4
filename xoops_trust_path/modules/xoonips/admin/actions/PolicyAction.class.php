@@ -35,33 +35,33 @@ class Xoonips_Admin_PolicyAction extends Xoonips_AbstractAction
         $dirname = $this->mModule->mXoopsModule->get('dirname');
         $constpref = '_AD_'.strtoupper($dirname);
         // breadcrumbs
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => constant($constpref.'_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_TITLE'),
-            ),
-        );
-        $menu = array(
-            array(
+            ],
+        ];
+        $menu = [
+            [
                 'title' => constant($constpref.'_POLICY_USER_TITLE'),
                 'link' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=PolicyUser',
-            ),
-            array(
+            ],
+            [
                 'title' => constant($constpref.'_POLICY_GROUP_TITLE'),
                 'link' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=PolicyGroup',
-            ),
-            array(
+            ],
+            [
                 'title' => constant($constpref.'_POLICY_ITEM_TITLE'),
                 'link' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=PolicyItem',
-            ),
-            array(
+            ],
+            [
                 'title' => constant($constpref.'_POLICY_INDEX_TITLE'),
                 'link' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=PolicyIndex',
-            ),
-        );
+            ],
+        ];
         $render->setTemplateName('admin_menu.html');
         $render->setAttribute('title', constant($constpref.'_POLICY_TITLE'));
         $render->setAttribute('description', constant($constpref.'_POLICY_DESC'));

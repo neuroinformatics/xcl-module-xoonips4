@@ -22,7 +22,7 @@ class Xoonips_ItemComplementManager
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $xoopsDB->fetchArray($result)) {
             $ret[] = $row;
         }

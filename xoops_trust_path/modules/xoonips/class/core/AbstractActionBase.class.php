@@ -17,7 +17,7 @@ abstract class Xoonips_AbstractActionBase
         if (is_object($xoopsModule)) {
             $this->dirname = strtolower($xoopsModule->getVar('dirname'));
             $this->trustDirname = $xoopsModule->getVar('trust_dirname');
-        } elseif ($dirname != null) {
+        } elseif (null != $dirname) {
             $this->dirname = strtolower($dirname);
             $module_handler = &xoops_gethandler('module');
             $module = &$module_handler->getByDirname($dirname);
@@ -41,19 +41,19 @@ abstract class Xoonips_AbstractActionBase
 
         // if not exist then set 'init'
         if ($paramFlg) {
-            if ($action == null) {
+            if (null == $action) {
                 $action = 'init';
             }
             $method = 'do'.ucfirst($action);
         } else {
-            if ($op == null) {
+            if (null == $op) {
                 $op = 'init';
             }
             $method = 'do'.ucfirst($op);
         }
 
         $result = $this->$method($request, $response);
-        if ($this->transaction != false) {
+        if (false != $this->transaction) {
             if ($result) {
                 $this->transaction->commit();
             } else {
@@ -63,7 +63,7 @@ abstract class Xoonips_AbstractActionBase
         }
         if (!$result) {
             // return false and have not set system error
-            if ($response->getSystemError() == false) {
+            if (false == $response->getSystemError()) {
                 $response->setSystemError('System error!');
             }
         }

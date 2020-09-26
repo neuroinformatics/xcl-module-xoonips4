@@ -40,7 +40,7 @@ class Xoonips_WorkflowClientGroupClose extends Xoonips_WorkflowClientBase
 
         //send to group admins and certifyUsers
         $groupUserLinkBean = Xoonips_BeanFactory::getBean('GroupsUsersLinkBean', $this->dirname, $this->trustDirname);
-        $sendToUsers = array();
+        $sendToUsers = [];
         foreach ($groupUserLinkBean->getAdminUserIds($gid) as $id) {
             $sendToUsers[] = $id;
         }

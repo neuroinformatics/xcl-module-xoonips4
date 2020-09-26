@@ -15,14 +15,14 @@ class Xoonips_ViewTypeTitle extends Xoonips_ViewTypeText
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];
         } else {
-            $tableData = array();
+            $tableData = [];
             $sqlStrings[$tableName] = &$tableData;
         }
 
         if (isset($tableData[$columnName])) {
             $columnData = &$tableData[$columnName];
         } else {
-            $columnData = array();
+            $columnData = [];
             $tableData[$columnName] = &$columnData;
         }
         $columnData[] = $field->getDataType()->convertSQLStr(trim($value));

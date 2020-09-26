@@ -9,7 +9,7 @@ class Xoonips_UserSelectSubAction extends Xoonips_AbstractActionBase
     {
         $callbackID = $request->getParameter('callbackid');
         $mode = $request->getParameter('mode');
-        if ($mode != 'single') {
+        if ('single' != $mode) {
             $mode = 'mult';
         }
         $viewData['callbackid'] = $callbackID;
@@ -31,12 +31,12 @@ class Xoonips_UserSelectSubAction extends Xoonips_AbstractActionBase
         $page = $request->getParameter('page');
         $callbackID = $request->getParameter('callbackid');
         $mode = $request->getParameter('mode');
-        if ($mode != 'single') {
+        if ('single' != $mode) {
             $mode = 'mult';
         }
         $sortkey = '';
         $order = '';
-        if ($page == '') {
+        if ('' == $page) {
             $page = 1;
         } else {
             $uname = $request->getParameter('hiduname');
@@ -55,10 +55,10 @@ class Xoonips_UserSelectSubAction extends Xoonips_AbstractActionBase
         $userlist = $userBean->getUserBasicInfoByName(trim($uname), trim($name));
         $counts = count($userlist);
         $pageNavi = $this->naviList($counts, $limit, $page);
-        if ($sortkey != '' || $order != '') {
+        if ('' != $sortkey || '' != $order) {
             $sortlist = $this->getSortList($userlist, $sortkey);
 
-            if ($order == 'DESC') {
+            if ('DESC' == $order) {
                 array_multisort($sortlist, SORT_DESC, $userlist);
             } else {
                 array_multisort($sortlist, $userlist);
@@ -91,7 +91,7 @@ class Xoonips_UserSelectSubAction extends Xoonips_AbstractActionBase
         $name = $request->getParameter('hidname');
         $callbackID = $request->getParameter('callbackid');
         $mode = $request->getParameter('mode');
-        if ($mode != 'single') {
+        if ('single' != $mode) {
             $mode = 'mult';
         }
         if (_CHARSET != 'UTF-8') {
@@ -108,7 +108,7 @@ class Xoonips_UserSelectSubAction extends Xoonips_AbstractActionBase
         $pageNavi = $this->naviList($counts, $limit, $page);
         $sortlist = $this->getSortList($userlist, $sortkey);
 
-        if ($order == 'DESC') {
+        if ('DESC' == $order) {
             array_multisort($sortlist, SORT_DESC, $userlist);
         } else {
             array_multisort($sortlist, $userlist);
@@ -137,7 +137,7 @@ class Xoonips_UserSelectSubAction extends Xoonips_AbstractActionBase
     private function pageList($list, $page, $per)
     {
         $pagelists = array_chunk($list, $per);
-        $ret = array();
+        $ret = [];
         $cnt = 1;
         foreach ($pagelists as $list) {
             if ($cnt == $page) {
@@ -172,7 +172,7 @@ class Xoonips_UserSelectSubAction extends Xoonips_AbstractActionBase
      */
     private function getSortList($userlist, $sortkey)
     {
-        $sortlist = array();
+        $sortlist = [];
         foreach ($userlist as $row) {
             $sortlist[] = $row[$sortkey];
         }

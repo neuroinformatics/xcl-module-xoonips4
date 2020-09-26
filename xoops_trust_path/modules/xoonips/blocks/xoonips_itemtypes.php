@@ -18,8 +18,8 @@ function b_xoonips_itemtypes_show($options)
     require_once dirname(__DIR__).'/class/action/ItemTypeAction.class.php';
 
     // backup form values
-    $keys = array();
-    foreach (array('op', 'action') as $key) {
+    $keys = [];
+    foreach (['op', 'action'] as $key) {
         if (array_key_exists($key, $_GET)) {
             $keys[$key]['GET'] = $_GET[$key];
             unset($_GET[$key]);
@@ -31,7 +31,7 @@ function b_xoonips_itemtypes_show($options)
     }
 
     // get installed itemtypes
-    $block = array();
+    $block = [];
     $request = new Xoonips_Request();
     $response = new Xoonips_Response();
     $action = new Xoonips_ItemTypeAction($dirname);

@@ -36,7 +36,7 @@ class Xoonips_WorkflowClientGroupRegister extends Xoonips_WorkflowClientBase
         $group['index_path'] = '/'.$group['name'];
         $groupUserLinkBean = Xoonips_BeanFactory::getBean('GroupsUsersLinkBean', $this->dirname, $this->trustDirname);
         // send to group admins
-        $sendToUsers = array();
+        $sendToUsers = [];
         foreach ($groupUserLinkBean->getAdminUserIds($gid) as $id) {
             $sendToUsers[] = $id;
         }

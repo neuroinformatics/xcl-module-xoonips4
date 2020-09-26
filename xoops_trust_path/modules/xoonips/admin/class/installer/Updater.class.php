@@ -80,7 +80,7 @@ class Xoonips_Updater extends ModuleUpdater
         $dirname = $this->mCurrentXoopsModule->get('dirname');
         $ifdHandler = Functions::getXoonipsHandler('ItemFieldDetailObject', $dirname);
         // item_extend : dataType varchar(255) => text
-        $xmls = array('kana', 'romaji', 'sub_title_title', 'sub_title_kana', 'sub_title_romaji', 'name', 'jalc_doi', 'naid', 'ichushi', 'grant_id', 'date_of_granted', 'degree_name', 'grantor', 'type_of_resource', 'textversion');
+        $xmls = ['kana', 'romaji', 'sub_title_title', 'sub_title_kana', 'sub_title_romaji', 'name', 'jalc_doi', 'naid', 'ichushi', 'grant_id', 'date_of_granted', 'degree_name', 'grantor', 'type_of_resource', 'textversion'];
         $criteria = new Criteria('xml', $xmls, 'IN');
         $ifdObjs = $ifdHandler->getObjects($criteria);
         foreach ($ifdObjs as $ifdObj) {
@@ -106,7 +106,7 @@ SQL;
             }
         }
         // item_extend : dataType varchar(255) => varchar(1000)
-        $xmls = array('physical_description', 'uri');
+        $xmls = ['physical_description', 'uri'];
         $criteria = new Criteria('xml', $xmls, 'IN');
         $ifdObjs = $ifdHandler->getObjects($criteria);
         foreach ($ifdObjs as $ifdObj) {
@@ -154,9 +154,9 @@ SQL;
         // config : add 'index_upload_dir' entry
         $table = $dirname.'_config';
         $cHandler = Functions::getXoonipsHandler('ConfigObject', $dirname);
-        $configArr = array(
-            array('name' => 'index_upload_dir', 'value' => XOOPS_ROOT_PATH.'/uploads'),
-        );
+        $configArr = [
+            ['name' => 'index_upload_dir', 'value' => XOOPS_ROOT_PATH.'/uploads'],
+        ];
         foreach ($configArr as $config) {
             $value = $cHandler->getConfig($config['name']);
             if (null === $value) {
@@ -198,11 +198,11 @@ SQL;
         // config : add 'url_compatible' entry
         $table = $dirname.'_config';
         $cHandler = Functions::getXoonipsHandler('ConfigObject', $dirname);
-        $configArr = array(
-            array('name' => 'url_compatible', 'value' => 'off'),
-            array('name' => 'ranking_last_update', 'value' => time()),
-            array('name' => 'ranking_lock_timeout', 'value' => '0'),
-        );
+        $configArr = [
+            ['name' => 'url_compatible', 'value' => 'off'],
+            ['name' => 'ranking_last_update', 'value' => time()],
+            ['name' => 'ranking_lock_timeout', 'value' => '0'],
+        ];
         foreach ($configArr as $config) {
             $value = $cHandler->getConfig($config['name']);
             if (null === $value) {

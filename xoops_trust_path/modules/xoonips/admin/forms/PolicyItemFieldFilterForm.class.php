@@ -13,10 +13,10 @@ class Xoonips_Admin_PolicyItemFieldFilterForm extends Xoonips_AbstractFilterForm
      *
      * @var array
      */
-    protected $mSortKeys = array(
+    protected $mSortKeys = [
         self::SORT_KEY_XML => 'xml',
         self::SORT_KEY_NAME => 'name',
-    );
+    ];
 
     /**
      * get default sort key.

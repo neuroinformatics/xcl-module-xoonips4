@@ -25,7 +25,7 @@ class Xoonips_Admin_SystemMessageSignAction extends Xoonips_Admin_AbstractConfig
      */
     protected function getConfigKeys()
     {
-        return array('message_sign');
+        return ['message_sign'];
     }
 
     /**
@@ -68,19 +68,19 @@ class Xoonips_Admin_SystemMessageSignAction extends Xoonips_Admin_AbstractConfig
         $dirname = $this->mAsset->mDirname;
         $constpref = '_AD_'.strtoupper($dirname);
         // breadcrumbs
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => constant($constpref.'_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_SYSTEM_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=System',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_SYSTEM_MSGSIGN_TITLE'),
-            ),
-        );
+            ],
+        ];
         $render->setTemplateName('system_message_sign.html');
         $render->setAttribute('title', constant($constpref.'_SYSTEM_MSGSIGN_TITLE'));
         $render->setAttribute('description', constant($constpref.'_SYSTEM_MSGSIGN_DESC'));

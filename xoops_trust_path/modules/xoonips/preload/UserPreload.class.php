@@ -44,8 +44,8 @@ class Xoonips_UserPreloadBase extends XCube_ActionFilter
      */
     public function preBlockFilter()
     {
-        $this->mRoot->mDelegateManager->add('Legacypage.Register.Access', array(&$this, 'register'), XCUBE_DELEGATE_PRIORITY_NORMAL - 1);
-        $this->mRoot->mDelegateManager->add('Legacypage.User.Access', array(&$this, 'user'), XCUBE_DELEGATE_PRIORITY_NORMAL - 1);
+        $this->mRoot->mDelegateManager->add('Legacypage.Register.Access', [&$this, 'register'], XCUBE_DELEGATE_PRIORITY_NORMAL - 1);
+        $this->mRoot->mDelegateManager->add('Legacypage.User.Access', [&$this, 'user'], XCUBE_DELEGATE_PRIORITY_NORMAL - 1);
         $this->mRoot->mDelegateManager->add('Site.CheckLogin', 'Xoonips_UserPreloadFunctions::checkLogin', XCUBE_DELEGATE_PRIORITY_NORMAL - 1);
         $this->mRoot->mDelegateManager->add('Site.Logout', 'Xoonips_UserPreloadFunctions::logout', XCUBE_DELEGATE_PRIORITY_NORMAL - 1);
     }
@@ -61,7 +61,7 @@ class Xoonips_UserPreloadBase extends XCube_ActionFilter
             return;
         }
         $action = $root->mContext->mRequest->getRequest('action');
-        if ($action == 'confirm') {
+        if ('confirm' == $action) {
             self::_executeUserAction('UserRegister_confirm');
         }
     }
@@ -73,19 +73,19 @@ class Xoonips_UserPreloadBase extends XCube_ActionFilter
     {
         $root = &XCube_Root::getSingleton();
         $op = $root->mContext->mRequest->getRequest('op');
-        $actions = array(
+        $actions = [
             'actv' => 'UserActivate',
             'delete' => 'UserDelete',
             'su' => 'UserSu',
-        );
-        $xoonips_actions = array(
+        ];
+        $xoonips_actions = [
             'groupList',
             'groupInfo',
             'groupRegister',
             'groupEdit',
             'groupMember',
             'userSearch',
-        );
+        ];
         if (in_array($op, array_keys($actions))) {
             self::_executeUserAction($actions[$op]);
         } elseif (in_array($op, $xoonips_actions)) {
@@ -109,7 +109,7 @@ class Xoonips_UserPreloadBase extends XCube_ActionFilter
         $moduleRunner = new Xoonips_UserActionFrame(false);
         $moduleRunner->setDirname($this->mDirname, $this->mTrustDirname);
         $moduleRunner->setActionName($actionName);
-        $root->mController->mExecute->add(array(&$moduleRunner, 'execute'));
+        $root->mController->mExecute->add([&$moduleRunner, 'execute']);
         $root->mController->execute();
         $root->mController->executeView();
         exit();
@@ -143,7 +143,7 @@ class Xoonips_UserPreloadFunctions
                 exit();
             }
             //check action request
-            if (!in_array($action, array('init', 'join', 'leave', 'delete'))) {
+            if (!in_array($action, ['init', 'join', 'leave', 'delete'])) {
                 die('illegal request');
             }
             // set action map
@@ -166,7 +166,7 @@ class Xoonips_UserPreloadFunctions
                 exit();
             }
             //check action request
-            if (!in_array($action, array('init'))) {
+            if (!in_array($action, ['init'])) {
                 die('illegal request');
             }
             // set action map
@@ -186,7 +186,7 @@ class Xoonips_UserPreloadFunctions
                 exit();
             }
             // check request
-            if (!in_array($action, array('init', 'search', 'register'))) {
+            if (!in_array($action, ['init', 'search', 'register'])) {
                 die('illegal request');
             }
             // set action map
@@ -209,7 +209,7 @@ class Xoonips_UserPreloadFunctions
                 exit();
             }
             // check request
-            if (!in_array($action, array('init', 'search', 'update'))) {
+            if (!in_array($action, ['init', 'search', 'update'])) {
                 die('illegal request');
             }
             // set action map
@@ -232,7 +232,7 @@ class Xoonips_UserPreloadFunctions
                 exit();
             }
             // check request
-            if (!in_array($action, array('init', 'search', 'update'))) {
+            if (!in_array($action, ['init', 'search', 'update'])) {
                 die('illegal request');
             }
             // set action map
@@ -255,11 +255,11 @@ class Xoonips_UserPreloadFunctions
                 exit();
             }
             // check request
-            if (!in_array($action, array('init', 'search', 'sort'))) {
+            if (!in_array($action, ['init', 'search', 'sort'])) {
                 die('illegal request');
             }
             // set action map
-            $actionMap = array();
+            $actionMap = [];
             $actionMap['init_success'] = 'xoonips_user_search.html';
             $actionMap['success'] = 'xoonips_user_list.html';
             $actionMap['input_error'] = 'xoonips_user_search.html';
@@ -302,16 +302,16 @@ class Xoonips_UserPreloadFunctions
 
         $userArr = &$userHandler->getObjects($criteria);
 
-        if (count($userArr) != 1) {
+        if (1 != count($userArr)) {
             return;
         }
 
         $level = $userArr[0]->get('level');
-        if ($level == 0) {
+        if (0 == $level) {
             //check not activate user
             XCube_DelegateUtils::call('Site.CheckLogin.Fail', $userArr[0]->get('uname'));
             redirect_header(XOOPS_URL.'/', 5, _MD_XOONIPS_LANG_NOACTTPADM);
-        } elseif ($level == 1) {
+        } elseif (1 == $level) {
             //check not certify user
             XCube_DelegateUtils::call('Site.CheckLogin.Fail', $userArr[0]->get('uname'));
             redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_ACCOUNT_NOT_ACTIVATED);

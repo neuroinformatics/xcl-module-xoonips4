@@ -41,9 +41,9 @@ class Xoonips_ItemFieldGroup extends Xoonips_FieldGroup
     public function getItemOwnersEditView(&$data, $cnt)
     {
         $groupLoopId = 1;
-        $fieldGroups = array();
+        $fieldGroups = [];
         do {
-            $fieldGroup = array();
+            $fieldGroup = [];
             foreach ($this->fields as $field) {
                 if ($field->isDisplay(Xoonips_Enum::OP_TYPE_DETAIL, Xoonips_Enum::USER_TYPE_USER)) {
                     if (!isset($data[$this->getFieldName($field, $groupLoopId)])) {
@@ -68,7 +68,7 @@ class Xoonips_ItemFieldGroup extends Xoonips_FieldGroup
         $groupLoopId = 1;
         $fieldGroups = aarys();
         while ($this->hasFieldGroupData($data, $groupLoopId)) {
-            $fieldGroup = array();
+            $fieldGroup = [];
             foreach ($this->fields as $field) {
                 $value = $data[$this->getFieldName($field, $groupLoopId)];
                 $fieldGroup[] = $field->getItemOwnersEditViewWithData($value, $groupLoopId, $cnt);
@@ -90,7 +90,7 @@ class Xoonips_ItemFieldGroup extends Xoonips_FieldGroup
     public function isItemOwnersMust()
     {
         foreach ($this->fields as $field) {
-            if ($field->isItemOwnersMust() == true) {
+            if (true == $field->isItemOwnersMust()) {
                 return true;
             }
         }
@@ -123,7 +123,7 @@ class Xoonips_ItemFieldGroup extends Xoonips_FieldGroup
 
     public function getSimpleSearchView(&$data, $cnt, $itemtypeId)
     {
-        $fieldGroup = array();
+        $fieldGroup = [];
         foreach ($this->fields as $field) {
             if ($field->isDisplay(Xoonips_Enum::OP_TYPE_SIMPLESEARCH, Xoonips_Enum::USER_TYPE_USER)) {
                 if (!isset($data[$this->getFieldName($field, $itemtypeId)])) {

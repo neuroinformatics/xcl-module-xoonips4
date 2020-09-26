@@ -29,7 +29,7 @@ class Xoonips_ItemFieldValueSetHandler extends XoopsObjectHandler
      */
     public function __construct(&$db, $dirname)
     {
-        $this->mTable = strtr($this->mTable, array('{dirname}' => $dirname));
+        $this->mTable = strtr($this->mTable, ['{dirname}' => $dirname]);
         $this->mDirname = $dirname;
         $this->mTable = $db->prefix($this->mTable);
         parent::__construct($db);
@@ -44,7 +44,7 @@ class Xoonips_ItemFieldValueSetHandler extends XoopsObjectHandler
      */
     public function getSelectNames()
     {
-        $ret = array();
+        $ret = [];
         $sql = sprintf('SELECT DISTINCT `select_name` FROM `%s`', $this->mTable);
         if (!($result = $this->db->query($sql))) {
             return $ret;
@@ -67,7 +67,7 @@ class Xoonips_ItemFieldValueSetHandler extends XoopsObjectHandler
      */
     public function getValueSet($name)
     {
-        $ret = array();
+        $ret = [];
         $_name = $this->db->quoteString($name);
         $sql = sprintf('SELECT `title_id`, `title`, `weight` FROM `%s` WHERE `select_name`=%s ORDER BY `weight` ASC', $this->mTable, $_name);
         if (!($result = $this->db->query($sql))) {
@@ -98,7 +98,7 @@ class Xoonips_ItemFieldValueSetHandler extends XoopsObjectHandler
         if (!$this->_deleteByNameBody($name, $force)) {
             return false;
         }
-        usort($values, array(get_class(), '_weightCompare'));
+        usort($values, [get_class(), '_weightCompare']);
         $_name = $this->db->quoteString($name);
         $_weight = 0;
         foreach ($values as $value) {
@@ -177,7 +177,7 @@ class Xoonips_ItemFieldValueSetHandler extends XoopsObjectHandler
         if (!is_array($values) && empty($values)) {
             return false;
         } // invalid value type
-        $ids = array();
+        $ids = [];
         foreach ($values as $value) {
             if (!isset($value['title_id']) || !isset($value['title']) || !isset($value['weight'])) {
                 return false;

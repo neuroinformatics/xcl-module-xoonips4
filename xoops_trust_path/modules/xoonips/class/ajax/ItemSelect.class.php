@@ -23,17 +23,17 @@ class Xoonips_ItemSelectAjaxMethod extends Xoonips_AbstractAjaxMethod
         $request = new Xoonips_Request();
         $response = new Xoonips_Response();
         $op = $request->getParameter('op');
-        if ($op == null) {
+        if (null == $op) {
             $op = 'init';
         }
 
         // check request
-        if (!in_array($op, array('init', 'search'))) {
+        if (!in_array($op, ['init', 'search'])) {
             return false;
         }
 
         // set action map
-        $actionMap = array();
+        $actionMap = [];
         $actionMap['init_success'] = $this->mDirname.'_ajax_itemselect.html';
         $actionMap['search_success'] = $this->mDirname.'_ajax_itemselect.html';
 

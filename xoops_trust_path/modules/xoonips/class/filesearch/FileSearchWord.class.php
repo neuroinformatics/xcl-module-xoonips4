@@ -43,13 +43,13 @@ class Xoonips_FileSearchWord extends Xoonips_FileSearchBase
      */
     public function getSearchInstance()
     {
-        return array(
+        return [
             'name' => 'word',
             'display_name' => 'MS-Word 95/97/2000/XP/2003',
-            'mime_type' => array('application/msword'),
-            'extensions' => array('doc'),
+            'mime_type' => ['application/msword'],
+            'extensions' => ['doc'],
             'version' => '2.0',
-        );
+        ];
     }
 
     /**
@@ -75,7 +75,7 @@ class Xoonips_FileSearchWord extends Xoonips_FileSearchBase
             // execute wvText command
             system($cmd);
             // restore original lang
-            putenv('LANG='.($lang === false ? '' : $lang));
+            putenv('LANG='.(false === $lang ? '' : $lang));
             parent::openImpl($this->tmpfile);
         }
     }

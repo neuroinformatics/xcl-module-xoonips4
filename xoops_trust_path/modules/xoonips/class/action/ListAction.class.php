@@ -27,17 +27,17 @@ class Xoonips_ListAction extends Xoonips_ActionBase
         }
         $sess_orderby = isset($_SESSION[$this->dirname.'_order_by']) ? $_SESSION[$this->dirname.'_order_by'] : $defalut_orderby;
         $sess_orderdir = isset($_SESSION[$this->dirname.'_order_dir']) ? $_SESSION[$this->dirname.'_order_dir'] : XOONIPS_ASC;
-        $request_vars = array(
-            'op' => array('s', ''),
-            'isPrint' => array('s', ''),
-            'page' => array('i', 1),
-            'orderby' => array('s', $sess_orderby),
-            'order_dir' => array('i', $sess_orderdir),
-            'itemcount' => array('i', 20),
-            'selected' => array('i', array()),
-            'num_of_items' => array('i', null),
-            'index_id' => array('i', null),
-        );
+        $request_vars = [
+            'op' => ['s', ''],
+            'isPrint' => ['s', ''],
+            'page' => ['i', 1],
+            'orderby' => ['s', $sess_orderby],
+            'order_dir' => ['i', $sess_orderdir],
+            'itemcount' => ['i', 20],
+            'selected' => ['i', []],
+            'num_of_items' => ['i', null],
+            'index_id' => ['i', null],
+        ];
         foreach ($request_vars as $key => $meta) {
             list($type, $default) = $meta;
             $$key = $request->getParameter($key);
@@ -62,12 +62,12 @@ class Xoonips_ListAction extends Xoonips_ActionBase
         $_SESSION[$this->dirname.'_order_by'] = $orderby;
         $_SESSION[$this->dirname.'_order_dir'] = $order_dir;
 
-        $cri = array(
+        $cri = [
             'start' => ($page - 1) * $itemcount,
             'rows' => $itemcount,
             'orderby' => $orderby,
             'orderdir' => $order_dir,
-        );
+        ];
 
         $export_enabled = true;
 
@@ -100,11 +100,11 @@ class Xoonips_ListAction extends Xoonips_ActionBase
         $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
         $itemIds = $itemBean->getItemsList($itemIds, $cri);
 
-        $item_htmls = array();
+        $item_htmls = [];
         if ($itemIds) {
             foreach ($itemIds as $itemId) {
                 $itemInfo = $itemBean->getItem2($itemId);
-                $item_html = array();
+                $item_html = [];
                 $item_html['item_id'] = $itemId;
                 $item_html['html'] = $itemBean->getItemListHtml($itemInfo);
                 $item_htmls[] = $item_html;
@@ -112,19 +112,19 @@ class Xoonips_ListAction extends Xoonips_ActionBase
         }
 
         // add index list
-        $my_indexes = array();
+        $my_indexes = [];
         $childIndexes = $indexBean->getChildIndexes($index_id);
         if (count($childIndexes) > 0) {
             foreach ($childIndexes as $index) {
                 $cid = $index['index_id'];
                 $cicnt = count($indexBean->getChildIndexes($cid));
                 $cnt = $indexBean->countCanViewItem($cid, $uid);
-                $my_index = array(
+                $my_index = [
                     'index_id' => $cid,
                     'title' => $index['title'],
                     'child_index_num' => $cicnt,
                     'child_item_num' => $cnt,
-                );
+                ];
                 $index_tpl = new XoopsTpl();
                 $index_tpl->assign('index', $my_index);
                 $index_tpl->assign('dirname', $this->dirname);
@@ -135,7 +135,7 @@ class Xoonips_ListAction extends Xoonips_ActionBase
 
         // get index full path
         $fullpathInfo = $indexBean->getFullPathIndexes($index_id);
-        $fullPathIndexes = array();
+        $fullPathIndexes = [];
         foreach ($fullpathInfo as $index) {
             if (1 == $index['parent_index_id'] && XOONIPS_OL_PRIVATE == $index['open_level']) {
                 $index['html_title'] = 'Private';
@@ -157,11 +157,11 @@ class Xoonips_ListAction extends Xoonips_ActionBase
         }
 
         // breadcrumbs
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => _MD_XOONIPS_ITEM_LISTING_ITEM,
-            ),
-        );
+            ],
+        ];
 
         // check that index is editable
         $response->setViewDataByKey('edit_index', $indexBean->checkWriteRight($index_id, $uid));
@@ -184,7 +184,7 @@ class Xoonips_ListAction extends Xoonips_ActionBase
         $response->setViewDataByKey('page_no_label', $page_no_label);
         $response->setViewDataByKey('index_id', $index_id);
         $response->setViewDataByKey('order_by_select', $sortTitles);
-        $response->setViewDataByKey('item_count_select', array('20', '50', '100'));
+        $response->setViewDataByKey('item_count_select', ['20', '50', '100']);
         $response->setViewDataByKey('dirname', $this->dirname);
         if ('print' == $isPrint) {
             $response->setViewDataByKey('isPrintPage', true);
@@ -206,7 +206,7 @@ class Xoonips_ListAction extends Xoonips_ActionBase
     private function getSelectablePageNumber($page, $maxpage)
     {
         //centering current page number(5th of $pages)
-        $pages = array(min(max(1, $page - 4), max(1, $maxpage - 9)));
+        $pages = [min(max(1, $page - 4), max(1, $maxpage - 9))];
         for ($i = 1; $i < 10 && $pages[$i - 1] < $maxpage; ++$i) {
             $pages[$i] = $pages[$i - 1] + 1;
         }
@@ -259,15 +259,15 @@ class Xoonips_ListAction extends Xoonips_ActionBase
         }
 
         // breadcrumbs
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => _MD_XOONIPS_ITEM_LISTING_ITEM,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/list.php?index_id='.$index_id,
-            ),
-            array(
+            ],
+            [
                 'name' => _MD_XOONIPS_ITEM_EXPORT_SELECT,
-            ),
-        );
+            ],
+        ];
 
         $response->setViewDataByKey('xoops_breadcrumbs', $breadcrumbs);
         $response->setViewDataByKey('index_id', $index_id);

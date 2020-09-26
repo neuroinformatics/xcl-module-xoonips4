@@ -15,7 +15,7 @@ class Xoonips_MaintenanceItemTransferAction extends Xoonips_MaintenanceItemCommo
         $breadcrumbs = $this->setBreadcrumbs($title);
 
         //get common viewdata
-        $viewData = array();
+        $viewData = [];
         $viewData['title'] = $title;
         $viewData['breadcrumbs'] = $breadcrumbs;
         $viewData['description'] = $description;
@@ -66,13 +66,13 @@ class Xoonips_MaintenanceItemTransferAction extends Xoonips_MaintenanceItemCommo
         $req_indexes_to = $this->getRequestIndexes($request, $uid_to, '_to', false, false);
 
         // index tree
-        $indexes_from = array();
-        $trees_from = array();
+        $indexes_from = [];
+        $trees_from = [];
         $index_from_num = 0;
         $index_from_num = $this->indexTree($uid_from, $indexes_from, $trees_from, '_from', $req_indexes_from);
 
-        $indexes_to = array();
-        $trees_to = array();
+        $indexes_to = [];
+        $trees_to = [];
         $index_to_num = 0;
         if (is_numeric($uid_to)) {
             $index_to_num = $this->indexTree($uid_to, $indexes_to, $trees_to, '_to', $req_indexes_to);
@@ -85,7 +85,7 @@ class Xoonips_MaintenanceItemTransferAction extends Xoonips_MaintenanceItemCommo
             $description = _AM_XOONIPS_MAINTENANCE_ITEMTRANSFER_INDEX_DESC1;
         }
 
-        $viewData = array();
+        $viewData = [];
         $viewData['title'] = $title;
         $viewData['breadcrumbs'] = $breadcrumbs;
         $viewData['description'] = $description;
@@ -138,10 +138,10 @@ class Xoonips_MaintenanceItemTransferAction extends Xoonips_MaintenanceItemCommo
         if ($uid_from == $uid_to) {
             $index_chk = false;
             $viewData['redirect_msg'] = _AM_XOONIPS_MAINTENANCE_ITEMTRANSFER_MSG_FAILURE3;
-        } elseif (count($req_indexes_from) == 0) {
+        } elseif (0 == count($req_indexes_from)) {
             $index_chk = false;
             $viewData['redirect_msg'] = _AM_XOONIPS_MAINTENANCE_ITEMTRANSFER_MSG_FAILURE1;
-        } elseif (count($req_indexes_to) == 0) {
+        } elseif (0 == count($req_indexes_to)) {
             $index_chk = false;
             $viewData['redirect_msg'] = _AM_XOONIPS_MAINTENANCE_ITEMTRANSFER_MSG_FAILURE2;
         }
@@ -157,13 +157,13 @@ class Xoonips_MaintenanceItemTransferAction extends Xoonips_MaintenanceItemCommo
         }
 
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-        $indexes_from = array();
+        $indexes_from = [];
         foreach ($req_indexes_from as $index_id) {
-            $index = array();
+            $index = [];
             $indexInfo = $indexBean->getFullPathIndexes($index_id);
             $path = '';
             foreach ($indexInfo as $index) {
-                if ($index['parent_index_id'] == 1 && $index['open_level'] == XOONIPS_OL_PRIVATE && $index['uid'] == $uid_from) {
+                if (1 == $index['parent_index_id'] && XOONIPS_OL_PRIVATE == $index['open_level'] && $index['uid'] == $uid_from) {
                     $path .= ' / Private';
                 } else {
                     $path .= ' / '.$index['title'];
@@ -174,13 +174,13 @@ class Xoonips_MaintenanceItemTransferAction extends Xoonips_MaintenanceItemCommo
             $indexes_from[] = $index;
         }
 
-        $indexes_to = array();
+        $indexes_to = [];
         foreach ($req_indexes_to as $index_id) {
-            $index = array();
+            $index = [];
             $indexInfo = $indexBean->getFullPathIndexes($index_id);
             $path = '';
             foreach ($indexInfo as $index) {
-                if ($index['parent_index_id'] == 1 && $index['open_level'] == XOONIPS_OL_PRIVATE && $index['uid'] == $uid_to) {
+                if (1 == $index['parent_index_id'] && XOONIPS_OL_PRIVATE == $index['open_level'] && $index['uid'] == $uid_to) {
                     $path .= ' / Private';
                 } else {
                     $path .= ' / '.$index['title'];
@@ -191,7 +191,7 @@ class Xoonips_MaintenanceItemTransferAction extends Xoonips_MaintenanceItemCommo
             $indexes_to[] = $index;
         }
 
-        $viewData = array();
+        $viewData = [];
         $viewData['title'] = $title;
         $viewData['breadcrumbs'] = $breadcrumbs;
         $viewData['description'] = $description;
@@ -234,7 +234,7 @@ class Xoonips_MaintenanceItemTransferAction extends Xoonips_MaintenanceItemCommo
         $req_indexes_to = $this->getRequestIndexes($request, $uid_to, '_to', false, false);
 
         // not choose index
-        if (count($req_indexes_from) == 0 || count($req_indexes_to) == 0) {
+        if (0 == count($req_indexes_from) || 0 == count($req_indexes_to)) {
             $viewData['url'] = XOOPS_URL.'/modules/'.$this->dirname.'/admin/maintenance_itemtransfer.php';
             $viewData['redirect_msg'] = _AM_XOONIPS_MAINTENANCE_ITEMTRANSFER_MSG_FAILURE;
             $response->setViewData($viewData);
@@ -246,8 +246,8 @@ class Xoonips_MaintenanceItemTransferAction extends Xoonips_MaintenanceItemCommo
         // get item
         $indexItemBean = Xoonips_BeanFactory::getBean('IndexItemLinkBean', $this->dirname, $this->trustDirname);
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-        $from_items = array();
-        $result_items = array();
+        $from_items = [];
+        $result_items = [];
         foreach ($req_indexes_from as $index_id) {
             $item_arr = $indexItemBean->getItemIdsByIndexId($index_id);
             $index_path = $indexBean->getFullPathStr($index_id, $uid_from);
@@ -280,7 +280,7 @@ class Xoonips_MaintenanceItemTransferAction extends Xoonips_MaintenanceItemCommo
             }
         }
 
-        $viewData = array();
+        $viewData = [];
         $viewData['title'] = $title;
         $viewData['breadcrumbs'] = $breadcrumbs;
         $viewData['description'] = $description;
@@ -317,7 +317,7 @@ class Xoonips_MaintenanceItemTransferAction extends Xoonips_MaintenanceItemCommo
 
         $new_indexes = '';
         foreach ($req_indexes as $iid) {
-            $new_indexes .= (strlen($new_indexes) == 0) ? $iid : ','.$iid;
+            $new_indexes .= (0 == strlen($new_indexes)) ? $iid : ','.$iid;
         }
 
         // get public indexes
@@ -327,15 +327,15 @@ class Xoonips_MaintenanceItemTransferAction extends Xoonips_MaintenanceItemCommo
         foreach ($indexes_arr as $index_arr) {
             $iid = $index_arr['index_id'];
             $d_index = $indexBean->getIndex($iid);
-            if ($d_index['open_level'] == XOONIPS_OL_PUBLIC) {
-                $new_indexes .= (strlen($new_indexes) == 0) ? $iid : ','.$iid;
+            if (XOONIPS_OL_PUBLIC == $d_index['open_level']) {
+                $new_indexes .= (0 == strlen($new_indexes)) ? $iid : ','.$iid;
             }
         }
 
         $this->transaction->start();
 
         // change uid
-        $uids = array($uid);
+        $uids = [$uid];
         if (!$this->updateItemUsers($item_id, $uids, $messages)) {
             return -2;
         }

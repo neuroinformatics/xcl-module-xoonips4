@@ -28,7 +28,7 @@ class Xoonips_ComplementBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -57,7 +57,7 @@ class Xoonips_ComplementBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -92,7 +92,7 @@ class Xoonips_ComplementBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $chk = true;
             foreach ($ret as $ret_tmp) {
@@ -174,7 +174,7 @@ class Xoonips_ComplementBean extends Xoonips_BeanBase
         $groupTable = $this->prefix($this->modulePrefix('item_field_group'));
         $idetailTable = $this->prefix($this->modulePrefix('item_field_detail'));
 
-        $ret = array();
+        $ret = [];
         //check item_field_detail_complement_link exists
         $check_sql = 'SELECT * FROM '.$tlinkTable.' WHERE item_type_id='.$item_type_id;
         $result = $this->execute($check_sql);
@@ -182,7 +182,7 @@ class Xoonips_ComplementBean extends Xoonips_BeanBase
             return false;
         }
 
-        if ($this->getRowsNum($result) == 0) {
+        if (0 == $this->getRowsNum($result)) {
             return $ret;
         }
         //TODO
@@ -201,7 +201,7 @@ class Xoonips_ComplementBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $base_item_field_detail_id = array();
+        $base_item_field_detail_id = [];
         while ($row = $this->fetchRow($result)) {
             $base_item_field_detail_id[$row[0]] = $row[1].':'.$row[2];
         }
@@ -225,12 +225,12 @@ class Xoonips_ComplementBean extends Xoonips_BeanBase
             return false;
         }
 
-        $complement = array(
+        $complement = [
             'complement_id' => '',
             'base_item_field_detail_id' => '',
             'complement_detail_id' => '',
             'item_field_detail_id' => '',
-            );
+        ];
         while ($row = $this->fetchRow($result)) {
             $complement['complement_id'] = $row[1];
             $complement['base_item_field_detail_id'] = $base_item_field_detail_id[$row[0]];

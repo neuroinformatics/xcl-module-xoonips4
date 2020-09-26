@@ -33,7 +33,7 @@ class Xoonips_ItemExtendBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -126,14 +126,14 @@ class Xoonips_ItemExtendBean extends Xoonips_BeanBase
      */
     public function getItemExtendTable()
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT DISTINCT table_name FROM $this->table WHERE released=1";
         $result = $this->execute($sql);
         if (!$result) {
             return false;
         }
         while ($row = $this->fetchArray($result)) {
-            if (strpos($row['table_name'], $this->modulePrefix('item_extend')) !== false) {
+            if (false !== strpos($row['table_name'], $this->modulePrefix('item_extend'))) {
                 $ret[] = $row['table_name'];
             }
         }

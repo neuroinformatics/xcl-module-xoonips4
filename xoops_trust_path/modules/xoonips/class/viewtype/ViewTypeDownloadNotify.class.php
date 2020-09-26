@@ -49,7 +49,7 @@ class Xoonips_ViewTypeDownloadNotify extends Xoonips_ViewTypeRadioBox
     {
         $ret = '';
         $list = $this->getList();
-        if ($value !== '') {
+        if ('' !== $value) {
             $ret = isset($list[$value]) ? $list[$value] : '';
         }
         $fieldName = $this->getFieldName($field, $groupLoopId);
@@ -89,7 +89,7 @@ class Xoonips_ViewTypeDownloadNotify extends Xoonips_ViewTypeRadioBox
     {
         $selectValues = $this->getList();
         foreach ($selectValues as $key => $selectValue) {
-            if ($value == '') {
+            if ('' == $value) {
                 $value = $key;
             }
             break;
@@ -105,7 +105,7 @@ class Xoonips_ViewTypeDownloadNotify extends Xoonips_ViewTypeRadioBox
 
     protected function getList()
     {
-        $ret = array();
+        $ret = [];
         $ret[1] = _MI_XOONIPS_INSTALL_DOWNLOAD_NOTIFY_YES;
         $ret[0] = _MI_XOONIPS_INSTALL_DOWNLOAD_NOTIFY_NO;
 

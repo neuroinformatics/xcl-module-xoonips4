@@ -8,21 +8,21 @@ require_once __DIR__.'/class/action/PolicyItemTypeAction.class.php';
 $request = new Xoonips_Request();
 $response = new Xoonips_Response();
 $op = $request->getParameter('op');
-if ($op == null) {
+if (null == $op) {
     $op = 'init';
 }
 
 // check request
-if (!in_array($op, array('init', 'register', 'registersave', 'edit', 'editsave', 'copy', 'import', 'importsave', 'delete',
+if (!in_array($op, ['init', 'register', 'registersave', 'edit', 'editsave', 'copy', 'import', 'importsave', 'delete',
     'release', 'break', 'export', 'exports',
     'complement', 'complementsave',
     'groupregister', 'groupregistersave', 'sorteditsave',
-    ))) {
+])) {
     die('illegal request');
 }
 
 // set action map
-$actionMap = array();
+$actionMap = [];
 $actionMap['init_success'] = 'policy_itemtype.html';
 $actionMap['register_success'] = 'policy_itemtype_register.html';
 $actionMap['registersave_success'] = 'redirect_header';

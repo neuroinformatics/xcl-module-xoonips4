@@ -23,7 +23,7 @@ class Xoonips_UserNotification extends XoopsNotificationHandler
     }
 
     private function triggerEvent2($category, $item_id, $event, $subject,
-            $template, $extra_tags = array(), $user_list = array())
+            $template, $extra_tags = [], $user_list = [])
     {
         $module_handler = &xoops_gethandler('module');
         $module = &$module_handler->getByDirname($this->dirname);
@@ -88,7 +88,7 @@ class Xoonips_UserNotification extends XoopsNotificationHandler
         // Add some tag substitutions here
 
         $not_config = $module->getInfo('notification');
-        $tags = array();
+        $tags = [];
         if (!empty($not_config)) {
             if (!empty($not_config['tags_file'])) {
                 $tags_file = XOOPS_ROOT_PATH.'/modules/'
@@ -161,12 +161,12 @@ class Xoonips_UserNotification extends XoopsNotificationHandler
         } else {
             $userInfo = $userBean->getUserBasicInfo($user_id);
         }
-        $tags = array(
+        $tags = [
             'USER_UNAME' => $userInfo['uname'],
             'USER_EMAIL' => $userInfo['email'],
             'USER_CERTIFY_URL' => XOOPS_URL.'/modules/'.Xoonips_Workflow::getDirname(),
             'USER_DETAIL_URL' => XOOPS_URL.'/userinfo.php?uid='.$userInfo['uid'],
-        );
+        ];
         $tags['SITENAME'] = XoopsUtils::getXoopsConfig('sitename');
         $tags['ADMINMAIL'] = XoopsUtils::getXoopsConfig('adminmail');
         $tags['SITEURL'] = XOOPS_URL.'/';
@@ -190,7 +190,7 @@ class Xoonips_UserNotification extends XoopsNotificationHandler
             $groupInfo = $groupsBean->getGroup($group_id);
         }
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
-        $tags = array(
+        $tags = [
             'GROUP_NAME' => $groupInfo['name'],
             'GROUP_DESCRIPTION' => $groupInfo['description'],
             'GROUP_CERTIFY_URL' => XOOPS_URL.'/modules/'.Xoonips_Workflow::getDirname(),
@@ -200,7 +200,7 @@ class Xoonips_UserNotification extends XoopsNotificationHandler
             'SITEURL' => XOOPS_URL.'/',
             'INDEX_PATH' => '/'.$groupInfo['name'],
             'GROUP_ID' => $group_id,
-        );
+        ];
         if (isset($_SESSION['xoopsUserId'])) {
             $certifyUserInfo = $userBean->getUserBasicInfo($_SESSION['xoopsUserId']);
             $tags['CERTIFY_USER'] = $certifyUserInfo['uname'];

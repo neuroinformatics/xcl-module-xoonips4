@@ -26,25 +26,25 @@ class Xoonips_Admin_SystemProxyForm extends Xoonips_AbstractActionForm
     {
         $constpref = '_AD_'.strtoupper($this->mDirname);
 
-        return array(
-            'proxy_host' => array(
+        return [
+            'proxy_host' => [
                 'type' => self::TYPE_STRING,
-            ),
-            'proxy_port' => array(
+            ],
+            'proxy_port' => [
                 'type' => self::TYPE_INT,
                 'label' => constant($constpref.'_SYSTEM_PROXY_PROXY_PORT_TITLE'),
-                'depends' => array(
+                'depends' => [
                     'required' => true,
                     'min' => 1,
-                ),
-            ),
-            'proxy_user' => array(
+                ],
+            ],
+            'proxy_user' => [
                 'type' => self::TYPE_STRING,
-            ),
-            'proxy_pass' => array(
+            ],
+            'proxy_pass' => [
                 'type' => self::TYPE_STRING,
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -57,7 +57,7 @@ class Xoonips_Admin_SystemProxyForm extends Xoonips_AbstractActionForm
      */
     protected function _getObjectValue(&$obj, $key)
     {
-        if ($key == 'proxy_pass' && !empty($obj[$key])) {
+        if ('proxy_pass' == $key && !empty($obj[$key])) {
             return self::PASSWORD_MASK;
         }
 
@@ -73,7 +73,7 @@ class Xoonips_Admin_SystemProxyForm extends Xoonips_AbstractActionForm
      */
     protected function _setObjectValue(&$obj, $key, $value)
     {
-        if ($key == 'proxy_pass' && $value == self::PASSWORD_MASK) {
+        if ('proxy_pass' == $key && self::PASSWORD_MASK == $value) {
             return;
         }
         $obj[$key] = $value;

@@ -23,7 +23,7 @@ class Xoonips_ViewTypePreview extends Xoonips_ViewType
             $fileId = $file->uploadFile($fileName, 'preview', 0, $field->getId());
         }
         if (!empty($value)) {
-            if ($fileId == 'none') {
+            if ('none' == $fileId) {
                 $fileId = $value;
             } else {
                 $fileBean->delete($value);
@@ -75,7 +75,7 @@ class Xoonips_ViewTypePreview extends Xoonips_ViewType
             $fileId = $file->uploadFile($fileName, 'preview', 0, $field->getId());
         }
         if (!empty($value)) {
-            if ($fileId == 'none') {
+            if ('none' == $fileId) {
                 $fileId = $value;
             } else {
                 $fileBean->delete($value);
@@ -121,12 +121,12 @@ class Xoonips_ViewTypePreview extends Xoonips_ViewType
 
     public function mustCheck(&$errors, $field, $value, $fieldName)
     {
-        if ($field->getEssential() == 1 && $value == '') {
+        if (1 == $field->getEssential() && '' == $value) {
             $fileName = $fieldName.'_file';
             $request = new Xoonips_Request();
             $file = $request->getFile($fileName);
             if (empty($file)) {
-                $parameters = array();
+                $parameters = [];
                 $parameters[] = $field->getName();
                 $errors->addError('_MD_XOONIPS_ERROR_REQUIRED', $fieldName, $parameters);
             }
@@ -141,7 +141,7 @@ class Xoonips_ViewTypePreview extends Xoonips_ViewType
             return true;
         }
 
-        $file_ids = array();
+        $file_ids = [];
         if (is_array($req_file)) {
             $file_ids = $req_file;
         } else {
@@ -158,7 +158,7 @@ class Xoonips_ViewTypePreview extends Xoonips_ViewType
         }
         $privateItemLimit = $itemBean->getPrivateItemLimit($uid);
         if ($filesizes > $privateItemLimit['itemStorage'] && $privateItemLimit['itemStorage'] > 0) {
-            $parameters = array();
+            $parameters = [];
             $parameters[] = '';
             $errors->addError('_MD_XOONIPS_ITEM_WARNING_ITEM_STORAGE_LIMIT', '', $parameters);
         }
@@ -184,14 +184,14 @@ class Xoonips_ViewTypePreview extends Xoonips_ViewType
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];
         } else {
-            $tableData = array();
+            $tableData = [];
             $sqlStrings[$tableName] = &$tableData;
         }
 
         if (isset($tableData[$columnName])) {
             $columnData = &$tableData[$columnName];
         } else {
-            $columnData = array();
+            $columnData = [];
             $tableData[$columnName] = &$columnData;
         }
         $columnData[0] = $field->getDataType()->convertSQLStr($value);
@@ -207,10 +207,10 @@ class Xoonips_ViewTypePreview extends Xoonips_ViewType
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];
         } else {
-            $tableData = array();
+            $tableData = [];
             $sqlStrings[$tableName] = &$tableData;
         }
-        if ($value != '') {
+        if ('' != $value) {
             $tableData[] = $value;
         }
     }

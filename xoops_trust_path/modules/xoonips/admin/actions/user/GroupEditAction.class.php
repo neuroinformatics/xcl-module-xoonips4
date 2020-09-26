@@ -29,16 +29,16 @@ class Xoonips_GroupEditAction extends User_GroupEditAction
     {
         $gid = $this->_getId();
         $groupsBean = Xoonips_BeanFactory::getBean('GroupsBean', $this->mDirname, $this->mTrustDirname);
-        $group = ($gid > 0) ? $groupsBean->getGroup($gid) : array();
+        $group = ($gid > 0) ? $groupsBean->getGroup($gid) : [];
         if (empty($group)) {
             $isExtended = false;
-            if (xoops_getrequest('group_type') == Xoonips_Enum::GROUP_TYPE) {
+            if (Xoonips_Enum::GROUP_TYPE == xoops_getrequest('group_type')) {
                 $isExtended = true;
-            } elseif (xoops_getrequest('type') == 'xoonips') {
+            } elseif ('xoonips' == xoops_getrequest('type')) {
                 $isExtended = true;
             }
             $group = $this->_createGroupArray($isExtended);
-            $group['adminUids'] = array();
+            $group['adminUids'] = [];
         } else {
             $group['adminUids'] = $this->_loadAdmins($gid);
             if ($group['item_storage_limit']) {
@@ -54,9 +54,9 @@ class Xoonips_GroupEditAction extends User_GroupEditAction
     public function _saveObject()
     {
         $groupId = $this->mObject['groupid'];
-        if ($this->mObject['group_type'] != Xoonips_Enum::GROUP_TYPE) {
+        if (Xoonips_Enum::GROUP_TYPE != $this->mObject['group_type']) {
             $groupHandler = &xoops_gethandler('group');
-            if ($groupId == 0) {
+            if (0 == $groupId) {
                 $groupObj = &$groupHandler->create();
             } else {
                 $groupObj = &$groupHandler->get($groupId);
@@ -85,8 +85,8 @@ class Xoonips_GroupEditAction extends User_GroupEditAction
         // update group info
         $user = Xoonips_User::getInstance();
         $message = '';
-        if ($groupId == 0) {
-            if (($groupId = $user->doGroupRegistry($this->mObject, $this->mObject['adminUids'], $message)) === false) {
+        if (0 == $groupId) {
+            if (false === ($groupId = $user->doGroupRegistry($this->mObject, $this->mObject['adminUids'], $message))) {
                 return false;
             }
         } else {
@@ -98,17 +98,17 @@ class Xoonips_GroupEditAction extends User_GroupEditAction
         $iconDir = sprintf('%s/uploads/%s/group', XOOPS_ROOT_PATH, $this->mDirname);
         $iconPath = sprintf('%s/%u', $iconDir, $groupId);
         if ($doDeleteIcon && file_exists($iconPath)) {
-            if (@unlink($iconPath) === false) {
+            if (false === @unlink($iconPath)) {
                 return false;
             }
         }
         if (is_object($iconFile)) {
             if (!is_dir($iconDir)) {
-                if (@mkdir($fdir) === false) {
+                if (false === @mkdir($fdir)) {
                     return false;
                 }
             }
-            if ($iconFile->saveAs($iconPath) === false) {
+            if (false === $iconFile->saveAs($iconPath)) {
                 return false;
             }
         }
@@ -124,7 +124,7 @@ class Xoonips_GroupEditAction extends User_GroupEditAction
     public function executeViewInput(&$controller, &$xoopsUser, &$render)
     {
         $constpref = '_AD_'.strtoupper($this->mDirname);
-        $isExtended = ($this->mObject['group_type'] == Xoonips_Enum::GROUP_TYPE);
+        $isExtended = (Xoonips_Enum::GROUP_TYPE == $this->mObject['group_type']);
         $pending = '';
         switch ($this->mObject['activate']) {
         case Xoonips_Enum::GRP_NOT_CERTIFIED:
@@ -142,10 +142,10 @@ class Xoonips_GroupEditAction extends User_GroupEditAction
         }
         $icon = false;
         if ($this->mObject['icon']) {
-            $icon = array(
+            $icon = [
                 'file_name' => $this->mObject['icon'],
                 'mime_type' => $this->mObject['mime_type'],
-            );
+            ];
         }
         $render->setTemplateName('group_edit.html');
         $render->setAttribute('actionForm', $this->mActionForm);
@@ -179,7 +179,7 @@ class Xoonips_GroupEditAction extends User_GroupEditAction
      */
     public function _createGroupArray($isExtended)
     {
-        $ret = array(
+        $ret = [
             'groupid' => 0,
             'activate' => Xoonips_Enum::GRP_CERTIFIED,
             'name' => '',
@@ -196,7 +196,7 @@ class Xoonips_GroupEditAction extends User_GroupEditAction
             'item_storage_limit' => null,
             'index_id' => 0,
             'group_type' => 'User',
-        );
+        ];
         if ($isExtended) {
             $ret['item_number_limit'] = Functions::getXoonipsConfig($this->mDirname, 'group_item_number_limit');
             $ret['index_number_limit'] = Functions::getXoonipsConfig($this->mDirname, 'group_index_number_limit');

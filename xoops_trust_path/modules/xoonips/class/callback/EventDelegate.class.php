@@ -36,7 +36,7 @@ class Xoonips_EventDelegate
         foreach ($dirnames as $dirname) {
             $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $dirname, $trustDirname);
             $index_id = $indexBean->insertPrivateIndex($uid);
-            if ($index_id === false) {
+            if (false === $index_id) {
                 $sucess = false;
                 continue;
             }
@@ -129,9 +129,9 @@ class Xoonips_EventDelegate
             $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $dirname, $trustDirname);
             $indexItemLink = Xoonips_BeanFactory::getBean('IndexItemLinkBean', $dirname, $trustDirname);
             // delete items
-            $itemIdSingle = array();
+            $itemIdSingle = [];
             $itemIdSingle = $itemUsersBean->getItemsWithOwner($uid);
-            if ($itemIdSingle != false && count($itemIdSingle) != 0) {
+            if (false != $itemIdSingle && 0 != count($itemIdSingle)) {
                 $itemExtendTable = $itemExtendBean->getItemExtendTable();
                 foreach ($itemIdSingle as $itemSingle) {
                     if (!$itemBean->delete($itemSingle['item_id'])
@@ -146,7 +146,7 @@ class Xoonips_EventDelegate
                         $log->recordDeleteItemEvent($itemSingle['item_id']);
                     }
                     //delete item_extend
-                    if (count($itemExtendTable) != 0) {
+                    if (0 != count($itemExtendTable)) {
                         foreach ($itemExtendTable as $tableName) {
                             if (!$itemExtendBean->delete($itemSingle['item_id'], $tableName)) {
                                 redirect_header(XOOPS_URL.'/', 3, 'delete itemExtend error!');
@@ -156,35 +156,35 @@ class Xoonips_EventDelegate
                 }
             }
             // delete item users
-            $itemIdMore = array();
+            $itemIdMore = [];
             $itemIdMore = $itemUsersBean->getItemsWithOwners($uid);
-            if ($itemIdMore != false && count($itemIdMore) != 0) {
+            if (false != $itemIdMore && 0 != count($itemIdMore)) {
                 if (!$itemUsersBean->deleteAllByUid($uid)) {
                     redirect_header(XOOPS_URL.'/', 3, 'delete groupItemUsers error!');
                 } else {
                     foreach ($itemIdMore as $itemMore) {
                         $itemUsersInfo = $itemUsersBean->getItemUsersInfo($itemMore['item_id']);
-                        $itemUsersId = array();
+                        $itemUsersId = [];
                         foreach ($itemUsersInfo as $itemUser) {
                             $itemUsersId[] = $itemUser['uid'];
                         }
                         //log :57
                         $log->recordDeleteItemUserEvent($itemMore['item_id'], $uid);
                         //event
-                        if ($itemUsersId != false && count($itemUsersId) != 0) {
+                        if (false != $itemUsersId && 0 != count($itemUsersId)) {
                             $notification->userDeleteItemUser($itemMore['item_id'], $userInfo['uname'], $itemUsersId);
                         }
                     }
                 }
             }
             //delete index
-            $indexIds = array();
+            $indexIds = [];
             $indexIds = $indexBean->getPrivateIndexes($uid);
             if (!$indexBean->deleteIndexByUid($uid)) {
                 redirect_header(XOOPS_URL.'/', 3, 'delete index error!');
             }
             //delete index_item_link
-            if ($indexIds != false && count($indexIds) != 0) {
+            if (false != $indexIds && 0 != count($indexIds)) {
                 foreach ($indexIds as $indexId) {
                     if (!$indexItemLink->deleteByIndexId($indexId['index_id'])) {
                         redirect_header(XOOPS_URL.'/', 3, 'delete indexItemLink error!');
@@ -376,12 +376,12 @@ class Xoonips_EventDelegate
         foreach ($dirnames as $dirname) {
             $groupbean = Xoonips_BeanFactory::getBean('GroupsBean', $dirname);
             $group = $groupbean->getGroup($gid);
-            $index = array(
+            $index = [
                 'parent_index_id' => 1,
                 'groupid' => $gid,
                 'open_level' => 2,
                 'title' => $group['name'],
-            );
+            ];
             $indexbean = Xoonips_BeanFactory::getBean('IndexBean', $dirname, $trustDirname);
             $index_id = $indexbean->insertGroupIndex($index);
             //insert index
@@ -493,12 +493,12 @@ class Xoonips_EventDelegate
         foreach ($dirnames as $dirname) {
             $groupbean = Xoonips_BeanFactory::getBean('GroupsBean', $dirname);
             $group = $groupbean->getGroup($gid);
-            $index = array(
+            $index = [
                 'parent_index_id' => 1,
                 'groupid' => $gid,
                 'open_level' => 2,
                 'title' => $group['name'],
-            );
+            ];
             $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $dirname, $trustDirname);
             //update index
             if (!$indexBean->updateRootGroupIndex($index)) {

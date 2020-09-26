@@ -34,11 +34,11 @@ class Xoonips_ViewTypeRights extends Xoonips_ViewType
             $value = $use_cc.$cc_commercial_use.$cc_modification.','.$text;
         }
 
-        $check_cc = array('', '');
+        $check_cc = ['', ''];
         $check_cc[$use_cc] = 'checked';
-        $check_com = array('', '');
+        $check_com = ['', ''];
         $check_com[$cc_commercial_use] = 'checked';
-        $check_mod = array('', '', '');
+        $check_mod = ['', '', ''];
         $check_mod[$cc_modification] = 'checked';
         $rightsJurisdic = $fieldName.'_select';
         $this->getXoopsTpl()->assign('viewType', 'input');
@@ -131,7 +131,7 @@ class Xoonips_ViewTypeRights extends Xoonips_ViewType
             $cc_modification = substr($rightsValue[0], 2, 1);
             $text = (strlen($value) > strlen($rightsValue[0]) + 1) ? substr($value, strlen($rightsValue[0]) + 1) : '';
         }
-        if ($use_cc == '0') {
+        if ('0' == $use_cc) {
             $ret = $text;
         } else {
             $ret = Xoonips_Utils::getCcLicense($cc_commercial_use, $cc_modification);
@@ -181,11 +181,11 @@ class Xoonips_ViewTypeRights extends Xoonips_ViewType
             $value = $use_cc.$cc_commercial_use.$cc_modification.','.$text;
         }
 
-        $check_cc = array('', '');
+        $check_cc = ['', ''];
         $check_cc[$use_cc] = 'checked';
-        $check_com = array('', '');
+        $check_com = ['', ''];
         $check_com[$cc_commercial_use] = 'checked';
-        $check_mod = array('', '', '');
+        $check_mod = ['', '', ''];
         $check_mod[$cc_modification] = 'checked';
         //$valueSetBean = Xoonips_BeanFactory::getBean('ItemFieldValueSetBean', $this->dirname, $this->trustDirname);
         //$jurisdictions = $valueSetBean->getValueDetail('Rights');

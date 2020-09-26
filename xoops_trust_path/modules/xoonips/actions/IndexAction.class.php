@@ -46,7 +46,7 @@ class Xoonips_IndexAction extends Xoonips_AbstractAction
         $action->doAction($request, $response);
         $block = $response->getViewData();
         $render->setTemplateName($dirname.'_index.html');
-        if (count($block['explain']) != 0) {
+        if (0 != count($block['explain'])) {
             $render->setAttribute('blocks', $block['explain']);
         }
         $render->setAttribute($dirname.'_editprofile_url', XOOPS_URL.'/modules/'.$dirname.'/edituser.php?uid='.$uid);

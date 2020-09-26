@@ -43,7 +43,7 @@ class Xoonips_SearchTextBean extends Xoonips_BeanBase
     {
         $sql = "LOAD DATA INFILE '$tmpfile' INTO TABLE ".$this->table.' ( file_id, search_text )';
         $result = $this->execute($sql);
-        if ($result === false) {
+        if (false === $result) {
             $sql = "LOAD DATA LOCAL INFILE '$tmpfile' INTO TABLE ".$this->table.'( file_id, search_text )';
             $result = $this->execute($sql);
         }

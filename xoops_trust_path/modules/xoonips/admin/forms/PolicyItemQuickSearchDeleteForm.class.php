@@ -24,16 +24,16 @@ class Xoonips_Admin_PolicyItemQuickSearchDeleteForm extends Xoonips_AbstractActi
     {
         $constpref = '_AD_'.strtoupper($this->mDirname);
 
-        return array(
-            'condition_id' => array(
+        return [
+            'condition_id' => [
                 'type' => self::TYPE_INT,
                 'label' => constant($constpref.'_POLICY_ITEM_QUICKSEARCH_CRITERIA_ID'),
-                'depends' => array(
+                'depends' => [
                     'required' => true,
                     'min' => 2,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**

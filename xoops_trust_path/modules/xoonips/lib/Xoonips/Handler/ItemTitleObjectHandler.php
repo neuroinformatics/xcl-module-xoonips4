@@ -17,7 +17,7 @@ class ItemTitleObjectHandler extends AbstractObjectHandler
     {
         parent::__construct($db, $dirname);
         $this->mTable = $db->prefix($dirname.'_item_title');
-        $this->mPrimaryKey = array('item_id', 'title_id');
+        $this->mPrimaryKey = ['item_id', 'title_id'];
         $this->mIsAutoIncrement = false;
     }
 }

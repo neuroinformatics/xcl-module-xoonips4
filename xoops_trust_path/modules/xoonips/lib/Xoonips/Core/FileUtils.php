@@ -12,7 +12,7 @@ class FileUtils
      *
      * @var array
      */
-    public static $mDeleteFiles = array();
+    public static $mDeleteFiles = [];
 
     /**
      * fallback mime type string for mime type detection failure.
@@ -26,31 +26,31 @@ class FileUtils
      *
      * @var array
      */
-    private static $_mimeTypeAlias = array(
+    private static $_mimeTypeAlias = [
         'application/x-zip' => 'application/zip',
         'application/x-zip-compressed' => 'application/zip',
         'multipart/x-zip' => 'application/zip',
-    );
+    ];
 
     /**
      * mime type map.
      *
      * @var array
      */
-    private static $_mimeTypeMap = array(
-        '' => array(
+    private static $_mimeTypeMap = [
+        '' => [
             'dtd' => 'application/xml-dtd',
             'jnlp' => 'application/x-java-jnlp-file',
             'html' => 'text/html',
             'xhtml' => 'application/xhtml+xml',
             'xml' => 'application/xml',
             'xsl' => 'application/xml',
-        ),
-        'application/msword' => array(
+        ],
+        'application/msword' => [
             'ppt' => 'application/vnd.ms-powerpoint',
             'xls' => 'application/vnd.ms-excel',
-        ),
-        'application/zip' => array(
+        ],
+        'application/zip' => [
             'jar' => 'x-java-archive',
             'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
@@ -79,19 +79,19 @@ class FileUtils
             'sti' => 'application/vnd.sun.xml.impress.template',
             'sxg' => 'application/vnd.sun.xml.writer.global',
             'sxm' => 'application/vnd.sun.xml.math',
-        ),
-        'application/octet-stream' => array(
+        ],
+        'application/octet-stream' => [
             'wmv' => 'video/x-ms-wmv',
-        ),
-        'text/html' => array(
+        ],
+        'text/html' => [
             'css' => 'text/css',
             'dtd' => 'application/xml-dtd',
             'sgml' => 'text/sgml',
             'sgm' => 'text/sgml',
             'xml' => 'application/xml',
             'xsl' => 'application/xml',
-        ),
-        'text/plain' => array(
+        ],
+        'text/plain' => [
             'c' => 'text/x-c',
             'cc' => 'text/x-c++',
             'cpp' => 'text/x-c++',
@@ -108,8 +108,8 @@ class FileUtils
             'tex' => 'application/x-tex',
             'xml' => 'application/xml',
             'xsl' => 'application/xml',
-        ),
-        'text/x-c' => array(
+        ],
+        'text/x-c' => [
             'cc' => 'text/x-c++',
             'cpp' => 'text/x-c++',
             'css' => 'text/css',
@@ -123,8 +123,8 @@ class FileUtils
             'sgm' => 'text/sgml',
             'xml' => 'application/xml',
             'xsl' => 'application/xml',
-        ),
-        'text/x-c++' => array(
+        ],
+        'text/x-c++' => [
             'c' => 'text/x-c',
             'css' => 'text/css',
             'dtd' => 'application/xml-dtd',
@@ -136,8 +136,8 @@ class FileUtils
             'sgm' => 'text/sgml',
             'xml' => 'application/xml',
             'xsl' => 'application/xml',
-        ),
-    );
+        ],
+    ];
 
     /**
      * guess mime type.
@@ -153,12 +153,12 @@ class FileUtils
         if (!file_exists($fpath)) {
             return false;
         }
-        if ($fname === false) {
+        if (false === $fname) {
             $fname = basename($fpath);
         }
         if (version_compare(PHP_VERSION, '5.3.0') > 0) {
             $finfo = @finfo_open();
-            if ($finfo === false) {
+            if (false === $finfo) {
                 return false;
             }
             $mime = finfo_file($finfo, $fpath, FILEINFO_MIME);
@@ -180,7 +180,7 @@ class FileUtils
             $mime = self::$_mimeTypeMap[$mime][$ext];
         }
         // fallback unknown mime type
-        if ($mime == '') {
+        if ('' == $mime) {
             $mime = self::$_mimeTypeFallback;
         }
 
@@ -197,7 +197,7 @@ class FileUtils
      */
     public static function getFileInfo($fpath, $fname)
     {
-        static $imageMime = array('image/jpeg', 'image/gif', 'image/png');
+        static $imageMime = ['image/jpeg', 'image/gif', 'image/png'];
         if (!file_exists($fpath)) {
             return false;
         }
@@ -205,15 +205,15 @@ class FileUtils
         $length = filesize($fpath);
         $mime = self::guessMimeType($fpath, $fname);
         $etag = md5($fpath.$length.$mtime.$mime);
-        $ret = array(
-        'mime' => $mime,
+        $ret = [
+            'mime' => $mime,
             'length' => $length,
             'mtime' => $mtime,
             'etag' => $etag,
-        );
+        ];
         if (in_array($mime, $imageMime)) {
             $info = @getimagesize($fpath);
-            if ($info !== false) {
+            if (false !== $info) {
                 $ret['width'] = $info[0];
                 $ret['height'] = $info[1];
             }
@@ -233,23 +233,23 @@ class FileUtils
     {
         // normalize file path
         $fpath = rtrim(str_replace('\\', '/', trim($fpath)), '/');
-        if (substr($fpath, 0, 1) != '/') {
+        if ('/' != substr($fpath, 0, 1)) {
             // not absolute path
             return false;
         }
         $dpath = '';
         foreach (explode('/', $fpath) as $dirname) {
-            if ($dirname == '') {
+            if ('' == $dirname) {
                 // continue if '//' directry spearator found
                 continue;
             }
-            if ($dirname == '.' || $dirname == '..') {
+            if ('.' == $dirname || '..' == $dirname) {
                 // error if '.' or '..' directory name found.
                 return false;
             }
             $dpath .= '/'.$dirname;
             if (!is_dir($dpath)) {
-                if (@mkdir($dpath) === false) {
+                if (false === @mkdir($dpath)) {
                     return false;
                 }
             }
@@ -275,7 +275,7 @@ class FileUtils
         if (!preg_match('/^[a-z0-9_.-]+$/i', $prefix)) {
             return false;
         }
-        if ($init === false) {
+        if (false === $init) {
             list($usec, $sec) = explode(' ', microtime());
             mt_srand($sec + $usec * 1000000);
             $init = true;
@@ -307,12 +307,12 @@ class FileUtils
         $ret = true;
         if ($dh = @opendir($fpath)) {
             while ($fname = @readdir($dh)) {
-                if ($fname == '.' || $fname == '..') {
+                if ('.' == $fname || '..' == $fname) {
                     continue;
                 }
                 $sfpath = $fpath.'/'.$fname;
                 $ret = is_dir($sfpath) ? self::deleteDirectory($sfpath) : @unlink($sfpath);
-                if ($ret === false) {
+                if (false === $ret) {
                     break;
                 }
             }
@@ -334,7 +334,7 @@ class FileUtils
     public static function deleteDirectory($fpath)
     {
         $ret = true;
-        if (self::emptyDirectory($fpath) !== false) {
+        if (false !== self::emptyDirectory($fpath)) {
             $ret = @rmdir($fpath);
         }
 
@@ -349,7 +349,7 @@ class FileUtils
     public static function deleteFileOnExit($fpath)
     {
         if (empty(self::$mDeleteFiles)) {
-            register_shutdown_function(array(get_class(), 'onShutdown'));
+            register_shutdown_function([get_class(), 'onShutdown']);
         }
         self::$mDeleteFiles[] = $fpath;
     }
@@ -368,6 +368,6 @@ class FileUtils
                 @unlink($fpath);
             }
         }
-        self::$mDeleteFiles = array();
+        self::$mDeleteFiles = [];
     }
 }

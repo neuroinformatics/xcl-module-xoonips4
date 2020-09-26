@@ -9,17 +9,17 @@ require_once __DIR__.'/class/action/MaintenanceItemWithdrawAction.class.php';
 $request = new Xoonips_Request();
 $response = new Xoonips_Response();
 $op = $request->getParameter('op');
-if ($op == null) {
+if (null == $op) {
     $op = 'init';
 }
 
 // check request
-if (!in_array($op, array('init', 'confirm', 'execute'))) {
+if (!in_array($op, ['init', 'confirm', 'execute'])) {
     die('illegal request');
 }
 
 // set action map
-$actionMap = array();
+$actionMap = [];
 $actionMap['init_success'] = 'maintenance_itemwithdraw.html';
 $actionMap['index_success'] = 'maintenance_itemwithdraw.html';
 $actionMap['confirm_success'] = 'maintenance_itemwithdraw_confirm.html';

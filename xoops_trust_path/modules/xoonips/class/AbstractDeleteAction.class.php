@@ -34,7 +34,7 @@ abstract class Xoonips_AbstractDeleteAction extends Xoonips_AbstractEditAction
      */
     public function prepare()
     {
-        return parent::prepare() && $this->mObject != null;
+        return parent::prepare() && null != $this->mObject;
     }
 
     /**

@@ -13,7 +13,7 @@ class Xoonips_ViewTypeCheckBox extends Xoonips_ViewType
     {
         $fieldName = $this->getFieldName($field, $groupLoopId);
         $chkName = $fieldName.'_checkbox';
-        $checked = ($value == '1') ? 'checked' : '';
+        $checked = ('1' == $value) ? 'checked' : '';
         $this->getXoopsTpl()->assign('viewType', 'input');
         $this->getXoopsTpl()->assign('chkName', $chkName);
         $this->getXoopsTpl()->assign('checked', $checked);
@@ -29,7 +29,7 @@ class Xoonips_ViewTypeCheckBox extends Xoonips_ViewType
     public function getDisplayView($field, $value, $groupLoopId)
     {
         $fieldName = $this->getFieldName($field, $groupLoopId);
-        $checked = ($value == '1') ? 'checked' : '';
+        $checked = ('1' == $value) ? 'checked' : '';
         $this->getXoopsTpl()->assign('viewType', 'confirm');
         $this->getXoopsTpl()->assign('checked', $checked);
         $this->getXoopsTpl()->assign('name', $field->getName());
@@ -42,7 +42,7 @@ class Xoonips_ViewTypeCheckBox extends Xoonips_ViewType
 
     public function getDetailDisplayView($field, $value, $display)
     {
-        $checked = ($value == '1') ? 'checked' : '';
+        $checked = ('1' == $value) ? 'checked' : '';
         $this->getXoopsTpl()->assign('viewType', 'detail');
         $this->getXoopsTpl()->assign('checked', $checked);
         $this->getXoopsTpl()->assign('name', $field->getName());
@@ -65,7 +65,7 @@ class Xoonips_ViewTypeCheckBox extends Xoonips_ViewType
      */
     public function getDefaultValueBlockView($list, $value, $disabled = '')
     {
-        $checked = ($value == '1') ? 'checked' : '';
+        $checked = ('1' == $value) ? 'checked' : '';
         $this->getXoopsTpl()->assign('viewType', 'default');
         $this->getXoopsTpl()->assign('checked', $checked);
         $this->getXoopsTpl()->assign('disabled', $disabled);

@@ -27,7 +27,7 @@ class Xoonips_UserAbstractEditAction extends Xoonips_UserAction
 
         $this->mObject = &$this->mObjectHandler->get($id);
 
-        if ($this->mObject == null && $this->isEnableCreate()) {
+        if (null == $this->mObject && $this->isEnableCreate()) {
             $this->mObject = &$this->mObjectHandler->create();
         }
     }
@@ -59,7 +59,7 @@ class Xoonips_UserAbstractEditAction extends Xoonips_UserAction
 
     public function getDefaultView(&$controller, &$xoopsUser)
     {
-        if ($this->mObject == null) {
+        if (null == $this->mObject) {
             return USER_FRAME_VIEW_ERROR;
         }
 
@@ -70,11 +70,11 @@ class Xoonips_UserAbstractEditAction extends Xoonips_UserAction
 
     public function execute(&$controller, &$xoopsUser)
     {
-        if ($this->mObject == null) {
+        if (null == $this->mObject) {
             return USER_FRAME_VIEW_ERROR;
         }
 
-        if (xoops_getrequest('_form_control_cancel') != null) {
+        if (null != xoops_getrequest('_form_control_cancel')) {
             return USER_FRAME_VIEW_CANCEL;
         }
 

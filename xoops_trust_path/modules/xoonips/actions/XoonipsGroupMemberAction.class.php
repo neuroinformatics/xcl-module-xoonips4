@@ -10,7 +10,7 @@ class Xoonips_GroupMemberAction extends Xoonips_UserActionBase
         global $xoopsUser;
         $uid = $xoopsUser->getVar('uid');
         $groupId = $request->getParameter('groupid');
-        $viewData = array();
+        $viewData = [];
 
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
         $groupBean = Xoonips_BeanFactory::getBean('GroupsBean', $this->dirname, $this->trustDirname);
@@ -19,12 +19,12 @@ class Xoonips_GroupMemberAction extends Xoonips_UserActionBase
         $group = $groupBean->getGroup($groupId);
         $managers = $userBean->getUsersGroups($groupId, true);
         $users = $userBean->getUsersGroups($groupId, false);
-        $members = array();
+        $members = [];
         foreach ($users as $user) {
             $groupUserLinkInfo = $groupUserLinkBean->getGroupUserLinkInfo($groupId, $user['uid']);
             $user['deleteFlag'] = true;
             $user['activate'] = $groupUserLinkInfo['activate'];
-            if ($groupUserLinkInfo['activate'] == 1 || $groupUserLinkInfo['activate'] == 2) {
+            if (1 == $groupUserLinkInfo['activate'] || 2 == $groupUserLinkInfo['activate']) {
                 $user['deleteFlag'] = false;
             }
             $members[] = $user;
@@ -46,15 +46,15 @@ class Xoonips_GroupMemberAction extends Xoonips_UserActionBase
         }
 
         $token_ticket = $this->createToken('user_group_member');
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => _MD_XOONIPS_LANG_GROUP_LIST,
                 'url' => 'user.php?op=groupList',
-            ),
-            array(
+            ],
+            [
                 'name' => _MD_XOONIPS_LANG_GROUP_MEMBER_EDIT,
-            ),
-        );
+            ],
+        ];
         $viewData['xoops_breadcrumbs'] = $breadcrumbs;
         $viewData['token_ticket'] = $token_ticket;
         $viewData['group'] = $group;
@@ -70,22 +70,22 @@ class Xoonips_GroupMemberAction extends Xoonips_UserActionBase
 
     protected function doUpdate(&$request, &$response)
     {
-        $viewData = array();
+        $viewData = [];
         if (!$this->validateToken('user_group_member')) {
             $response->setSystemError('Ticket error');
 
             return false;
         }
         $token_ticket = $this->createToken('user_group_member');
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => _MD_XOONIPS_LANG_GROUP_LIST,
                 'url' => 'user.php?op=groupList',
-            ),
-            array(
+            ],
+            [
                 'name' => _MD_XOONIPS_LANG_GROUP_MEMBER_EDIT,
-            ),
-        );
+            ],
+        ];
 
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
 
@@ -120,7 +120,7 @@ class Xoonips_GroupMemberAction extends Xoonips_UserActionBase
 
     protected function doSearch(&$request, &$response)
     {
-        $viewData = array();
+        $viewData = [];
         if (!$this->validateToken('user_group_member')) {
             $response->setSystemError('Ticket error');
 
@@ -138,8 +138,8 @@ class Xoonips_GroupMemberAction extends Xoonips_UserActionBase
         $groupId = $request->getParameter('groupid');
 
         //get group members
-        $uids = array();
-        $members = array();
+        $uids = [];
+        $members = [];
         if (!empty($memberIds)) {
             foreach ($memberIds as $memberId) {
                 $uids[] = $memberId;
@@ -160,10 +160,10 @@ class Xoonips_GroupMemberAction extends Xoonips_UserActionBase
                 $member['deleteFlag'] = true;
                 if ($groupUserLinkInfo) {
                     $member['activate'] = $groupUserLinkInfo['activate'];
-                    if ($groupUserLinkInfo['activate'] == 1) {
+                    if (1 == $groupUserLinkInfo['activate']) {
                         $member['deleteFlag'] = false;
                     }
-                    if ($groupUserLinkInfo['activate'] == 2) {
+                    if (2 == $groupUserLinkInfo['activate']) {
                         $member['deleteFlag'] = false;
                     }
                 }
@@ -172,7 +172,7 @@ class Xoonips_GroupMemberAction extends Xoonips_UserActionBase
         }
 
         //get group managers
-        $admins = array();
+        $admins = [];
         foreach ($adminIds as $adminId) {
             $admin = $userBean->getUserBasicInfo($adminId);
             $admins[] = $admin;
@@ -182,15 +182,15 @@ class Xoonips_GroupMemberAction extends Xoonips_UserActionBase
         $group = $groupBean->getGroup($groupId);
 
         $token_ticket = $this->createToken('user_group_member');
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => _MD_XOONIPS_LANG_GROUP_LIST,
                 'url' => 'user.php?op=groupList',
-            ),
-            array(
+            ],
+            [
                 'name' => _MD_XOONIPS_LANG_GROUP_MEMBER_EDIT,
-            ),
-        );
+            ],
+        ];
 
         $viewData['xoops_breadcrumbs'] = $breadcrumbs;
         $viewData['token_ticket'] = $token_ticket;

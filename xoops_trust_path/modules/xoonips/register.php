@@ -13,12 +13,12 @@ Xoonips_Utils::denyGuestAccess();
 $request = new Xoonips_Request();
 $response = new Xoonips_Response();
 $op = $request->getParameter('op');
-if ($op == null) {
+if (null == $op) {
     $op = 'init';
 }
 
 // check request
-if (!in_array($op, array(
+if (!in_array($op, [
     'init',
     'selectItemtype',
     'register',
@@ -35,12 +35,12 @@ if (!in_array($op, array(
     'confirm',
     'save',
     'finish',
-))) {
+])) {
     die('illegal request');
 }
 
 // set action map
-$actionMap = array();
+$actionMap = [];
 $actionMap['init_success'] = $mydirname.'_register_top.html';
 $actionMap['selectItemtype_success'] = $mydirname.'_register_select_itemtype.html';
 $actionMap['register_success'] = $mydirname.'_register.html';
@@ -59,7 +59,7 @@ $actionMap['confirm_error'] = $mydirname.'_register.html';
 $actionMap['save_success'] = $mydirname.'_common_msg_sub.html';
 $actionMap['finish_success'] = 'redirect_header';
 
-if ($op == 'init') {
+if ('init' == $op) {
     include XOOPS_ROOT_PATH.'/header.php';
 }
 
@@ -68,12 +68,12 @@ $action = new Xoonips_RegisterAction();
 $action->doAction($request, $response);
 
 // forward
-if ($op == 'init') {
+if ('init' == $op) {
     $response->forward($actionMap);
 } else {
     $response->forwardLayeredWindow($actionMap);
 }
 
-if ($op == 'init') {
+if ('init' == $op) {
     include XOOPS_ROOT_PATH.'/footer.php';
 }

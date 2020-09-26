@@ -50,14 +50,14 @@ class ModuleUninstaller
      *
      * @var array
      */
-    protected $mPreUninstallHooks = array();
+    protected $mPreUninstallHooks = [];
 
     /**
      * custom post-uninstall hooks.
      *
      * @var array
      */
-    protected $mPostUninstallHooks = array();
+    protected $mPostUninstallHooks = [];
 
     /**
      * constructor.
@@ -112,7 +112,7 @@ class ModuleUninstaller
 
             return false;
         }
-        if ($this->mXoopsModule->get('mid') != null) {
+        if (null != $this->mXoopsModule->get('mid')) {
             $this->_uninstallModule();
             if (!$this->mForceMode && $this->mLog->hasError()) {
                 $this->_processReport();
@@ -161,7 +161,7 @@ class ModuleUninstaller
     protected function _executePreUninstallHooks()
     {
         foreach ($this->mPreUninstallHooks as $func) {
-            if (is_callable(array($this, $func))) {
+            if (is_callable([$this, $func])) {
                 $this->$func();
                 if (!$this->mForceMode && $this->mLog->hasError()) {
                     break;
@@ -181,7 +181,7 @@ class ModuleUninstaller
     protected function _executePostUninstallHooks()
     {
         foreach ($this->mPostUninstallHooks as $func) {
-            if (is_callable(array($this, $func))) {
+            if (is_callable([$this, $func])) {
                 $this->$func();
                 if (!$this->mForceMode && $this->mLog->hasError()) {
                     break;
@@ -205,7 +205,7 @@ class ModuleUninstaller
         $tables = &$this->mXoopsModule->getInfo('tables');
         if (is_array($tables)) {
             foreach ($tables as $table) {
-                $tableName = str_replace(array('{prefix}', '{dirname}'), array(XOOPS_DB_PREFIX, $dirname), $table);
+                $tableName = str_replace(['{prefix}', '{dirname}'], [XOOPS_DB_PREFIX, $dirname], $table);
                 $sql = sprintf('DROP TABLE `%s`;', $tableName);
                 if ($db->query($sql)) {
                     $this->mLog->addReport(XCubeUtils::formatString($this->mLangMan->get('INSTALL_MSG_TABLE_DOROPPED'), $tableName));
@@ -267,7 +267,7 @@ class ModuleUninstaller
     protected function _processScript()
     {
         $installScript = trim($this->mXoopsModule->getInfo('onUninstall'));
-        if ($installScript != false) {
+        if (false != $installScript) {
             require_once XOOPS_MODULE_PATH.'/'.$this->mXoopsModule->get('dirname').'/'.$installScript;
             $funcName = 'xoops_module_uninstall_'.$this->mXoopsModule->get('dirname');
             if (!preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $funcName)) {

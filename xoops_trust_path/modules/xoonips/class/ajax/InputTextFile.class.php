@@ -30,27 +30,27 @@ class Xoonips_InputTextFileAjaxMethod extends Xoonips_AbstractAjaxMethod
         $textFromOpener = true;
         if (!is_null($file)) {
             // file was uploaded
-                $originalFileName = $file['name'];
+            $originalFileName = $file['name'];
             $mimeType = $file['type'];
             $fileName = $file['tmp_name'];
             $error = (int) $file['error'];
-            if ($error != 0) {
-                if ($error == UPLOAD_ERR_INI_SIZE) {
+            if (0 != $error) {
+                if (UPLOAD_ERR_INI_SIZE == $error) {
                     $errorMessage = _MD_XOONIPS_ITEM_UPLOAD_FILE_TOO_LARGE;
                 } else {
                     $errorMessage = _MD_XOONIPS_ITEM_UPLOAD_FILE_FAILED;
                 }
             } else {
                 // check mime type
-                        if (strstr($mimeType, 'text/plain') === false) {
-                            $errorMessage = 'unsupported file type : '.$mimeType;
-                        } else {
-                            $text = file_get_contents($fileName);
-                                // convert encoding to _CHARSET
+                if (false === strstr($mimeType, 'text/plain')) {
+                    $errorMessage = 'unsupported file type : '.$mimeType;
+                } else {
+                    $text = file_get_contents($fileName);
+                    // convert encoding to _CHARSET
                     $encoding = StringUtils::detectTextEncoding($text);
-                            $text = StringUtils::convertEncoding($text, _CHARSET, $encoding, 'h');
-                            $textFromOpener = false;
-                        }
+                    $text = StringUtils::convertEncoding($text, _CHARSET, $encoding, 'h');
+                    $textFromOpener = false;
+                }
             }
         }
 

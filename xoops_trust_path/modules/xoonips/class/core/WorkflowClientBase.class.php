@@ -17,7 +17,7 @@ abstract class Xoonips_WorkflowClientBase
     public function __construct($dataname, $dirname, $trustDirname)
     {
         global $xoopsDB;
-        $userWorkflows = array(
+        $userWorkflows = [
             Xoonips_Enum::WORKFLOW_USER,
             Xoonips_Enum::WORKFLOW_GROUP_REGISTER,
             Xoonips_Enum::WORKFLOW_GROUP_DELETE,
@@ -25,7 +25,7 @@ abstract class Xoonips_WorkflowClientBase
             Xoonips_Enum::WORKFLOW_GROUP_LEAVE,
             Xoonips_Enum::WORKFLOW_GROUP_OPEN,
             Xoonips_Enum::WORKFLOW_GROUP_CLOSE,
-        );
+        ];
         if (in_array($dataname, $userWorkflows)) {
             require_once dirname(__DIR__).'/user/Notification.class.php';
             $className = ucfirst($trustDirname).'_UserNotification';
@@ -35,7 +35,7 @@ abstract class Xoonips_WorkflowClientBase
         }
 
         $this->notification = new $className($xoopsDB, $dirname, $trustDirname);
-        if ($dirname != XCUBE_CORE_USER_MODULE_NAME) {
+        if (XCUBE_CORE_USER_MODULE_NAME != $dirname) {
             $this->log = Xoonips_BeanFactory::getBean('EventLogBean', $dirname, $trustDirname);
         }
         $this->dataname = $dataname;

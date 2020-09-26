@@ -4,7 +4,7 @@ use Xoonips\Core\XoopsUtils;
 
 class Xoonips_Workflow
 {
-    private static $_mKnownDirnames = array('leprogress', 'xworkflow');
+    private static $_mKnownDirnames = ['leprogress', 'xworkflow'];
 
     /**
      * check whether workflow module available.
@@ -14,14 +14,14 @@ class Xoonips_Workflow
     public static function hasWorkflow()
     {
         static $cache = null;
-        if ($cache !== null) {
+        if (null !== $cache) {
             return $cache;
         }
         $cache = false;
         if (defined('LEGACY_WORKFLOW_DIRNAME')) {
             $dirname = LEGACY_WORKFLOW_DIRNAME;
             $trustDirname = XoopsUtils::getTrustDirnameByDirname($dirname);
-            if ($trustDirname !== null) {
+            if (null !== $trustDirname) {
                 $dirname = $trustDirname;
             }
             $cache = in_array($dirname, self::$_mKnownDirnames);
@@ -123,7 +123,7 @@ class Xoonips_Workflow
      */
     public static function getAllApproverUserIds($dirname, $dataname, $target_id)
     {
-        $uids = array();
+        $uids = [];
         if (!self::hasWorkflow()) {
             return $uids;
         }
@@ -133,10 +133,10 @@ class Xoonips_Workflow
         }
         // for leprogress
         $aHandler = &XoopsUtils::getModuleHandler('approval', LEGACY_WORKFLOW_DIRNAME);
-        $criteria = self::_makeCriteria(array(
+        $criteria = self::_makeCriteria([
             'dirname' => $dirname,
             'dataname' => $dataname,
-        ));
+        ]);
         $objs = $aHandler->getObjects($criteria);
         foreach ($objs as $obj) {
             $uids[] = $obj->get('uid');
@@ -159,7 +159,7 @@ class Xoonips_Workflow
      */
     public static function getCurrentApproverUserIds($dirname, $dataname, $target_id)
     {
-        $uids = array();
+        $uids = [];
         if (!self::hasWorkflow()) {
             return $uids;
         }
@@ -170,22 +170,22 @@ class Xoonips_Workflow
         // for leprogress
         $aHandler = &XoopsUtils::getModuleHandler('approval', LEGACY_WORKFLOW_DIRNAME);
         $iHandler = &XoopsUtils::getModuleHandler('item', LEGACY_WORKFLOW_DIRNAME);
-        $criteria = self::_makeCriteria(array(
+        $criteria = self::_makeCriteria([
             'dirname' => $dirname,
             'dataname' => $dataname,
             'target_id' => $target_id,
             'status' => Lenum_WorkflowStatus::PROGRESS,
-        ));
+        ]);
         $iObjs = $iHandler->getObjects($criteria);
         if (empty($iObjs)) {
             return $uids;
         }
         $iObj = array_shift($iObjs);
-        $criteria = self::_makeCriteria(array(
+        $criteria = self::_makeCriteria([
             'dirname' => $dirname,
             'dataname' => $dataname,
             'step' => $iObj->get('step'),
-        ));
+        ]);
         $aObjs = $aHandler->getObjects($criteria);
         if (empty($aObjs)) {
             return $uids;
@@ -221,11 +221,11 @@ class Xoonips_Workflow
         }
         $criteria = new CriteriaCompo();
         foreach ($objs as $obj) {
-            $criteria2 = self::_makeCriteria(array(
+            $criteria2 = self::_makeCriteria([
                 'dirname' => $obj->get('dirname'),
                 'dataname' => $obj->get('dataname'),
                 'step' => $obj->get('step'),
-                'status' => Lenum_WorkflowStatus::PROGRESS, ));
+                'status' => Lenum_WorkflowStatus::PROGRESS, ]);
             $criteria->add($criteria2, 'OR');
             unset($criteria2);
         }
@@ -254,12 +254,12 @@ class Xoonips_Workflow
         }
         // for leprogress
         $iHandler = &XoopsUtils::getModuleHandler('item', LEGACY_WORKFLOW_DIRNAME);
-        $criteria = self::_makeCriteria(array(
+        $criteria = self::_makeCriteria([
             'dirname' => $dirname,
             'dataname' => $dataname,
             'target_id' => $target_id,
             'status' => Lenum_WorkflowStatus::PROGRESS,
-        ));
+        ]);
 
         return $iHandler->getCount($criteria) > 0;
     }

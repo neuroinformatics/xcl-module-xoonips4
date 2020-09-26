@@ -22,7 +22,7 @@ class Xoonips_PubmedService extends Xoonips_WebServiceBase
      *
      * @var array
      */
-    private $tmpdata = array();
+    private $tmpdata = [];
 
     public function __construct()
     {
@@ -30,10 +30,10 @@ class Xoonips_PubmedService extends Xoonips_WebServiceBase
         parent::__construct();
         // set fetcher conditions
         $this->fetch_url = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi';
-        $this->fetch_arguments = $this->encodeArguments(array(
+        $this->fetch_arguments = $this->encodeArguments([
             'db' => 'pubmed',
             'id' => '',
-            'retmode' => 'xml', )
+            'retmode' => 'xml', ]
         );
         // set parser conditions
         $this->parser_doctype = 'PubmedArticleSet';
@@ -59,36 +59,36 @@ class Xoonips_PubmedService extends Xoonips_WebServiceBase
             $this->pmid = '';
             break;
         case '/PubmedArticleSet/PubmedArticle/MedlineCitation/Article':
-            $this->data[$this->pmid] = array(
-                'Journal' => array(
+            $this->data[$this->pmid] = [
+                'Journal' => [
                     'Volume' => '',
                     'Issue' => '',
                     'Year' => '',
                     'MedlineDate' => '',
                     'Title' => '',
-                ),
+                ],
                 'ArticleTitle' => '',
                 'MedlinePgn' => '',
-                'AbstractText' => array(),
-                'OtherAbstractText' => array(),
-                'AuthorList' => array(),
+                'AbstractText' => [],
+                'OtherAbstractText' => [],
+                'AuthorList' => [],
                 'MedlineTA' => '',
-                'MeshHeadingList' => array(),
-            );
+                'MeshHeadingList' => [],
+            ];
             break;
         case '/PubmedArticleSet/PubmedArticle/MedlineCitation/Article/AuthorList/Author':
-            $this->tmpdata['Author'] = array(
+            $this->tmpdata['Author'] = [
                 'LastName' => '',
                 'ForeName' => '',
                 'Initials' => '',
                 'Suffix' => '',
-            );
+            ];
             break;
         case '/PubmedArticleSet/PubmedArticle/MedlineCitation/MeshHeadingList/MeshHeading':
-            $this->tmpdata['MeshHeading'] = array(
+            $this->tmpdata['MeshHeading'] = [
                 'DescriptorName' => '',
-                'QualifierName' => array(),
-            );
+                'QualifierName' => [],
+            ];
             break;
         }
     }
@@ -202,10 +202,10 @@ class Xoonips_PubmedService_JournalEsearch extends Xoonips_WebServiceBase
         parent::__construct();
         // set fetcher conditions
         $this->fetch_url = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi';
-        $this->fetch_arguments = $this->encodeArguments(array(
+        $this->fetch_arguments = $this->encodeArguments([
             'db' => 'journals',
             'term' => '',
-            'retmode' => 'xml', )
+            'retmode' => 'xml', ]
         );
         // set parser conditions
         $this->parser_doctype = 'eSearchResult';
@@ -231,7 +231,7 @@ class Xoonips_PubmedService_JournalEsearch extends Xoonips_WebServiceBase
     {
         switch ($this->parser_xpath) {
         case '/eSearchResult/IdList':
-            $this->data['Id'] = array();
+            $this->data['Id'] = [];
             break;
         }
     }
@@ -279,10 +279,10 @@ class Xoonips_PubmedService_JournalEsummary extends Xoonips_WebServiceBase
         parent::__construct();
         // set fetcher conditions
         $this->fetch_url = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi';
-        $this->fetch_arguments = $this->encodeArguments(array(
+        $this->fetch_arguments = $this->encodeArguments([
             'db' => 'journals',
             'id' => '',
-            'retmode' => 'xml', )
+            'retmode' => 'xml', ]
         );
         // set parser conditions
         $this->parser_doctype = 'eSummaryResult';
@@ -323,10 +323,10 @@ class Xoonips_PubmedService_JournalEsummary extends Xoonips_WebServiceBase
     {
         switch ($this->parser_xpath) {
         case '/eSummaryResult/DocSum/Id':
-            $this->data[$this->jid] = array(
-              'Title' => '',
-              'MedAbbr' => '',
-            );
+            $this->data[$this->jid] = [
+                'Title' => '',
+                'MedAbbr' => '',
+            ];
             break;
         }
     }

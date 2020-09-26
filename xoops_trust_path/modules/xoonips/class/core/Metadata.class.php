@@ -48,7 +48,7 @@ class Xoonips_Metadata
 
     public function getMetadata($item_type_id, $item_id)
     {
-        $lines = array();
+        $lines = [];
         // if junii2
         if ('junii2' == $this->metadataPrefix) {
             $lines[] = '<metadata>';
@@ -87,7 +87,7 @@ class Xoonips_Metadata
             foreach ($links as $link) {
                 if ($schema['schema_id'] == $link['schema_id']) {
                     $flg = true;
-                    $metadata = array();
+                    $metadata = [];
                     $detail_ids = explode(',', $link['item_field_detail_id']);
                     $group_ids = explode(',', $link['group_id']);
                     foreach ($detail_ids as $index => $detail_id) {

@@ -44,7 +44,7 @@ class Xoonips_ViewTypeLastUpdate extends Xoonips_ViewTypeDate
     public function isDisplay($op)
     {
         //hidden when regist form
-        if ($op == Xoonips_Enum::OP_TYPE_REGISTRY) {
+        if (Xoonips_Enum::OP_TYPE_REGISTRY == $op) {
             return false;
         }
 
@@ -54,7 +54,7 @@ class Xoonips_ViewTypeLastUpdate extends Xoonips_ViewTypeDate
     private function formatDatetime($str)
     {
         $ret = '';
-        if (strlen($str) == 10) {
+        if (10 == strlen($str)) {
             $ret = date(XOONIPS_DATETIME_FORMAT, $str);
         }
 
@@ -70,19 +70,19 @@ class Xoonips_ViewTypeLastUpdate extends Xoonips_ViewTypeDate
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];
         } else {
-            $tableData = array();
+            $tableData = [];
             $sqlStrings[$tableName] = &$tableData;
         }
-        if ($value != '') {
-            if ($field->getScopeSearch() == 1 && $scopeSearchFlg) {
+        if ('' != $value) {
+            if (1 == $field->getScopeSearch() && $scopeSearchFlg) {
                 $value[0] = trim($value[0]);
                 $value[1] = trim($value[1]);
-                if ($value[0] != '') {
+                if ('' != $value[0]) {
                     $value[0] = $this->getTimes($value[0]);
                     $v = $field->getDataType()->convertSQLStr($value[0]);
                     $tableData[] = "$columnName>=$v";
                 }
-                if ($value[1] != '') {
+                if ('' != $value[1]) {
                     $value[1] = $this->getTimes($value[1]);
                     $v = $field->getDataType()->convertSQLStr($value[1]);
                     $tableData[] = "$columnName<=$v";
@@ -105,7 +105,7 @@ class Xoonips_ViewTypeLastUpdate extends Xoonips_ViewTypeDate
         if (!preg_match($char, $value)) {
             return $value;
         }
-        $valueArr = array();
+        $valueArr = [];
         $valueArr = explode('-', $value);
 
         return mktime(0, 0, 0, $valueArr[1], $valueArr[2], $valueArr[0]);

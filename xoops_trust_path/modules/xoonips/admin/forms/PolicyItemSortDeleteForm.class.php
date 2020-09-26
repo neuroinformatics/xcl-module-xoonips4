@@ -24,16 +24,16 @@ class Xoonips_Admin_PolicyItemSortDeleteForm extends Xoonips_AbstractActionForm
     {
         $constpref = '_AD_'.strtoupper($this->mDirname);
 
-        return array(
-            'sort_id' => array(
+        return [
+            'sort_id' => [
                 'type' => self::TYPE_INT,
                 'label' => constant($constpref.'_POLICY_ITEM_SORT_ID'),
-                'depends' => array(
+                'depends' => [
                     'required' => true,
                     'min' => 2,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**

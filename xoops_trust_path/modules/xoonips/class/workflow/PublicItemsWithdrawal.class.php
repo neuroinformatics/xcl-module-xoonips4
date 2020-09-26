@@ -14,15 +14,15 @@ class Xoonips_WorkflowClientPublicItemsWithdrawal extends Xoonips_WorkflowClient
         $workflow = Xoonips_WorkflowClientFactory::getWorkflow(Xoonips_Enum::WORKFLOW_PUBLIC_ITEMS, $this->dirname, $this->trustDirname);
         list($itemId, $indexId) = $workflow->getItemAndIndexId($indexItemLinkId, $indexItemLinkBean);
         // delete xoonip_index_item_link info by index_id and item_id
-        if ($itemId == 0 || !$indexItemLinkBean->deleteById($indexId, $itemId)) {
+        if (0 == $itemId || !$indexItemLinkBean->deleteById($indexId, $itemId)) {
             return false;
         }
         //update xoonips_oaipmh_item_status
         $openIndexIds = $indexItemLinkBean->getOpenIndexIds($itemId);
-        if ($openIndexIds === false) {
+        if (false === $openIndexIds) {
             return false;
         }
-        if (count($openIndexIds) == 0) {
+        if (0 == count($openIndexIds)) {
             $itemStatusBean = Xoonips_BeanFactory::getBean('OaipmhItemStatusBean', $this->dirname, $this->trustDirname);
             if (!$itemStatusBean->delete($itemId)) {
                 return false;
@@ -35,7 +35,7 @@ class Xoonips_WorkflowClientPublicItemsWithdrawal extends Xoonips_WorkflowClient
         //send to item users
         $itemUsersBean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $this->dirname, $this->trustDirname);
         $itemUsersInfo = $itemUsersBean->getItemUsersInfo($itemId);
-        $sendToUsers = array();
+        $sendToUsers = [];
         foreach ($itemUsersInfo as $itemUser) {
             $sendToUsers[] = $itemUser['uid'];
         }
@@ -49,7 +49,7 @@ class Xoonips_WorkflowClientPublicItemsWithdrawal extends Xoonips_WorkflowClient
         $indexItemLinkBean = null;
         $workflow = Xoonips_WorkflowClientFactory::getWorkflow(Xoonips_Enum::WORKFLOW_PUBLIC_ITEMS, $this->dirname, $this->trustDirname);
         list($itemId, $indexId) = $workflow->getItemAndIndexId($indexItemLinkId, $indexItemLinkBean);
-        if ($itemId == 0) {
+        if (0 == $itemId) {
             return;
         }
         $sendToUsers = Xoonips_Workflow::getCurrentApproverUserIds($this->dirname, $this->dataname, $indexItemLinkId);
@@ -62,7 +62,7 @@ class Xoonips_WorkflowClientPublicItemsWithdrawal extends Xoonips_WorkflowClient
         $workflow = Xoonips_WorkflowClientFactory::getWorkflow(Xoonips_Enum::WORKFLOW_PUBLIC_ITEMS, $this->dirname, $this->trustDirname);
         list($itemId, $indexId) = $workflow->getItemAndIndexId($indexItemLinkId, $indexItemLinkBean);
         // update xoonip_index_item_link
-        if ($itemId == 0 || !$indexItemLinkBean->update($indexId, $itemId, 2)) {
+        if (0 == $itemId || !$indexItemLinkBean->update($indexId, $itemId, 2)) {
             return false;
         }
 
@@ -72,7 +72,7 @@ class Xoonips_WorkflowClientPublicItemsWithdrawal extends Xoonips_WorkflowClient
         //send to item users
         $itemUsersBean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $this->dirname, $this->trustDirname);
         $itemUsersInfo = $itemUsersBean->getItemUsersInfo($itemId);
-        $sendToUsers = array();
+        $sendToUsers = [];
         foreach ($itemUsersInfo as $itemUser) {
             $sendToUsers[] = $itemUser['uid'];
         }

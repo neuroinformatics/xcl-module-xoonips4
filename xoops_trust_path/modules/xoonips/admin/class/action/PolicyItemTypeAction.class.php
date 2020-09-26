@@ -22,23 +22,23 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         $description = _AM_XOONIPS_POLICY_ITEMTYPE_DESC;
 
         // breadcrumbs
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => _AM_XOONIPS_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => _AM_XOONIPS_POLICY_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php?action=Policy',
-            ),
-            array(
+            ],
+            [
                 'name' => _AD_XOONIPS_POLICY_ITEM_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php?action=PolicyItem',
-            ),
-            array(
+            ],
+            [
                 'name' => $title,
-            ),
-        );
+            ],
+        ];
         // get requsts
         $start = intval($request->getParameter('start'));
 
@@ -56,7 +56,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         $start + 1, ($start + $limit) > $count ? $count : $start + $limit, $count);
 
         $itemtypes_objs = $itemtypeBean->itemtypeGetItemtypelist($limit, $start);
-        $itemtypes = array();
+        $itemtypes = [];
         $itemBean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
         foreach ($itemtypes_objs as $itemtype) {
             $itemtypeid = $itemtype['item_type_id'];
@@ -68,9 +68,9 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
             $desc = $itemtype['description'];
             $subtypes = $this->getSubtypes($itemtypeid);
             $editing = '';
-            if ($itemtype['released'] == 0) {
+            if (0 == $itemtype['released']) {
                 $editing = _AM_XOONIPS_LABEL_ITEMTYPE_EDITING;
-            } elseif ($itemtype['upid'] != '') {
+            } elseif ('' != $itemtype['upid']) {
                 if ($this->isDiff($itemtypeid)) {
                     $editing = _AM_XOONIPS_LABEL_ITEMTYPE_EDITING;
                 } else {
@@ -83,14 +83,14 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
             // check number of item
             $disdel = false;
             $checkItemtype = $itemBean->checkItemtype($itemtypeid);
-            if ($checkItemtype == 0) {
+            if (0 == $checkItemtype) {
                 $disdel = true;
             }
-            if ($itemtype['released'] == 0) {
+            if (0 == $itemtype['released']) {
                 $disdel = true;
             }
 
-            $itemtypes[] = array(
+            $itemtypes[] = [
                 'itemtypeid' => $itemtypeid,
                 'name' => $name,
                 'editing' => $editing,
@@ -98,14 +98,14 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
                 'desc' => $desc,
                 'subtypes' => $subtypes,
                 'disdel' => $disdel,
-            );
+            ];
         }
 
         // token ticket
         $token_ticket = $this->createToken($this->modulePrefix('admin_policy_itemtype_default'));
 
         // get common viewdata
-        $viewData = array();
+        $viewData = [];
 
         $viewData['token_ticket'] = $token_ticket;
         $viewData['navi_title'] = $navi_title;
@@ -141,7 +141,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         $token_ticket = $this->createToken($this->modulePrefix('admin_policy_itemtype_register'));
 
         // get common viewdata
-        $viewData = array();
+        $viewData = [];
 
         $viewData['breadcrumbs'] = $breadcrumbs;
         $viewData['title'] = $title;
@@ -175,20 +175,20 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         $icon_file = $request->getFile('icon_file');
         $mode = $request->getParameter('mode');
 
-        if ($weight == '') {
+        if ('' == $weight) {
             $weight = '0';
         }
 
         // get groups info
-        $groups = array();
+        $groups = [];
         $groupBean = Xoonips_BeanFactory::getBean('ItemFieldGroupBean', $this->dirname, $this->trustDirname);
         $count = $groupBean->countItemgroups();
         $groups_objs = $groupBean->getItemgrouplist($count, 0);
 
         foreach ($groups_objs as $itemgroup) {
             $itemgroupid = $itemgroup['group_id'];
-            if ($request->getParameter('checkbox_'.$itemgroupid) || $itemgroup['preselect'] == 1) {
-                if ($itemgroup['preselect'] == 1) {
+            if ($request->getParameter('checkbox_'.$itemgroupid) || 1 == $itemgroup['preselect']) {
+                if (1 == $itemgroup['preselect']) {
                     $itemgroup['edit_weight'] = $itemgroup['weight'];
                 }
                 $groups[] = $itemgroupid;
@@ -197,9 +197,9 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
         // do check
         $errors = new Xoonips_Errors();
-        $parameters = array();
+        $parameters = [];
         $parameters[] = _AM_XOONIPS_LABEL_ITEMTYPE_NAME;
-        if ($name == '') {
+        if ('' == $name) {
             // get groups for select
             $groups = $this->getGroupsForSelect(0);
 
@@ -296,7 +296,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         }
 
         // release mode
-        if ($mode == 1) {
+        if (1 == $mode) {
             if (!$this->releaseXoonipsItemtype($itemtype_id, $itemtype_id)) {
                 $transaction->rollback();
 
@@ -313,7 +313,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         $transaction->commit();
 
         $viewData['url'] = XOOPS_URL.'/modules/'.$this->dirname.'/admin/policy_itemtype.php';
-        if ($mode == 1) {
+        if (1 == $mode) {
             $viewData['redirect_msg'] = _AM_XOONIPS_POLICY_ITEMTYPE_RELEASED_MSG_SUCCESS;
         } else {
             $viewData['redirect_msg'] = _AM_XOONIPS_POLICY_ITEMTYPE_REGIST_MSG_SUCCESS;
@@ -341,12 +341,12 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         // get base itemtype info
         $itemtypeBean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
         $baseInfo = $itemtypeBean->getItemtypeEditInfo($base_itemtypeid);
-        if (!$baseInfo || count($baseInfo) == 0) {
+        if (!$baseInfo || 0 == count($baseInfo)) {
             die("can't get item type");
         }
 
         // do copy
-        if ($baseInfo['a_released'] == 1 && $baseInfo['b_update_id'] != $base_itemtypeid) {
+        if (1 == $baseInfo['a_released'] && $baseInfo['b_update_id'] != $base_itemtypeid) {
             // transaction
             $transaction = Xoonips_Transaction::getInstance();
             $transaction->start();
@@ -376,7 +376,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         $token_ticket = $this->createToken($this->modulePrefix('admin_policy_itemtype_edit'));
 
         // get common viewdata
-        $viewData = array();
+        $viewData = [];
 
         $viewData['breadcrumbs'] = $breadcrumbs;
         $viewData['token_ticket'] = $token_ticket;
@@ -414,12 +414,12 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         // get base itemtype info
         $itemtypeBean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
         $baseInfo = $itemtypeBean->getItemtypeEditInfo($base_itemtypeid);
-        if (!$baseInfo || count($baseInfo) == 0) {
+        if (!$baseInfo || 0 == count($baseInfo)) {
             die("can't get item type");
         }
 
         // do copy
-        if ($baseInfo['a_released'] == 1 && $baseInfo['b_update_id'] != $base_itemtypeid) {
+        if (1 == $baseInfo['a_released'] && $baseInfo['b_update_id'] != $base_itemtypeid) {
             // transaction
             $transaction = Xoonips_Transaction::getInstance();
             $transaction->start();
@@ -451,9 +451,9 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         $weights = $request->getParameter('weights');
 
         // do check
-        $parameters = array();
+        $parameters = [];
         $parameters[] = _AM_XOONIPS_LABEL_ITEMTYPE_NAME;
-        if ($name == '') {
+        if ('' == $name) {
             // token ticket
             $token_ticket = $this->createToken($this->modulePrefix('admin_policy_itemtype_edit'));
             $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
@@ -541,7 +541,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         $transaction->commit();
 
         $viewData['url'] = XOOPS_URL.'/modules/'.$this->dirname.'/admin/policy_itemtype.php';
-        if ($mode == 1) {
+        if (1 == $mode) {
             $viewData['url'] .= '?op=edit&amp;itemtypeid='.$base_itemtypeid;
         }
         $viewData['redirect_msg'] = _AM_XOONIPS_POLICY_ITEMTYPE_MODIFY_MSG_SUCCESS;
@@ -591,7 +591,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         $transaction->commit();
 
         $viewData['url'] = XOOPS_URL.'/modules/'.$this->dirname.'/admin/policy_itemtype.php';
-        if ($mode == 1) {
+        if (1 == $mode) {
             $viewData['url'] .= '?op=edit&amp;itemtypeid='.$base_itemtypeid;
         }
         $viewData['redirect_msg'] = _AM_XOONIPS_POLICY_ITEMTYPE_MODIFY_MSG_SUCCESS;
@@ -603,27 +603,27 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
     private function setBreadcrumbs($title)
     {
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => _AM_XOONIPS_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => _AM_XOONIPS_POLICY_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php?action=Policy',
-            ),
-            array(
+            ],
+            [
                 'name' => _AD_XOONIPS_POLICY_ITEM_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php?action=PolicyItem',
-            ),
-            array(
+            ],
+            [
                 'name' => _AM_XOONIPS_POLICY_ITEMTYPE_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/policy_itemtype.php',
-            ),
-            array(
+            ],
+            [
                 'name' => $title,
-            ),
-        );
+            ],
+        ];
 
         return $breadcrumbs;
     }
@@ -632,18 +632,18 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
     private function getItemtypeInfoForEdit($itemtypeBean, $itemtypeid, &$upd_itemtypeid)
     {
         $info = $itemtypeBean->getItemtypeEditInfo($itemtypeid);
-        $itemtypeInfo = array(
-            'a_name' => $info['a_released'] == 1 ? $info['b_name'] : $info['a_name'],
-            'a_description' => $info['a_released'] == 1 ? $info['b_description'] : $info['a_description'],
-            'a_weight' => $info['a_released'] == 1 ? $info['b_weight'] : $info['a_weight'],
-            'a_icon' => $info['a_released'] == 1 ? $info['b_icon'] : $info['a_icon'],
-            'a_template' => $info['a_released'] == 1 ? $info['b_template'] : $info['a_template'],
-            'b_name' => $info['a_released'] == 1 ? $info['a_name'] : $info['b_name'],
-            'b_description' => $info['a_released'] == 1 ? $info['a_description'] : $info['b_description'],
-            'b_weight' => $info['a_released'] == 1 ? $info['a_weight'] : $info['b_weight'],
-            'b_icon' => $info['a_released'] == 1 ? $info['a_icon'] : $info['b_icon'],
-            'b_template' => $info['a_released'] == 1 ? $info['a_template'] : $info['b_template'],
-        );
+        $itemtypeInfo = [
+            'a_name' => 1 == $info['a_released'] ? $info['b_name'] : $info['a_name'],
+            'a_description' => 1 == $info['a_released'] ? $info['b_description'] : $info['a_description'],
+            'a_weight' => 1 == $info['a_released'] ? $info['b_weight'] : $info['a_weight'],
+            'a_icon' => 1 == $info['a_released'] ? $info['b_icon'] : $info['a_icon'],
+            'a_template' => 1 == $info['a_released'] ? $info['b_template'] : $info['a_template'],
+            'b_name' => 1 == $info['a_released'] ? $info['a_name'] : $info['b_name'],
+            'b_description' => 1 == $info['a_released'] ? $info['a_description'] : $info['b_description'],
+            'b_weight' => 1 == $info['a_released'] ? $info['a_weight'] : $info['b_weight'],
+            'b_icon' => 1 == $info['a_released'] ? $info['a_icon'] : $info['b_icon'],
+            'b_template' => 1 == $info['a_released'] ? $info['a_template'] : $info['b_template'],
+        ];
         $upd_itemtypeid = empty($info['b_item_type_id']) ? $info['a_item_type_id'] : $info['b_item_type_id'];
 
         return $itemtypeInfo;
@@ -654,9 +654,9 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         $itemtypeBean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
         $groupInfos = $itemtypeBean->getTypeGroups($itemtypeid);
 
-        $groups = array();
+        $groups = [];
         foreach ($groupInfos as $group) {
-            if ($group['edit'] == 1) {
+            if (1 == $group['edit']) {
                 $group['weight'] = $group['edit_weight'];
                 $groups[] = $group;
             }
@@ -765,7 +765,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         $token_ticket = $this->createToken($this->modulePrefix('admin_policy_itemtype_import'));
 
         // get common viewdata
-        $viewData = array();
+        $viewData = [];
         $viewData['breadcrumbs'] = $breadcrumbs;
         $viewData['title'] = $title;
         $viewData['description'] = $description;
@@ -785,9 +785,9 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
         //error
         $errors = new Xoonips_Errors();
-        $parameters = array();
+        $parameters = [];
 
-        if (empty($import_file['name']) || $import_file['size'] == 0) {
+        if (empty($import_file['name']) || 0 == $import_file['size']) {
             $errors->addError('_AM_XOONIPS_POLICY_ITEMTYPE_IMPORT_FILE_NONE', '', '');
 
             //title
@@ -801,7 +801,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
             $token_ticket = $this->createToken($this->modulePrefix('admin_policy_itemtype_import'));
 
             // get common viewdata
-            $viewData = array();
+            $viewData = [];
             $viewData['errors'] = $errors->getView($this->dirname);
             $viewData['breadcrumbs'] = $breadcrumbs;
             $viewData['title'] = $title;
@@ -850,7 +850,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
             $token_ticket = $this->createToken($this->modulePrefix('admin_policy_itemtype_import'));
 
             // get common viewdata
-            $viewData = array();
+            $viewData = [];
             $viewData['errors'] = $errors->getView($this->dirname);
             $viewData['breadcrumbs'] = $breadcrumbs;
             $viewData['title'] = $title;
@@ -864,12 +864,12 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
             return true;
         }
         //extract itemtype zip
-        $itemtypes = array();
+        $itemtypes = [];
         $res_dir = opendir($uploaddir);
         while (false !== ($itemtypezip = readdir($res_dir))) {
             $info = pathinfo($itemtypezip);
             $itemtype = $info['filename'];
-            if ($itemtypezip == '.' || $itemtypezip == '..') {
+            if ('.' == $itemtypezip || '..' == $itemtypezip) {
                 continue;
             }
             if ($unzip->open($uploaddir.'/'.$itemtypezip)) {
@@ -895,7 +895,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
                 $token_ticket = $this->createToken($this->modulePrefix('admin_policy_itemtype_import'));
 
                 // get common viewdata
-                $viewData = array();
+                $viewData = [];
                 $viewData['errors'] = $errors->getView($this->dirname);
                 $viewData['breadcrumbs'] = $breadcrumbs;
                 $viewData['title'] = $title;
@@ -920,9 +920,9 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         $transaction = Xoonips_Transaction::getInstance();
         $transaction->start();
         $successFlag = false;
-        $successMsg = array();
+        $successMsg = [];
         $importFlag = false;
-        if ($mode == 1) {
+        if (1 == $mode) {
             $importFlag = true;
         }
         foreach ($itemtypes as $itemtype) {
@@ -960,7 +960,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         $token_ticket = $this->createToken($this->modulePrefix('admin_policy_itemtype_import'));
 
         // get common viewdata
-        $viewData = array();
+        $viewData = [];
         if ($errors->hasError()) {
             $errors->addError('_AM_XOONIPS_POLICY_ITEMTYPE_IMPORT_FILE_FAILURE', '', $import_file['name']);
             $viewData['errors'] = $errors->getView($this->dirname);
@@ -1032,12 +1032,12 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         // get base itemtype info
         $itemtypeBean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
         $baseInfo = $itemtypeBean->getItemtypeEditInfo($base_itemtypeid);
-        if (!$baseInfo || count($baseInfo) == 0) {
+        if (!$baseInfo || 0 == count($baseInfo)) {
             die("can't get item type");
         }
 
         // do copy
-        if ($baseInfo['a_released'] == 1 && $baseInfo['b_update_id'] != $base_itemtypeid) {
+        if (1 == $baseInfo['a_released'] && $baseInfo['b_update_id'] != $base_itemtypeid) {
             // transaction
             $transaction = Xoonips_Transaction::getInstance();
             $transaction->start();
@@ -1072,9 +1072,9 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         $token_ticket = $this->createToken($this->modulePrefix('admin_policy_itemtype_edit'));
 
         // do check
-        $parameters = array();
+        $parameters = [];
         $parameters[] = _AM_XOONIPS_LABEL_ITEMTYPE_NAME;
-        if ($name == '') {
+        if ('' == $name) {
             $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
             $viewData['breadcrumbs'] = $breadcrumbs;
             $viewData['token_ticket'] = $token_ticket;
@@ -1200,37 +1200,37 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         //item type
         $itemTypeBean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
         $itemTypeObj = $itemTypeBean->getItemtype($itemtypeid);
-        if ($itemTypeObj === false) {
+        if (false === $itemTypeObj) {
             return false;
         }
         //item group
         $groupBean = Xoonips_BeanFactory::getBean('ItemFieldGroupBean', $this->dirname, $this->trustDirname);
         $groupObj = $groupBean->getExportItemTypeGroup($itemtypeid);
-        if ($groupObj === false) {
+        if (false === $groupObj) {
             return false;
         }
         //value set (item select list)
         $valueSetBean = Xoonips_BeanFactory::getBean('ItemFieldValueSetBean', $this->dirname, $this->trustDirname);
         $valueSetObj = $valueSetBean->getExportItemTypeValueSet();
-        if ($valueSetObj === false) {
+        if (false === $valueSetObj) {
             return false;
         }
         //item complement
         $complementBean = Xoonips_BeanFactory::getBean('ComplementBean', $this->dirname, $this->trustDirname);
         $complementObj = $complementBean->getExportItemTypeComplement($itemtypeid);
-        if ($complementObj === false) {
+        if (false === $complementObj) {
             return false;
         }
         //item sort
         $sortHandler = Functions::getXoonipsHandler('ItemSort', $this->dirname);
         $sortObj = $sortHandler->getExportDataForItemType($itemtypeid);
-        if ($sortObj === false) {
+        if (false === $sortObj) {
             return false;
         }
         //OAI-PMH
         $oaipmhBean = Xoonips_BeanFactory::getBean('OaipmhSchemaItemtypeLinkBean', $this->dirname, $this->trustDirname);
         $oaipmhObj = $oaipmhBean->getExportItemTypeOaipmh($itemtypeid);
-        if ($oaipmhObj === false) {
+        if (false === $oaipmhObj) {
             return false;
         }
 
@@ -1270,7 +1270,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
         //make template file
         $templateSet = false;
-        if ($itemTypeObj['template'] != null) {
+        if (null != $itemTypeObj['template']) {
             $templateSet = true;
             $templatefile = "${itemtypedir}/${fname}.tpl";
             $fhdl = fopen($templatefile, 'w');
@@ -1285,7 +1285,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
         //copy image file
         $iconSet = false;
-        if ($itemTypeObj['icon'] != null) {
+        if (null != $itemTypeObj['icon']) {
             $imgsrc = XOOPS_ROOT_PATH.'/modules/'.$this->dirname.'/images/'.$itemTypeObj['icon'];
             if (file_exists($imgsrc)) {
                 $iconSet = true;
@@ -1321,11 +1321,11 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         $time = date('YmdHis');
         $export = "export_itemtype_${fname}_${time}.zip";
         $exportzip = "${tmp}/${export}";
-// 		$res = $zip->open($exportzip, ZipArchive::CREATE);
-// 		if ($res === true) {
-// 			 $zip->addfile($itemtypezip, $itemtype);
-// 		}
-// 		$zip->close();
+        // 		$res = $zip->open($exportzip, ZipArchive::CREATE);
+        // 		if ($res === true) {
+        // 			 $zip->addfile($itemtypezip, $itemtype);
+        // 		}
+        // 		$zip->close();
         if ($zipClass->open($exportzip)) {
             $zipClass->add($itemtypezip, $itemtype);
             $zipClass->close();
@@ -1345,7 +1345,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         //itemtype
         $itemTypeBean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
 
-        $itemtypeids = array();
+        $itemtypeids = [];
         $itemtypeids = $itemTypeBean->getAllItemTypeId();
         //create zip
         $zipClass = new ZipFile();
@@ -1358,41 +1358,41 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
             return false;
         }
         //loop start
-        $itemtypes = array();
+        $itemtypes = [];
         foreach ($itemtypeids as $itemtypeid) {
             //item type
-                    $itemTypeObj = $itemTypeBean->getItemtype($itemtypeid);
-            if ($itemTypeObj === false) {
+            $itemTypeObj = $itemTypeBean->getItemtype($itemtypeid);
+            if (false === $itemTypeObj) {
                 return false;
             }
             //item group
             $groupBean = Xoonips_BeanFactory::getBean('ItemFieldGroupBean', $this->dirname, $this->trustDirname);
             $groupObj = $groupBean->getExportItemTypeGroup($itemtypeid);
-            if ($groupObj === false) {
+            if (false === $groupObj) {
                 return false;
             }
             //value set (item select list)
             $valueSetBean = Xoonips_BeanFactory::getBean('ItemFieldValueSetBean', $this->dirname, $this->trustDirname);
             $valueSetObj = $valueSetBean->getExportItemTypeValueSet();
-            if ($valueSetObj === false) {
+            if (false === $valueSetObj) {
                 return false;
             }
             //item complement
             $complementBean = Xoonips_BeanFactory::getBean('ComplementBean', $this->dirname, $this->trustDirname);
             $complementObj = $complementBean->getExportItemTypeComplement($itemtypeid);
-            if ($complementObj === false) {
+            if (false === $complementObj) {
                 return false;
             }
             //item sort
             $sortHandler = Functions::getXoonipsHandler('ItemSort', $this->dirname);
             $sortObj = $sortHandler->getExportDataForItemType($itemtypeid);
-            if ($sortObj === false) {
+            if (false === $sortObj) {
                 return false;
             }
             //OAI-PMH
             $oaipmhBean = Xoonips_BeanFactory::getBean('OaipmhSchemaItemtypeLinkBean', $this->dirname, $this->trustDirname);
             $oaipmhObj = $oaipmhBean->getExportItemTypeOaipmh($itemtypeid);
-            if ($oaipmhObj === false) {
+            if (false === $oaipmhObj) {
                 return false;
             }
 
@@ -1423,7 +1423,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
             //make template file
             $templateSet = false;
-            if ($itemTypeObj['template'] != null) {
+            if (null != $itemTypeObj['template']) {
                 $templateSet = true;
                 $templatefile = "${itemtypedir}/${fname}.tpl";
                 $fhdl = fopen($templatefile, 'w');
@@ -1438,7 +1438,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
             // copy image file
             $iconSet = false;
-            if ($itemTypeObj['icon'] != null) {
+            if (null != $itemTypeObj['icon']) {
                 $imgsrc = XOOPS_ROOT_PATH.'/modules/'.$this->dirname.'/images/'.$itemTypeObj['icon'];
                 if (file_exists($imgsrc)) {
                     $iconSet = true;
@@ -1452,17 +1452,17 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
             // itemtype dir
             $itemtype = $fname.'.zip';
             $itemtypezip = $tmpdir.'/'.$itemtype;
-// 			$res = $zip->open ( $itemtypezip, ZipArchive::CREATE );
-// 			if ($res === true) {
-// 				$zip->addfile ( $xmlfile, $fname . ".xml" );
-// 				if ($templateSet) {
-// 					$zip->addfile ( $templatefile, $fname . ".tpl" );
-// 				}
-// 				if ($iconSet) {
-// 					$zip->addfile ( $imgdst, $itemTypeObj ['icon'] );
-// 				}
-// 			}
-// 			$zip->close ();
+            // 			$res = $zip->open ( $itemtypezip, ZipArchive::CREATE );
+            // 			if ($res === true) {
+            // 				$zip->addfile ( $xmlfile, $fname . ".xml" );
+            // 				if ($templateSet) {
+            // 					$zip->addfile ( $templatefile, $fname . ".tpl" );
+            // 				}
+            // 				if ($iconSet) {
+            // 					$zip->addfile ( $imgdst, $itemTypeObj ['icon'] );
+            // 				}
+            // 			}
+            // 			$zip->close ();
 
             if ($zipClass->open($itemtypezip)) {
                 $zipClass->add($xmlfile, $fname.'.xml');
@@ -1486,13 +1486,13 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         $time = date('YmdHis');
         $export = "export_itemtype_all_${time}.zip";
         $exportzip = "${tmp}/${export}";
-// 		$res = $zip->open ( $exportzip, ZipArchive::CREATE );
-// 		if ($res === true) {
-// 			foreach ( $itemtypes as $itemtype ) {
-// 				$zip->addfile ( $tmpdir . "/" . $itemtype, $itemtype );
-// 			}
-// 		}
-// 		$zip->close ();
+        // 		$res = $zip->open ( $exportzip, ZipArchive::CREATE );
+        // 		if ($res === true) {
+        // 			foreach ( $itemtypes as $itemtype ) {
+        // 				$zip->addfile ( $tmpdir . "/" . $itemtype, $itemtype );
+        // 			}
+        // 		}
+        // 		$zip->close ();
         if ($zipClass->open($exportzip)) {
             foreach ($itemtypes as $itemtype) {
                 $zipClass->add($tmpdir.'/'.$itemtype, $itemtype);
@@ -1540,7 +1540,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         //template file_path
         $xml .= ' <template>'.StringUtils::xmlSpecialChars($itemTypeName.'/'.$itemTypeName, _CHARSET).".tpl</template>\n";
         //Group
-        $itemTypeLists = array();
+        $itemTypeLists = [];
         foreach ($groupObj as $group) {
             $xml .= " <group>\n";
             $xml .= '  <name>'.StringUtils::xmlSpecialChars($group['name'], _CHARSET)."</name>\n";
@@ -1627,31 +1627,31 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
     private function setGroupBreadcrumbs($title, $base_itemtypeid)
     {
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => _AM_XOONIPS_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => _AM_XOONIPS_POLICY_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php?action=Policy',
-            ),
-            array(
+            ],
+            [
                 'name' => _AD_XOONIPS_POLICY_ITEM_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php?action=PolicyItem',
-            ),
-            array(
+            ],
+            [
                 'name' => _AM_XOONIPS_POLICY_ITEMTYPE_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/policy_itemtype.php',
-            ),
-            array(
+            ],
+            [
                 'name' => _AM_XOONIPS_POLICY_ITEMTYPE_EDIT_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/policy_itemtype.php?'.'op=edit&itemtypeid='.$base_itemtypeid,
-            ),
-            array(
+            ],
+            [
                 'name' => $title,
-            ),
-        );
+            ],
+        ];
 
         return $breadcrumbs;
     }
@@ -1661,16 +1661,16 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
     {
         $groupBean = Xoonips_BeanFactory::getBean('ItemFieldGroupBean', $this->dirname, $this->trustDirname);
         $info = $groupBean->getGroupEditInfo($groupid, true);
-        $groupInfo = array(
-            'a_name' => $info['a_released'] == 1 ? $info['b_name'] : $info['a_name'],
-            'a_xml' => $info['a_released'] == 1 ? $info['b_xml'] : $info['a_xml'],
-            'a_occurrence' => $info['a_released'] == 1 ? $info['b_occurrence'] : $info['a_occurrence'],
-            'a_weight' => $info['a_released'] == 1 ? $info['b_weight'] : $info['a_weight'],
-            'b_name' => $info['a_released'] == 1 ? $info['a_name'] : $info['b_name'],
-            'b_xml' => $info['a_released'] == 1 ? $info['a_xml'] : $info['b_xml'],
-            'b_occurrence' => $info['a_released'] == 1 ? $info['a_occurrence'] : $info['b_occurrence'],
-            'b_weight' => $info['a_released'] == 1 ? $info['a_weight'] : $info['b_weight'],
-        );
+        $groupInfo = [
+            'a_name' => 1 == $info['a_released'] ? $info['b_name'] : $info['a_name'],
+            'a_xml' => 1 == $info['a_released'] ? $info['b_xml'] : $info['a_xml'],
+            'a_occurrence' => 1 == $info['a_released'] ? $info['b_occurrence'] : $info['a_occurrence'],
+            'a_weight' => 1 == $info['a_released'] ? $info['b_weight'] : $info['a_weight'],
+            'b_name' => 1 == $info['a_released'] ? $info['a_name'] : $info['b_name'],
+            'b_xml' => 1 == $info['a_released'] ? $info['a_xml'] : $info['b_xml'],
+            'b_occurrence' => 1 == $info['a_released'] ? $info['a_occurrence'] : $info['b_occurrence'],
+            'b_weight' => 1 == $info['a_released'] ? $info['a_weight'] : $info['b_weight'],
+        ];
 
         return $groupInfo;
     }
@@ -1710,14 +1710,14 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
         $baseDetailId = 0;
         $groupId = 0;
-        $relation['detail'] = array();
-        $itemtype['detail'] = array();
-        $basecomplementlist = array();
+        $relation['detail'] = [];
+        $itemtype['detail'] = [];
+        $basecomplementlist = [];
         $complementBean = Xoonips_BeanFactory::getBean('ComplementBean', $this->dirname, $this->trustDirname);
         $groupBean = Xoonips_BeanFactory::getBean('ItemFieldGroupBean', $this->dirname, $this->trustDirname);
         $detailBean = Xoonips_BeanFactory::getBean('ItemFieldDetailBean', $this->dirname, $this->trustDirname);
         $linkBean = Xoonips_BeanFactory::getBean('ItemFieldDetailComplementLinkBean', $this->dirname, $this->trustDirname);
-        if (isset($select) && $select != '') {
+        if (isset($select) && '' != $select) {
             $temp = explode(',', $select);
             $relaId = $temp[0];
             $baseDetailId = $temp[1];
@@ -1726,12 +1726,12 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
             $relationdetail = $complementBean->getComplementDetailInfo($relaId);
             foreach ($relationdetail as $vars) {
-                $relation['detail'][] = array(
+                $relation['detail'][] = [
                     'complement_detail_id' => $vars['complement_detail_id'],
                     'item_field_detail_id' => '',
                     'group_id' => '',
                     'title' => $vars['title'],
-                );
+                ];
             }
             if (count($detailrelation) > 0) {
                 // complement detail
@@ -1750,23 +1750,23 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
             // detail list
             $detaillist = $groupBean->getDetailList($base_itemtypeid, $baseDetailId);
 
-            $itemtype['detail'][] = array(
+            $itemtype['detail'][] = [
                 'detail_id' => '',
                 'group_id' => '',
                 'title' => '--------------',
-            );
+            ];
 
             foreach ($detaillist as $vars) {
-                $itemtype['detail'][] = array(
-                      'detail_id' => $vars['item_field_detail_id'],
-                      'group_id' => $vars['group_id'],
+                $itemtype['detail'][] = [
+                    'detail_id' => $vars['item_field_detail_id'],
+                    'group_id' => $vars['group_id'],
                     'title' => $vars['group_name'].' : '.$vars['detail_name'],
-                );
+                ];
             }
 
             $detailInfo = $detailBean->getDetailEditInfo($baseDetailId, true);
             $detailrelation = $linkBean->getInfoByItemtypeIdAndComplementId($base_itemtypeid, $relaId, $detailInfo['b_item_field_detail_id']);
-            if (count($detailrelation) == 0) {
+            if (0 == count($detailrelation)) {
                 // relation detail
                 $relationdetail = $complementBean->getComplementDetailInfo($relaId);
                 foreach ($relationdetail as $vars) {
@@ -1796,18 +1796,18 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         // relation list
         $relationlist = $complementBean->getComplementList($base_itemtypeid);
 
-        $itemtype['relation'] = array();
-        $itemtype['relation'][] = array(
+        $itemtype['relation'] = [];
+        $itemtype['relation'][] = [
             'complement_id' => '',
             'title' => '--------------',
             'selected' => '',
-        );
+        ];
         foreach ($relationlist as $vars) {
-            $itemtype['relation'][] = array(
+            $itemtype['relation'][] = [
                 'complement_id' => $vars['complement_id'].','.$vars['item_field_detail_id'].','.$vars['group_id'],
                 'title' => $vars['group_name'].' : '.$vars['detail_name'],
                 'selected' => ($vars['item_field_detail_id'] == $baseDetailId && $vars['group_id'] == $groupId) ? 'selected="selected"' : '',
-            );
+            ];
         }
 
         // token ticket
@@ -1864,27 +1864,27 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
     private function isComplementDiff($itemtypeid, $base_itemtypeid)
     {
-        $fieldDetails = array();
-        $baseFieldDetails = array();
+        $fieldDetails = [];
+        $baseFieldDetails = [];
 
         // complement list
         $complinkBean = Xoonips_BeanFactory::getBean('ItemFieldDetailComplementLinkBean', $this->dirname, $this->trustDirname);
         $complementlist = $complinkBean->getFieldDetailComplementByItemtypeId($itemtypeid);
         foreach ($complementlist as $vars) {
-            $fieldDetails[] = array(
+            $fieldDetails[] = [
                 'complement_id' => $vars['complement_id'],
                 'item_field_detail_id' => $vars['item_field_detail_id'],
                 'update_id' => $vars['update_id'],
-            );
+            ];
         }
         // complement list
         $complementlist = $complinkBean->getFieldDetailComplementByItemtypeId($base_itemtypeid);
         foreach ($complementlist as $vars) {
-            $baseFieldDetails[] = array(
+            $baseFieldDetails[] = [
                 'complement_id' => $vars['complement_id'],
                 'item_field_detail_id' => $vars['item_field_detail_id'],
                 'seq_id' => $vars['seq_id'],
-            );
+            ];
         }
 
         if (count($fieldDetails) != count($baseFieldDetails)) {
@@ -1917,8 +1917,8 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         $detailBean = Xoonips_BeanFactory::getBean('ItemFieldDetailBean', $this->dirname, $this->trustDirname);
         $linkBean = Xoonips_BeanFactory::getBean('ItemFieldDetailComplementLinkBean', $this->dirname, $this->trustDirname);
 
-        $complementlist = array();
-        $basecomplementlist = array();
+        $complementlist = [];
+        $basecomplementlist = [];
         $detailrelation = $linkBean->getInfoByItemtypeIdAndComplementId($itemtypeid, $relaId, $baseDetailId);
         if (count($detailrelation) > 0) {
             // complement detail
@@ -1988,7 +1988,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         $ret = '';
         $int = 1;
         foreach ($filetypelist as $filetype) {
-            if ($int != 1) {
+            if (1 != $int) {
                 $ret .= ' / ';
             }
             $ret .= $filetype['title'];
@@ -2001,7 +2001,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
     // insert itemtype
     public function insertXoonipsItemtype(&$itemtype_id, $name, $order, $descrip, $template, $icon)
     {
-        $itemtype_info = array();
+        $itemtype_info = [];
         $itemtype_info['preselect'] = 0;
         $itemtype_info['released'] = 0;
         $itemtype_info['weight'] = $order;
@@ -2059,7 +2059,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
     private function doCopyItemtype($itemtypeid, $isCopy = false)
     {
-        $map = array();
+        $map = [];
         if ($isCopy) {
             $itemtypeBean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
             if (!$itemtypeBean->copyById($itemtypeid, $map, false, false, true)) {
@@ -2092,7 +2092,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
     // update itemtype
     private function updateXoonipsItemtype($itemtype_id, $name, $order, $descrip, $template, $icon, $isRelease = false)
     {
-        $itemtype_info = array();
+        $itemtype_info = [];
         $itemtype_info['weight'] = $order;
         $itemtype_info['name'] = $name;
         $itemtype_info['description'] = $descrip;
@@ -2145,7 +2145,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
     private function doImportItemtype($itemtypeObj, $groupObj, $detailObj, $relationObj)
     {
-        $map = array();
+        $map = [];
         $itemtypeBean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
         if (!$itemtypeBean->copyByObj($itemtypeObj, $map, false, true, false)) {
             return false;
@@ -2284,7 +2284,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
             return false;
         }
         foreach ($fileNames as $fileName) {
-            if (preg_match($reg, $fileName, $matches) == 1) {
+            if (1 == preg_match($reg, $fileName, $matches)) {
                 unlink(XOOPS_COMPILE_PATH.'/'.$fileName);
                 break;
             }
@@ -2296,9 +2296,9 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
     private function doGroupregistersaveInputCheck($itemtypeid, $name, $xml, &$errors)
     {
         // group name
-        $parameters = array();
+        $parameters = [];
         $parameters[] = _AM_XOONIPS_LABEL_ITEMTYPE_GROUP_NAME;
-        if ($name == '') {
+        if ('' == $name) {
             $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
         } else {
             $groupBean = Xoonips_BeanFactory::getBean('ItemFieldGroupBean', $this->dirname, $this->trustDirname);
@@ -2308,9 +2308,9 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         }
 
         // group xml
-        $parameters = array();
+        $parameters = [];
         $parameters[] = _AM_XOONIPS_LABEL_ITEMTYPE_XML_TAG;
-        if ($xml == '') {
+        if ('' == $xml) {
             $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
         } else {
             $groupBean = Xoonips_BeanFactory::getBean('ItemFieldGroupBean', $this->dirname, $this->trustDirname);
@@ -2332,14 +2332,14 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         $groupBean = Xoonips_BeanFactory::getBean('ItemFieldGroupBean', $this->dirname, $this->trustDirname);
         $maxOrder = $groupBean->getMaxGroupWeight($itemtypeid);
 
-        $group_info = array();
+        $group_info = [];
         $group_info['preselect'] = 0;
         $group_info['released'] = 0;
         $group_info['item_type_id'] = $itemtypeid;
         $group_info['name'] = $name;
         $group_info['xml'] = $xml;
         $group_info['weight'] = $maxOrder + 1;
-        $group_info['occurrence'] = $occurrence == '' ? 0 : $occurrence;
+        $group_info['occurrence'] = '' == $occurrence ? 0 : $occurrence;
         $group_info['update_id'] = null;
         $new_group_id = 0;
 
@@ -2349,10 +2349,10 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
     // update group
     private function updateXoonipsItemtypeGroup($groupid, $name, $xml, $occurrence)
     {
-        $group_info = array();
+        $group_info = [];
         $group_info['name'] = $name;
         $group_info['xml'] = $xml;
-        $group_info['occurrence'] = $occurrence == '' ? 0 : $occurrence;
+        $group_info['occurrence'] = '' == $occurrence ? 0 : $occurrence;
 
         $groupBean = Xoonips_BeanFactory::getBean('ItemFieldGroupBean', $this->dirname, $this->trustDirname);
 
@@ -2361,7 +2361,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
     private function insItemtypeDetailRelation($itemtypeid, $selectid, $selectdetailids)
     {
-        if (isset($selectid) && $selectid != '') {
+        if (isset($selectid) && '' != $selectid) {
             $temp = explode(',', $selectid);
             $complementid = $temp[0];
             $baseid = $temp[1];
@@ -2374,20 +2374,20 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
             $comDetailId = $temp[0];
             $itemFieldDetailId = $temp[1];
 
-            if ($itemFieldDetailId == '') {
+            if ('' == $itemFieldDetailId) {
                 continue;
             }
 
-            $link_info = array(
-            'released' => 0,
-            'complement_id' => $complementid,
-            'item_type_id' => $itemtypeid,
-            'base_item_field_detail_id' => $baseid,
-            'complement_detail_id' => $comDetailId,
-            'item_field_detail_id' => $itemFieldDetailId,
-            'update_id' => 0,
-            'group_id' => $groupid,
-            );
+            $link_info = [
+                'released' => 0,
+                'complement_id' => $complementid,
+                'item_type_id' => $itemtypeid,
+                'base_item_field_detail_id' => $baseid,
+                'complement_detail_id' => $comDetailId,
+                'item_field_detail_id' => $itemFieldDetailId,
+                'update_id' => 0,
+                'group_id' => $groupid,
+            ];
             if (!$linkBean->update($link_info)) {
                 echo 'failure in update item_field_detail_complement_link';
 
@@ -2459,14 +2459,14 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         $itemtype_name = $itmtypeBean->getItemTypeName($itemtypeid);
 
         // get groups info
-        $groups = array();
+        $groups = [];
         $groupBean = Xoonips_BeanFactory::getBean('ItemFieldGroupBean', $this->dirname, $this->trustDirname);
         $count = $groupBean->countItemgroups();
         $groups_objs = $groupBean->getItemgrouplist($count, 0);
 
         foreach ($groups_objs as $itemgroup) {
             $itemgroupid = $itemgroup['group_id'];
-            if ($request->getParameter('checkbox_'.$itemgroupid) || $itemgroup['preselect'] == 1) {
+            if ($request->getParameter('checkbox_'.$itemgroupid) || 1 == $itemgroup['preselect']) {
                 $groups[] = $itemgroupid;
             }
         }
@@ -2514,12 +2514,12 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
                 }
             }
             if ($insert_chk) {
-                $info = array('item_type_id' => $typeid,
-                'group_id' => $id,
-                'weight' => 255,
-                'edit' => 1,
-                'edit_weight' => 255,
-                'released' => 0, );
+                $info = ['item_type_id' => $typeid,
+                    'group_id' => $id,
+                    'weight' => 255,
+                    'edit' => 1,
+                    'edit_weight' => 255,
+                    'released' => 0, ];
                 $typeBean->insertLink($info, $insertId);
             } else {
                 $typeBean->updateLinkEdit($typeid, $id, 1);
@@ -2544,16 +2544,16 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
     }
 
     // get groups for select
-    private function getGroupsForSelect($mode = 1, $members = array())
+    private function getGroupsForSelect($mode = 1, $members = [])
     {
-        $groups = array();
+        $groups = [];
 
         $groupBean = Xoonips_BeanFactory::getBean('ItemFieldGroupBean', $this->dirname, $this->trustDirname);
         $count = $groupBean->countItemgroups();
         $groups_objs = $groupBean->getItemgrouplist($count, 0);
 
         foreach ($groups_objs as $itemgroup) {
-            if ($itemgroup['released'] == 0) {
+            if (0 == $itemgroup['released']) {
                 continue;
             }
             $group_id = $itemgroup['group_id'];
@@ -2562,26 +2562,26 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
             $preselect = $itemgroup['preselect'];
             $select = 0;
 
-            if ($mode == 0) {
-                if ($preselect == 1) {
+            if (0 == $mode) {
+                if (1 == $preselect) {
                     $select = 1;
                 }
             } else {
                 foreach ($members as $member) {
                     if ($member['group_id'] == $group_id
-                    && $member['edit'] == 1) {
+                    && 1 == $member['edit']) {
                         $select = 1;
                     }
                 }
             }
 
-            $groups[] = array(
+            $groups[] = [
                 'groupid' => $group_id,
                 'name' => $name,
                 'xml' => $xml,
                 'select' => $select,
                 'preselect' => $preselect,
-            );
+            ];
         }
 
         return $groups;

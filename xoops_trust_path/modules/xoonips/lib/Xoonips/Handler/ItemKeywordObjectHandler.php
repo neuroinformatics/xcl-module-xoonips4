@@ -17,7 +17,7 @@ class ItemKeywordObjectHandler extends AbstractObjectHandler
     {
         parent::__construct($db, $dirname);
         $this->mTable = $db->prefix($dirname.'_item_keyword');
-        $this->mPrimaryKey = array('item_id', 'keyword_id');
+        $this->mPrimaryKey = ['item_id', 'keyword_id'];
         $this->mIsAutoIncrement = false;
     }
 }

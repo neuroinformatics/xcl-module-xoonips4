@@ -47,19 +47,19 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
         $index_select = $request->getParameter('index_select');
 
         // breadcrumbs
-        $breadcrumbs = array(
-            array('name' => _MI_XOONIPS_USER_IMPORT_ITEM),
-        );
+        $breadcrumbs = [
+            ['name' => _MI_XOONIPS_USER_IMPORT_ITEM],
+        ];
 
         // select index
-        $index_select_arr = array();
+        $index_select_arr = [];
         $is['value'] = 'file';
         $is['label'] = _MD_XOONIPS_ITEM_IMPORT_INDEX_SELECT_MSG2;
-        $is['selected'] = ($index_select == 'file') ? 'yes' : 'no';
+        $is['selected'] = ('file' == $index_select) ? 'yes' : 'no';
         $index_select_arr[] = $is;
         $is['value'] = 'self';
         $is['label'] = _MD_XOONIPS_ITEM_IMPORT_INDEX_SELECT_MSG1;
-        $is['selected'] = ($index_select == 'self') ? 'yes' : 'no';
+        $is['selected'] = ('self' == $index_select) ? 'yes' : 'no';
         $index_select_arr[] = $is;
 
         // index tree
@@ -69,26 +69,26 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
         $is_admin = $userBean->isModerator($uid);
 
-        $publicGroupIndexes = array();
-        $groupIndexes = array();
+        $publicGroupIndexes = [];
+        $groupIndexes = [];
         $privateIndex = false;
         $publicIndex = $indexBean->getPublicIndex();
         if ($is_admin) {
             $publicGroupIndexes = $indexBean->getPublicGroupIndex();
         }
 
-        if ($uid != XOONIPS_UID_GUEST) {
+        if (XOONIPS_UID_GUEST != $uid) {
             $groupIndexes = $indexBean->getGroupIndex($uid);
             $privateIndex = $indexBean->getPrivateIndex($uid);
         }
         $groupIndexes = $indexBean->mergeIndexes($publicGroupIndexes, $groupIndexes);
-        $indexes = array();
-        $trees = array();
+        $indexes = [];
+        $trees = [];
         $url = false;
         // public index
         if ($publicIndex) {
             $indexes[] = $publicIndex;
-            $tree = array();
+            $tree = [];
             $tree['index_id'] = $publicIndex['index_id'];
             $trees[] = $tree;
         }
@@ -96,7 +96,7 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
         if ($groupIndexes) {
             foreach ($groupIndexes as $index) {
                 $indexes[] = $index;
-                $tree = array();
+                $tree = [];
                 $tree['index_id'] = $index['index_id'];
                 $trees[] = $tree;
             }
@@ -105,7 +105,7 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
         if ($privateIndex) {
             $privateIndex['title'] = 'Private';
             $indexes[] = $privateIndex;
-            $tree = array();
+            $tree = [];
             $tree['index_id'] = $privateIndex['index_id'];
             $trees[] = $tree;
         }
@@ -114,7 +114,7 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
         $viewData['token_ticket'] = $token_ticket;
         $viewData['select_tab'] = 1;
         $viewData['index_select_arr'] = $index_select_arr;
-        $viewData['index_self'] = ($index_select == 'self') ? true : false;
+        $viewData['index_self'] = ('self' == $index_select) ? true : false;
         $viewData['indexes'] = $indexes;
         $viewData['trees'] = $trees;
         $viewData['dirname'] = $this->dirname;
@@ -139,11 +139,11 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
 
         // for self index
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-        $req_indexes = array();
+        $req_indexes = [];
         $my_indexes = null;
-        if ($index_select == 'self') {
+        if ('self' == $index_select) {
             $req_indexes = explode(',', $request->getParameter('checked_indexes'));
-            if (count($req_indexes) == 0) {
+            if (0 == count($req_indexes)) {
                 $viewData['url'] = XOOPS_URL.'/modules/'.$this->dirname.'/itemimport.php';
                 $viewData['redirect_msg'] = _MD_XOONIPS_ITEM_IMPORT_FAILURE;
                 $response->setViewData($viewData);
@@ -152,8 +152,8 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
                 return true;
             }
         } else {
-            $my_indexes = array();
-            $publicGroupIndexes = array();
+            $my_indexes = [];
+            $publicGroupIndexes = [];
             $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
             $is_admin = $userBean->isModerator($uid);
             if ($is_admin) {
@@ -176,7 +176,7 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
 
         $importfile = $request->getFile('import_file');
 
-        if (empty($importfile['name']) || $importfile['size'] == 0) {
+        if (empty($importfile['name']) || 0 == $importfile['size']) {
             $viewData['url'] = XOOPS_URL.'/modules/'.$this->dirname.'/itemimport.php';
             $viewData['redirect_msg'] = _MD_XOONIPS_ITEM_IMPORT_FILE_NONE;
             $response->setViewData($viewData);
@@ -193,11 +193,11 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
         // create temporary directry
         $upload_dir = Functions::getXoonipsConfig($this->dirname, 'upload_dir');
         $tmpdir1 = FileUtils::makeTempDirectory($upload_dir, 'im1');
-        if ($tmpdir1 === false) {
+        if (false === $tmpdir1) {
             die('failed to create temporary directry');
         }
         $tmpdir2 = FileUtils::makeTempDirectory($upload_dir, 'im2');
-        if ($tmpdir2 === false) {
+        if (false === $tmpdir2) {
             die('failed to create temporary directry');
         }
 
@@ -222,12 +222,12 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
         $this->flatDirectryInZipFile($tmpdir2, $tmpdir2);
 
         // Import Log
-        $import = array(
-        'uid' => $uid,
-        'result' => 0,
-        'log' => "[Import Item] Begin\n",
-        'timestamp' => time(),
-        );
+        $import = [
+            'uid' => $uid,
+            'result' => 0,
+            'log' => "[Import Item] Begin\n",
+            'timestamp' => time(),
+        ];
 
         //date_default_timezone_set('asia/tokyo');
         $date = date('YmdHis');
@@ -237,10 +237,10 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
         $import['log'] .= '[Import Item] Zip File : '.$importfile['name']."\n";
 
         $num = 0;
-        $items = array();
+        $items = [];
         $res_dir = opendir($tmpdir2);
         while (false !== ($itemzip = readdir($res_dir))) {
-            if ($itemzip == '.' || $itemzip == '..') {
+            if ('.' == $itemzip || '..' == $itemzip) {
                 continue;
             }
 
@@ -256,12 +256,12 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
                 die('failed to open zip file '.$tmpdir2.'/'.$itemzip);
             }
             $itemid = str_replace('.zip', '', $itemzip);
-            $items[$itemid] = array(
-            'xml' => '',
-            'tmpinfo' => array(),
-            'tmpfiles' => array(),
-            'error' => '',
-            );
+            $items[$itemid] = [
+                'xml' => '',
+                'tmpinfo' => [],
+                'tmpfiles' => [],
+                'error' => '',
+            ];
 
             $xmlimport = new XmlItemImport();
             $xmlimport->uid($uid);
@@ -269,7 +269,7 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
             ++$num;
             $res_dir2 = opendir($tmpdir1);
             while (false !== ($file = readdir($res_dir2))) {
-                if ($file == '.' || $file == '..') {
+                if ('.' == $file || '..' == $file) {
                     continue;
                 }
 
@@ -278,15 +278,15 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
                 if (is_dir($path)) {
                     $res_dir3 = opendir($path);
                     while (false !== ($tmpfile = readdir($res_dir3))) {
-                        if ($tmpfile == '.' || $tmpfile == '..') {
+                        if ('.' == $tmpfile || '..' == $tmpfile) {
                             continue;
                         }
 
                         $tmpfile_u = mb_convert_encoding($tmpfile, 'UTF-8', 'ASCII,JIS,UTF-8,EUC-JP,SJIS');
-                        $items[$itemid]['tmpinfo'][] = array(
-                        'id' => $file,
-                        'name' => $tmpfile_u,
-                        );
+                        $items[$itemid]['tmpinfo'][] = [
+                            'id' => $file,
+                            'name' => $tmpfile_u,
+                        ];
                         $items[$itemid]['tmpfiles'][$file] = "${tmpdir1}/${file}/$tmpfile";
 
                         // Import Log
@@ -307,7 +307,7 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
                         $line_chk = trim($line);
 
                         // omit index tag
-                        if ($index_select == 'self' &&
+                        if ('self' == $index_select &&
                         (preg_match('/^<C:index*/', $line_chk) || preg_match('/^<\/C:index*/', $line_chk))) {
                             continue;
                         }
@@ -332,7 +332,7 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
 
             $new_id = $xmlimport->get_create_item_id();
 
-            if (!($new_id > 0) || !($ret == '200' || $ret == '206')) {
+            if (!($new_id > 0) || !('200' == $ret || '206' == $ret)) {
                 $transaction->rollback();
 
                 $items[$itemid]['error'] = $xmlimport->get_err_code();
@@ -345,7 +345,7 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
                 $import['log'] .= "[Import Item No.${num}] Result : Error (Message : ".$items[$itemid]['err_msg'].' ['.$items[$itemid]['err_line']."])\n";
 
                 break;
-            } elseif ($new_id > 0 && $index_select == 'self') {
+            } elseif ($new_id > 0 && 'self' == $index_select) {
                 $index_bean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
                 $privateIndex = $index_bean->getPrivateIndex($uid);
                 $hasPrivate = false;
@@ -357,7 +357,7 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
                             $hasPrivate = true;
                         }
                     }
-                    $new_indexes .= (strlen($new_indexes) == 0) ? $index : ','.$index;
+                    $new_indexes .= (0 == strlen($new_indexes)) ? $index : ','.$index;
                     // Import Log
                     $import['log'] .= "[Import Item No.${num}] Index ID : $index]\n";
                 }
@@ -417,9 +417,9 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
     private function doLogInit(&$request, &$response)
     {
         // breadcrumbs
-        $breadcrumbs = array(
-            array('name' => _MI_XOONIPS_USER_IMPORT_ITEM),
-        );
+        $breadcrumbs = [
+            ['name' => _MI_XOONIPS_USER_IMPORT_ITEM],
+        ];
 
         // user info
         global $xoopsUser;
@@ -449,15 +449,15 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
         $import_id = $request->getParameter('import_id');
 
         // breadcrumbs
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => _MD_XOONIPS_ITEM_IMPORT_LOG_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/itemimport.php?op=log',
-            ),
-            array(
+            ],
+            [
                 'name' => _MD_XOONIPS_ITEM_IMPORT_LOGDETAIL_TITLE,
-            ),
-        );
+            ],
+        ];
 
         // get item import log
         $logBean = Xoonips_BeanFactory::getBean('ItemImportLogBean', $this->dirname, $this->trustDirname);
@@ -484,7 +484,7 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
         $logBean->insert($import);
         $import_id = $logBean->getInsertId();
 
-        if ($import['result'] == 1) {
+        if (1 == $import['result']) {
             foreach ($items as $item_id => $val) {
                 $logBean->insertLink($import_id, $item_id);
             }
@@ -519,10 +519,10 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
     private function flatDirectryInZipFile($base_dir, $dir)
     {
         $dir_chk = false;
-        $dir_arr = array();
+        $dir_arr = [];
         $o_dir = opendir($dir);
         while (false !== ($name = readdir($o_dir))) {
-            if ($name == '.' || $name == '..') {
+            if ('.' == $name || '..' == $name) {
                 continue;
             }
             if (stripos($name, '.zip')) {

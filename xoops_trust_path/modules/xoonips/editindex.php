@@ -16,20 +16,20 @@ $response = new Xoonips_Response();
 $indexId = $request->getParameter('index_id');
 $op = $request->getParameter('op');
 
-if ($op == null) {
+if (null == $op) {
     $op = 'init';
 }
 // check request
-if (!in_array($op, array('init', 'save', 'indexEdit', 'update',
-    'indexMove', 'move', 'indexDelete', 'delete', 'finish', ))) {
+if (!in_array($op, ['init', 'save', 'indexEdit', 'update',
+    'indexMove', 'move', 'indexDelete', 'delete', 'finish', ])) {
     die('illegal request');
 }
-if ($indexId == 1) {
+if (1 == $indexId) {
     die('illegal request');
 }
 
 // set action map
-$actionMap = array();
+$actionMap = [];
 $actionMap['init_success'] = $mydirname.'_index_list.html';
 $actionMap['save_success'] = 'redirect_header';
 $actionMap['indexEdit_success'] = $mydirname.'_index_edit.html';
@@ -41,7 +41,7 @@ $actionMap['indexDelete_success'] = $mydirname.'_index_delete.html';
 $actionMap['delete_success'] = $mydirname.'_common_msg_sub.html';
 $actionMap['finish_success'] = 'redirect_header';
 
-if ($op == 'init') {
+if ('init' == $op) {
     include XOOPS_ROOT_PATH.'/header.php';
 }
 
@@ -50,12 +50,12 @@ $action = new Xoonips_EditIndexAction();
 $action->doAction($request, $response);
 
 // forward
-if ($op == 'init' || $op == 'finish' || $op == 'save') {
+if ('init' == $op || 'finish' == $op || 'save' == $op) {
     $response->forward($actionMap);
 } else {
     $response->forwardLayeredWindow($actionMap);
 }
 
-if ($op == 'init') {
+if ('init' == $op) {
     include XOOPS_ROOT_PATH.'/footer.php';
 }

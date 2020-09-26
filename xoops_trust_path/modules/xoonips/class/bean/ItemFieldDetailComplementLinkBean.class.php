@@ -29,7 +29,7 @@ class Xoonips_ItemFieldDetailComplementLinkBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -52,7 +52,7 @@ class Xoonips_ItemFieldDetailComplementLinkBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -229,7 +229,7 @@ class Xoonips_ItemFieldDetailComplementLinkBean extends Xoonips_BeanBase
             .' ORDER BY rd.complement_detail_id';
 
         $result = $this->execute($sql);
-        $ret = array();
+        $ret = [];
         if (!$result) {
             return $ret;
         }
@@ -248,7 +248,7 @@ class Xoonips_ItemFieldDetailComplementLinkBean extends Xoonips_BeanBase
             .' AND base_group_id='.$groupId;
 
         $result = $this->execute($sql);
-        $ret = array();
+        $ret = [];
         if (!$result) {
             return $ret;
         }
@@ -275,7 +275,7 @@ class Xoonips_ItemFieldDetailComplementLinkBean extends Xoonips_BeanBase
         } else {
             $complementObj = $this->getFieldDetailComplementByItemfieldId($itemId);
         }
-        if ($complementObj === false) {
+        if (false === $complementObj) {
             return false;
         }
 
@@ -335,7 +335,7 @@ class Xoonips_ItemFieldDetailComplementLinkBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }

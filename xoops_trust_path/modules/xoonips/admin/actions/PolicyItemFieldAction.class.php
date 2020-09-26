@@ -76,35 +76,35 @@ class Xoonips_Admin_PolicyItemFieldAction extends Xoonips_AbstractListAction
         $dirname = $this->mAsset->mDirname;
         $constpref = '_AD_'.strtoupper($dirname);
         // breadcrumbs
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => constant($constpref.'_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=Policy',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_ITEM_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=PolicyItem',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_ITEM_FIELD_TITLE'),
-            ),
-        );
-        $toptab = array(
-            array(
+            ],
+        ];
+        $toptab = [
+            [
                 'title' => constant($constpref.'_LANG_ADDNEW'),
                 'link' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=PolicyItemFieldEdit',
                 'class' => 'add',
-            ),
-        );
-        $description = array(
+            ],
+        ];
+        $description = [
             constant($constpref.'_POLICY_ITEM_FIELD_DESC'),
             constant($constpref.'_POLICY_ITEM_FIELD_DESC_MORE1'),
             constant($constpref.'_POLICY_ITEM_FIELD_DESC_MORE2'),
-        );
+        ];
         $render->setTemplateName('policy_item_field.html');
         $render->setAttribute('title', constant($constpref.'_POLICY_ITEM_FIELD_TITLE'));
         $render->setAttribute('description', $description);

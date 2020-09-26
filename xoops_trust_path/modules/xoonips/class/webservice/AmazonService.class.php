@@ -31,7 +31,7 @@ class Xoonips_AmazonService extends Xoonips_WebServiceBase
 
         // set fetcher conditions
         $this->fetch_url = 'http://webservices.amazon.com/onca/xml';
-        $this->fetch_arguments = $this->encodeArguments(array(
+        $this->fetch_arguments = $this->encodeArguments([
             'Service' => 'AWSECommerceService',
             'Version' => '2010-09-01',
             'Operation' => 'ItemLookup',
@@ -40,7 +40,7 @@ class Xoonips_AmazonService extends Xoonips_WebServiceBase
             'AssociateTag' => 'XooNIps',
             'ResponseGroup' => 'Medium',
             'AWSAccessKeyId' => $this->configBean->getConfig('access_key'),
-            'Timestamp' => gmdate('Y-m-d\\TH:i:s\\Z'), )
+            'Timestamp' => gmdate('Y-m-d\\TH:i:s\\Z'), ]
         );
         // secret access key for amazon API
         $this->secret_access_key = $this->configBean->getConfig('secret_access_key');
@@ -57,10 +57,10 @@ class Xoonips_AmazonService extends Xoonips_WebServiceBase
     {
         $this->isbn = $isbn;
         $isbn = preg_replace('/[\\- ]/', '', $isbn);
-        if (strlen($isbn) == 10) {
+        if (10 == strlen($isbn)) {
             $isbn = $this->isbn10ToIsbn13($isbn);
         }
-        if (strlen($isbn) != 13) {
+        if (13 != strlen($isbn)) {
             return false;
         }
         $char = substr($isbn, 3, 1);
@@ -100,7 +100,7 @@ class Xoonips_AmazonService extends Xoonips_WebServiceBase
     protected function createUrl()
     {
         // create sigunature
-        $arguments = array();
+        $arguments = [];
         foreach ($this->fetch_arguments as $key => $value) {
             $arguments[] = $key.'='.$value;
         }
@@ -126,16 +126,16 @@ class Xoonips_AmazonService extends Xoonips_WebServiceBase
     {
         switch ($this->parser_xpath) {
         case '/ItemLookupResponse/Items/Item':
-            $this->data[$this->isbn] = array(
+            $this->data[$this->isbn] = [
                 'ASIN' => '',
                 'EAN' => '',
                 'ISBN' => '',
                 'DetailPageURL' => '',
-                'Author' => array(),
+                'Author' => [],
                 'PublicationDate' => '',
                 'Publisher' => '',
                 'Title' => '',
-            );
+            ];
             break;
         }
     }
@@ -196,10 +196,10 @@ class Xoonips_AmazonService extends Xoonips_WebServiceBase
         $isbn13 = '978'.substr($isbn10, 0, 9);
         $arr = str_split($isbn13, 1);
         for ($i = 0; $i < 12; ++$i) {
-            $digit += $arr[$i] * ($i % 2 == 0 ? 1 : 3);
+            $digit += $arr[$i] * (0 == $i % 2 ? 1 : 3);
         }
         $digit = 10 - ($digit % 10);
-        if ($digit == 10) {
+        if (10 == $digit) {
             $digit = 0;
         }
 

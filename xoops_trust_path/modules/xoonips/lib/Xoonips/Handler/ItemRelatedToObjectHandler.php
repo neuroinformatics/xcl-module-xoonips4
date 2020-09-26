@@ -17,7 +17,7 @@ class ItemRelatedToObjectHandler extends AbstractObjectHandler
     {
         parent::__construct($db, $dirname);
         $this->mTable = $db->prefix($dirname.'_item_related_to');
-        $this->mPrimaryKey = array('item_id', 'child_item_id');
+        $this->mPrimaryKey = ['item_id', 'child_item_id'];
         $this->mIsAutoIncrement = false;
     }
 }

@@ -13,23 +13,23 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
         $title = _AM_XOONIPS_POLICY_ITEMFIELDGROUP_TITLE;
         $description = _AM_XOONIPS_POLICY_ITEMFIELDGROUP_DESC;
         // breadcrumbs
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => _AM_XOONIPS_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => _AM_XOONIPS_POLICY_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php?action=Policy',
-            ),
-            array(
+            ],
+            [
                 'name' => _AD_XOONIPS_POLICY_ITEM_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php?action=PolicyItem',
-            ),
-            array(
+            ],
+            [
                 'name' => $title,
-            ),
-        );
+            ],
+        ];
         // get requsts
         $start = intval($request->getParameter('start'));
 
@@ -47,7 +47,7 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
         $start + 1, ($start + $limit) > $count ? $count : $start + $limit, $count);
 
         $itemgroups_objs = $groupBean->getItemgrouplist($limit, $start);
-        $itemgroups = array();
+        $itemgroups = [];
         $itemBean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
 
         $itemtypeBean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
@@ -56,9 +56,9 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
             $name = $itemgroup['name'];
             $xml = $itemgroup['xml'];
             $editing = '';
-            if ($itemgroup['released'] == 0) {
+            if (0 == $itemgroup['released']) {
                 $editing = _AM_XOONIPS_LABEL_ITEMTYPE_EDITING;
-            } elseif ($itemgroup['upid'] != '') {
+            } elseif ('' != $itemgroup['upid']) {
                 if ($this->isDiff($itemgroupid)) {
                     $editing = _AM_XOONIPS_LABEL_ITEMTYPE_EDITING;
                 } else {
@@ -85,24 +85,24 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
             }
 
             // check preselect
-            if ($itemgroup['preselect'] == 1) {
+            if (1 == $itemgroup['preselect']) {
                 $disdel = false;
             }
 
-            $itemgroups[] = array(
+            $itemgroups[] = [
                 'itemgroupid' => $itemgroupid,
                 'name' => $name,
                 'xml' => $xml,
                 'editing' => $editing,
                 'disdel' => $disdel,
-            );
+            ];
         }
 
         // token ticket
         $token_ticket = $this->createToken($this->modulePrefix('admin_policy_itemgroup'));
 
         // get common viewdata
-        $viewData = array();
+        $viewData = [];
 
         $viewData['token_ticket'] = $token_ticket;
         $viewData['navi_title'] = $navi_title;
@@ -168,7 +168,7 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
         $mode = $request->getParameter('mode');
 
         // get fields info
-        $itemfields = array();
+        $itemfields = [];
         $itemfieldBean = Xoonips_BeanFactory::getBean('ItemFieldDetailBean', $this->dirname, $this->trustDirname);
         $count = $itemfieldBean->countItemfields();
         $itemfields_objs = $itemfieldBean->getItemfieldlist($count, 0);
@@ -247,10 +247,10 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
         }
 
         // release mode
-        if ($mode == 1) {
+        if (1 == $mode) {
             // get group detail list
             $details = $this->getFieldInfos($new_group_id);
-            if (count($details) == 0) {
+            if (0 == count($details)) {
                 $transaction->rollback();
 
                 $viewData['url'] = XOOPS_URL.'/modules/'.$this->dirname."/admin/policy_itemgroup.php?op=register&name=$name&xml=$xml&occurrence=$occurrence";
@@ -278,7 +278,7 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
         $transaction->commit();
 
         $viewData['url'] = XOOPS_URL.'/modules/'.$this->dirname.'/admin/policy_itemgroup.php';
-        if ($mode == 1) {
+        if (1 == $mode) {
             $viewData['redirect_msg'] = _AM_XOONIPS_POLICY_ITEMTYPE_GROUP_RELEASE_MSG_SUCCESS;
         } else {
             $viewData['redirect_msg'] = _AM_XOONIPS_POLICY_ITEMTYPE_GROUP_REGIST_MSG_SUCCESS;
@@ -309,7 +309,7 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
         $baseInfo = $groupBean->getGroupEditInfo($base_groupid);
 
         // do copy
-        if ($baseInfo['a_released'] == 1 && $baseInfo['b_update_id'] == null) {
+        if (1 == $baseInfo['a_released'] && null == $baseInfo['b_update_id']) {
             // transaction
             $transaction = Xoonips_Transaction::getInstance();
             $transaction->start();
@@ -323,7 +323,7 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
 
             // success
             $transaction->commit();
-        } elseif ($baseInfo['a_released'] == 1) {
+        } elseif (1 == $baseInfo['a_released']) {
             $groupid = $baseInfo['b_group_id'];
         }
 
@@ -331,7 +331,7 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
         $disedi = false;
         $group_info = $groupBean->getItemGroup($base_groupid);
         foreach ($group_info as $grp) {
-            if ($grp['released'] == 1 && $grp['preselect'] == 1) {
+            if (1 == $grp['released'] && 1 == $grp['preselect']) {
                 $disedi = true;
             }
         }
@@ -352,7 +352,7 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
         $chk_groups = $groupBean->getItemgroup($base_groupid);
         $select_btn = 1;
         foreach ($chk_groups as $chk_group) {
-            if ($chk_group['preselect'] == 1) {
+            if (1 == $chk_group['preselect']) {
                 $select_btn = 0;
             }
         }
@@ -466,10 +466,10 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
         }
 
         // release mode
-        if ($mode == 1) {
+        if (1 == $mode) {
             // get group detail list
             $details = $this->getFieldInfos($base_groupid);
-            if (count($details) == 0) {
+            if (0 == count($details)) {
                 $transaction->rollback();
 
                 $viewData['url'] = XOOPS_URL.'/modules/'.$this->dirname.'/admin/policy_itemgroup.php?op=edit&groupid='.$base_groupid;
@@ -497,7 +497,7 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
         $transaction->commit();
 
         $viewData['url'] = XOOPS_URL.'/modules/'.$this->dirname.'/admin/policy_itemgroup.php';
-        if ($mode == 1) {
+        if (1 == $mode) {
             $viewData['redirect_msg'] = _AM_XOONIPS_POLICY_ITEMTYPE_GROUP_RELEASE_MSG_SUCCESS;
         } else {
             $viewData['redirect_msg'] = _AM_XOONIPS_POLICY_ITEMTYPE_GROUP_MODIFY_MSG_SUCCESS;
@@ -700,7 +700,7 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
         $breadcrumbs = $this->setDetailBreadcrumbs($title, $groupid);
 
         // get fields info
-        $itemfields = array();
+        $itemfields = [];
         $itemfieldBean = Xoonips_BeanFactory::getBean('ItemFieldDetailBean', $this->dirname, $this->trustDirname);
         $count = $itemfieldBean->countItemfields();
         $itemfields_objs = $itemfieldBean->getItemfieldlist($count, 0);
@@ -737,57 +737,57 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
 
     private function setBreadcrumbs($title)
     {
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => _AM_XOONIPS_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => _AM_XOONIPS_POLICY_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php?action=Policy',
-            ),
-            array(
+            ],
+            [
                 'name' => _AD_XOONIPS_POLICY_ITEM_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php?action=PolicyItem',
-            ),
-            array(
+            ],
+            [
                 'name' => _AM_XOONIPS_POLICY_ITEMFIELDGROUP_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/policy_itemgroup.php',
-            ),
-            array(
+            ],
+            [
                 'name' => $title,
-            ),
-        );
+            ],
+        ];
 
         return $breadcrumbs;
     }
 
     private function setDetailBreadcrumbs($title, $groupid)
     {
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => _AM_XOONIPS_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => _AM_XOONIPS_POLICY_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php?action=Policy',
-            ),
-            array(
+            ],
+            [
                 'name' => _AD_XOONIPS_POLICY_ITEM_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php?action=PolicyItem',
-            ),
-            array(
+            ],
+            [
                 'name' => _AM_XOONIPS_POLICY_ITEMFIELDGROUP_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/policy_itemgroup.php',
-            ),
-            array(
+            ],
+            [
                 'name' => _AM_XOONIPS_POLICY_ITEMTYPE_GROUP_EDIT_TITLE,
-                'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/policy_itemgroup.php?'.'op=edit&groupid='.$groupid, ),
-            array(
+                'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/policy_itemgroup.php?'.'op=edit&groupid='.$groupid, ],
+            [
                 'name' => $title,
-            ),
-        );
+            ],
+        ];
 
         return $breadcrumbs;
     }
@@ -801,17 +801,17 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
         } else {
             $info = $groupBean->getGroupEditInfo($groupid, true);
         }
-        $groupInfo = array(
-            'a_name' => $info['a_released'] == 1 ? $info['b_name'] : $info['a_name'],
-            'a_xml' => $info['a_released'] == 1 ? $info['b_xml'] : $info['a_xml'],
-            'a_occurrence' => $info['a_released'] == 1 ? $info['b_occurrence'] : $info['a_occurrence'],
-            'a_weight' => $info['a_released'] == 1 ? $info['b_weight'] : $info['a_weight'],
-            'b_name' => $info['a_released'] == 1 ? $info['a_name'] : $info['b_name'],
-            'b_xml' => $info['a_released'] == 1 ? $info['a_xml'] : $info['b_xml'],
-            'b_occurrence' => $info['a_released'] == 1 ? $info['a_occurrence'] : $info['b_occurrence'],
-            'b_weight' => $info['a_released'] == 1 ? $info['a_weight'] : $info['b_weight'],
+        $groupInfo = [
+            'a_name' => 1 == $info['a_released'] ? $info['b_name'] : $info['a_name'],
+            'a_xml' => 1 == $info['a_released'] ? $info['b_xml'] : $info['a_xml'],
+            'a_occurrence' => 1 == $info['a_released'] ? $info['b_occurrence'] : $info['a_occurrence'],
+            'a_weight' => 1 == $info['a_released'] ? $info['b_weight'] : $info['a_weight'],
+            'b_name' => 1 == $info['a_released'] ? $info['a_name'] : $info['b_name'],
+            'b_xml' => 1 == $info['a_released'] ? $info['a_xml'] : $info['b_xml'],
+            'b_occurrence' => 1 == $info['a_released'] ? $info['a_occurrence'] : $info['b_occurrence'],
+            'b_weight' => 1 == $info['a_released'] ? $info['a_weight'] : $info['b_weight'],
             'b_group_id' => $info['b_group_id'],
-        );
+        ];
 
         return $groupInfo;
     }
@@ -851,9 +851,9 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
     private function doGroupregistersaveInputCheck($name, $xml, &$errors)
     {
         // group name
-        $parameters = array();
+        $parameters = [];
         $parameters[] = _AM_XOONIPS_LABEL_ITEMTYPE_GROUP_NAME;
-        if ($name == '') {
+        if ('' == $name) {
             $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
         } else {
             /* allow duplicate group name
@@ -865,9 +865,9 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
         }
 
         // group xml
-        $parameters = array();
+        $parameters = [];
         $parameters[] = _AM_XOONIPS_POLICY_ITEMFIELDGROUP_ID;
-        if ($xml == '') {
+        if ('' == $xml) {
             $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
         } else {
             $groupBean = Xoonips_BeanFactory::getBean('ItemFieldGroupBean', $this->dirname, $this->trustDirname);
@@ -902,7 +902,7 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
 
     private function doCopyItemgroup($groupid, $isCopy, &$insertId)
     {
-        $map = array();
+        $map = [];
         $groupBean = Xoonips_BeanFactory::getBean('ItemFieldGroupBean', $this->dirname, $this->trustDirname);
         if ($isCopy) {
             if (!$groupBean->copyById($groupid, $map)) {
@@ -924,14 +924,14 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
     {
         $groupBean = Xoonips_BeanFactory::getBean('ItemFieldGroupBean', $this->dirname, $this->trustDirname);
 
-        $group_info = array();
+        $group_info = [];
         $group_info['preselect'] = 0;
         $group_info['released'] = 0;
         $group_info['item_type_id'] = 0;
         $group_info['name'] = $name;
         $group_info['xml'] = $xml;
         $group_info['weight'] = 1;
-        $group_info['occurrence'] = $occurrence == '' ? 0 : $occurrence;
+        $group_info['occurrence'] = '' == $occurrence ? 0 : $occurrence;
         $group_info['update_id'] = null;
         $new_group_id = 0;
 
@@ -942,15 +942,15 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
     {
         $groupBean = Xoonips_BeanFactory::getBean('ItemFieldGroupBean', $this->dirname, $this->trustDirname);
         $detailInfos = $groupBean->getGroupDetails($groupid);
-        $details = array();
+        $details = [];
         foreach ($detailInfos as $detail) {
-            if ($detail['edit'] == 1) {
-                $details[] = array(
+            if (1 == $detail['edit']) {
+                $details[] = [
                     'detail_id' => $detail['item_field_detail_id'],
                     'name' => $detail['name'],
                     'xml' => $detail['xml'],
                     'weight' => $detail['edit_weight'],
-                );
+                ];
             }
         }
 
@@ -960,16 +960,16 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
     private function doGroupeditsaveInputCheck($group_id, $name, $xml, &$errors, $base_groupid)
     {
         // group name
-        $parameters = array();
+        $parameters = [];
         $parameters[] = _AM_XOONIPS_LABEL_ITEMTYPE_GROUP_NAME;
-        if ($name == '') {
+        if ('' == $name) {
             $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
         }
 
         // group xml
-        $parameters = array();
+        $parameters = [];
         $parameters[] = _AM_XOONIPS_POLICY_ITEMFIELDGROUP_ID;
-        if ($xml == '') {
+        if ('' == $xml) {
             $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
         } else {
             $groupBean = Xoonips_BeanFactory::getBean('ItemFieldGroupBean', $this->dirname, $this->trustDirname);
@@ -988,10 +988,10 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
     // update group
     private function updateXoonipsItemtypeGroup($groupid, $name, $xml, $occurrence)
     {
-        $group_info = array();
+        $group_info = [];
         $group_info['name'] = $name;
         $group_info['xml'] = $xml;
-        $group_info['occurrence'] = $occurrence == '' ? 0 : $occurrence;
+        $group_info['occurrence'] = '' == $occurrence ? 0 : $occurrence;
 
         $groupBean = Xoonips_BeanFactory::getBean('ItemFieldGroupBean', $this->dirname, $this->trustDirname);
 
@@ -1001,7 +1001,7 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
     // update detail link weight
     private function updateXoonipsItemtypeDetailOrder($groupid, $dids, $orders)
     {
-        if ($dids == '') {
+        if ('' == $dids) {
             return true;
         }
         $groupBean = Xoonips_BeanFactory::getBean('ItemFieldGroupBean', $this->dirname, $this->trustDirname);
@@ -1034,12 +1034,12 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
             $insert_chk = (count($link_info) > 0) ? false : true;
 
             if ($insert_chk) {
-                $info = array('group_id' => $groupid,
-                'item_field_detail_id' => $id,
-                'weight' => 255,
-                'edit' => 1,
-                'edit_weight' => 255,
-                'released' => 0, );
+                $info = ['group_id' => $groupid,
+                    'item_field_detail_id' => $id,
+                    'weight' => 255,
+                    'edit' => 1,
+                    'edit_weight' => 255,
+                    'released' => 0, ];
                 $groupBean->insertLink($info, $insertId);
             } else {
                 $groupBean->updateLinkEdit($groupid, $id, 1);
@@ -1050,9 +1050,9 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
     }
 
     // get details for select
-    private function getDetailsForSelect($members = array())
+    private function getDetailsForSelect($members = [])
     {
-        $itemfields = array();
+        $itemfields = [];
 
         $detailBean = Xoonips_BeanFactory::getBean('ItemFieldDetailBean', $this->dirname, $this->trustDirname);
         $count = $detailBean->countItemfields();
@@ -1060,7 +1060,7 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
 
         foreach ($itemfields_objs as $itemfield) {
             $table = $itemfield['table_name'];
-            if ($itemfield['released'] == 0
+            if (0 == $itemfield['released']
             || (!strpos($table, 'item_extend') && !strpos($table, 'item_file'))) {
                 continue;
             }
@@ -1071,18 +1071,18 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
             $select = 0;
             foreach ($members as $member) {
                 if ($member['item_field_detail_id'] == $itemfieldid
-                && $member['edit'] == 1) {
+                && 1 == $member['edit']) {
                     $select = 1;
                 }
             }
 
-            $itemfields[] = array(
+            $itemfields[] = [
                 'itemfieldid' => $itemfieldid,
                 'name' => $name,
                 'xml' => $xml,
                 'select' => $select,
                 'preselect' => $preselect,
-            );
+            ];
         }
 
         return $itemfields;

@@ -5,7 +5,7 @@
  */
 class Xoonips_GroupsUsersLinkBean extends Xoonips_BeanBase
 {
-    private static $cache = array();
+    private static $cache = [];
 
     /**
      * Constructor.
@@ -26,7 +26,7 @@ class Xoonips_GroupsUsersLinkBean extends Xoonips_BeanBase
      */
     public function getGroupUserLinkInfo($groupId, $userId)
     {
-        $ret = array();
+        $ret = [];
         if (isset(self::$cache[$groupId][$userId])) {
             return self::$cache[$groupId][$userId];
         }
@@ -56,7 +56,7 @@ class Xoonips_GroupsUsersLinkBean extends Xoonips_BeanBase
      */
     public function getGroupUserLinkInfoByGroupId($groupId)
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT * FROM $this->table";
         $sql = $sql." WHERE groupid=$groupId";
         $result = $this->execute($sql);
@@ -82,7 +82,7 @@ class Xoonips_GroupsUsersLinkBean extends Xoonips_BeanBase
      */
     public function getGroupUserLinkInfoByUserId($uid)
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT * FROM $this->table";
         $sql = $sql." WHERE uid=$uid";
         $result = $this->execute($sql);
@@ -106,7 +106,7 @@ class Xoonips_GroupsUsersLinkBean extends Xoonips_BeanBase
      */
     public function getUserIds($groupId)
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT uid,groupid FROM $this->table";
         $sql = $sql." WHERE groupid=$groupId";
         $result = $this->execute($sql);
@@ -131,7 +131,7 @@ class Xoonips_GroupsUsersLinkBean extends Xoonips_BeanBase
      */
     public function getAdminUserIds($groupId)
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT * FROM $this->table";
         $sql = $sql." WHERE groupid=$groupId AND is_admin=".Xoonips_Enum::GRP_ADMINISTRATOR;
         $result = $this->execute($sql);
@@ -313,7 +313,7 @@ class Xoonips_GroupsUsersLinkBean extends Xoonips_BeanBase
      */
     public function getGroupUserLinkInfoByLinkId($linkId)
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT * FROM $this->table";
         $sql = $sql." WHERE linkid=$linkId";
         $result = $this->execute($sql);

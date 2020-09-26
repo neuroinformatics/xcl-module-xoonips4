@@ -24,25 +24,25 @@ class Xoonips_Admin_PolicyItemQuickSearchEditForm extends Xoonips_AbstractAction
     {
         $constpref = '_AD_'.strtoupper($this->mDirname);
 
-        return array(
-            'condition_id' => array(
+        return [
+            'condition_id' => [
                 'type' => self::TYPE_INT,
                 'label' => constant($constpref.'_POLICY_ITEM_QUICKSEARCH_CRITERIA_ID'),
-                'depends' => array(
+                'depends' => [
                     'required' => true,
-                ),
-            ),
-            'condition_name' => array(
+                ],
+            ],
+            'condition_name' => [
                 'type' => self::TYPE_STRING,
                 'label' => constant($constpref.'_POLICY_ITEM_QUICKSEARCH_LABEL'),
-                'depends' => array(
+                'depends' => [
                     'required' => true,
-                ),
-            ),
-            'itemFieldIds' => array(
+                ],
+            ],
+            'itemFieldIds' => [
                 'type' => self::TYPE_INTARRAY,
-            ),
-        );
+            ],
+        ];
     }
 
     /**

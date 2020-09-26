@@ -49,8 +49,8 @@ abstract class AbstractObjectHandler extends AbstractHandler
     {
         parent::__construct($db, $dirname);
         $this->mClassName = str_replace(
-            array('\\Handler', 'ObjectHandler'),
-            array('\\Object', 'Object'),
+            ['\\Handler', 'ObjectHandler'],
+            ['\\Object', 'Object'],
             get_class($this)
         );
         $this->mIsAutoIncrement = true;
@@ -133,14 +133,14 @@ abstract class AbstractObjectHandler extends AbstractHandler
      */
     public function getObjects(\CriteriaElement $criteria = null, $fieldlist = '', $distinct = false, $idAsKey = false, JoinCriteria $join = null)
     {
-        $ret = array();
+        $ret = [];
         if (!$res = $this->open($criteria, $fieldlist, $distinct, $join)) {
             return $ret;
         }
         while ($obj = $this->getNext($res)) {
             if ($idAsKey) {
                 if (is_array($this->mPrimaryKey)) {
-                    $keyId = array();
+                    $keyId = [];
                     foreach ($this->mPrimaryKey as $pkey) {
                         $keyId[] = $obj->get($pkey);
                     }
@@ -338,8 +338,8 @@ abstract class AbstractObjectHandler extends AbstractHandler
             $fieldsArr = array_keys($varsArr);
             $sql = $cmd.' INTO `'.$this->mTable.'` ( '.implode(', ', $fieldsArr).' ) VALUES ( '.implode(', ', $varsArr).' )';
         } else {
-            $keyFields = array();
-            $where = array();
+            $keyFields = [];
+            $where = [];
             if ($isArrayPrimaryKey) {
                 foreach ($this->mPrimaryKey as $pkey) {
                     $keyField = '`'.$pkey.'`';
@@ -403,7 +403,7 @@ abstract class AbstractObjectHandler extends AbstractHandler
      */
     public function _makeVarsArray4SQL(AbstractObject $obj)
     {
-        $ret = array();
+        $ret = [];
         $info = $obj->getTableInfo();
         $isNew = $obj->isNew();
         $isArrayPrimaryKey = is_array($this->mPrimaryKey);
@@ -415,7 +415,7 @@ abstract class AbstractObjectHandler extends AbstractHandler
                     if ($info[$key]['required']) {
                         trigger_error('`'.$this->mTable.'`.`'.$key.'` column is required.', E_USER_ERROR);
 
-                        return array();
+                        return [];
                     }
                     $ret[$field] = 'NULL';
                 }
@@ -465,7 +465,7 @@ abstract class AbstractObjectHandler extends AbstractHandler
             if ($criteria->groupby) {
                 $sql .= ' GROUP BY '.$criteria->groupby;
             }
-            $orderby = array();
+            $orderby = [];
             if (method_exists($criteria, 'getSorts')) {
                 // XOOPS Cube Legacy
                 $sorts = $criteria->getSorts();
@@ -518,10 +518,10 @@ abstract class AbstractObjectHandler extends AbstractHandler
             $operator = strtoupper($criteria->operator);
             $value = $criteria->value;
             if (is_null($criteria->value)) {
-                $operator = in_array($operator, array('IS', '=')) ? 'IS' : 'IS NOT';
+                $operator = in_array($operator, ['IS', '=']) ? 'IS' : 'IS NOT';
                 $value = 'NULL';
-            } elseif (in_array($operator, array('IN', 'NOT IN'))) {
-                $value = '('.implode(', ', array_map(array($this->mDB, 'quoteString'), $value)).')';
+            } elseif (in_array($operator, ['IN', 'NOT IN'])) {
+                $value = '('.implode(', ', array_map([$this->mDB, 'quoteString'], $value)).')';
             } else {
                 $value = $this->mDB->quoteString($value);
             }

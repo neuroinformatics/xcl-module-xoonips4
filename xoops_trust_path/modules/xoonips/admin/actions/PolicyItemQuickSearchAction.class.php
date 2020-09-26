@@ -55,30 +55,30 @@ class Xoonips_Admin_PolicyItemQuickSearchAction extends Xoonips_AbstractListActi
         $dirname = $this->mAsset->mDirname;
         $constpref = '_AD_'.strtoupper($dirname);
         // breadcrumbs
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => constant($constpref.'_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=Policy',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_ITEM_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=PolicyItem',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_ITEM_QUICKSEARCH_TITLE'),
-            ),
-        );
-        $toptab = array(
-            array(
+            ],
+        ];
+        $toptab = [
+            [
                 'title' => constant($constpref.'_LANG_ADDNEW'),
                 'link' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=PolicyItemQuickSearchEdit',
                 'class' => 'add',
-            ),
-        );
+            ],
+        ];
         $render->setTemplateName('policy_item_quicksearch.html');
         $render->setAttribute('title', constant($constpref.'_POLICY_ITEM_QUICKSEARCH_TITLE'));
         $render->setAttribute('description', constant($constpref.'_POLICY_ITEM_QUICKSEARCH_DESC'));

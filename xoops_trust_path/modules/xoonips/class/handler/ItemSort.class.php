@@ -63,11 +63,11 @@ class Xoonips_ItemSortHandler extends XoopsObjectGenericHandler
      */
     public function __construct(&$db, $dirname)
     {
-        $this->mTable = strtr($this->mTable, array('{dirname}' => $dirname));
+        $this->mTable = strtr($this->mTable, ['{dirname}' => $dirname]);
         $this->mDirname = $dirname;
         $this->mClass = preg_replace('/Handler$/', 'Object', get_class());
         parent::__construct($db);
-        $this->mTableDetail = strtr($this->mTableDetail, array('{dirname}' => $dirname));
+        $this->mTableDetail = strtr($this->mTableDetail, ['{dirname}' => $dirname]);
         $this->mTableDetail = $this->db->prefix($this->mTableDetail);
     }
 
@@ -82,7 +82,7 @@ class Xoonips_ItemSortHandler extends XoopsObjectGenericHandler
     public function delete(&$obj, $force = false)
     {
         $pid = $obj->get($this->mPrimary);
-        if ($pid == 1) {
+        if (1 == $pid) {
             return false;
         } // id = 1 is not deletable
         if (!parent::delete($obj, $force)) {
@@ -117,14 +117,14 @@ class Xoonips_ItemSortHandler extends XoopsObjectGenericHandler
     public function getSortTitles()
     {
         static $cache = null;
-        if ($cache != null) {
+        if (null != $cache) {
             return $cache;
         }
         $criteria = new CriteriaElement();
         $criteria->setSort('sort_id');
         $criteria->setOrder('ASC');
         $objs = &$this->getObjects($criteria);
-        $ret = array();
+        $ret = [];
         foreach ($objs as $obj) {
             $ret[$obj->get('sort_id')] = $obj->get('title');
         }
@@ -142,7 +142,7 @@ class Xoonips_ItemSortHandler extends XoopsObjectGenericHandler
      */
     public function getSortFields(&$obj)
     {
-        $ret = array();
+        $ret = [];
         $sort_id = $obj->get('sort_id');
         $sql = sprintf('SELECT * FROM `%s` WHERE `sort_id`=%u', $this->mTableDetail, $sort_id);
         if (!($result = $this->db->query($sql))) {
@@ -229,7 +229,7 @@ class Xoonips_ItemSortHandler extends XoopsObjectGenericHandler
      */
     public function getSelectableSortFields()
     {
-        $ret = array();
+        $ret = [];
         $itTable = $this->db->prefix($this->mDirname.'_item_type');
         $igTable = $this->db->prefix($this->mDirname.'_item_field_group');
         $ifTable = $this->db->prefix($this->mDirname.'_item_field_detail');
@@ -252,19 +252,19 @@ class Xoonips_ItemSortHandler extends XoopsObjectGenericHandler
             $fId = $row['item_field_id'];
             $fName = $row['item_field_name'];
             if (!isset($ret[$tId])) {
-                $ret[$tId] = array(
+                $ret[$tId] = [
                     'item_type_id' => $tId,
                     'item_type_name' => $tName,
-                    'fields' => array(),
-                );
+                    'fields' => [],
+                ];
             }
-            $ret[$tId]['fields'][] = array(
+            $ret[$tId]['fields'][] = [
                 'item_field_group_id' => $gId,
                 'item_field_group_name' => $gName,
                 'item_field_id' => $fId,
                 'item_field_name' => $fName,
                 'key' => $this->encodeSortField($tId, 0, $fId), // FIXME: use $gId
-            );
+            ];
         }
         $this->db->freeRecordSet($res);
 
@@ -280,8 +280,8 @@ class Xoonips_ItemSortHandler extends XoopsObjectGenericHandler
      */
     public function getExportDataForItemType($tId)
     {
-        $ret = array();
-        $fields = array();
+        $ret = [];
+        $fields = [];
         $itTable = $this->db->prefix($this->mDirname.'_item_type');
         $igTable = $this->db->prefix($this->mDirname.'_item_field_group');
         $ifTable = $this->db->prefix($this->mDirname.'_item_field_detail');
@@ -321,10 +321,10 @@ class Xoonips_ItemSortHandler extends XoopsObjectGenericHandler
             if (!array_key_exists($key, $fields)) {
                 continue;
             }
-            $ret[] = array(
+            $ret[] = [
                 'sort_id' => $title,
                 'item_field_detail_id' => $fields[$key],
-            );
+            ];
         }
         $this->db->freeRecordSet($res);
 
@@ -393,14 +393,14 @@ class Xoonips_ItemSortHandler extends XoopsObjectGenericHandler
     {
         // FIXME: field group id is missing in the sort detail table, is this ok?
         $sql = sprintf('DELETE FROM `%s`', $this->mTableDetail);
-        $where = array();
-        if ($sId !== false) {
+        $where = [];
+        if (false !== $sId) {
             $where[] = sprintf('`sort_id`=%u', $sId);
         }
-        if ($tId !== false) {
+        if (false !== $tId) {
             $where[] = sprintf('`item_type_id`=%u', $tId);
         }
-        if ($fId !== false) {
+        if (false !== $fId) {
             $where[] = sprintf('`item_field_detail_id`=%u', $fId);
         }
         if (!empty($where)) {

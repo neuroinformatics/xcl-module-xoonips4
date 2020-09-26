@@ -17,7 +17,7 @@ class ItemUsersLinkObjectHandler extends AbstractObjectHandler
     {
         parent::__construct($db, $dirname);
         $this->mTable = $db->prefix($dirname.'_item_users_link');
-        $this->mPrimaryKey = array('item_id', 'uid');
+        $this->mPrimaryKey = ['item_id', 'uid'];
         $this->mIsAutoIncrement = false;
     }
 }

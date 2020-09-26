@@ -24,16 +24,16 @@ class Xoonips_Admin_PolicyIndexForm extends Xoonips_AbstractActionForm
     {
         $constpref = '_AD_'.strtoupper($this->mDirname);
 
-        return array(
-            'index_upload_dir' => array(
+        return [
+            'index_upload_dir' => [
                 'type' => self::TYPE_STRING,
                 's',
                 'label' => constant($constpref.'_SYSTEM_BASIC_UPLOAD_DIR_TITLE'),
-                'depends' => array(
+                'depends' => [
                     'required' => true,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
@@ -43,14 +43,14 @@ class Xoonips_Admin_PolicyIndexForm extends Xoonips_AbstractActionForm
     {
         $constpref = '_AD_'.strtoupper($this->mDirname);
         $value = trim($this->get('index_upload_dir'));
-        $is_windows = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
+        $is_windows = ('WIN' === strtoupper(substr(PHP_OS, 0, 3)));
         if (empty($value)) {
             return;
         }
         if ($is_windows) {
             $value = str_replace('\\', '/', $value);
         }
-        if ($value != '/' && substr($value, -1) == '/') {
+        if ('/' != $value && '/' == substr($value, -1)) {
             $value = substr($value, 0, -1);
         }
         if (!is_dir($value)) {
@@ -75,7 +75,7 @@ class Xoonips_Admin_PolicyIndexForm extends Xoonips_AbstractActionForm
      */
     public static function is_writable($path)
     {
-        $is_windows = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
+        $is_windows = ('WIN' === strtoupper(substr(PHP_OS, 0, 3)));
         if (!$is_windows) {
             return is_writable($path);
         } // it works if not IIS
@@ -83,7 +83,7 @@ class Xoonips_Admin_PolicyIndexForm extends Xoonips_AbstractActionForm
         // NOTE: use a trailing slash for folders!!!
         // see http://bugs.php.net/bug.php?id=27609
         // see http://bugs.php.net/bug.php?id=30931
-        if (substr($path, -1) == '/') {
+        if ('/' == substr($path, -1)) {
             // recursively return a temporary file path
             return self::is_writable($path.uniqid(mt_rand()).'.tmp');
         } elseif (is_dir($path)) {
@@ -91,7 +91,7 @@ class Xoonips_Admin_PolicyIndexForm extends Xoonips_AbstractActionForm
         }
         // check tmp file for read/write capabilities
         $rm = file_exists($path);
-        if (($f = @fopen($path, 'a')) === false) {
+        if (false === ($f = @fopen($path, 'a'))) {
             return false;
         }
         fclose($f);

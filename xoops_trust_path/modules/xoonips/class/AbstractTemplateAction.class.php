@@ -12,7 +12,7 @@ class Xoonips_AbstractTemplateAction extends Xoonips_AbstractAction
      *
      * @var array
      */
-    protected $mFileInfo = array();
+    protected $mFileInfo = [];
 
     /**
      * get id.
@@ -44,10 +44,10 @@ class Xoonips_AbstractTemplateAction extends Xoonips_AbstractAction
     protected function _getTemplateFileType()
     {
         // override
-        return array(
+        return [
             'mime' => 'text/html',
             'extension' => '.html',
-        );
+        ];
     }
 
     /**
@@ -136,7 +136,7 @@ class Xoonips_AbstractTemplateAction extends Xoonips_AbstractAction
                 return false;
             }
             $row = $db->fetchArray($res);
-            if ($row === false && $tpl_tplset != 'default') {
+            if (false === $row && 'default' != $tpl_tplset) {
                 // retry to get from default tplset
                 $sql = sprintf('SELECT `tpl_lastmodified` FROM `%s` WHERE `tpl_module`=%s AND `tpl_tplset`=\'default\' AND `tpl_file`=%s', $db->prefix('tplfile'), $db->quoteString($tpl_module), $db->quoteString($tpl_file));
                 if (!($res = $db->query($sql))) {
@@ -144,19 +144,19 @@ class Xoonips_AbstractTemplateAction extends Xoonips_AbstractAction
                 }
                 $row = $db->fetchArray($res);
             }
-            if ($row === false) {
+            if (false === $row) {
                 return false;
             }
             $name = $tpl_file;
             $mtime = $row['tpl_lastmodified'];
             $db->freeRecordSet($res);
         }
-        $this->mFileInfo = array(
+        $this->mFileInfo = [
             'name' => $name,
             'path' => $fpath,
             'mtime' => $mtime,
             'etag' => md5($fpath.filesize($fpath).$mtime),
-        );
+        ];
 
         return true;
     }

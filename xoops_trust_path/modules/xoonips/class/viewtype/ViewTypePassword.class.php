@@ -25,16 +25,16 @@ class Xoonips_ViewTypePassword extends Xoonips_ViewType
     public function inputCheck(&$errors, $field, $value, $fieldName)
     {
         $minpass = XoopsUtils::getXoopsConfig('minpass', XOOPS_CONF_USER);
-        $parameters = array();
+        $parameters = [];
         $value[0] = trim($value[0]);
         $value[1] = trim($value[1]);
-        if ($value[0] == '' || $value[1] == '') {
-            if ($value[0] == '') {
+        if ('' == $value[0] || '' == $value[1]) {
+            if ('' == $value[0]) {
                 $parameters[] = $field->getName();
                 $errors->addError('_MD_'.strtoupper($this->trustDirname).'_ERROR_REQUIRED', $fieldName, $parameters);
             }
-            if ($value[1] == '') {
-                $parameters = array();
+            if ('' == $value[1]) {
+                $parameters = [];
                 $parameters[] = constant('_MD_'.strtoupper($this->trustDirname).'_LANG_PASS_CONFIRM');
                 $errors->addError('_MD_'.strtoupper($this->trustDirname).'_ERROR_REQUIRED', $fieldName, $parameters);
             }
@@ -50,10 +50,10 @@ class Xoonips_ViewTypePassword extends Xoonips_ViewType
     public function editCheck(&$errors, $field, $value, $fieldName, $uid)
     {
         $minpass = XoopsUtils::getXoopsConfig('minpass', XOOPS_CONF_USER);
-        $parameters = array();
+        $parameters = [];
         $value[0] = trim($value[0]);
         $value[1] = trim($value[1]);
-        if ($value[0] == '' && $value[1] == '') {
+        if ('' == $value[0] && '' == $value[1]) {
             return true;
         }
 
@@ -83,30 +83,30 @@ class Xoonips_ViewTypePassword extends Xoonips_ViewType
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];
         } else {
-            $tableData = array();
+            $tableData = [];
             $sqlStrings[$tableName] = &$tableData;
         }
 
-        if (strpos($tableName, '_extend') !== false) {
+        if (false !== strpos($tableName, '_extend')) {
             $groupid = $field->getFieldGroupId();
             if (isset($tableData[$groupid])) {
                 $groupData = &$tableData[$groupid];
             } else {
-                $groupData = array();
+                $groupData = [];
                 $tableData[$groupid] = &$groupData;
             }
 
             if (isset($groupData[$columnName])) {
                 $columnData = &$groupData[$columnName];
             } else {
-                $columnData = array();
+                $columnData = [];
                 $groupData[$columnName] = &$columnData;
             }
         } else {
             if (isset($tableData[$columnName])) {
                 $columnData = &$tableData[$columnName];
             } else {
-                $columnData = array();
+                $columnData = [];
                 $tableData[$columnName] = &$columnData;
             }
         }
@@ -120,7 +120,7 @@ class Xoonips_ViewTypePassword extends Xoonips_ViewType
         $columnName = $field->getColumnName();
         $value = $data[$this->getFieldName($field, $groupLoopId)][0];
         $value = trim($value);
-        if ($value == '') {
+        if ('' == $value) {
             return false;
         } else {
             $value = md5($value);
@@ -130,13 +130,13 @@ class Xoonips_ViewTypePassword extends Xoonips_ViewType
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];
         } else {
-            $tableData = array();
+            $tableData = [];
             $sqlStrings[$tableName] = &$tableData;
         }
         if (isset($tableData[$columnName])) {
             $columnData = &$tableData[$columnName];
         } else {
-            $columnData = array();
+            $columnData = [];
             $tableData[$columnName] = &$columnData;
         }
         $columnData[] = $field->getDataType()->convertSQLStr($value);
@@ -167,7 +167,7 @@ class Xoonips_ViewTypePassword extends Xoonips_ViewType
 
     public function isDisplay($op)
     {
-        if ($op == Xoonips_Enum::OP_TYPE_SEARCH || $op == Xoonips_Enum::OP_TYPE_DETAIL || $op == Xoonips_Enum::OP_TYPE_SEARCHLIST) {
+        if (Xoonips_Enum::OP_TYPE_SEARCH == $op || Xoonips_Enum::OP_TYPE_DETAIL == $op || Xoonips_Enum::OP_TYPE_SEARCHLIST == $op) {
             return false;
         }
 

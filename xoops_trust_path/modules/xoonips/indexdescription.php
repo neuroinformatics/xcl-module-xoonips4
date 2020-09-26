@@ -16,26 +16,26 @@ $response = new Xoonips_Response();
 $indexId = $request->getParameter('index_id');
 $op = $request->getParameter('op');
 
-if ($op == null) {
+if (null == $op) {
     $op = 'init';
 }
 // check request
-if (!in_array($op, array('init', 'update', 'delete'))) {
+if (!in_array($op, ['init', 'update', 'delete'])) {
     die('illegal request');
 }
-if ($indexId == 1) {
+if (1 == $indexId) {
     die('illegal request');
 }
 
 // set action map
-$actionMap = array();
+$actionMap = [];
 $actionMap['init_success'] = $mydirname.'_index_description.html';
 $actionMap['update_error'] = 'redirect_header';
 $actionMap['update_success'] = 'redirect_header';
 $actionMap['delete_error'] = 'redirect_header';
 $actionMap['delete_success'] = 'redirect_header';
 
-if ($op == 'init') {
+if ('init' == $op) {
     include XOOPS_ROOT_PATH.'/header.php';
 }
 
@@ -46,6 +46,6 @@ $action->doAction($request, $response);
 // forward
 $response->forward($actionMap);
 
-if ($op == 'init') {
+if ('init' == $op) {
     include XOOPS_ROOT_PATH.'/footer.php';
 }

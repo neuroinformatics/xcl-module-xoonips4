@@ -16,7 +16,7 @@ function xoonips_search($keywords, $andor, $limit, $offset, $userid)
     }
     $trustDirname = $module->getVar('trust_dirname');
 
-    $ret = array();
+    $ret = [];
     $keyword = '';
     if (is_array($keywords)) {
         $pos = 0;
@@ -44,13 +44,13 @@ function xoonips_search($keywords, $andor, $limit, $offset, $userid)
     if (0 == count($fieldIds)) {
         return $ret;
     }
-    $post_data = array();
+    $post_data = [];
     foreach ($fieldIds as $fieldId) {
         $groupId = 0;
         $itemtypeId = 0;
         $post_data[$itemtypeId][$groupId.Xoonips_Enum::ITEM_ID_SEPARATOR.$itemtypeId.Xoonips_Enum::ITEM_ID_SEPARATOR.$fieldId] = $keyword;
     }
-    $searchSqlArr = array();
+    $searchSqlArr = [];
     foreach ($post_data as $key => $data) {
         $itemtype = new Xoonips_Item($key, $dirname, $trustDirname);
         $itemtype->setData($data);
@@ -67,7 +67,7 @@ function xoonips_search($keywords, $andor, $limit, $offset, $userid)
     $itemTitleBean = Xoonips_BeanFactory::getBean('ItemTitleBean', $dirname, $trustDirname);
     $itemUsersBean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $dirname, $trustDirname);
     while ($row = $xoopsDB->fetchArray($result)) {
-        $data = array();
+        $data = [];
         $item_id = $row['item_id'];
         $basicInfo = $itemBasicBean->getItemBasicInfo($item_id);
         $typeInfo = $itemTypeBean->getItemType($basicInfo['item_type_id']);

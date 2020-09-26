@@ -12,7 +12,7 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
     {
         global $xoopsUser;
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-        $viewData = array();
+        $viewData = [];
         $indexId = $request->getParameter('index_id');
         $uid = $xoopsUser->getVar('uid');
         if (null == $indexId) {
@@ -28,15 +28,15 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
             }
         }
 
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => _MD_XOONIPS_INDEX_DETAILED_DESCRIPTION,
-            ),
-        );
+            ],
+        ];
 
         // get index full path
         $fullpathInfo = $indexBean->getFullPathIndexes($indexId);
-        $fullPathIndexes = array();
+        $fullPathIndexes = [];
         foreach ($fullpathInfo as $index) {
             if (1 == $index['parent_index_id'] && XOONIPS_OL_PRIVATE == $index['open_level']) {
                 $index['html_title'] = 'Private';
@@ -95,7 +95,7 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
 
     protected function doUpdate(&$request, &$response)
     {
-        $viewData = array();
+        $viewData = [];
 
         if (!$this->validateToken(($this->modulePrefix('index_description')))) {
             $response->setSystemError('Ticket error');
@@ -131,7 +131,7 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
 
         if (XOONIPS_IID_ROOT != $index['parent_index_id']) {
             if (empty($title)) {
-                $viewData = array();
+                $viewData = [];
                 if (empty($viewData['redirect_msg'])) {
                     $viewData['redirect_msg'] = _MD_XOONIPS_MESSAGE_INDEX_DESCRIPTION_TITLE_ERROR;
                 }
@@ -159,7 +159,7 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
         }
 
         if (!$indexBean->updateIndexDetailed($index)) {
-            $viewData = array();
+            $viewData = [];
             if (empty($viewData['redirect_msg'])) {
                 $viewData['redirect_msg'] = _MD_XOONIPS_MESSAGE_INDEX_DESCRIPTION_UPDATE_ERROR;
             }
@@ -208,7 +208,7 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
 
     protected function doDelete(&$request, &$response)
     {
-        $viewData = array();
+        $viewData = [];
 
         $index_id = $request->getParameter('index_id');
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
@@ -223,7 +223,7 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
         $this->startTransaction();
 
         if (!$indexBean->updateIndexDetailed($index)) {
-            $viewData = array();
+            $viewData = [];
             if (empty($viewData['redirect_msg'])) {
                 $viewData['redirect_msg'] = _MD_XOONIPS_MESSAGE_INDEX_DESCRIPTION_DELETE_ERROR;
             }

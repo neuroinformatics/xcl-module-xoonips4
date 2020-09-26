@@ -26,7 +26,7 @@ class Xoonips_WebServiceBase extends SaxParser
      *
      * @var array
      */
-    protected $fetch_arguments = array();
+    protected $fetch_arguments = [];
 
     /**
      * the xml document type.
@@ -68,7 +68,7 @@ class Xoonips_WebServiceBase extends SaxParser
      *
      * @var array
      */
-    public $data = array();
+    public $data = [];
 
     /**
      * snoopy.
@@ -137,7 +137,7 @@ class Xoonips_WebServiceBase extends SaxParser
             return false;
         }
         $this->parser_xpath = '';
-        $this->data = array();
+        $this->data = [];
         // call parent constructor
         parent::__construct($this->xml_data);
         parent::parse();
@@ -153,7 +153,7 @@ class Xoonips_WebServiceBase extends SaxParser
      */
     protected function createUrl()
     {
-        $arguments = array();
+        $arguments = [];
         if (!empty($this->fetch_arguments)) {
             foreach ($this->fetch_arguments as $key => $value) {
                 $arguments[] = $key.'='.$value;
@@ -188,7 +188,7 @@ class Xoonips_WebServiceBase extends SaxParser
      */
     protected function encodeArguments($arguments)
     {
-        $encode_arguments = array();
+        $encode_arguments = [];
         foreach ($arguments as $key => $value) {
             $encode_arguments[$this->encodeUrl($key)] = $this->encodeUrl($value);
         }

@@ -35,7 +35,7 @@ class Xoonips_ItemImportLogBean extends Xoonips_BeanBase
      */
     public function getImportLogByUID($uid)
     {
-        $ret = array();
+        $ret = [];
         $sql = 'SELECT * FROM '.$this->table.' WHERE uid='.$uid.' ORDER BY timestamp DESC';
         $result = $this->execute($sql);
         if (!$result) {
@@ -78,7 +78,7 @@ class Xoonips_ItemImportLogBean extends Xoonips_BeanBase
      */
     public function getImportLogItems($id)
     {
-        $ret = array();
+        $ret = [];
         /*
         $sql = "SELECT i.* FROM ".$this->itemtable." AS i"
         ." LEFT JOIN ".$this->linktable." AS l ON i.item_id=l.item_id"

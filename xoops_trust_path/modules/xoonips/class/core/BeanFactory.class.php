@@ -8,7 +8,7 @@ class Xoonips_BeanFactory
 {
     public static function getBean($c, $dirname, $trustDirname = null)
     {
-        static $beans = array();
+        static $beans = [];
         $trustDirname = Functions::getTrustDirname();
         $className = ucfirst($trustDirname).'_'.$c;
         if (!isset($beans[$className])) {

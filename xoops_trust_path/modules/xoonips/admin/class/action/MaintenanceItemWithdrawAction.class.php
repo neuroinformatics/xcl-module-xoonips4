@@ -25,18 +25,18 @@ class Xoonips_MaintenanceItemWithdrawAction extends Xoonips_MaintenanceItemCommo
         $uname = $userInfo['uname'];
 
         // get index
-        $req_indexes = array();
+        $req_indexes = [];
         if ($this->validateToken($this->modulePrefix('do_item_withdraw_confirm'))) {
             $req_indexes = $this->getRequestIndexes($request, $uid, '_withdraw');
         }
 
         // index tree
-        $indexes = array();
-        $trees = array();
+        $indexes = [];
+        $trees = [];
         $index_num = 0;
         $index_num = $this->indexTree($uid, $indexes, $trees, '_withdraw', $req_indexes, 1);
 
-        $viewData = array();
+        $viewData = [];
         $viewData['title'] = $title;
         $viewData['breadcrumbs'] = $breadcrumbs;
         $viewData['description'] = $description;
@@ -77,7 +77,7 @@ class Xoonips_MaintenanceItemWithdrawAction extends Xoonips_MaintenanceItemCommo
         $req_indexes = explode(',', $request->getParameter('checked_indexes'));
 
         // not choose index
-        if (count($req_indexes) == 0) {
+        if (0 == count($req_indexes)) {
             $viewData['url'] = XOOPS_URL.'/modules/'.$this->dirname.'/admin/maintenance_itemwithdraw.php';
             $viewData['redirect_msg'] = _AM_XOONIPS_MAINTENANCE_ITEMWITHDRAW_MSG_FAILURE1;
             $response->setViewData($viewData);
@@ -86,14 +86,14 @@ class Xoonips_MaintenanceItemWithdrawAction extends Xoonips_MaintenanceItemCommo
             return true;
         }
 
-        $indexes = array();
+        $indexes = [];
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         foreach ($req_indexes as $index_id) {
-            $index = array();
+            $index = [];
             $indexInfo = $indexBean->getFullPathIndexes($index_id);
             $path = '';
             foreach ($indexInfo as $index) {
-                if ($index['parent_index_id'] == 1 && $index['open_level'] == XOONIPS_OL_PRIVATE && $index['uid'] == $uid) {
+                if (1 == $index['parent_index_id'] && XOONIPS_OL_PRIVATE == $index['open_level'] && $index['uid'] == $uid) {
                     $path .= ' / Private';
                 } else {
                     $path .= ' / '.$index['title'];
@@ -104,7 +104,7 @@ class Xoonips_MaintenanceItemWithdrawAction extends Xoonips_MaintenanceItemCommo
             $indexes[] = $index;
         }
 
-        $viewData = array();
+        $viewData = [];
         $viewData['title'] = $title;
         $viewData['breadcrumbs'] = $breadcrumbs;
         $viewData['description'] = $description;
@@ -139,7 +139,7 @@ class Xoonips_MaintenanceItemWithdrawAction extends Xoonips_MaintenanceItemCommo
         $req_indexes = $this->getRequestIndexes($request, $uid, '_withdraw');
 
         // not choose index
-        if (count($req_indexes) == 0) {
+        if (0 == count($req_indexes)) {
             $viewData['url'] = XOOPS_URL.'/modules/'.$this->dirname.'/admin/maintenance_itemwithdraw.php';
             $viewData['redirect_msg'] = _AM_XOONIPS_MAINTENANCE_ITEMWITHDRAW_MSG_FAILURE;
             $response->setViewData($viewData);
@@ -149,8 +149,8 @@ class Xoonips_MaintenanceItemWithdrawAction extends Xoonips_MaintenanceItemCommo
         }
 
         // get item
-        $wdraw_items = array();
-        $result_items = array();
+        $wdraw_items = [];
+        $result_items = [];
         $indexItemBean = Xoonips_BeanFactory::getBean('IndexItemLinkBean', $this->dirname, $this->trustDirname);
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         foreach ($req_indexes as $index_id) {
@@ -185,7 +185,7 @@ class Xoonips_MaintenanceItemWithdrawAction extends Xoonips_MaintenanceItemCommo
             }
         }
 
-        $viewData = array();
+        $viewData = [];
         $viewData['title'] = $title;
         $viewData['breadcrumbs'] = $breadcrumbs;
         $viewData['description'] = $description;
@@ -220,8 +220,8 @@ class Xoonips_MaintenanceItemWithdrawAction extends Xoonips_MaintenanceItemCommo
         foreach ($indexes_arr as $index_arr) {
             $iid = $index_arr['index_id'];
             $d_index = $indexBean->getIndex($iid);
-            if ($d_index['open_level'] != XOONIPS_OL_PUBLIC) {
-                $checkedIndexes .= (strlen($checkedIndexes) == 0) ? $iid : ','.$iid;
+            if (XOONIPS_OL_PUBLIC != $d_index['open_level']) {
+                $checkedIndexes .= (0 == strlen($checkedIndexes)) ? $iid : ','.$iid;
             }
         }
 

@@ -19,21 +19,21 @@ abstract class AbstractObject
      *
      * @var array
      */
-    protected $mTableInfo = array();
+    protected $mTableInfo = [];
 
     /**
      * values.
      *
      * @var array
      */
-    protected $mValues = array();
+    protected $mValues = [];
 
     /**
      * extra values.
      *
      * @var array
      */
-    protected $mExtraValues = array();
+    protected $mExtraValues = [];
 
     /**
      * dirname.
@@ -242,7 +242,7 @@ abstract class AbstractObject
             $this->mValues[$key] = null !== $value ? floatval($value) : null;
             break;
         case XOBJ_DTYPE_STRING:
-            if ($this->mTableInfo[$key]['maxlength'] !== null && mb_strlen($value) > $this->mTableInfo[$key]['maxlength']) {
+            if (null !== $this->mTableInfo[$key]['maxlength'] && mb_strlen($value) > $this->mTableInfo[$key]['maxlength']) {
                 return false;
             }
             // no break
@@ -321,11 +321,11 @@ abstract class AbstractObject
      */
     protected function initVar($key, $dataType, $value = null, $required = false, $size = null)
     {
-        $this->mTableInfo[$key] = array(
+        $this->mTableInfo[$key] = [
             'dataType' => $dataType,
             'required' => $required ? true : false,
             'maxlength' => $size ? (int) $size : null,
-        );
+        ];
         $this->set($key, $value);
     }
 

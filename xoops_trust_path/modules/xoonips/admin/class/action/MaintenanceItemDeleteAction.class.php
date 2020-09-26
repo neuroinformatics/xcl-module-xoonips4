@@ -18,7 +18,7 @@ class Xoonips_MaintenanceItemDeleteAction extends Xoonips_MaintenanceItemCommonA
         $breadcrumbs = $this->setBreadcrumbs($title);
 
         //get common viewdata
-        $viewData = array();
+        $viewData = [];
         $viewData['title'] = $title;
         $viewData['breadcrumbs'] = $breadcrumbs;
         $viewData['description'] = $description;
@@ -56,18 +56,18 @@ class Xoonips_MaintenanceItemDeleteAction extends Xoonips_MaintenanceItemCommonA
         $uname = $userInfo['uname'];
 
         // get index
-        $req_indexes = array();
+        $req_indexes = [];
         if ($this->validateToken($this->modulePrefix('do_item_delete_confirm'))) {
             $req_indexes = $this->getRequestIndexes($request, $uid, '_del');
         }
 
         // index tree
-        $indexes = array();
-        $trees = array();
+        $indexes = [];
+        $trees = [];
         $index_num = 0;
         $index_num = $this->indexTree($uid, $indexes, $trees, '_del', $req_indexes);
 
-        $viewData = array();
+        $viewData = [];
         $viewData['title'] = $title;
         $viewData['breadcrumbs'] = $breadcrumbs;
         $viewData['description'] = $description;
@@ -109,7 +109,7 @@ class Xoonips_MaintenanceItemDeleteAction extends Xoonips_MaintenanceItemCommonA
         $req_indexes = explode(',', $request->getParameter('checked_indexes'));
 
         // not choose index
-        if (count($req_indexes) == 0) {
+        if (0 == count($req_indexes)) {
             $req_indexes_url = $this->getRequestIndexesURL($request, $uid, '_del');
             $viewData['url'] = XOOPS_URL.'/modules/'.$this->dirname.'/admin/maintenance_itemdelete.php'
             .'?op=index&searchUserID='.$uid.$req_indexes_url;
@@ -120,14 +120,14 @@ class Xoonips_MaintenanceItemDeleteAction extends Xoonips_MaintenanceItemCommonA
             return true;
         }
 
-        $indexes = array();
+        $indexes = [];
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         foreach ($req_indexes as $index_id) {
-            $index = array();
+            $index = [];
             $indexInfo = $indexBean->getFullPathIndexes($index_id);
             $path = '';
             foreach ($indexInfo as $index) {
-                if ($index['parent_index_id'] == 1 && $index['open_level'] == XOONIPS_OL_PRIVATE && $index['uid'] == $uid) {
+                if (1 == $index['parent_index_id'] && XOONIPS_OL_PRIVATE == $index['open_level'] && $index['uid'] == $uid) {
                     $path .= ' / Private';
                 } else {
                     $path .= ' / '.$index['title'];
@@ -138,7 +138,7 @@ class Xoonips_MaintenanceItemDeleteAction extends Xoonips_MaintenanceItemCommonA
             $indexes[] = $index;
         }
 
-        $viewData = array();
+        $viewData = [];
         $viewData['title'] = $title;
         $viewData['breadcrumbs'] = $breadcrumbs;
         $viewData['description'] = $description;
@@ -176,7 +176,7 @@ class Xoonips_MaintenanceItemDeleteAction extends Xoonips_MaintenanceItemCommonA
         $req_indexes = $this->getRequestIndexes($request, $uid, '_del');
 
         // not choose index
-        if (count($req_indexes) == 0) {
+        if (0 == count($req_indexes)) {
             $viewData['url'] = XOOPS_URL.'/modules/'.$this->dirname.'/admin/maintenance_itemdelete.php';
             $viewData['redirect_msg'] = _AM_XOONIPS_MAINTENANCE_ITEMDELETE_MSG_FAILURE;
             $response->setViewData($viewData);
@@ -186,8 +186,8 @@ class Xoonips_MaintenanceItemDeleteAction extends Xoonips_MaintenanceItemCommonA
         }
 
         // get item
-        $del_items = array();
-        $result_items = array();
+        $del_items = [];
+        $result_items = [];
         $indexItemBean = Xoonips_BeanFactory::getBean('IndexItemLinkBean', $this->dirname, $this->trustDirname);
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         foreach ($req_indexes as $index_id) {
@@ -222,7 +222,7 @@ class Xoonips_MaintenanceItemDeleteAction extends Xoonips_MaintenanceItemCommonA
             }
         }
 
-        $viewData = array();
+        $viewData = [];
         $viewData['title'] = $title;
         $viewData['breadcrumbs'] = $breadcrumbs;
         $viewData['description'] = $description;
@@ -257,13 +257,13 @@ class Xoonips_MaintenanceItemDeleteAction extends Xoonips_MaintenanceItemCommonA
 
         $this->transaction->start();
 
-        if ($this->delete_each($item_id) == false) {
+        if (false == $this->delete_each($item_id)) {
             $this->transaction->rollback();
 
             return -1;
         }
 
-        if ($this->delete_extend($item_id) == false) {
+        if (false == $this->delete_extend($item_id)) {
             $this->transaction->rollback();
 
             return -2;
@@ -272,7 +272,7 @@ class Xoonips_MaintenanceItemDeleteAction extends Xoonips_MaintenanceItemCommonA
         $this->transaction->commit();
 
         // delete temp files
-                $tmp = Functions::getXoonipsConfig($this->dirname, 'upload_dir');
+        $tmp = Functions::getXoonipsConfig($this->dirname, 'upload_dir');
         $item_dir = $tmp.'/item/'.$item_id;
         if (is_dir($item_dir)) {
             FileUtils::deleteDirectory($item_dir);

@@ -8,7 +8,7 @@ require_once __DIR__.'/class/action/DetailAction.class.php';
 $request = new Xoonips_Request();
 $response = new Xoonips_Response();
 $op = $request->getParameter('op');
-if ($op == null) {
+if (null == $op) {
     $op = 'init';
 }
 
@@ -16,12 +16,12 @@ $xoonipsTreeCheckBox = false;
 $xoonipsCheckPrivateHandlerId = 'PrivateIndexCheckedHandler';
 
 // check op request
-if (!in_array($op, array('init', 'print', 'export'))) {
+if (!in_array($op, ['init', 'print', 'export'])) {
     die('illegal request');
 }
 
 // set action map
-$actionMap = array();
+$actionMap = [];
 $actionMap['init_success'] = $mydirname.'_detail.html';
 
 include XOOPS_ROOT_PATH.'/header.php';

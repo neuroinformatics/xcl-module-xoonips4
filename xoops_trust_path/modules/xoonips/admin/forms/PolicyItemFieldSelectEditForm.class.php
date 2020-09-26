@@ -26,33 +26,33 @@ class Xoonips_Admin_PolicyItemFieldSelectEditForm extends Xoonips_AbstractAction
     {
         $constpref = '_AD_'.strtoupper($this->mDirname);
 
-        return array(
-            'name' => array(
+        return [
+            'name' => [
                 'type' => self::TYPE_STRING,
-            ),
-            'select_name' => array(
+            ],
+            'select_name' => [
                 'type' => self::TYPE_STRING,
                 'label' => constant($constpref.'_POLICY_ITEM_FIELD_SELECT_NAME'),
-                'depends' => array(
+                'depends' => [
                     'required' => true,
-                ),
-            ),
-            'codes' => array(
+                ],
+            ],
+            'codes' => [
                 'type' => self::TYPE_STRINGARRAY,
                 'label' => constant($constpref.'_POLICY_ITEM_FIELD_SELECT_LANG_VALUE_CODE'),
-                'depends' => array(
+                'depends' => [
                     'required' => true,
                     'mask' => '/^[a-zA-Z][a-zA-Z0-9_]*$/',
-                ),
-            ),
-            'names' => array(
+                ],
+            ],
+            'names' => [
                 'type' => self::TYPE_STRINGARRAY,
                 'label' => constant($constpref.'_POLICY_ITEM_FIELD_SELECT_LANG_VALUE_NAME'),
-                'depends' => array(
+                'depends' => [
                     'required' => true,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
@@ -63,7 +63,7 @@ class Xoonips_Admin_PolicyItemFieldSelectEditForm extends Xoonips_AbstractAction
         $constpref = '_AD_'.strtoupper($this->mDirname);
         $name = $this->get('name');
         $select_name = $this->get('select_name');
-        if ($name == '') {
+        if ('' == $name) {
             $handler = Functions::getXoonipsHandler('ItemFieldValueSet', $this->mDirname);
             if (in_array($select_name, $handler->getSelectNames())) {
                 // name is already used

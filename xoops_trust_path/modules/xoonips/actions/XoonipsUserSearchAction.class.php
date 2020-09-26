@@ -7,38 +7,38 @@ require_once dirname(__DIR__).'/class/user/ActionBase.class.php';
 
 class Xoonips_UserSearchAction extends Xoonips_UserActionBase
 {
-    private $breadcrumbs = array(
-        array(
+    private $breadcrumbs = [
+        [
             'name' => _MD_XOONIPS_USERSEARCH_TITLE,
-        ),
-    );
-    private $breadcrumbs_userlist = array(
-        array(
+        ],
+    ];
+    private $breadcrumbs_userlist = [
+        [
             'name' => _MD_XOONIPS_USERSEARCH_TITLE,
             'url' => 'user.php?op=userSearch',
-        ),
-        array(
+        ],
+        [
             'name' => _MD_XOONIPS_LANG_USERLIST,
-        ),
-    );
+        ],
+    ];
     //removerd $user->getDetailHead()
-    private $detailHead = array(
-        array(
+    private $detailHead = [
+        [
             'name' => _MD_XOONIPS_USER_UNAME_LABEL,
             'column_name' => 'uname',
             'list_sort_key' => 1,
-        ),
-        array(
+        ],
+        [
             'name' => _MD_XOONIPS_USER_NAME_LABEL,
             'column_name' => 'name',
             'list_sort_key' => 1,
-        ),
-        array(
+        ],
+        [
             'name' => _MD_XOONIPS_LANG_EMAIL,
             'column_name' => 'email',
             'list_sort_key' => 1,
-        ),
-    );
+        ],
+    ];
 
     // set page size
     private $perPage = 20;
@@ -69,7 +69,7 @@ class Xoonips_UserSearchAction extends Xoonips_UserActionBase
     {
         $self_delete = XoopsUtils::getXoopsConfig('self_delete', XOOPS_CONF_USER);
 
-        return $self_delete === null ? false : ($self_delete == 1);
+        return null === $self_delete ? false : (1 == $self_delete);
     }
 
     /**
@@ -84,7 +84,7 @@ class Xoonips_UserSearchAction extends Xoonips_UserActionBase
     private function pagenavi($list, $url, $perPage)
     {
         $cnt = 1;
-        $pageIndex = array();
+        $pageIndex = [];
         (int) $pageCount = count($list) / $perPage + 1;
         do {
             $page = $cnt;
@@ -107,7 +107,7 @@ class Xoonips_UserSearchAction extends Xoonips_UserActionBase
     private function pageUserslist($userslist, $page, $perPage)
     {
         $pagelists = array_chunk($userslist, $perPage);
-        $ret = array();
+        $ret = [];
         $cnt = 1;
         foreach ($pagelists as $list) {
             if ($cnt == $page) {
@@ -130,7 +130,7 @@ class Xoonips_UserSearchAction extends Xoonips_UserActionBase
      */
     private function getSortList($userslist, $sortkey)
     {
-        $sortlist = array();
+        $sortlist = [];
         foreach ($userslist as $row) {
             if (!isset($row[$sortkey])) {
                 $sortlist[] = null;
@@ -173,7 +173,7 @@ class Xoonips_UserSearchAction extends Xoonips_UserActionBase
     protected function doSearch(&$request, &$response)
     {
         $user = Xoonips_User::getInstance();
-        $viewData = array();
+        $viewData = [];
         $errors = new Xoonips_Errors();
         $user->setData($_POST);
         if (!isset($_POST['sortkey'])) {
@@ -188,10 +188,10 @@ class Xoonips_UserSearchAction extends Xoonips_UserActionBase
             $order = $_POST['newOrder'];
         }
         $page = $request->getParameter('page');
-        if ($page == '') {
+        if ('' == $page) {
             $page = 1;
         }
-        if (count($errors->getErrors()) != 0) {
+        if (0 != count($errors->getErrors())) {
             $viewData['xoops_breadcrumbs'] = $this->breadcrumbs;
             $viewData['select_tab'] = 1;
             $viewData['errors'] = $errors->getView($this->dirname);
@@ -199,15 +199,15 @@ class Xoonips_UserSearchAction extends Xoonips_UserActionBase
             $response->setForward('inputError');
         } else {
             $userslist = $user->doSearch();
-            if ($userslist === false) {
+            if (false === $userslist) {
                 $response->setSystemError('search error!');
 
                 return false;
             }
             //sequence
-            if ($sortkey != '') {
+            if ('' != $sortkey) {
                 $sortlist = $this->getSortList($userslist, $sortkey);
-                if ($order == 'DESC') {
+                if ('DESC' == $order) {
                     array_multisort($sortlist, SORT_DESC, $userslist);
                 } else {
                     array_multisort($sortlist, $userslist);
@@ -254,7 +254,7 @@ class Xoonips_UserSearchAction extends Xoonips_UserActionBase
         $userslist = $user->doSearch();
         $head = $this->detailHead;
         $sortlist = $this->getSortList($userslist, $sortkey);
-        if ($order == 'DESC') {
+        if ('DESC' == $order) {
             array_multisort($sortlist, SORT_DESC, $userslist);
         } else {
             array_multisort($sortlist, $userslist);

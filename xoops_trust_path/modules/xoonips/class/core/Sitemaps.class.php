@@ -56,7 +56,7 @@ class Xoonips_Sitemaps
      */
     private function getAllPublicIndexes()
     {
-        $index_ids = array();
+        $index_ids = [];
         $public_index = $this->indexBean->getPublicIndex();
         $index_ids[] = $public_index['index_id'];
         foreach ($this->indexBean->getAllChildIndexes($public_index['index_id']) as $child_index) {
@@ -71,7 +71,7 @@ class Xoonips_Sitemaps
      */
     private function getAllPublicGroupIndexes()
     {
-        $index_ids = array();
+        $index_ids = [];
         foreach ($this->indexBean->getPublicGroupIndexes() as $index) {
             $index_id = $index['index_id'];
             $index_ids[] = $index_id;
@@ -89,16 +89,16 @@ class Xoonips_Sitemaps
      */
     private function getFileInfo($item_id)
     {
-        $fileInfo = array();
+        $fileInfo = [];
         global $xoopsDB;
         $tableName = XOOPS_DB_PREFIX.'_'.$this->dirname.'_item_file';
         $sql = sprintf('SELECT * FROM `%s` WHERE `item_id` = %d', $tableName, $item_id);
         $result = $xoopsDB->query($sql);
-        if ($result == false) {
+        if (false == $result) {
             return;
         }
         while (false != ($row = $xoopsDB->fetchArray($result))) {
-            if ($row['mime_type'] == 'application/pdf') {
+            if ('application/pdf' == $row['mime_type']) {
                 $fileInfo['file_id'] = $row['file_id'];
                 $fileInfo['original_file_name'] = $row['original_file_name'];
             }
@@ -178,19 +178,19 @@ class Xoonips_Sitemaps
         $sitemapindex = XOOPS_URL.'/'.$this->dirname.'/sitemaps.php/sitemap.xml';
         $url = self::PING_URL.urlencode($sitemapindex);
         $conn = curl_init();
-        $option = array(
+        $option = [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HEADER => true,
             CURLOPT_URL => $url,
             CURLOPT_CONNECTTIMEOUT_MS => self::GOOGLE_TMOUT,
-        );
+        ];
         curl_setopt_array($conn, $option);
         $response = curl_exec($conn);
         $errno = curl_errno($conn);
-        if ($errno == 0) {
+        if (0 == $errno) {
             $header = curl_getinfo($conn);
             curl_close($conn);
-            if ($header['http_code'] == 200) {
+            if (200 == $header['http_code']) {
                 return true;
             }
         }
@@ -207,7 +207,7 @@ class Xoonips_Sitemaps
      */
     private function createSitemapsIndex($index_ids)
     {
-        $indexes = array();
+        $indexes = [];
         foreach ($index_ids as $index_id) {
             $linked_item_ids = $this->indexLinkBean->getIndexItemLinkInfo2($index_id);
             if (empty($linked_item_ids)) {
@@ -245,7 +245,7 @@ class Xoonips_Sitemaps
      */
     private function createSitemaps($index_id)
     {
-        $items = array();
+        $items = [];
 
         $linked_item_ids = $this->indexLinkBean->getIndexItemLinkInfo2($index_id);
 
@@ -254,14 +254,14 @@ class Xoonips_Sitemaps
         }
 
         foreach ($linked_item_ids as $linked_item_id) {
-            $item = array();
-            if ($linked_item_id['certify_state'] == 2 || $linked_item_id['certify_state'] == 3) {
+            $item = [];
+            if (2 == $linked_item_id['certify_state'] || 3 == $linked_item_id['certify_state']) {
                 $item_id = $linked_item_id['item_id'];
                 $itemInfo = $this->itemBean->getItem2($item_id);
                 $this->itemEntity->setData($itemInfo);
                 $dl_limit_check = $this->itemEntity->get('download_limitation', 'attachment_dl_limit');
-                if ($dl_limit_check != false) {
-                    if ($dl_limit_check[0] === '1') {
+                if (false != $dl_limit_check) {
+                    if ('1' === $dl_limit_check[0]) {
                         continue;
                     }
                 }

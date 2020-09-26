@@ -23,13 +23,13 @@ class Xoonips_FileSearchPdf extends Xoonips_FileSearchBase
      */
     public function getSearchInstance()
     {
-        return array(
+        return [
             'name' => 'pdf',
             'display_name' => 'PDF',
-            'mime_type' => array('application/pdf'),
-            'extensions' => array('pdf'),
+            'mime_type' => ['application/pdf'],
+            'extensions' => ['pdf'],
             'version' => '2.0',
-        );
+        ];
     }
 
     /**

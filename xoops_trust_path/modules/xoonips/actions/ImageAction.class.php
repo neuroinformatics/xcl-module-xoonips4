@@ -99,12 +99,12 @@ class Xoonips_ImageAction extends Xoonips_AbstractAction
                 return $this->_getFrameViewStatus('ERROR');
             }
             $itemId = isset($fileInfo['item_id']) ? intval($fileInfo['item_id']) : 0;
-            if ($itemId == 0) {
+            if (0 == $itemId) {
                 $fpath = sprintf('%s/%u', $upload_dir, $fileId);
             } else {
                 $fpath = sprintf('%s/item/%u/%u', $upload_dir, $itemId, $fileId);
             }
-            if ($mode == 'thumbnail') {
+            if ('thumbnail' == $mode) {
                 $this->mIsThumbnail = true;
             }
             $this->mImageFilePath = $fpath;
@@ -121,7 +121,7 @@ class Xoonips_ImageAction extends Xoonips_AbstractAction
             }
         }
         $size = @getimagesize($fpath);
-        if ($size === false) {
+        if (false === $size) {
             return $this->_getFrameViewStatus('ERROR');
         }
         $this->mImageFilePath = $fpath;

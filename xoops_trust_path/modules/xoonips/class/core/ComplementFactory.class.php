@@ -10,7 +10,7 @@ class Xoonips_ComplementFactory
      *
      * @var {Trustdirname}_Complement[]
      */
-    private $complementInstances = array();
+    private $complementInstances = [];
 
     /**
      * constructor.
@@ -53,7 +53,7 @@ class Xoonips_ComplementFactory
      */
     public static function getInstance($dirname, $trustDirname)
     {
-        static $instance = array();
+        static $instance = [];
         if (!isset($instance[$dirname])) {
             $instance[$dirname] = new self($dirname, $trustDirname);
         }

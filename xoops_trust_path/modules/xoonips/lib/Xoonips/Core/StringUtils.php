@@ -12,7 +12,7 @@ class StringUtils
      *
      * @var array
      */
-    private static $mCharEntRef = array(
+    private static $mCharEntRef = [
         '&quot;',   '&amp;',    '&apos;',    '&lt;',       '&gt;',
         '&nbsp;',   '&iexcl;',  '&cent;',    '&pound;',    '&curren;',
         '&yen;',    '&brvbar;', '&sect;',    '&uml;',      '&copy;',
@@ -64,14 +64,14 @@ class StringUtils
         '&perp;',   '&sdot;',   '&lceil;',   '&rceil;',    '&lfloor;',
         '&rfloor;', '&lang;',   '&rang;',    '&loz;',      '&spades;',
         '&clubs;',  '&hearts;', '&diams;',
-    );
+    ];
 
     /**
      * numeric entity references in HTML 4.
      *
      * @var array
      */
-    private static $mNumericEntRef = array(
+    private static $mNumericEntRef = [
         '&#34;',   '&#38;',   '&#39;',   '&#60;',   '&#62;',
         '&#160;',  '&#161;',  '&#162;',  '&#163;',  '&#164;',
         '&#165;',  '&#166;',  '&#167;',  '&#168;',  '&#169;',
@@ -123,7 +123,7 @@ class StringUtils
         '&#8869;', '&#8901;', '&#8968;', '&#8969;', '&#8970;',
         '&#8971;', '&#9001;', '&#9002;', '&#9674;', '&#9824;',
         '&#9827;', '&#9829;', '&#9830;',
-    );
+    ];
 
     /**
      * convert encoding.
@@ -168,7 +168,7 @@ class StringUtils
             $text
         );
         // decode numeric entity
-        $text = mb_decode_numericentity($text, array(0x0, 0x100000, 0, 0xffffff), 'UTF-8');
+        $text = mb_decode_numericentity($text, [0x0, 0x100000, 0, 0xffffff], 'UTF-8');
         // convert &amp; to '&' for htmlspecialchars()
         $text = str_replace('&amp;', '&', $text);
         if ('UTF-8' != $to_encoding) {
@@ -199,7 +199,7 @@ class StringUtils
                 $text = preg_replace_callback(
                     '/&#x[0-9a-f]+;/i',
                     function ($matches) {
-                        return urlencode(mb_decode_numericentity($matches[0], array(0x0, 0x100000, 0, 0xffffff), 'UTF-8'));
+                        return urlencode(mb_decode_numericentity($matches[0], [0x0, 0x100000, 0, 0xffffff], 'UTF-8'));
                     },
                     $text
                 );
@@ -297,13 +297,13 @@ class StringUtils
         $text = self::convertEncoding($text, 'ASCII', 'UTF-8', 'h');
         // replace corner brackets, comma, full stop, sound mark, zenkaku white space
         $text = str_replace(
-            array('&#12300;', '&#12301;', '&#12302;', '&#12303;', '&#12289;', '&#12290;', '&#12540;',  '&#12288;'),
-            array('&#x201C;', '&#x201D;', '&#x2018;', '&#x2019;', ', ',       '. ',       '^',         ' '),
+            ['&#12300;', '&#12301;', '&#12302;', '&#12303;', '&#12289;', '&#12290;', '&#12540;',  '&#12288;'],
+            ['&#x201C;', '&#x201D;', '&#x2018;', '&#x2019;', ', ',       '. ',       '^',         ' '],
             $text
         );
         // replace katakana with roma-ji
         $text = str_replace(
-            array(
+            [
                 '&#12461;&#12515;', '&#12461;&#12517;', '&#12461;&#12519;', '&#12461;&#12455;', // kya, kyu, kyo, (kye)
                 '&#12463;&#12449;',                                                             // kwa
                 '&#12471;&#12515;', '&#12471;&#12517;', '&#12471;&#12519;', '&#12471;&#12455;', // sha, shu, sho, (she)
@@ -339,15 +339,15 @@ class StringUtils
                 '&#12460;', '&#12462;', '&#12464;', '&#12466;', '&#12468;', // ga, gi, gu, ge, go
                 '&#12470;', '&#12472;', '&#12474;', '&#12476;', '&#12478;', // za, ji, zu, ze, zo
                 '&#12480;', '&#12482;', '&#12485;', '&#12487;', '&#12489;', // da, ji, zu, de, do
-                                        '&#12532;',                         // (vu)
+                '&#12532;',                         // (vu)
                 '&#12496;', '&#12499;', '&#12502;', '&#12505;', '&#12508;', // ba, bi, bu, be, bo
                 '&#12497;', '&#12500;', '&#12503;', '&#12506;', '&#12509;', // pa, pi, pu, pe, po
                 '&#12449;', '&#12451;', '&#12453;', '&#12455;', '&#12457;', // a, i, u, e, o
                 '&#12533;',                         '&#12534;',             // ka, ke
                 '&#12515;', '&#12517;', '&#12519;',                         // ya, yu, yo
                 '&#12526;',                                                 // wa
-            ),
-            array(
+            ],
+            [
                 'kya', 'kyu', 'kyo', 'kye',
                 'kwa',
                 'sha', 'shu', 'sho', 'she',
@@ -383,50 +383,50 @@ class StringUtils
                 'ga',  'gi',  'gu',  'ge',  'go',
                 'za',  'ji',  'zu',  'ze',  'zo',
                 'da',  'ji',  'zu',  'de',  'do',
-                              'vu',
+                'vu',
                 'ba',  'bi',  'bu',  'be',  'bo',
                 'pa',  'pi',  'pu',  'pe',  'po',
                 'a',   'i',   'u',   'e',   'o',
                 'ka',                'ke',
                 'ya',         'yu',         'yo',
                 'wa',
-            ),
+            ],
             $text
         );
         // replace hatsu-on : KATAKANA LETER N
         $text = str_replace(
-            array(
+            [
                 '&#12531;a', '&#12531;i', '&#12531;u', '&#12531;e', '&#12531;o', '&#12531;y',
                 '&#12531;b', '&#12531;p', '&#12531;m', '&#12531;',
-            ),
-            array(
+            ],
+            [
                 'n\'a', 'n\'i', 'n\'u', 'n\'e', 'n\'o', 'n\'y',
                 'mb', 'mp', 'mm', 'n',
-            ),
+            ],
             $text
         );
         // replace soku-on : KATAKANA LETTER SMALL TU
         $text = str_replace(
-            array(
+            [
                 '&#12483;cha', '&#12483;chi', '&#12483;chu', '&#12483;cho',
                 '&#12483;k', '&#12483;s', '&#12483;t',              '&#12483;h',
                 '&#12483;m', '&#12483;y', '&#12483;r', '&#12483;w',
                 '&#12483;g', '&#12483;z', '&#12483;d', '&#12483;b', '&#12483;p',
                 '&#12483;q', '&#12483;j', '&#12483;f', '&#12483;v', '&#12483;',
-            ),
-            array(
+            ],
+            [
                 'tcha', 'tchi', 'tchu', 'tcho',
                 'kk', 'ss', 'tt',       'hh',
                 'mm', 'yy', 'rr', 'ww',
                 'gg', 'zz', 'dd', 'bb', 'pp',
                 'qq', 'jj', 'ff', 'vv', 'tsu',
-            ),
+            ],
             $text
         );
         // replace cho-on
         $text = str_replace(
-            array('aa', 'ii', 'uu', 'ee', 'oo', 'ou'),
-            array('a^', 'i^', 'u^', 'e^', 'o^', 'o^'),
+            ['aa', 'ii', 'uu', 'ee', 'oo', 'ou'],
+            ['a^', 'i^', 'u^', 'e^', 'o^', 'o^'],
             $text
         );
         // capiatlize word
@@ -439,7 +439,7 @@ class StringUtils
         // trim road sign (hepburn system)
         $text = str_replace('^', '', $text);
         // decode html numeric entities
-        $text = mb_decode_numericentity($text, array(0x0, 0x100000, 0, 0xffffff), 'UTF-8');
+        $text = mb_decode_numericentity($text, [0x0, 0x100000, 0, 0xffffff], 'UTF-8');
         // convert zenkaku alphabets/numbers to hankaku
         $text = mb_convert_kana($text, 'a', $encoding);
         // convert encoding to original
@@ -529,15 +529,15 @@ class StringUtils
         $ua = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
         $lang = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '';
         if (strstr($ua, 'Windows')) {
-            static $langMap = array(
-                'SJIS-win' => array('ja'),
-                'Windows-1252' => array('ca', 'da', 'de', 'en', 'es', 'fi', 'fr', 'id', 'is', 'it', 'ms', 'nb', 'nl', 'pt', 'sv'),
-                'ISO-8859-2' => array('cs', 'hr', 'hu', 'pl', 'ro', 'sk', 'sl', 'sq'),
-                'Windows-1251' => array('be', 'bg', 'mk', 'ru', 'sr', 'uk'),
-                'ISO-8859-7' => array('el'),
-                'ISO-8859-9' => array('tr'),
-                'ISO-8859-8' => array('he'),
-            );
+            static $langMap = [
+                'SJIS-win' => ['ja'],
+                'Windows-1252' => ['ca', 'da', 'de', 'en', 'es', 'fi', 'fr', 'id', 'is', 'it', 'ms', 'nb', 'nl', 'pt', 'sv'],
+                'ISO-8859-2' => ['cs', 'hr', 'hu', 'pl', 'ro', 'sk', 'sl', 'sq'],
+                'Windows-1251' => ['be', 'bg', 'mk', 'ru', 'sr', 'uk'],
+                'ISO-8859-7' => ['el'],
+                'ISO-8859-9' => ['tr'],
+                'ISO-8859-8' => ['he'],
+            ];
             foreach ($langMap as $encoding => $langs) {
                 foreach ($langs as $_lang) {
                     if (strstr($lang, $_lang)) {

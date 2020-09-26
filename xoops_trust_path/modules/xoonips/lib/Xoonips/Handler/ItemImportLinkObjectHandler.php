@@ -17,7 +17,7 @@ class ItemImportLinkObjectHandler extends AbstractObjectHandler
     {
         parent::__construct($db, $dirname);
         $this->mTable = $db->prefix($dirname.'_item_import_link');
-        $this->mPrimaryKey = array('item_import_log_id', 'item_id');
+        $this->mPrimaryKey = ['item_import_log_id', 'item_id'];
         $this->mIsAutoIncrement = false;
     }
 }

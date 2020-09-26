@@ -25,7 +25,7 @@ class Xoonips_LinkCountUpAjaxMethod extends Xoonips_AbstractAjaxMethod
         if (0 == $itemId) {
             return $this->_returnWithValue(false);
         }
-        if (!in_array($type, array('xml', 'id'))) {
+        if (!in_array($type, ['xml', 'id'])) {
             return $this->_returnWithValue(false);
         }
         if (2 != count($ids)) {
@@ -54,7 +54,7 @@ class Xoonips_LinkCountUpAjaxMethod extends Xoonips_AbstractAjaxMethod
         // get complement target
         $complementLinkBean = Xoonips_BeanFactory::getBean('ItemFieldDetailComplementLinkBean', $this->mDirname, $this->mTrustDirname);
         $links = $complementLinkBean->getItemTypeDetail($itemTypeId, $fieldId);
-        $target = array();
+        $target = [];
         foreach ($links as $link) {
             if ($link['base_group_id'] == $groupId && $link['released'] = 1) {
                 $target[] = $link;
@@ -114,7 +114,7 @@ class Xoonips_LinkCountUpAjaxMethod extends Xoonips_AbstractAjaxMethod
             break;
         }
 
-        return array($groupId, $fieldId);
+        return [$groupId, $fieldId];
     }
 
     /**

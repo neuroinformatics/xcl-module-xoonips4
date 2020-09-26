@@ -27,7 +27,7 @@ class Xoonips_ItemFieldValueSetBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = &$row['select_name'];
         }
@@ -100,7 +100,7 @@ class Xoonips_ItemFieldValueSetBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -148,7 +148,7 @@ class Xoonips_ItemFieldValueSetBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -173,7 +173,7 @@ class Xoonips_ItemFieldValueSetBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->fetchArray($result)) {
             $ret[] = $row;
         }
@@ -406,25 +406,25 @@ class Xoonips_ItemFieldValueSetBean extends Xoonips_BeanBase
         return  $ret;
     }
 
-        /**
-         * get item list data for Export Item Type XML Element.
-         *
-         * @return itemtype select_name
-         **/
-        public function getExportItemTypeValueSet()
-        {
-            $sql = "SELECT * FROM $this->table ";
-            $sql .= ' ORDER BY select_name';
-            $result = $this->execute($sql);
-            if (!$result) {
-                return false;
-            }
-            $ret = array();
-            while ($row = $this->fetchArray($result)) {
-                $ret[] = $row;
-            }
-            $this->freeRecordSet($result);
-
-            return $ret;
+    /**
+     * get item list data for Export Item Type XML Element.
+     *
+     * @return itemtype select_name
+     **/
+    public function getExportItemTypeValueSet()
+    {
+        $sql = "SELECT * FROM $this->table ";
+        $sql .= ' ORDER BY select_name';
+        $result = $this->execute($sql);
+        if (!$result) {
+            return false;
         }
+        $ret = [];
+        while ($row = $this->fetchArray($result)) {
+            $ret[] = $row;
+        }
+        $this->freeRecordSet($result);
+
+        return $ret;
+    }
 }

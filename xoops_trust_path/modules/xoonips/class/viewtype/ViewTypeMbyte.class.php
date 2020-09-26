@@ -61,30 +61,30 @@ class Xoonips_ViewTypeMbyte extends Xoonips_ViewTypeText
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];
         } else {
-            $tableData = array();
+            $tableData = [];
             $sqlStrings[$tableName] = &$tableData;
         }
 
-        if (strpos($tableName, '_extend') !== false) {
+        if (false !== strpos($tableName, '_extend')) {
             $groupid = $field->getFieldGroupId();
             if (isset($tableData[$groupid])) {
                 $groupData = &$tableData[$groupid];
             } else {
-                $groupData = array();
+                $groupData = [];
                 $tableData[$groupid] = &$groupData;
             }
 
             if (isset($groupData[$columnName])) {
                 $columnData = &$groupData[$columnName];
             } else {
-                $columnData = array();
+                $columnData = [];
                 $groupData[$columnName] = &$columnData;
             }
         } else {
             if (isset($tableData[$columnName])) {
                 $columnData = &$tableData[$columnName];
             } else {
-                $columnData = array();
+                $columnData = [];
                 $tableData[$columnName] = &$columnData;
             }
         }
@@ -102,24 +102,24 @@ class Xoonips_ViewTypeMbyte extends Xoonips_ViewTypeText
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];
         } else {
-            $tableData = array();
+            $tableData = [];
             $sqlStrings[$tableName] = &$tableData;
         }
-        if ($value != '') {
-            if ($field->getScopeSearch() == 1 && $scopeSearchFlg) {
-                if ($value[0] != '') {
+        if ('' != $value) {
+            if (1 == $field->getScopeSearch() && $scopeSearchFlg) {
+                if ('' != $value[0]) {
                     $v = $field->getDataType()->convertSQLStr($value[0]);
                     $tableData[] = "$columnName>=$v";
                 }
-                if ($value[1] != '') {
+                if ('' != $value[1]) {
                     $v = $field->getDataType()->convertSQLStr($value[1]);
                     $tableData[] = "$columnName<=$v";
                 }
-            //scope search
+                //scope search
             } else {
                 $value = trim($value);
                 // like search
-                if ($field->getDataType()->isLikeSearch() == true) {
+                if (true == $field->getDataType()->isLikeSearch()) {
                     $value = $field->getDataType()->convertSQLStrLike($value);
                     $tableData[] = "$columnName like '%$value%'";
                 } else {

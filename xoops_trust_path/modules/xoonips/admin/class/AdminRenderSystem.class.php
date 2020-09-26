@@ -30,18 +30,18 @@ class Xoonips_AdminRenderSystem extends Legacy_AdminRenderSystem
         self::$_mFallbackUrl = XOOPS_MODULE_URL.'/legacy/admin/theme';
         $this->mController = &$controller;
         $this->mSmarty = new Legacy_AdminSmarty();
-        $this->mSmarty->register_modifier('theme', array($this, 'modifierTheme'));
-        $this->mSmarty->register_function('stylesheet', array($this, 'functionStylesheet'));
-        $this->mSmarty->register_modifier('image', array($this, 'modifierImage'));
+        $this->mSmarty->register_modifier('theme', [$this, 'modifierTheme']);
+        $this->mSmarty->register_function('stylesheet', [$this, 'functionStylesheet']);
+        $this->mSmarty->register_modifier('image', [$this, 'modifierImage']);
         $this->mSmarty->assign(
-            array(
+            [
                 'xoops_url' => XOOPS_URL,
                 'xoops_rootpath' => XOOPS_ROOT_PATH,
                 'xoops_langcode' => _LANGCODE,
                 'xoops_charset' => _CHARSET,
                 'xoops_version' => XOOPS_VERSION,
                 'xoops_upload_url' => XOOPS_UPLOAD_URL,
-            )
+            ]
         );
         XCube_DelegateUtils::call('Legacy_RenderSystem.SetupXoopsTpl', new XCube_Ref($this->mSmarty));
         $this->mSmarty->force_compile = ($controller->mRoot->mSiteConfig['Legacy_AdminRenderSystem']['ThemeDevelopmentMode'] || $controller->mRoot->mContext->getXoopsConfig('theme_fromfile'));
@@ -68,21 +68,21 @@ class Xoonips_AdminRenderSystem extends Legacy_AdminRenderSystem
         $context = &$this->mController->mRoot->getContext();
         $this->mSmarty->assign($target->getAttributes());
         $this->mSmarty->assign(
-            array(
+            [
                 'stdout_buffer' => $this->_mStdoutBuffer,
                 'currentModule' => $module,
                 'legacy_sitename' => $context->getAttribute('legacy_sitename'),
                 'legacy_pagetitle' => $context->getAttribute('legacy_pagetitle'),
                 'legacy_slogan' => $context->getAttribute('legacy_slogan'),
-            )
+            ]
         );
-        $blocks = array();
+        $blocks = [];
         foreach ($context->mAttributes['legacy_BlockContents'][0] as $block) {
             $blocks[$block['name']] = $block;
         }
         $this->mSmarty->assign('xoops_lblocks', $blocks);
         $info = static::getOverrideFileInfo('admin_theme.html');
-        $this->mSmarty->template_dir = ($info['file'] != null) ? substr($file['path'], 0, -15) : self::$_mFallbackPath;
+        $this->mSmarty->template_dir = (null != $info['file']) ? substr($file['path'], 0, -15) : self::$_mFallbackPath;
         $this->mSmarty->setModulePrefix('');
         $target->setResult($this->mSmarty->fetch('file:admin_theme.html'));
     }
@@ -117,14 +117,14 @@ class Xoonips_AdminRenderSystem extends Legacy_AdminRenderSystem
      */
     public static function getOverrideFileInfo($file, $prefix = null, $isSpDirName = false)
     {
-        $ret = array(
+        $ret = [
             'url' => null,
             'path' => null,
             'theme' => null,
             'dirname' => null,
             'file' => null,
-        );
-        if (strpos($file, '..') !== false || strpos($prefix, '..' !== false)) {
+        ];
+        if (false !== strpos($file, '..') || strpos($prefix, '..' !== false)) {
             return $ret;
         }
         $root = &XCube_Root::getSingleton();
@@ -186,7 +186,7 @@ class Xoonips_AdminRenderSystem extends Legacy_AdminRenderSystem
     public static function modifierTheme($str)
     {
         $info = static::getOverrideFileInfo($str);
-        if ($info['url'] != null) {
+        if (null != $info['url']) {
             return $info['url'];
         }
 
@@ -206,7 +206,7 @@ class Xoonips_AdminRenderSystem extends Legacy_AdminRenderSystem
         $module = &$root->mContext->mXoopsModule;
         $isModule = is_object($module);
         $dirname = $isModule ? $module->get('dirname') : null;
-        if ($dirname != null) {
+        if (null != $dirname) {
             $url = XOOPS_URL.'/modules/'.$dirname.'/image.php/'.$fname;
         } else {
             $url = XOOPS_URL.'/images/'.$fname;
@@ -223,13 +223,13 @@ class Xoonips_AdminRenderSystem extends Legacy_AdminRenderSystem
      */
     public static function functionStylesheet($param, &$smarty)
     {
-        if (!isset($params['file']) || strpos($params['file'], '..') !== false) {
+        if (!isset($params['file']) || false !== strpos($params['file'], '..')) {
             return;
         }
         $info = static::getOverrideFileInfo($params['file'], 'stylesheets/');
-        if ($info['file'] == null) {
+        if (null == $info['file']) {
             return;
         }
-        printf('<link rel="stylesheet" type="text/css" media="%s" href="%s/legacy/admin/css.php?file=%s%s%s" />', (isset($params['media']) ? $params['media'] : 'all'), XOOPS_MODULE_URL, $info['file'], ($info['dirname'] != null ? '&amp;dirname='.$info['dirname'] : ''), ($info['theme'] != null ? '&amp;theme='.$info['theme'] : ''));
+        printf('<link rel="stylesheet" type="text/css" media="%s" href="%s/legacy/admin/css.php?file=%s%s%s" />', (isset($params['media']) ? $params['media'] : 'all'), XOOPS_MODULE_URL, $info['file'], (null != $info['dirname'] ? '&amp;dirname='.$info['dirname'] : ''), (null != $info['theme'] ? '&amp;theme='.$info['theme'] : ''));
     }
 }

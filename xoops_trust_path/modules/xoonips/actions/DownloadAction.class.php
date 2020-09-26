@@ -70,12 +70,12 @@ class Xoonips_DownloadAction extends Xoonips_AbstractAction
      */
     protected function _fetchRequest()
     {
-        $ret = array(
+        $ret = [
             'item_id' => 0,
             'item_doi' => false,
             'file_id' => 0,
             'file_name' => false,
-        );
+        ];
         if (array_key_exists('PATH_INFO', $_SERVER)) {
             $pathinfo = explode('/', $_SERVER['PATH_INFO']);
             if (!is_array($pathinfo) || count($pathinfo) < 2) {
@@ -94,7 +94,7 @@ class Xoonips_DownloadAction extends Xoonips_AbstractAction
                     $ret['item_id'] = intval($item_arr[0]);
                     break;
                 case 2:
-                    if ($item_arr[0] != XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME) {
+                    if (XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME != $item_arr[0]) {
                         return false;
                     }
                     $ret['item_doi'] = $item_arr[1];
@@ -155,7 +155,7 @@ class Xoonips_DownloadAction extends Xoonips_AbstractAction
                 return false;
             }
             $objs = &$itemFileHandler->getObjectsForDownload($itemObj->get('item_id'), $params['file_name']);
-            if (count($objs) != 1) {
+            if (1 != count($objs)) {
                 return false;
             }
             $itemFileObj = &$objs[0];
@@ -197,12 +197,12 @@ class Xoonips_DownloadAction extends Xoonips_AbstractAction
         $metadata .= $this->mItemObj->getUrl()."\r\n";
         $metadata = StringUtils::convertEncodingToClient($metadata, _CHARSET, 'h');
         $zfpath = tempnam('/tmp', 'XooNIpsDownloadZipFile');
-        if ($zfpath === false) {
+        if (false === $zfpath) {
             return false;
         }
         FileUtils::deleteFileOnExit($zfpath);
         $zip = new ZipFile();
-        if ($zip->open($zfpath) === false) {
+        if (false === $zip->open($zfpath)) {
             return false;
         }
         $zip->add($this->mFilePath, StringUtils::convertEncodingToClientFileSystem($this->mFileName, _CHARSET));
@@ -237,12 +237,12 @@ class Xoonips_DownloadAction extends Xoonips_AbstractAction
         $dirname = $this->mAsset->mDirname;
         $trustDirname = $this->mAsset->mTrustDirname;
         $params = $this->_fetchRequest();
-        if ($params === false) {
+        if (false === $params) {
             $this->mErrorCode = 404;
 
             return $this->_getFrameViewStatus('ERROR');
         }
-        if ($this->_getObjectsByParams($params) === false) {
+        if (false === $this->_getObjectsByParams($params)) {
             $this->mErrorCode = 404;
 
             return $this->_getFrameViewStatus('ERROR');
@@ -255,7 +255,7 @@ class Xoonips_DownloadAction extends Xoonips_AbstractAction
             return $this->_getFrameViewStatus('ERROR');
         }
         // check download limit only registered user
-        if ($uid == XOONIPS_UID_GUEST && $this->mItemObj->isDownloadLimit()) {
+        if (XOONIPS_UID_GUEST == $uid && $this->mItemObj->isDownloadLimit()) {
             $url = XOOPS_URL.'/user.php?xoops_redirect='.urlencode($this->mItemObj->getUrl());
             $this->mRoot->mController->executeForward($url);
         }
@@ -265,8 +265,8 @@ class Xoonips_DownloadAction extends Xoonips_AbstractAction
         XCube_DelegateUtils::call('Module.Xoonips.FileDownload.Prepare', $this->mItemObj->get('item_id'), $itemtypeName, $this->mItemFileObj->gets(), new XCube_Ref($this->mFilePath));
         // check compress
         $download_file_compression = Functions::getXoonipsConfig($dirname, 'download_file_compression');
-        if ($download_file_compression == 'on') {
-            if ($this->_createZipFile() === false) {
+        if ('on' == $download_file_compression) {
+            if (false === $this->_createZipFile()) {
                 $this->mErrorCode = 500;
 
                 return $this->_getFrameViewStatus('ERROR');

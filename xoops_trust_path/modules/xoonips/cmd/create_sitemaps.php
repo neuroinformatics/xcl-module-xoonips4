@@ -16,7 +16,7 @@ if (array_key_exists('p', $opts)) {
 }
 
 $mainfile = dirname(dirname(dirname($mytrustdirpath))).'/html/mainfile.php';
-if (basename($mainfile) != 'mainfile.php' || !file_exists($mainfile)) {
+if ('mainfile.php' != basename($mainfile) || !file_exists($mainfile)) {
     printUsage('mainfile.php not found');
 }
 require_once $mainfile;

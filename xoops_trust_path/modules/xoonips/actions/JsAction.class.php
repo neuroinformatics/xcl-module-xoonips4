@@ -14,9 +14,9 @@ class Xoonips_JsAction extends Xoonips_AbstractTemplateAction
      */
     protected function _getTemplateFileType()
     {
-        return array(
+        return [
             'mime' => 'text/javascript',
             'extension' => '.js',
-        );
+        ];
     }
 }

@@ -61,18 +61,18 @@ class Xoonips_AdminPreloadBase extends XCube_ActionFilter
         if (!is_object($this->mRoot->mContext->mXoopsModule)) {
             return;
         }
-        if ($this->mRoot->mContext->mXoopsModule->get('dirname') != 'user') {
+        if ('user' != $this->mRoot->mContext->mXoopsModule->get('dirname')) {
             return;
         }
         $actionName = isset($_GET['action']) ? trim($_GET['action']) : 'UserList';
-        static $actionHookNames = array(
+        static $actionHookNames = [
             'UserList',
             'UserEdit',
             'UserDelete',
             'GroupList',
             'GroupEdit',
             'GroupDelete',
-        );
+        ];
         if (!in_array($actionName, $actionHookNames)) {
             return;
         }
@@ -83,7 +83,7 @@ class Xoonips_AdminPreloadBase extends XCube_ActionFilter
         $moduleRunner = new Xoonips_UserActionFrame(true);
         $moduleRunner->setDirname($this->mDirname, $this->mTrustDirname);
         $moduleRunner->setActionName($actionName);
-        $this->mRoot->mController->mExecute->add(array(&$moduleRunner, 'execute'));
+        $this->mRoot->mController->mExecute->add([&$moduleRunner, 'execute']);
         $this->mRoot->mController->execute();
         require_once XOOPS_ROOT_PATH.'/footer.php';
         exit();

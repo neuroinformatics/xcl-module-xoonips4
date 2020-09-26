@@ -20,9 +20,9 @@ class Xoonips_UserEditAction extends User_UserEditAction
     public function _setupObject()
     {
         parent::_setupObject();
-        if ($this->mObject == null && $this->isEnableCreate()) {
+        if (null == $this->mObject && $this->isEnableCreate()) {
             $certify_user = Functions::getXoonipsConfig($this->mDirname, 'certify_user');
-            if ($certify_user == 'auto') {
+            if ('auto' == $certify_user) {
                 $this->mObject->set('level', 2);
             }
         }
@@ -38,7 +38,7 @@ class Xoonips_UserEditAction extends User_UserEditAction
     public function _doExecute()
     {
         $ret = parent::_doExecute();
-        if ($ret === true) {
+        if (true === $ret) {
             $isNew = (!$this->_getId());
             // workflow and notification
             $ret = self::_updateUserWorkflow($this->mObject->get('uid'), $isNew, $this->mDirname, $this->mTrustDirname);
@@ -74,7 +74,7 @@ class Xoonips_UserEditAction extends User_UserEditAction
         $allApprovalUids = array_unique(array_merge($moderatorUids, Xoonips_Workflow::getAllApproverUserIds($dirname, Xoonips_Enum::WORKFLOW_USER, $uid)));
         if ($isNew) {
             // register new user
-            if ($level == 1 && $certify_user == 'auto') {
+            if (1 == $level && 'auto' == $certify_user) {
                 // auto certify mode enabled - force update level and certify automatically
                 $xoopsUser->set('level', 2);
                 if (!$xoopsUserHandler->insert($xoopsUser)) {
@@ -83,7 +83,7 @@ class Xoonips_UserEditAction extends User_UserEditAction
                 XCube_DelegateUtils::call('Module.Xoonips.Event.User.CertifyRequest', $xoopsUser);
                 XCube_DelegateUtils::call('Module.Xoonips.Event.User.Certify', $xoopsUser);
                 $notification->accountCertifiedAuto($uid, $allApprovalUids);
-            } elseif ($level == 1) {
+            } elseif (1 == $level) {
                 // not certified user - try to use workflow
                 if (Xoonips_Workflow::addItem($uname, $dirname, Xoonips_Enum::WORKFLOW_USER, $uid, $url)) {
                     // success to register workflow task - send certify request
@@ -99,7 +99,7 @@ class Xoonips_UserEditAction extends User_UserEditAction
                     XCube_DelegateUtils::call('Module.Xoonips.Event.User.Certify', $xoopsUser);
                     $notification->accountCertifiedAuto($uid, $allApprovalUids);
                 }
-            } elseif ($level == 2) {
+            } elseif (2 == $level) {
                 // certified user - certify automatically
                 $doNotify = 'auto';
                 XCube_DelegateUtils::call('Module.Xoonips.Event.User.CertifyRequest', $xoopsUser);
@@ -108,7 +108,7 @@ class Xoonips_UserEditAction extends User_UserEditAction
             }
         } else {
             // existing user
-            if ($level == 1 && $certify_user == 'auto') {
+            if (1 == $level && 'auto' == $certify_user) {
                 // auto certify mode enabled - force update level and certify automatically
                 $xoopsUser->set('level', 2);
                 if (!$xoopsUserHandler->insert($xoopsUser)) {
@@ -123,7 +123,7 @@ class Xoonips_UserEditAction extends User_UserEditAction
                 }
                 XCube_DelegateUtils::call('Module.Xoonips.Event.User.Certify', $xoopsUser);
                 $notification->accountCertifiedAuto($uid, $allApprovalUids);
-            } elseif ($level == 1) {
+            } elseif (1 == $level) {
                 // not certified user - check current workflow progress
                 if (!Xoonips_Workflow::isInProgressItem($dirname, Xoonips_Enum::WORKFLOW_USER, $uid)) {
                     // workflow task not found - try to register workflow task
@@ -142,7 +142,7 @@ class Xoonips_UserEditAction extends User_UserEditAction
                         $notification->accountCertifiedAuto($uid, $allApprovalUids);
                     }
                 }
-            } elseif ($level == 2) {
+            } elseif (2 == $level) {
                 // certified user - certify if workflow exists
                 if (Xoonips_Workflow::isInProgressItem($dirname, Xoonips_Enum::WORKFLOW_USER, $uid)) {
                     Xoonips_Workflow::deleteItem($dirname, Xoonips_Enum::WORKFLOW_USER, $uid);

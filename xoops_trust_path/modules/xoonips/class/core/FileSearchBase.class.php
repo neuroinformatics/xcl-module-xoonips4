@@ -39,11 +39,11 @@ class Xoonips_FileSearchBase
      */
     public function open($filename)
     {
-        if ($this->handle !== false) {
+        if (false !== $this->handle) {
             return false;
         }
         $this->openImpl($filename);
-        if ($this->handle === false) {
+        if (false === $this->handle) {
             return false;
         }
 
@@ -57,7 +57,7 @@ class Xoonips_FileSearchBase
      */
     public function close()
     {
-        if ($this->handle === false) {
+        if (false === $this->handle) {
             return false;
         }
         $this->closeImpl();
@@ -72,13 +72,13 @@ class Xoonips_FileSearchBase
      */
     public function fetch()
     {
-        if ($this->handle === false) {
+        if (false === $this->handle) {
             return false;
         }
         $text = '';
         while (!feof($this->handle)) {
             $tmp = $this->is_xml ? fgetss($this->handle, 8192) : fgets($this->handle, 8192);
-            if ($tmp !== false) {
+            if (false !== $tmp) {
                 $text .= $tmp;
             }
         }

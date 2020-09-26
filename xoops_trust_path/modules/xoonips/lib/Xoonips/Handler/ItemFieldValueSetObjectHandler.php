@@ -17,7 +17,7 @@ class ItemFieldValueSetObjectHandler extends AbstractObjectHandler
     {
         parent::__construct($db, $dirname);
         $this->mTable = $db->prefix($dirname.'_item_field_value_set');
-        $this->mPrimaryKey = array('select_name', 'title_id');
+        $this->mPrimaryKey = ['select_name', 'title_id'];
         $this->mIsAutoIncrement = false;
     }
 }

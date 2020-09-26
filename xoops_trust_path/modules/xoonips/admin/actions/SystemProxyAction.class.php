@@ -24,7 +24,7 @@ class Xoonips_Admin_SystemProxyAction extends Xoonips_Admin_AbstractConfigAction
      */
     protected function getConfigKeys()
     {
-        return array('proxy_host', 'proxy_port', 'proxy_user', 'proxy_pass');
+        return ['proxy_host', 'proxy_port', 'proxy_user', 'proxy_pass'];
     }
 
     /**
@@ -47,19 +47,19 @@ class Xoonips_Admin_SystemProxyAction extends Xoonips_Admin_AbstractConfigAction
         $dirname = $this->mAsset->mDirname;
         $constpref = '_AD_'.strtoupper($dirname);
         // breadcrumbs
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => constant($constpref.'_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_SYSTEM_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=System',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_SYSTEM_PROXY_TITLE'),
-            ),
-        );
+            ],
+        ];
         $render->setTemplateName('system_proxy.html');
         $render->setAttribute('title', constant($constpref.'_SYSTEM_PROXY_TITLE'));
         $render->setAttribute('description', constant($constpref.'_SYSTEM_PROXY_DESC'));

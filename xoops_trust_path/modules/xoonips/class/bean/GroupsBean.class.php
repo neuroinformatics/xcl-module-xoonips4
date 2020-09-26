@@ -28,7 +28,7 @@ class Xoonips_GroupsBean extends Xoonips_BeanBase
      */
     public function getGroup($groupId)
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT * FROM $this->table";
         $sql = $sql." WHERE groupid=$groupId";
 
@@ -53,7 +53,7 @@ class Xoonips_GroupsBean extends Xoonips_BeanBase
      */
     public function getGroupByName($gname)
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT * FROM $this->table";
         $sql = $sql.' WHERE name='.Xoonips_Utils::convertSQLStr($gname);
 
@@ -152,7 +152,7 @@ class Xoonips_GroupsBean extends Xoonips_BeanBase
      */
     public function getAdminGroupIds($uid)
     {
-        $ret = array();
+        $ret = [];
 
         $sql = "SELECT a.groupid FROM $this->linkTable a,$this->table b";
         $sql = $sql." WHERE a.groupid=b.groupid AND a.uid=$uid AND a.is_admin=".Xoonips_Enum::GRP_ADMINISTRATOR;
@@ -178,7 +178,7 @@ class Xoonips_GroupsBean extends Xoonips_BeanBase
      */
     public function getMyGroupIds($uid)
     {
-        $ret = array();
+        $ret = [];
 
         $sql = "SELECT groupid FROM $this->linkTable a,$this->table b";
         $sql = $sql." WHERE a.groupid=b.groupid AND a.uid=$uid";
@@ -204,9 +204,10 @@ class Xoonips_GroupsBean extends Xoonips_BeanBase
     {
         $moderator_gid = Functions::getXoonipsConfig($this->dirname, 'moderator_gid');
         $group = $this->getGroup($moderator_gid);
-        if ($group === false) {
+        if (false === $group) {
             return 1;
         } // fail safe
+
         return $group['groupid'];
     }
 
@@ -240,7 +241,7 @@ class Xoonips_GroupsBean extends Xoonips_BeanBase
      */
     public function getGroupIdsByUser($uid)
     {
-        $ret = array();
+        $ret = [];
         $sql = 'SELECT groupid FROM '.$this->linkTable.' WHERE uid='.intval($uid);
         $result = $this->execute($sql);
         if (!$result) {
@@ -262,7 +263,7 @@ class Xoonips_GroupsBean extends Xoonips_BeanBase
      */
     public function getGroups($groupType, $operation = '=')
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT * FROM $this->table WHERE group_type".$operation.Xoonips_Utils::convertSQLStr($groupType).' ORDER BY name';
         $result = $this->execute($sql);
         if (!$result) {
@@ -285,7 +286,7 @@ class Xoonips_GroupsBean extends Xoonips_BeanBase
      */
     public function getAllGroups($activate)
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT groupid,name FROM $this->table WHERE";
         $sql .= ' activate>='.$activate.' OR group_type<>'.Xoonips_Utils::convertSQLStr(Xoonips_Enum::GROUP_TYPE).' ORDER BY name';
         $result = $this->execute($sql);
@@ -427,11 +428,11 @@ class Xoonips_GroupsBean extends Xoonips_BeanBase
     {
         $groupInfo = $this->getGroup($groupId);
 
-        return array(
+        return [
             'itemNumberLimit' => (!isset($groupInfo['item_number_limit'])) ? Functions::getXoonipsConfig($this->dirname, 'group_item_number_limit') : $groupInfo['item_number_limit'],
             'indexNumberLimit' => (!isset($groupInfo['index_number_limit'])) ? Functions::getXoonipsConfig($this->dirname, 'group_index_number_limit') : $groupInfo['index_number_limit'],
             'itemStorageLimit' => (!isset($groupInfo['item_storage_limit'])) ? Functions::getXoonipsConfig($this->dirname, 'group_item_storage_limit') : $groupInfo['item_storage_limit'],
-        );
+        ];
     }
 
     /**
@@ -447,11 +448,11 @@ class Xoonips_GroupsBean extends Xoonips_BeanBase
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         $fileBean = Xoonips_BeanFactory::getBean('ItemFileBean', $this->dirname, $this->trustDirname);
 
-        return array(
+        return [
             'itemNum' => $itemBean->countGroupItems($groupId),
             'indexNum' => $indexBean->countGroupIndexes($groupId),
             'fileSize' => $fileBean->countGroupFileSizes($groupId),
-        );
+        ];
     }
 
     /**
@@ -464,7 +465,7 @@ class Xoonips_GroupsBean extends Xoonips_BeanBase
     public function alterCheck()
     {
         //FIXME
-        $ret = array();
+        $ret = [];
         $sql = "SELECT * FROM $this->table";
         $result = $this->execute($sql);
         if (!$result) {

@@ -28,7 +28,7 @@ class ZipFile
      *
      * @var array
      */
-    private $ctrl_dir = array();
+    private $ctrl_dir = [];
 
     /**
      * end of central directory record.
@@ -54,7 +54,7 @@ class ZipFile
      */
     private function unix2DosTime($unixtime = 0)
     {
-        $timearray = ($unixtime == 0) ? getdate() : getdate($unixtime);
+        $timearray = (0 == $unixtime) ? getdate() : getdate($unixtime);
         if ($timearray['year'] < 1980) {
             $timearray['year'] = 1980;
             $timearray['mon'] = 1;
@@ -77,11 +77,11 @@ class ZipFile
      */
     public function open($zip_filename)
     {
-        if ($this->datasec_handle !== false) {
+        if (false !== $this->datasec_handle) {
             return false;
         }
         $fh = @fopen($zip_filename, 'wb');
-        if ($fh === false) {
+        if (false === $fh) {
             return false;
         }
         $this->datasec_handle = $fh;
@@ -106,17 +106,17 @@ class ZipFile
 
         // create compressed temporary file
         $tmpfile = tempnam('/tmp', 'XooNIpsZipFile_Add');
-        if ($tmpfile === false) {
+        if (false === $tmpfile) {
             return false;
         }
         $h = @fopen($path, 'rb');
-        if ($h === false) {
+        if (false === $h) {
             unlink($tmpfile);
 
             return false;
         }
         $hgz = gzopen($tmpfile, 'wb');
-        if ($hgz === false) {
+        if (false === $hgz) {
             unlink($tmpfile);
             fclose($h);
 
@@ -246,7 +246,7 @@ class ZipFile
 
         // reset runtime variables
         $this->datasec_handle = false;
-        $this->ctrl_dir = array();
+        $this->ctrl_dir = [];
         $this->old_offset = 0;
 
         return true;

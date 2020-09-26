@@ -24,7 +24,7 @@ class Xoonips_Admin_PolicyItemPublicAction extends Xoonips_Admin_AbstractConfigA
      */
     protected function getConfigKeys()
     {
-        return array('certify_item', 'download_file_compression');
+        return ['certify_item', 'download_file_compression'];
     }
 
     /**
@@ -47,23 +47,23 @@ class Xoonips_Admin_PolicyItemPublicAction extends Xoonips_Admin_AbstractConfigA
         $dirname = $this->mAsset->mDirname;
         $constpref = '_AD_'.strtoupper($dirname);
         // breadcrumbs
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => constant($constpref.'_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=Policy',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_ITEM_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=PolicyItem',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_ITEM_PUBLIC_TITLE'),
-            ),
-        );
+            ],
+        ];
         $render->setTemplateName('policy_item_public.html');
         $render->setAttribute('title', constant($constpref.'_POLICY_ITEM_PUBLIC_TITLE'));
         $render->setAttribute('description', constant($constpref.'_POLICY_ITEM_PUBLIC_DESC'));

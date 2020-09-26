@@ -7,17 +7,17 @@ require_once __DIR__.'/class/action/SearchAction.class.php';
 $request = new Xoonips_Request();
 $response = new Xoonips_Response();
 $op = $request->getParameter('op');
-if ($op == null) {
+if (null == $op) {
     $op = 'quick';
 }
 
 // check request
-if (!in_array($op, array('quick', 'advanced', 'export'))) {
+if (!in_array($op, ['quick', 'advanced', 'export'])) {
     die('illegal request');
 }
 
 // set action map
-$actionMap = array();
+$actionMap = [];
 $actionMap['quick_init_success'] = $mydirname.'_quicksearch.html';
 $actionMap['quick_search_success'] = $mydirname.'_itemselect_item_list.html';
 $actionMap['advanced_init_success'] = $mydirname.'_advanced_search.html';

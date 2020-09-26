@@ -33,7 +33,7 @@ class Xoonips_UserSuAction extends Xoonips_UserAction
 
     public function hasPermission(&$controller, &$xoopsUser, $moduleConfig)
     {
-        if ($this->mOriginalUid == 0) {
+        if (0 == $this->mOriginalUid) {
             $uid = $xoopsUser->get('uid');
             if (!XoopsUtils::isAdmin($uid, $this->dirname)) {
                 return false;
@@ -48,11 +48,11 @@ class Xoonips_UserSuAction extends Xoonips_UserAction
         if ($this->mOriginalUid > 0) {
             return $this->endSwitchUser($controller, $xoopsUser);
         }
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => constant($this->mConstPref.'_USER_LANG_SU'),
-            ),
-        );
+            ],
+        ];
         $this->viewData['xoops_breadcrumbs'] = $breadcrumbs;
         $this->viewData['uid'] = $this->mTargetUid;
         $this->viewData['dirname'] = $this->dirname;
@@ -79,7 +79,7 @@ class Xoonips_UserSuAction extends Xoonips_UserAction
 
     public function executeViewSuccess(&$controller, &$xoopsUser, &$render)
     {
-        $message = $this->mOriginalUid == 0 ? constant($this->mConstPref.'_USER_MESSAGE_SU_START') : constant($this->mConstPref.'_USER_MESSAGE_SU_END');
+        $message = 0 == $this->mOriginalUid ? constant($this->mConstPref.'_USER_MESSAGE_SU_START') : constant($this->mConstPref.'_USER_MESSAGE_SU_END');
         $controller->executeRedirect(XOOPS_URL.'/', 3, $message, false);
     }
 
@@ -98,7 +98,7 @@ class Xoonips_UserSuAction extends Xoonips_UserAction
     private function beginSwitchUser(&$controller, &$xoopsUser)
     {
         $uid = $xoopsUser->get('uid');
-        if ($this->mTargetUid == 0 || $this->mTargetUid == $uid) {
+        if (0 == $this->mTargetUid || $this->mTargetUid == $uid) {
             $this->mErrorMessage = constant($this->mConstPref.'_USER_ERROR_SU_NO_ACCOUNT');
             $this->mTargetUid = 0;
 
@@ -116,7 +116,7 @@ class Xoonips_UserSuAction extends Xoonips_UserAction
         $criteria = new CriteriaCompo();
         $criteria->add(new Criteria('uid', $uid));
         $criteria->add(new Criteria('pass', md5($pass)));
-        if ($userHandler->getCount($criteria) != 1) {
+        if (1 != $userHandler->getCount($criteria)) {
             $this->mErrorMessage = constant($this->mConstPref.'_USER_ERROR_SU_BAD_PASSWORD');
 
             return USER_FRAME_VIEW_ERROR;

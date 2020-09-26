@@ -134,7 +134,7 @@ class Xoonips_WorkflowClientUser extends Xoonips_WorkflowClientBase
             $certifyUser = '';
         }
         $xoopsMailer->assign('CERTIFY_USER', $certifyUser);
-        $xoopsMailer->setToEmails(array($user['email']));
+        $xoopsMailer->setToEmails([$user['email']]);
         $xoopsMailer->setFromEmail($adminmail);
         $xoopsMailer->setFromName($sitename);
         $xoopsMailer->setSubject(_MD_XOONIPS_MESSAGE_ACCOUNT_REJECTED_NOTIFYSBJ);

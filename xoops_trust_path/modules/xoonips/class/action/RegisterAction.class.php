@@ -7,11 +7,11 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
 {
     protected function doInit(&$request, &$response)
     {
-        $breadcrumbs = array(
-        array(
-            'name' => _MD_XOONIPS_ITEM_REGISTER_ITEM_TITLE,
-        ),
-        );
+        $breadcrumbs = [
+            [
+                'name' => _MD_XOONIPS_ITEM_REGISTER_ITEM_TITLE,
+            ],
+        ];
         global $xoopsUser;
         $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
 
@@ -53,7 +53,7 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
     protected function doRegister(&$request, &$response)
     {
         $itemtypeId = $request->getParameter('itemtype_id');
-        $viewData = array();
+        $viewData = [];
         $this->setCommonViewData($viewData, $itemtypeId, $request, $response);
         $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
         $viewData['registryView'] = $item->getRegistryView();
@@ -75,12 +75,12 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
     protected function doComplete(&$request, &$response)
     {
         $itemtypeId = $request->getParameter('itemtype_id');
-        $viewData = array();
+        $viewData = [];
         $this->setCommonViewData($viewData, $itemtypeId, $request, $response);
         $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
         $targetItemId = $request->getParameter('targetItemId');
         $item->setData($_POST, true);
-        if ($item->complete($targetItemId) === false) {
+        if (false === $item->complete($targetItemId)) {
             $viewData['relation'] = false;
         }
         $viewData['registryView'] = $item->getRegistryViewWithData();
@@ -93,7 +93,7 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
     protected function doAddFieldGroup(&$request, &$response)
     {
         $itemtypeId = $request->getParameter('itemtype_id');
-        $viewData = array();
+        $viewData = [];
         $this->setCommonViewData($viewData, $itemtypeId, $request, $response);
         $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
         $targetItemId = $request->getParameter('targetItemId');
@@ -109,7 +109,7 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
     protected function doDeleteFieldGroup(&$request, &$response)
     {
         $itemtypeId = $request->getParameter('itemtype_id');
-        $viewData = array();
+        $viewData = [];
         $this->setCommonViewData($viewData, $itemtypeId, $request, $response);
         $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
         $targetItemId = $request->getParameter('targetItemId');
@@ -137,7 +137,7 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
     protected function doDeleteFile(&$request, &$response)
     {
         $itemtypeId = $request->getParameter('itemtype_id');
-        $viewData = array();
+        $viewData = [];
         $this->setCommonViewData($viewData, $itemtypeId, $request, $response);
         $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
         $targetItemId = $request->getParameter('targetItemId');
@@ -193,14 +193,14 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
     protected function doConfirm(&$request, &$response)
     {
         $itemtypeId = $request->getParameter('itemtype_id');
-        $viewData = array();
+        $viewData = [];
         $this->setCommonViewData($viewData, $itemtypeId, $request, $response);
         $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
         $errors = new Xoonips_Errors();
         $item->setData($_POST, true);
         $item->inputCheck($errors);
 
-        if (count($errors->getErrors()) != 0) {
+        if (0 != count($errors->getErrors())) {
             $viewData['registryView'] = $item->getRegistryViewWithData();
             $viewData['errors'] = $errors->getView($this->dirname);
             $response->setViewData($viewData);
@@ -214,11 +214,11 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
             $itemUsed = $itemBean->countUserItems($uid);
             $privateItemLimit = $itemBean->getPrivateItemLimit($uid);
             if ($itemUsed > $privateItemLimit['itemNumber'] - 1 && $privateItemLimit['itemNumber'] > 0) {
-                $parameters = array();
+                $parameters = [];
                 $parameters[] = '';
                 $errors->addError('_MD_XOONIPS_ITEM_WARNING_ITEM_NUMBER_LIMIT', '', $parameters);
             }
-            if (count($errors->getErrors()) != 0) {
+            if (0 != count($errors->getErrors())) {
                 $viewData['registryView'] = $item->getRegistryViewWithData();
                 $viewData['errors'] = $errors->getView($this->dirname);
                 $response->setViewData($viewData);
@@ -233,7 +233,7 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
                 $token_ticket = $this->createToken($this->modulePrefix('confirm_register'));
 
                 // view data
-                $viewData = array();
+                $viewData = [];
                 $viewData['itemtype_id'] = $itemtypeId;
                 $viewData['itemtype_name'] = $itemtypeName;
                 $viewData['token_titcket'] = $token_ticket;
@@ -301,7 +301,7 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
     private function doCommon(&$request, &$response)
     {
         $itemtypeId = $request->getParameter('itemtype_id');
-        $viewData = array();
+        $viewData = [];
         $this->setCommonViewData($viewData, $itemtypeId, $request, $response);
         $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
         $item->setData($_POST, true);
@@ -328,7 +328,7 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
         $viewData['storage_of_items_max'] = sprintf('%.02lf', $privateItemLimit['itemStorage'] / 1024 / 1024);
 
         $op = $request->getParameter('op');
-        if ($op == 'confirm' && $response->getForward() == 'confirm_success') {
+        if ('confirm' == $op && 'confirm_success' == $response->getForward()) {
             $xoonipsTreeCheckBox = false;
         } else {
             $xoonipsTreeCheckBox = true;
@@ -336,23 +336,23 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
         $xoonipsCheckPrivateHandlerId = 'PrivateIndexCheckedHandler';
 
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-        $groupIndexes = array();
+        $groupIndexes = [];
         $privateIndex = false;
         $publicIndex = $indexBean->getPublicIndex();
         $publicGroupIndexes = $indexBean->getPublicGroupIndex();
 
-        if ($uid != XOONIPS_UID_GUEST) {
+        if (XOONIPS_UID_GUEST != $uid) {
             $groupIndexes = $indexBean->getGroupIndex($uid);
             $privateIndex = $indexBean->getPrivateIndex($uid);
         }
         $groupIndexes = $indexBean->mergeIndexes($publicGroupIndexes, $groupIndexes);
-        $indexes = array();
+        $indexes = [];
         $url = false;
         // public index
         if ($publicIndex) {
-            $trees = array();
+            $trees = [];
             $indexes[] = $publicIndex;
-            $tree = array();
+            $tree = [];
             $tree['index_id'] = $publicIndex['index_id'];
             $trees[] = $tree;
         }
@@ -360,7 +360,7 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
         if ($groupIndexes) {
             foreach ($groupIndexes as $index) {
                 $indexes[] = $index;
-                $tree = array();
+                $tree = [];
                 $tree['index_id'] = $index['index_id'];
                 $trees[] = $tree;
             }
@@ -369,7 +369,7 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
         if ($privateIndex) {
             $privateIndex['title'] = 'Private';
             $indexes[] = $privateIndex;
-            $tree = array();
+            $tree = [];
             $tree['index_id'] = $privateIndex['index_id'];
             $trees[] = $tree;
         }

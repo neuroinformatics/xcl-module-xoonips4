@@ -23,7 +23,7 @@ class Xoonips_DataTypeBean extends Xoonips_BeanBase
      */
     public function selectDatatypesByViewtype($viewtypeId)
     {
-        $ret = array();
+        $ret = [];
         if (empty($viewtypeId)) {
             return $ret;
         }
@@ -50,7 +50,7 @@ class Xoonips_DataTypeBean extends Xoonips_BeanBase
      */
     public function getDatatypeList()
     {
-        $ret = array();
+        $ret = [];
         $sql = 'SELECT * FROM '.$this->table.' ORDER BY data_type_id';
         $result = $this->execute($sql);
         if (!$result) {

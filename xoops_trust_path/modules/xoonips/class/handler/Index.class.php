@@ -66,7 +66,7 @@ class Xoonips_IndexHandler extends XoopsObjectGenericHandler
      */
     public function getPublicIndexList($uid)
     {
-        $isModerator = ($uid == XOONIPS_UID_GUEST ? false : XoopsUtils::isAdmin($uid, $this->mDirname));
+        $isModerator = (XOONIPS_UID_GUEST == $uid ? false : XoopsUtils::isAdmin($uid, $this->mDirname));
         $criteriaList = new Criteria('open_level', XOONIPS_OL_PUBLIC, '=', $this->mTable);
         $criteriaCount = $this->_getReadableCountCriteriaForPublic($uid, $isModerator);
 
@@ -83,7 +83,7 @@ class Xoonips_IndexHandler extends XoopsObjectGenericHandler
      */
     public function getGroupIndexList($uid, $gid)
     {
-        $isModerator = ($uid == XOONIPS_UID_GUEST ? false : XoopsUtils::isAdmin($uid, $this->mDirname));
+        $isModerator = (XOONIPS_UID_GUEST == $uid ? false : XoopsUtils::isAdmin($uid, $this->mDirname));
         $criteriaList = new CriteriaCompo(new Criteria('open_level', XOONIPS_OL_GROUP_ONLY, '=', $this->mTable));
         $criteriaList->add(new Criteria('groupid', $gid, '=', $this->mTable));
         $criteriaCount = $this->_getReadableCountCriteriaForGroup($uid, $gid, $isModerator);
@@ -101,7 +101,7 @@ class Xoonips_IndexHandler extends XoopsObjectGenericHandler
      */
     public function getPrivateIndexList($uid)
     {
-        $isModerator = ($uid == XOONIPS_UID_GUEST ? false : XoopsUtils::isAdmin($uid, $this->mDirname));
+        $isModerator = (XOONIPS_UID_GUEST == $uid ? false : XoopsUtils::isAdmin($uid, $this->mDirname));
         $criteriaList = new CriteriaCompo(new Criteria('open_level', XOONIPS_OL_PRIVATE, '=', $this->mTable));
         $criteriaList->add(new Criteria('uid', $uid, '=', $this->mTable));
         $criteriaCount = $this->_getReadableCountCriteriaForPrivate($uid, $isModerator);
@@ -119,7 +119,7 @@ class Xoonips_IndexHandler extends XoopsObjectGenericHandler
      */
     private function _getIndexList($uid, $criteriaList, $criteriaCount)
     {
-        $isModerator = ($uid == XOONIPS_UID_GUEST ? false : XoopsUtils::isAdmin($uid, $this->mDirname));
+        $isModerator = (XOONIPS_UID_GUEST == $uid ? false : XoopsUtils::isAdmin($uid, $this->mDirname));
         // get index list
         $field = '`'.$this->mTable.'`.`index_id`, `'.$this->mTable.'`.`parent_index_id`, `'.$this->mTable.'`.`uid`, `'.$this->mTable.'`.`groupid`, `'.$this->mTable.'`.`weight`, `'.$this->mTable.'`.`title`, \'0\' AS `num_items`';
         $orderBy = ' ORDER BY `'.$this->mTable.'`.`weight` ASC';
@@ -127,7 +127,7 @@ class Xoonips_IndexHandler extends XoopsObjectGenericHandler
         if (!$result = $this->db->query($sql)) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($row = $this->db->fetchArray($result)) {
             $indexId = $row['index_id'];
             $ret[$indexId] = $row;
@@ -167,7 +167,7 @@ class Xoonips_IndexHandler extends XoopsObjectGenericHandler
         $criteria = new CriteriaCompo(new Criteria('open_level', XOONIPS_OL_PUBLIC, '=', $this->mTable));
         if (!$isModerator) {
             $criteria2 = new CriteriaCompo(new Criteria('uid', $uid, '=', $this->mTableItemUsersLink));
-            $criteria2->add(new Criteria('certify_state', array(XOONIPS_CERTIFIED, XOONIPS_WITHDRAW_REQUIRED), 'IN', $this->mTableIndexItemLink), 'OR');
+            $criteria2->add(new Criteria('certify_state', [XOONIPS_CERTIFIED, XOONIPS_WITHDRAW_REQUIRED], 'IN', $this->mTableIndexItemLink), 'OR');
             $criteria->add($criteria2);
         }
 
@@ -188,7 +188,7 @@ class Xoonips_IndexHandler extends XoopsObjectGenericHandler
         $memberHandler = &xoops_gethandler('member');
         $membershipHandler = &xoops_gethandler('membership');
         $gids = $memberHandler->getGroupsByUser($uid);
-        $adminGids = array();
+        $adminGids = [];
         if (!empty($gids)) {
             $groupCriteria = new CriteriaCompo('groupid', $gids, 'IN');
             $groupCriteria->add(new Criteria('is_admin', 1));
@@ -211,7 +211,7 @@ class Xoonips_IndexHandler extends XoopsObjectGenericHandler
                 $criteria4->add(new Criteria('groupid', $gids, 'IN', $this->mTable), 'OR');
             }
             $criteria3->add($criteria4);
-            $criteria3->add(new Criteria('certify_state', array(XOONIPS_CERTIFIED, XOONIPS_WITHDRAW_REQUIRED), 'IN', $this->mTableIndexItemLink));
+            $criteria3->add(new Criteria('certify_state', [XOONIPS_CERTIFIED, XOONIPS_WITHDRAW_REQUIRED], 'IN', $this->mTableIndexItemLink));
             $criteria2->add($criteria3, 'OR');
             $criteria->add($criteria2);
         }

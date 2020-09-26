@@ -57,7 +57,7 @@ class Xoonips_ImportDownloadAction extends Xoonips_AbstractAction
         $dirname = $this->mAsset->mDirname;
         $trustDirname = $this->mAsset->mTrustDirname;
         $uid = XoopsUtils::getUid();
-        if ($uid == XoopsUtils::UID_GUEST) {
+        if (XoopsUtils::UID_GUEST == $uid) {
             return $this->_getFrameViewStatus('ERROR');
         }
         $importId = $this->_getId();

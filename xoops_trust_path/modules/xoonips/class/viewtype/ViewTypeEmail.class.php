@@ -28,10 +28,10 @@ class Xoonips_ViewTypeEmail extends Xoonips_ViewTypeText
         $field->getDataType()->inputCheck($errors, $field, $value, $fieldName);
         $badEmails = XoopsUtils::getXoopsConfig('bad_emails', XOOPS_CONF_USER);
         $char = "/^[_a-z0-9\-+!#$%&'*\/=?^`{|}~]+(\.[_a-z0-9\-+!#$%&'*\/=?^`{|}~]+)*@[a-z0-9-]+([\.][a-z0-9-]+)+$/i";
-        $parameters = array();
+        $parameters = [];
         $value = trim($value);
         $chk = true;
-        if ($value != '') {
+        if ('' != $value) {
             if (!preg_match($char, $value)) {
                 $errors->addError('_MD_'.strtoupper($this->trustDirname).'_ERROR_INVALID_EMAIL', $fieldName, $parameters);
                 $chk = false;
@@ -61,9 +61,9 @@ class Xoonips_ViewTypeEmail extends Xoonips_ViewTypeText
         //dateCheck
         $field->getDataType()->inputCheck($errors, $field, $value, $fieldName);
         $char = "/^[_a-z0-9\-+!#$%&'*\/=?^`{|}~]+(\.[_a-z0-9\-+!#$%&'*\/=?^`{|}~]+)*@[a-z0-9-]+([\.][a-z0-9-]+)+$/i";
-        $parameters = array();
+        $parameters = [];
         $value = trim($value);
-        if ($value != '') {
+        if ('' != $value) {
             if (!preg_match($char, $value)) {
                 $errors->addError('_MD_'.strtoupper($this->trustDirname).'_ERROR_INVALID_EMAIL', $fieldName, $parameters);
             } elseif ($this->mailIsExist($value) && $value != $this->getEmail($uid)) {
@@ -126,7 +126,7 @@ class Xoonips_ViewTypeEmail extends Xoonips_ViewTypeText
         $user = User_User::getInstance();
         $uid = $user->getId();
         $viewemail = 0;
-        if ($uid != '') {
+        if ('' != $uid) {
             $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
             $row = $userBean->getUserBasicInfo($uid);
             $viewemail = $row['user_viewemail'];
@@ -138,7 +138,7 @@ class Xoonips_ViewTypeEmail extends Xoonips_ViewTypeText
             $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
             $isModerator = $userBean->isModerator($_SESSION['xoopsUserId']);
         }
-        if ($op == Xoonips_Enum::OP_TYPE_DETAIL && $viewemail != 1 && !$isSelfUser && !$isModerator) {
+        if (Xoonips_Enum::OP_TYPE_DETAIL == $op && 1 != $viewemail && !$isSelfUser && !$isModerator) {
             return false;
         }
 

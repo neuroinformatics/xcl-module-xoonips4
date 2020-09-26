@@ -7,17 +7,17 @@ require_once __DIR__.'/class/action/ItemImportAction.class.php';
 $request = new Xoonips_Request();
 $response = new Xoonips_Response();
 $op = $request->getParameter('op');
-if ($op == null) {
+if (null == $op) {
     $op = 'init';
 }
 
 // check request
-if (!in_array($op, array('init', 'import', 'importsave', 'log'))) {
+if (!in_array($op, ['init', 'import', 'importsave', 'log'])) {
     die('illegal request');
 }
 
 // set action map
-$actionMap = array();
+$actionMap = [];
 $actionMap['import_success'] = $mydirname.'_itemimport.html';
 $actionMap['importsave_success'] = 'redirect_header';
 $actionMap['log_success'] = $mydirname.'_itemimport_log.html';

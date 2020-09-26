@@ -23,13 +23,13 @@ class Xoonips_FileSearchPpt extends Xoonips_FileSearchBase
      */
     public function getSearchInstance()
     {
-        return array(
+        return [
             'name' => 'ppt',
             'display_name' => 'MS-PowerPoint 95/97/2000/XP/2003',
-            'mime_type' => array('application/vnd.ms-powerpoint', 'application/vnd.ms-office'),
-            'extensions' => array('ppt'),
+            'mime_type' => ['application/vnd.ms-powerpoint', 'application/vnd.ms-office'],
+            'extensions' => ['ppt'],
             'version' => '2.0',
-        );
+        ];
     }
 
     /**

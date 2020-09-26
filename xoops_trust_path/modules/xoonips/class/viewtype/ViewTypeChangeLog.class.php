@@ -15,7 +15,7 @@ class Xoonips_ViewTypeChangeLog extends Xoonips_ViewType
 
     public function getEditView($field, $value, $groupLoopId)
     {
-        $changeLogInfos = array();
+        $changeLogInfos = [];
         if (!empty($value)) {
             $vas = explode(',', $value);
             foreach ($vas as $v) {
@@ -33,7 +33,7 @@ class Xoonips_ViewTypeChangeLog extends Xoonips_ViewType
 
     public function getDisplayView($field, $value, $groupLoopId)
     {
-        $changeLogInfos = array();
+        $changeLogInfos = [];
         if (!empty($value)) {
             $vas = explode(',', $value);
             foreach ($vas as $v) {
@@ -51,7 +51,7 @@ class Xoonips_ViewTypeChangeLog extends Xoonips_ViewType
 
     public function getDetailDisplayView($field, $value, $display)
     {
-        $changeLogInfos = array();
+        $changeLogInfos = [];
         if (!empty($value)) {
             $vas = explode(',', $value);
             foreach ($vas as $v) {
@@ -76,7 +76,7 @@ class Xoonips_ViewTypeChangeLog extends Xoonips_ViewType
     public function getMetaInfo($field, $value)
     {
         $ret = '';
-        $logs = array();
+        $logs = [];
         if (!empty($value)) {
             $vas = explode(',', $value);
             foreach ($vas as $va) {
@@ -90,7 +90,7 @@ class Xoonips_ViewTypeChangeLog extends Xoonips_ViewType
     public function isDisplay($op)
     {
         //hidden when regist form
-        if ($op == Xoonips_Enum::OP_TYPE_REGISTRY) {
+        if (Xoonips_Enum::OP_TYPE_REGISTRY == $op) {
             return false;
         }
 
@@ -99,7 +99,7 @@ class Xoonips_ViewTypeChangeLog extends Xoonips_ViewType
 
     private function getMetaChangeLogInfo($lid)
     {
-        if ($lid == '') {
+        if ('' == $lid) {
             return '';
         }
         $changeLogBean = Xoonips_BeanFactory::getBean('ItemChangeLogBean', $this->dirname, $this->trustDirname);
@@ -114,7 +114,7 @@ class Xoonips_ViewTypeChangeLog extends Xoonips_ViewType
 
     private function getChangeLogInfo($lid)
     {
-        if ($lid == '') {
+        if ('' == $lid) {
             return '';
         }
         $changeLogBean = Xoonips_BeanFactory::getBean('ItemChangeLogBean', $this->dirname, $this->trustDirname);
@@ -123,14 +123,14 @@ class Xoonips_ViewTypeChangeLog extends Xoonips_ViewType
             $logDate = $this->formatDatetime($changeLogInfo['log_date']);
             $log = $changeLogInfo['log'];
 
-            return array('logDate' => $logDate, 'log' => $log);
+            return ['logDate' => $logDate, 'log' => $log];
         }
     }
 
     private function formatDatetime($str)
     {
         $ret = '';
-        if (strlen($str) == 10) {
+        if (10 == strlen($str)) {
             $ret = date(XOONIPS_DATE_FORMAT, $str);
         }
 
@@ -174,7 +174,7 @@ class Xoonips_ViewTypeChangeLog extends Xoonips_ViewType
      */
     public function getEntitydata($field, &$data)
     {
-        $ret = array();
+        $ret = [];
         $table = $field->getTableName();
         foreach ($data[$table] as $key => $value) {
             $ret[$key]['log_date'] = $this->formatDatetime($value['log_date']);

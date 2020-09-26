@@ -14,13 +14,13 @@ class Xoonips_ViewTypeIndex extends Xoonips_ViewType
     public function getInputView($field, $value, $groupLoopId)
     {
         $hasPrivate = '';
-        $indexInfo = array();
+        $indexInfo = [];
         if (!empty($value)) {
             $vas = explode(',', $value);
             $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
             foreach ($vas as $va) {
                 $iInfo = $indexBean->getIndex($va);
-                if ($iInfo['open_level'] == XOONIPS_OL_PRIVATE) {
+                if (XOONIPS_OL_PRIVATE == $iInfo['open_level']) {
                     $hasPrivate = '1';
                 }
                 $indexInfo[] = $this->getIndexInfo($va);
@@ -47,13 +47,13 @@ class Xoonips_ViewTypeIndex extends Xoonips_ViewType
     public function getDisplayView($field, $value, $groupLoopId)
     {
         $hasPrivate = '';
-        $indexInfo = array();
+        $indexInfo = [];
         if (!empty($value)) {
             $vas = explode(',', $value);
             $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
             foreach ($vas as $va) {
                 $iInfo = $indexBean->getIndex($va);
-                if ($iInfo['open_level'] == XOONIPS_OL_PRIVATE) {
+                if (XOONIPS_OL_PRIVATE == $iInfo['open_level']) {
                     $hasPrivate = '1';
                 }
                 $indexInfo[] = $this->getIndexInfo($va);
@@ -78,7 +78,7 @@ class Xoonips_ViewTypeIndex extends Xoonips_ViewType
 
     public function getDetailDisplayView($field, $value, $display)
     {
-        $indexInfo = array();
+        $indexInfo = [];
         if (!empty($value)) {
             $vas = explode(',', $value);
             foreach ($vas as $va) {
@@ -127,7 +127,7 @@ class Xoonips_ViewTypeIndex extends Xoonips_ViewType
 
     public function getMetaInfo($field, $value)
     {
-        $indexes = array();
+        $indexes = [];
         if (!empty($value)) {
             $vas = explode(',', $value);
             foreach ($vas as $va) {
@@ -141,7 +141,7 @@ class Xoonips_ViewTypeIndex extends Xoonips_ViewType
     private function getIndexInfo($iid)
     {
         $ret = '';
-        if ($iid == '') {
+        if ('' == $iid) {
             return '';
         }
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
@@ -154,7 +154,7 @@ class Xoonips_ViewTypeIndex extends Xoonips_ViewType
         }
         if ($indexInfo) {
             foreach ($indexInfo as $index) {
-                if ($index['parent_index_id'] == 1 && $index['open_level'] == XOONIPS_OL_PRIVATE && $index['uid'] == $uid) {
+                if (1 == $index['parent_index_id'] && XOONIPS_OL_PRIVATE == $index['open_level'] && $index['uid'] == $uid) {
                     $ret .= self::PRIVATE_INDEX_NAME;
                 } else {
                     $ret .= ' / '.$index['title'];
@@ -218,14 +218,14 @@ class Xoonips_ViewTypeIndex extends Xoonips_ViewType
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];
         } else {
-            $tableData = array();
+            $tableData = [];
             $sqlStrings[$tableName] = &$tableData;
         }
 
         if (isset($tableData[$columnName])) {
             $columnData = &$tableData[$columnName];
         } else {
-            $columnData = array();
+            $columnData = [];
             $tableData[$columnName] = &$columnData;
         }
 
@@ -241,12 +241,12 @@ class Xoonips_ViewTypeIndex extends Xoonips_ViewType
         $column = $field->getColumnName();
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         $groupBean = Xoonips_BeanFactory::getBean('GroupsBean', $this->dirname);
-        $indexes = array();
+        $indexes = [];
         foreach ($data[$table] as $value) {
-            if ($value['certify_state'] == XOONIPS_CERTIFIED || $value['certify_state'] == XOONIPS_WITHDRAW_REQUIRED) {
+            if (XOONIPS_CERTIFIED == $value['certify_state'] || XOONIPS_WITHDRAW_REQUIRED == $value['certify_state']) {
                 $index = $indexBean->getIndex($value['index_id']);
-                if ($index['open_level'] == XOONIPS_OL_PUBLIC
-                    || ($index['open_level'] == XOONIPS_OL_GROUP_ONLY && $groupBean->isPublic($index['groupid']))) {
+                if (XOONIPS_OL_PUBLIC == $index['open_level']
+                    || (XOONIPS_OL_GROUP_ONLY == $index['open_level'] && $groupBean->isPublic($index['groupid']))) {
                     $indexes[] = $this->getIndexInfo($value[$column]);
                 }
             }
@@ -265,7 +265,7 @@ class Xoonips_ViewTypeIndex extends Xoonips_ViewType
      */
     public function getEntitydata($field, &$data)
     {
-        $ret = array();
+        $ret = [];
         $table = $field->getTableName();
         $column = $field->getColumnName();
         global $xoopsUser;
@@ -273,7 +273,7 @@ class Xoonips_ViewTypeIndex extends Xoonips_ViewType
         $item_id = $data['xoonips_item']['item_id'];
         $uid = $xoopsUser->getVar('uid');
         $index_ids = $indexBean->getCanVeiwIndexes($item_id, $uid);
-        $ret = array();
+        $ret = [];
         foreach ($index_ids as $index_id) {
             $ret[] = $indexBean->getFullPathStr($index_id);
         }

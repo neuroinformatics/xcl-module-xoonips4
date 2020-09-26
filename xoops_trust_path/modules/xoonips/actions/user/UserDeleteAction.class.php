@@ -54,7 +54,7 @@ class Xoonips_UserDeleteAction extends Xoonips_UserAction
         $this->_mDoDelete = new XCube_Delegate('bool &', 'Legacy_Controller', 'XoopsUser');
         $this->_mDoDelete->register('Xoonips_UserDeleteAction._doDelete');
 
-        $this->_mDoDelete->add(array(&$this, '_doDelete'));
+        $this->_mDoDelete->add([&$this, '_doDelete']);
 
         // pre condition check
 
@@ -93,7 +93,7 @@ class Xoonips_UserDeleteAction extends Xoonips_UserAction
         if ($uid == $xoopsUserId) {
             $isUserSelf = true;
         }
-        if ($userType != Xoonips_Enum::USER_TYPE_USER || !$isUserSelf || !$this->mSelfDelete) {
+        if (Xoonips_Enum::USER_TYPE_USER != $userType || !$isUserSelf || !$this->mSelfDelete) {
             $controller->executeRedirect(XOOPS_URL.'/', 3, _MD_XOONIPS_ITEM_FORBIDDEN);
         }
         //set ticket
@@ -120,7 +120,7 @@ class Xoonips_UserDeleteAction extends Xoonips_UserAction
         if (isset($_SESSION['xoopsUserId']) && $uid == $_SESSION['xoopsUserId']) {
             $isUserSelf = true;
         }
-        if ($userType != Xoonips_Enum::USER_TYPE_USER || !$isUserSelf || !$this->mSelfDelete) {
+        if (Xoonips_Enum::USER_TYPE_USER != $userType || !$isUserSelf || !$this->mSelfDelete) {
             $controller->executeRedirect(XOOPS_URL.'/', 3, $message);
 
             return USER_FRAME_VIEW_ERROR;
@@ -178,7 +178,7 @@ class Xoonips_UserDeleteAction extends Xoonips_UserAction
 
     public function executeViewError(&$controller, &$xoopsUser, &$render)
     {
-        if ($render->getAttribute('errMsg') != '') {
+        if ('' != $render->getAttribute('errMsg')) {
             $errorMsg = $render->getAttribute('errMsg');
         } else {
             $errorMsg = _MD_XOONIPS_ERROR_DBUPDATE_FAILED;

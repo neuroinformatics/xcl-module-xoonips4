@@ -122,7 +122,7 @@ class Xoonips_ItemFileBean extends Xoonips_BeanBase
     public function insertFileWithFileId($file, &$fileId)
     {
         $ret = $this->insertFile($file);
-        if ($ret == true) {
+        if (true == $ret) {
             $fileId = $this->getInsertId();
         }
 
@@ -252,7 +252,7 @@ class Xoonips_ItemFileBean extends Xoonips_BeanBase
      */
     public function getFile($fileId)
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT * FROM $this->table WHERE file_id=".$fileId;
         $result = $this->execute($sql);
         if (!$result) {
@@ -275,7 +275,7 @@ class Xoonips_ItemFileBean extends Xoonips_BeanBase
      */
     public function getFiles()
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT * FROM $this->table";
         $result = $this->execute($sql);
         if (!$result) {
@@ -299,7 +299,7 @@ class Xoonips_ItemFileBean extends Xoonips_BeanBase
      */
     public function getFilesByItemId($itemId, $group_id = null)
     {
-        $ret = array();
+        $ret = [];
 
         $g_sql = '';
         if (!is_null($group_id)) {
@@ -340,7 +340,7 @@ class Xoonips_ItemFileBean extends Xoonips_BeanBase
             return 0;
         }
         if ($row = $this->fetchArray($result)) {
-            if ($row['sum'] != 0) {
+            if (0 != $row['sum']) {
                 $ret = $row['sum'];
             }
         }
@@ -369,7 +369,7 @@ class Xoonips_ItemFileBean extends Xoonips_BeanBase
         }
         $row = $this->fetchArray($result);
         $this->freeRecordSet($result);
-        if ($row['sizes'] === null) {
+        if (null === $row['sizes']) {
             return 0;
         }
 
@@ -433,7 +433,7 @@ class Xoonips_ItemFileBean extends Xoonips_BeanBase
         }
         $row = $this->fetchArray($result);
         $this->freeRecordSet($result);
-        if ($row && $row['name'] == 'preview') {
+        if ($row && 'preview' == $row['name']) {
             return true;
         }
 
@@ -449,7 +449,7 @@ class Xoonips_ItemFileBean extends Xoonips_BeanBase
      */
     public function getFileInformation($fileId)
     {
-        $ret = array();
+        $ret = [];
         $sql = 'SELECT original_file_name,file_size,mime_type,timestamp,download_count ';
         $sql .= "FROM $this->table WHERE file_id=".$fileId;
         $result = $this->execute($sql);
@@ -475,7 +475,7 @@ class Xoonips_ItemFileBean extends Xoonips_BeanBase
      */
     public function getFilesByDetailId($item_detail_id, $item_id, $group_id = 0)
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT * FROM $this->table WHERE item_field_detail_id= ${item_detail_id} AND item_id = ${item_id} AND group_id = ${group_id}";
         $result = $this->execute($sql);
         if (!$result) {
@@ -498,7 +498,7 @@ class Xoonips_ItemFileBean extends Xoonips_BeanBase
      */
     public function getFileExistDetailByItem($item_id)
     {
-        $ret = array();
+        $ret = [];
         $sql = 'SELECT file.*,table_name FROM '.
             $this->table.' as file,'.
             $this->detailtable.' as detail '.

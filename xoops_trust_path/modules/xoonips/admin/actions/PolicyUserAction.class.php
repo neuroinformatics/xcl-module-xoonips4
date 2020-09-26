@@ -15,17 +15,17 @@ class Xoonips_Admin_PolicyUserAction extends Xoonips_AbstractEditAction
      *
      * @var array
      */
-    private $_mConfigKeys = array(
-        'regist' => array(
+    private $_mConfigKeys = [
+        'regist' => [
             'certify_user',
             'user_certify_date',
-        ),
-        'initval' => array(
+        ],
+        'initval' => [
             'private_item_number_limit',
             'private_index_number_limit',
             'private_item_storage_limit',
-        ),
-    );
+        ],
+    ];
 
     /**
      * is admin.
@@ -95,19 +95,19 @@ class Xoonips_Admin_PolicyUserAction extends Xoonips_AbstractEditAction
         $dirname = $this->mAsset->mDirname;
         $constpref = '_AD_'.strtoupper($dirname);
         // breadcrumbs
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => constant($constpref.'_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=Policy',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_USER_TITLE'),
-            ),
-        );
+            ],
+        ];
         $render->setTemplateName('policy_user.html');
         $render->setAttribute('title', constant($constpref.'_POLICY_USER_TITLE'));
         $render->setAttribute('description', constant($constpref.'_POLICY_USER_DESC'));
@@ -123,13 +123,13 @@ class Xoonips_Admin_PolicyUserAction extends Xoonips_AbstractEditAction
      */
     protected function getUserPolicies()
     {
-        $ret = array();
+        $ret = [];
         $ret['mode'] = '';
         $ret['activate_user'] = XoopsUtils::getModuleConfig('user', 'activation_type');
         foreach ($this->_mConfigKeys as $mode => $keys) {
             foreach ($keys as $key) {
                 $value = Functions::getXoonipsConfig($this->mAsset->mDirname, $key);
-                if ($key == 'private_item_storage_limit') {
+                if ('private_item_storage_limit' == $key) {
                     $value /= (1024 * 1024);
                 }
                 $ret[$key] = $value;
@@ -150,14 +150,14 @@ class Xoonips_Admin_PolicyUserAction extends Xoonips_AbstractEditAction
     {
         foreach ($this->_mConfigKeys as $mode => $keys) {
             if ($mode == $policies['mode']) {
-                if ($mode == 'regist') {
+                if ('regist' == $mode) {
                     if (!XoopsUtils::setModuleConfig('user', 'activation_type', $policies['activate_user'])) {
                         return false;
                     }
                 }
                 foreach ($keys as $key) {
                     $value = $policies[$key];
-                    if ($key == 'private_item_storage_limit') {
+                    if ('private_item_storage_limit' == $key) {
                         $value *= (1024 * 1024);
                     }
                     if (!Functions::setXoonipsConfig($this->mAsset->mDirname, $key, $value)) {

@@ -76,7 +76,7 @@ class Xoonips_EventLogBean extends Xoonips_BeanBase
 
     private function create()
     {
-        $ret = array();
+        $ret = [];
         $ret['event_id'] = null;
         $ret['event_type_id'] = null;
         $ret['timestamp'] = time();
@@ -537,7 +537,7 @@ class Xoonips_EventLogBean extends Xoonips_BeanBase
         $moduleHandler = &xoops_gethandler('module');
         $startpage = XoopsUtils::getXoopsConfig('startpage');
         $startpage_url = XOOPS_URL.'/index.php';
-        if ($startpage !== null && $startpage != '' && $startpage != '--') {
+        if (null !== $startpage && '' != $startpage && '--' != $startpage) {
             $module = $moduleHandler->get($startpage);
             $dirname = $module->getVar('dirname');
             $startpage_url = XOOPS_URL.'/modules/'.$dirname.'/index.php';
@@ -550,7 +550,7 @@ class Xoonips_EventLogBean extends Xoonips_BeanBase
         $current_script = (isset($_SERVER['SCRIPT_NAME'])) ? $_SERVER['SCRIPT_NAME'] : '';
         $query_string = (isset($_SERVER['QUERY_STRING'])) ? $_SERVER['QUERY_STRING'] : '';
         // compare start page script name with current script name
-        if ($startpage_script != $current_script || $query_string != '') {
+        if ($startpage_script != $current_script || '' != $query_string) {
             // current url is not top page
             return false;
         }

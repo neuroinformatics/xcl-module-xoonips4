@@ -12,7 +12,7 @@ class Xoonips_WorkflowClientPublicItems extends Xoonips_WorkflowClientBase
     {
         $indexItemLinkBean = null;
         list($itemId, $indexId) = $this->getItemAndIndexId($indexItemLinkId, $indexItemLinkBean);
-        if ($itemId == 0 || !$indexItemLinkBean->update($indexId, $itemId, XOONIPS_CERTIFIED)) {
+        if (0 == $itemId || !$indexItemLinkBean->update($indexId, $itemId, XOONIPS_CERTIFIED)) {
             return;
         }
         $itemStatusBean = Xoonips_BeanFactory::getBean('OaipmhItemStatusBean', $this->dirname, $this->trustDirname);
@@ -28,7 +28,7 @@ class Xoonips_WorkflowClientPublicItems extends Xoonips_WorkflowClientBase
         //send to item user
         $itemUsersBean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $this->dirname, $this->trustDirname);
         $itemUsersInfo = $itemUsersBean->getItemUsersInfo($itemId);
-        $sendToUsers = array();
+        $sendToUsers = [];
         foreach ($itemUsersInfo as $itemUser) {
             $sendToUsers[] = $itemUser['uid'];
         }
@@ -41,7 +41,7 @@ class Xoonips_WorkflowClientPublicItems extends Xoonips_WorkflowClientBase
     {
         $indexItemLinkBean = null;
         list($itemId, $indexId) = $this->getItemAndIndexId($indexItemLinkId, $indexItemLinkBean);
-        if ($itemId == 0) {
+        if (0 == $itemId) {
             return;
         }
         $sendToUsers = Xoonips_Workflow::getCurrentApproverUserIds($this->dirname, $this->dataname, $indexItemLinkId);
@@ -52,7 +52,7 @@ class Xoonips_WorkflowClientPublicItems extends Xoonips_WorkflowClientBase
     {
         $indexItemLinkBean = null;
         list($itemId, $indexId) = $this->getItemAndIndexId($indexItemLinkId, $indexItemLinkBean);
-        if ($itemId == 0 || !$indexItemLinkBean->deleteById($indexId, $itemId)) {
+        if (0 == $itemId || !$indexItemLinkBean->deleteById($indexId, $itemId)) {
             return;
         }
 
@@ -62,7 +62,7 @@ class Xoonips_WorkflowClientPublicItems extends Xoonips_WorkflowClientBase
         //send to item user
         $itemUsersBean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $this->dirname, $this->trustDirname);
         $itemUsersInfo = $itemUsersBean->getItemUsersInfo($itemId);
-        $sendToUsers = array();
+        $sendToUsers = [];
         foreach ($itemUsersInfo as $itemUser) {
             $sendToUsers[] = $itemUser['uid'];
         }
@@ -76,9 +76,9 @@ class Xoonips_WorkflowClientPublicItems extends Xoonips_WorkflowClientBase
         $indexItemLinkBean = Xoonips_BeanFactory::getBean('IndexItemLinkBean', $this->dirname, $this->trustDirname);
         $indexItemLinkInfo = $indexItemLinkBean->getIndexItemLinkInfoByIndexItemLinkId($indexItemLinkId);
         if (!$indexItemLinkInfo) {
-            return array(0, 0);
+            return [0, 0];
         }
 
-        return array($indexItemLinkInfo['item_id'], $indexItemLinkInfo['index_id']);
+        return [$indexItemLinkInfo['item_id'], $indexItemLinkInfo['index_id']];
     }
 }

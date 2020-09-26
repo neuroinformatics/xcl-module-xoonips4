@@ -22,14 +22,14 @@ class Xoonips_Admin_SystemNotificationForm extends Xoonips_AbstractActionForm
      */
     protected function _getFormParams()
     {
-        return array(
-            'notification_enabled' => array(
+        return [
+            'notification_enabled' => [
                 'type' => self::TYPE_INT,
-            ),
-            'notification_events' => array(
+            ],
+            'notification_events' => [
                 'type' => self::TYPE_STRINGARRAY,
-            ),
-        );
+            ],
+        ];
     }
 
     /**

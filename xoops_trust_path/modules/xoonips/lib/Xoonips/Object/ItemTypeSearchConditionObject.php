@@ -28,13 +28,13 @@ class ItemTypeSearchConditionObject extends AbstractObject
      */
     public function getItemFieldDetailObjects()
     {
-        $ret = array();
+        $ret = [];
         $itscdHandler = Functions::getXoonipsHandler('ItemTypeSearchConditionDetailObject', $this->mDirname);
         $ifdHandler = Functions::getXoonipsHandler('ItemFieldDetailObject', $this->mDirname);
         $cid = $this->get('condition_id');
         $criteria = new \Criteria('condition_id', $cid);
         $itscdObjs = $itscdHandler->getObjects($criteria);
-        $fids = array();
+        $fids = [];
         foreach ($itscdObjs as $itscdObj) {
             $fids[] = $itscdObj->get('item_field_detail_id');
         }

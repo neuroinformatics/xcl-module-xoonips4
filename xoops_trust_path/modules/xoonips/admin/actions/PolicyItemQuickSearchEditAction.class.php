@@ -67,13 +67,13 @@ class Xoonips_Admin_PolicyItemQuickSearchEditAction extends Xoonips_AbstractEdit
         $id = $this->_getId();
         $this->mObjectHandler = &$this->_getHandler();
         $obj = &$this->mObjectHandler->get($id);
-        if ($obj == null) {
+        if (null == $obj) {
             $obj = &$this->mObjectHandler->create();
         }
-        $this->mObject = array(
+        $this->mObject = [
             'obj' => &$obj,
             'itemFieldIds' => $this->mObjectHandler->getItemFieldIds($obj),
-        );
+        ];
     }
 
     /**
@@ -106,27 +106,27 @@ class Xoonips_Admin_PolicyItemQuickSearchEditAction extends Xoonips_AbstractEdit
         $trustDirname = $this->mAsset->mTrustDirname;
         $constpref = '_AD_'.strtoupper($dirname);
         // breadcrumbs
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => constant($constpref.'_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=Policy',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_ITEM_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=PolicyItem',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_ITEM_QUICKSEARCH_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=PolicyItemQuickSearch',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_ITEM_QUICKSEARCH_EDIT_TITLE'),
-            ),
-        );
+            ],
+        ];
         $handler = Functions::getXoonipsHandler('ItemField', $dirname);
         $itemFieldObjects = $handler->getObjectsForQuickSearch();
         $pendingIds = $handler->getPendingIds();

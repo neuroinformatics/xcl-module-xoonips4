@@ -38,13 +38,13 @@ class LanguageManager
      */
     public function __construct($dirname, $pageType)
     {
-        static $types = array(
+        static $types = [
             'admin' => 'AD',
             'blocks' => 'BL',
             'main' => 'MD',
             'modinfo' => 'MI',
             'install' => 'IN',
-        );
+        ];
         $this->mDirname = $dirname;
         $this->mPageType = $pageType;
         $this->mPrefix = '_'.$types[$pageType].'_'.strtoupper($dirname).'_';
@@ -85,7 +85,7 @@ class LanguageManager
                 }
             }
         }
-        if ($langFile === false) {
+        if (false === $langFile) {
             return false;
         }
         $mydirname = $this->mDirname;

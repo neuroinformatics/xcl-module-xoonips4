@@ -98,7 +98,7 @@ class Xoonips_ItemFileHandler extends XoopsObjectGenericHandler
      */
     public function &getObjectsForDownload($item_id, $file_name = '')
     {
-        $ret = array();
+        $ret = [];
         $tableItemFieldDetail = $this->db->prefix($this->mDirname.'_item_field_detail');
         $tableViewType = $this->db->prefix($this->mDirname.'_view_type');
         $sql = sprintf('SELECT * FROM `%1$s` INNER JOIN `%2$s` ON `%1$s`.`item_field_detail_id`=`%2$s`.`item_field_detail_id` INNER JOIN `%3$s` ON `%2$s`.`view_type_id`=`%3$s`.`view_type_id` WHERE `%1$s`.`item_id`=%4$u AND `%3$s`.`module`=\'ViewTypeFileUpload\'', $this->mTable, $tableItemFieldDetail, $tableViewType, $item_id);

@@ -18,6 +18,6 @@ class ItemTypeFieldGroupLinkObjectHandler extends AbstractObjectHandler
         parent::__construct($db, $dirname);
         $this->mTable = $db->prefix($dirname.'_item_type_field_group_link');
         $this->mPrimaryKey = 'item_type_field_group_id';
-        $this->mObjects = array();
+        $this->mObjects = [];
     }
 }

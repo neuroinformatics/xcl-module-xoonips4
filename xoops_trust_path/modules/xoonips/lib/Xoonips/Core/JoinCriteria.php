@@ -62,7 +62,7 @@ class JoinCriteria
         $this->mField = $field;
         $this->mParentTable = $parentTable;
         $this->mParentField = $parentField;
-        $this->mJoinCriteria = array();
+        $this->mJoinCriteria = [];
     }
 
     /**

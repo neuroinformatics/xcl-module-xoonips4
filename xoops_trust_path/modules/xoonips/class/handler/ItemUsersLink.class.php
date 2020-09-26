@@ -57,7 +57,7 @@ class Xoonips_ItemUsersLinkHandler extends XoopsObjectGenericHandler
      */
     public function __construct(&$db, $dirname)
     {
-        $this->mTable = strtr($this->mTable, array('{dirname}' => $dirname));
+        $this->mTable = strtr($this->mTable, ['{dirname}' => $dirname]);
         $this->mDirname = $dirname;
         $this->mClass = preg_replace('/Handler$/', 'Object', get_class());
         parent::__construct($db);
@@ -93,7 +93,7 @@ class Xoonips_ItemUsersLinkHandler extends XoopsObjectGenericHandler
         $criteria->setSort('weight');
         $criteria->setOrder('ASC');
         $objs = &$this->getObjects($criteria);
-        $uids = array();
+        $uids = [];
         foreach ($objs as $obj) {
             $uids[] = $obj->get('uid');
         }
@@ -129,7 +129,7 @@ class Xoonips_ItemUsersLinkHandler extends XoopsObjectGenericHandler
         $criteria->setSort('weight');
         $criteria->setOrder('ASC');
         $objs = $this->getObjects($criteria);
-        $ret = array();
+        $ret = [];
         foreach ($objs as $obj) {
             $ret[] = $obj->get('uid');
         }

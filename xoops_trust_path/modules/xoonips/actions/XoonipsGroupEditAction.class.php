@@ -13,7 +13,7 @@ class Xoonips_GroupEditAction extends Xoonips_UserActionBase
         global $xoopsUser;
         $uid = $xoopsUser->getVar('uid');
         $groupId = $request->getParameter('groupid');
-        $viewData = array();
+        $viewData = [];
 
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
         $groupBean = Xoonips_BeanFactory::getBean('GroupsBean', $this->dirname, $this->trustDirname);
@@ -50,26 +50,26 @@ class Xoonips_GroupEditAction extends Xoonips_UserActionBase
 
         //activate not 1 or 3, warning show
         $warning = '';
-        if ($group['activate'] == Xoonips_Enum::GRP_NOT_CERTIFIED) {
+        if (Xoonips_Enum::GRP_NOT_CERTIFIED == $group['activate']) {
             $warning = _MD_XOONIPS_MESSAGE_GROUP_CERTIFY_REQUESTING;
-        } elseif ($group['activate'] == Xoonips_Enum::GRP_OPEN_REQUIRED) {
+        } elseif (Xoonips_Enum::GRP_OPEN_REQUIRED == $group['activate']) {
             $warning = _MD_XOONIPS_MESSAGE_GROUP_OPEN_REQUESTING;
-        } elseif ($group['activate'] == Xoonips_Enum::GRP_CLOSE_REQUIRED) {
+        } elseif (Xoonips_Enum::GRP_CLOSE_REQUIRED == $group['activate']) {
             $warning = _MD_XOONIPS_MESSAGE_GROUP_CLOSE_REQUESTING;
-        } elseif ($group['activate'] == Xoonips_Enum::GRP_DELETE_REQUIRED) {
+        } elseif (Xoonips_Enum::GRP_DELETE_REQUIRED == $group['activate']) {
             $warning = _MD_XOONIPS_MESSAGE_GROUP_DELETE_REQUESTING;
         }
 
         $token_ticket = $this->createToken('user_group_edit');
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => _MD_XOONIPS_LANG_GROUP_LIST,
                 'url' => 'user.php?op=groupList',
-            ),
-            array(
+            ],
+            [
                 'name' => _MD_XOONIPS_LANG_GROUP_EDIT,
-            ),
-        );
+            ],
+        ];
 
         $viewData['xoops_breadcrumbs'] = $breadcrumbs;
         $viewData['token_ticket'] = $token_ticket;
@@ -94,7 +94,7 @@ class Xoonips_GroupEditAction extends Xoonips_UserActionBase
     protected function doUpdate(&$request, &$response)
     {
         $errors = new Xoonips_Errors();
-        $viewData = array();
+        $viewData = [];
 
         if (!$this->validateToken('user_group_edit')) {
             $response->setSystemError('Ticket error');
@@ -103,15 +103,15 @@ class Xoonips_GroupEditAction extends Xoonips_UserActionBase
         }
 
         $token_ticket = $this->createToken('user_group_edit');
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => _MD_XOONIPS_LANG_GROUP_LIST,
                 'url' => 'user.php?op=groupList',
-            ),
-            array(
+            ],
+            [
                 'name' => _MD_XOONIPS_LANG_GROUP_EDIT,
-            ),
-        );
+            ],
+        ];
 
         $groupBean = Xoonips_BeanFactory::getBean('GroupsBean', $this->dirname, $this->trustDirname);
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
@@ -131,13 +131,13 @@ class Xoonips_GroupEditAction extends Xoonips_UserActionBase
         $group = $groupBean->getGroup($groupId);
         $groupPublic = $group['is_public'];
         $this->setGroup($request, $group);
-        if ($group['is_public'] == '') {
+        if ('' == $group['is_public']) {
             $group['is_public'] = $gpublic;
         }
-        if ($group['can_join'] == '') {
+        if ('' == $group['can_join']) {
             $group['can_join'] = $gentry;
         }
-        if ($group['is_hidden'] == '') {
+        if ('' == $group['is_hidden']) {
             $group['is_hidden'] = $ghidden;
         }
 
@@ -149,13 +149,13 @@ class Xoonips_GroupEditAction extends Xoonips_UserActionBase
         if (!empty($file)) {
             $group['icon'] = $file['name'];
             $group['mime_type'] = $file['type'];
-        } elseif ($showThumbnail == 2) {
+        } elseif (2 == $showThumbnail) {
             $group['icon'] = null;
             $group['mime_type'] = null;
         }
 
         //get group manager
-        $admins = array();
+        $admins = [];
         if (!empty($uids)) {
             foreach ($uids as $uid) {
                 $manager = $userBean->getUserBasicInfo($uid);
@@ -219,12 +219,12 @@ class Xoonips_GroupEditAction extends Xoonips_UserActionBase
                 $response->setSystemError($message);
             }
         }
-        if ($message != '') {
+        if ('' != $message) {
             $viewData['redirect_msg'] = $message;
         }
 
         //delete uploaded icon
-        if ($showThumbnail == 2) {
+        if (2 == $showThumbnail) {
             $uploadDir = XOOPS_ROOT_PATH.'/uploads/xoonips';
             $uploadfile = $uploadDir.'/group/'.$groupId;
             unlink($uploadfile);
@@ -253,7 +253,7 @@ class Xoonips_GroupEditAction extends Xoonips_UserActionBase
 
     protected function doSearch(&$request, &$response)
     {
-        $viewData = array();
+        $viewData = [];
 
         if (!$this->validateToken('user_group_edit')) {
             $response->setSystemError('Ticket error');
@@ -265,8 +265,8 @@ class Xoonips_GroupEditAction extends Xoonips_UserActionBase
         $users = $request->getParameter('uid');
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
         $groupBean = Xoonips_BeanFactory::getBean('GroupsBean', $this->dirname, $this->trustDirname);
-        $uids = array();
-        $admins = array();
+        $uids = [];
+        $admins = [];
 
         //get group manager
         if (!empty($users)) {
@@ -295,15 +295,15 @@ class Xoonips_GroupEditAction extends Xoonips_UserActionBase
         $thumbnail = sprintf('%s/modules/%s/image.php/group/%u/%s', XOOPS_URL, $this->dirname, $groupId, $group['icon']);
 
         $token_ticket = $this->createToken('user_group_edit');
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => _MD_XOONIPS_LANG_GROUP_LIST,
                 'url' => 'user.php?op=groupList',
-            ),
-            array(
+            ],
+            [
                 'name' => _MD_XOONIPS_LANG_GROUP_EDIT,
-            ),
-        );
+            ],
+        ];
 
         $viewData['xoops_breadcrumbs'] = $breadcrumbs;
         $viewData['token_ticket'] = $token_ticket;
@@ -345,21 +345,21 @@ class Xoonips_GroupEditAction extends Xoonips_UserActionBase
     private function inputCheck($group, $gname, $admins, $file, &$errors)
     {
         $inputError = false;
-        if (trim($group['name']) == '') {
-            $parameters = array();
+        if ('' == trim($group['name'])) {
+            $parameters = [];
             $parameters[] = _MD_XOONIPS_LANG_GROUP_NAME;
             $errors->addError('_MD_XOONIPS_ERROR_REQUIRED', 'name', $parameters);
             $inputError = true;
         }
         if (strlen(trim($group['name'])) > 50) {
-            $parameters = array();
+            $parameters = [];
             $parameters[] = _MD_XOONIPS_LANG_GROUP_NAME;
             $parameters[] = 50;
             $errors->addError('_MD_XOONIPS_ERROR_MAXLENGTH', 'name', $parameters);
             $inputError = true;
         }
         if (empty($admins)) {
-            $parameters = array();
+            $parameters = [];
             $parameters[] = _MD_XOONIPS_LANG_GROUP_ADMIN;
             $errors->addError('_MD_XOONIPS_ERROR_REQUIRED', 'administrator', $parameters);
             $inputError = true;
@@ -367,15 +367,15 @@ class Xoonips_GroupEditAction extends Xoonips_UserActionBase
         if (trim($gname) != trim($group['name'])) {
             $groupBean = Xoonips_BeanFactory::getBean('GroupsBean', $this->dirname, $this->trustDirname);
             if ($groupBean->existsGroup($group['name'])) {
-                $parameters = array();
+                $parameters = [];
                 $errors->addError('_MD_XOONIPS_ERROR_GROUP_NAME_EXISTS', 'name', $parameters);
                 $inputError = true;
             }
         }
         if (!empty($file)) {
             $info = FileUtils::getFileInfo($file['tmp_name'], $file['name']);
-            if ($info === false || !array_key_exists('width', $info)) {
-                $parameters = array();
+            if (false === $info || !array_key_exists('width', $info)) {
+                $parameters = [];
                 $errors->addError('_MD_XOONIPS_ERROR_GROUP_ICON', 'icon', $parameters);
                 $inputError = true;
             }

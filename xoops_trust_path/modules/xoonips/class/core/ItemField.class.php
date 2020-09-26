@@ -85,7 +85,7 @@ class Xoonips_ItemField extends Xoonips_Field
 
     public function getList()
     {
-        $ret = array();
+        $ret = [];
         global $xoopsDB;
         $sql = 'select title_id, title from '.$xoopsDB->prefix($this->dirname.'_item_field_value_set').
         " where select_name='".$this->listId."' order by weight";

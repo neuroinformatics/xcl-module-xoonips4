@@ -15,23 +15,23 @@ class Xoonips_MaintenanceItemCommonAction extends Xoonips_ActionBase
         }
 
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-        $groupIndexes = array();
+        $groupIndexes = [];
         $privateIndex = false;
         $publicIndex = $indexBean->getPublicIndex();
         $publicGroupIndexes = $indexBean->getPublicGroupIndex();
 
-        if ($uid != XOONIPS_UID_GUEST) {
+        if (XOONIPS_UID_GUEST != $uid) {
             $groupIndexes = $indexBean->getGroupIndex($uid);
             $privateIndex = $indexBean->getPrivateIndex($uid);
         }
         $groupIndexes = $indexBean->mergeIndexes($publicGroupIndexes, $groupIndexes);
         $url = false;
 
-        if ($public_flg == 1) {
+        if (1 == $public_flg) {
             // public index
             if ($publicIndex) {
                 $indexes[] = $publicIndex;
-                $tree = array();
+                $tree = [];
                 $tree['index_id'] = $publicIndex['index_id'];
                 $trees[] = $tree;
             }
@@ -40,7 +40,7 @@ class Xoonips_MaintenanceItemCommonAction extends Xoonips_ActionBase
             if ($groupIndexes) {
                 foreach ($groupIndexes as $index) {
                     $indexes[] = $index;
-                    $tree = array();
+                    $tree = [];
                     $tree['index_id'] = $index['index_id'];
                     $trees[] = $tree;
                 }
@@ -49,7 +49,7 @@ class Xoonips_MaintenanceItemCommonAction extends Xoonips_ActionBase
             if ($privateIndex) {
                 $privateIndex['title'] = 'Private';
                 $indexes[] = $privateIndex;
-                $tree = array();
+                $tree = [];
                 $tree['index_id'] = $privateIndex['index_id'];
                 $trees[] = $tree;
             }
@@ -60,8 +60,8 @@ class Xoonips_MaintenanceItemCommonAction extends Xoonips_ActionBase
 
     protected function getRequestIndexes($request, $uid, $flg, $path_flg = false, $child_flg = true)
     {
-        $req_indexes = array();
-        $chk_indexes = array();
+        $req_indexes = [];
+        $chk_indexes = [];
 
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         $indexes = $indexBean->getIndexAll();
@@ -70,7 +70,7 @@ class Xoonips_MaintenanceItemCommonAction extends Xoonips_ActionBase
             if ($request->getParameter($this->dirname.'_index_tree_chk'.$flg.'_'.$index_id)) {
                 if (!in_array($index_id, $chk_indexes)) {
                     $index_path = $indexBean->getFullPathStr($index_id, $uid);
-                    $req_indexes[] = ($path_flg) ? array('id' => $index_id, 'path' => $index_path) : $index_id;
+                    $req_indexes[] = ($path_flg) ? ['id' => $index_id, 'path' => $index_path] : $index_id;
                     $chk_indexes[] = $index_id;
                 }
                 // child index
@@ -79,7 +79,7 @@ class Xoonips_MaintenanceItemCommonAction extends Xoonips_ActionBase
                     foreach ($child_arr as $child_id) {
                         if (!in_array($child_id, $chk_indexes)) {
                             $index_path = $indexBean->getFullPathStr($child_id, $uid);
-                            $req_indexes[] = ($path_flg) ? array('id' => $child_id, 'path' => $index_path) : $child_id;
+                            $req_indexes[] = ($path_flg) ? ['id' => $child_id, 'path' => $index_path] : $child_id;
                             $chk_indexes[] = $child_id;
                         }
                     }
@@ -109,44 +109,44 @@ class Xoonips_MaintenanceItemCommonAction extends Xoonips_ActionBase
 
     protected function setBreadcrumbs($title)
     {
-        $breadcrumbs = array(
-                array(
-                        'name' => _AM_XOONIPS_TITLE,
-                        'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php',
-                ),
-                array(
-                        'name' => _AM_XOONIPS_MAINTENANCE_TITLE,
-                        'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php?action=Maintenance',
-                ),
-                array(
-                        'name' => _AM_XOONIPS_MAINTENANCE_ITEM_TITLE,
-                        'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php?action=MaintenanceItem',
-                ),
-        );
+        $breadcrumbs = [
+            [
+                'name' => _AM_XOONIPS_TITLE,
+                'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php',
+            ],
+            [
+                'name' => _AM_XOONIPS_MAINTENANCE_TITLE,
+                'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php?action=Maintenance',
+            ],
+            [
+                'name' => _AM_XOONIPS_MAINTENANCE_ITEM_TITLE,
+                'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php?action=MaintenanceItem',
+            ],
+        ];
 
-        if ($title == _AM_XOONIPS_MAINTENANCE_ITEMDELETE_CONFIRM_TITLE
-        || $title == _AM_XOONIPS_MAINTENANCE_ITEMDELETE_EXECUTE_TITLE) {
-            $breadcrumbs[] = array(
-                    'name' => _AM_XOONIPS_MAINTENANCE_ITEMDELETE_TITLE,
-                    'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/maintenance_itemdelete.php',
-            );
-        } elseif ($title == _AM_XOONIPS_MAINTENANCE_ITEMWITHDRAW_CONFIRM_TITLE
-        || $title == _AM_XOONIPS_MAINTENANCE_ITEMWITHDRAW_EXECUTE_TITLE) {
-            $breadcrumbs[] = array(
-                    'name' => _AM_XOONIPS_MAINTENANCE_ITEMWITHDRAW_TITLE,
-                    'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/maintenance_itemwithdraw.php',
-            );
-        } elseif ($title == _AM_XOONIPS_MAINTENANCE_ITEMTRANSFER_CONFIRM_TITLE
-        || $title == _AM_XOONIPS_MAINTENANCE_ITEMTRANSFER_EXECUTE_TITLE) {
-            $breadcrumbs[] = array(
-                    'name' => _AM_XOONIPS_MAINTENANCE_ITEMTRANSFER_TITLE,
-                    'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/maintenance_itemtransfer.php',
-            );
+        if (_AM_XOONIPS_MAINTENANCE_ITEMDELETE_CONFIRM_TITLE == $title
+        || _AM_XOONIPS_MAINTENANCE_ITEMDELETE_EXECUTE_TITLE == $title) {
+            $breadcrumbs[] = [
+                'name' => _AM_XOONIPS_MAINTENANCE_ITEMDELETE_TITLE,
+                'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/maintenance_itemdelete.php',
+            ];
+        } elseif (_AM_XOONIPS_MAINTENANCE_ITEMWITHDRAW_CONFIRM_TITLE == $title
+        || _AM_XOONIPS_MAINTENANCE_ITEMWITHDRAW_EXECUTE_TITLE == $title) {
+            $breadcrumbs[] = [
+                'name' => _AM_XOONIPS_MAINTENANCE_ITEMWITHDRAW_TITLE,
+                'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/maintenance_itemwithdraw.php',
+            ];
+        } elseif (_AM_XOONIPS_MAINTENANCE_ITEMTRANSFER_CONFIRM_TITLE == $title
+        || _AM_XOONIPS_MAINTENANCE_ITEMTRANSFER_EXECUTE_TITLE == $title) {
+            $breadcrumbs[] = [
+                'name' => _AM_XOONIPS_MAINTENANCE_ITEMTRANSFER_TITLE,
+                'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/maintenance_itemtransfer.php',
+            ];
         }
 
-        $breadcrumbs[] = array(
-                        'name' => $title,
-        );
+        $breadcrumbs[] = [
+            'name' => $title,
+        ];
 
         return $breadcrumbs;
     }
@@ -160,25 +160,25 @@ class Xoonips_MaintenanceItemCommonAction extends Xoonips_ActionBase
     {
         // delete all items
         // below array,key is class name and value is delete fuctionname
-        $beans = array(
-                'ItemBean' => 'delete',
-                'ItemRelatedToBean' => 'deleteBoth',
-                'ItemChangeLogBean' => 'delete',
-                'ItemUsersLinkBean' => 'delete',
-                'IndexItemLinkBean' => 'delete',
-                'ItemFileBean' => 'deleteFiles',
-                'ItemTitleBean' => 'delete',
-                'ItemKeywordBean' => 'delete',
-        );
+        $beans = [
+            'ItemBean' => 'delete',
+            'ItemRelatedToBean' => 'deleteBoth',
+            'ItemChangeLogBean' => 'delete',
+            'ItemUsersLinkBean' => 'delete',
+            'IndexItemLinkBean' => 'delete',
+            'ItemFileBean' => 'deleteFiles',
+            'ItemTitleBean' => 'delete',
+            'ItemKeywordBean' => 'delete',
+        ];
         foreach ($beans as $bean_name => $del_func) {
             $bean_instance = Xoonips_BeanFactory::getBean($bean_name, $this->dirname, $this->trustDirname);
-            if (method_exists($bean_instance, $del_func) == false) {
+            if (false == method_exists($bean_instance, $del_func)) {
                 $this->bean_func_name = $bean_name.'.'.$del_func;
 
                 return false;
             }
             $rc = $bean_instance->$del_func($item_id);
-            if ($rc == false) {
+            if (false == $rc) {
                 $this->bean_func_name = $bean_name.'.'.$del_func;
 
                 return false;
@@ -204,11 +204,11 @@ class Xoonips_MaintenanceItemCommonAction extends Xoonips_ActionBase
         foreach ($field_detail as $field_detail_row) {
             $this->table_name = $field_detail_row['table_name'];
             $pos = strpos($this->table_name, 'xoonips_item_extend');
-            if ($pos === false || $pos != 0) {
+            if (false === $pos || 0 != $pos) {
                 return false;
             }
 
-            if ($item_extend_bean->delete($item_id, $this->table_name) == false) {
+            if (false == $item_extend_bean->delete($item_id, $this->table_name)) {
                 return false;
             }
         }
@@ -252,13 +252,13 @@ class Xoonips_MaintenanceItemCommonAction extends Xoonips_ActionBase
         $title = $bean->getItemTitle($item_id);
 
         $agree = 0;
-        $ret = array(
-                'id' => $item_id,
-                'index' => $index_path,
-                'title' => $title,
-                'agree' => $agree,
-                'result' => '',
-        );
+        $ret = [
+            'id' => $item_id,
+            'index' => $index_path,
+            'title' => $title,
+            'agree' => $agree,
+            'result' => '',
+        ];
 
         return $ret;
     }

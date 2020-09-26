@@ -11,10 +11,10 @@ require_once __DIR__.'/Notification.class.php';
 class Xoonips_Item
 {
     private $itemtypeId;
-    private $fields = array();
-    private $fieldGroups = array();
-    private $data = array();
-    private $dbData = array();
+    private $fields = [];
+    private $fieldGroups = [];
+    private $data = [];
+    private $dbData = [];
     private $id = null;
     private $notification = null;
     private $dirname;
@@ -107,14 +107,14 @@ class Xoonips_Item
 
     public function getRegistryView()
     {
-        $fieldGroup = array();
+        $fieldGroup = [];
         foreach ($this->fieldGroups as $group) {
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_REGISTRY, Xoonips_Enum::USER_TYPE_USER);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = array('name' => $groupName,
-                     'isMust' => $group->isMust(Xoonips_Enum::OP_TYPE_REGISTRY, Xoonips_Enum::USER_TYPE_USER),
-                     'view' => $group->getRegistryView($cnt), );
+                $fieldGroup[] = ['name' => $groupName,
+                    'isMust' => $group->isMust(Xoonips_Enum::OP_TYPE_REGISTRY, Xoonips_Enum::USER_TYPE_USER),
+                    'view' => $group->getRegistryView($cnt), ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'input');
@@ -125,14 +125,14 @@ class Xoonips_Item
 
     public function getRegistryViewWithData()
     {
-        $fieldGroup = array();
+        $fieldGroup = [];
         foreach ($this->fieldGroups as $group) {
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_REGISTRY, Xoonips_Enum::USER_TYPE_USER);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = array('name' => $groupName,
-                     'isMust' => $group->isMust(Xoonips_Enum::OP_TYPE_REGISTRY, Xoonips_Enum::USER_TYPE_USER),
-                     'view' => $group->getRegistryViewWithData($this->data, $cnt), );
+                $fieldGroup[] = ['name' => $groupName,
+                    'isMust' => $group->isMust(Xoonips_Enum::OP_TYPE_REGISTRY, Xoonips_Enum::USER_TYPE_USER),
+                    'view' => $group->getRegistryViewWithData($this->data, $cnt), ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'input');
@@ -156,13 +156,13 @@ class Xoonips_Item
 
     public function getConfirmView($op = Xoonips_Enum::OP_TYPE_REGISTRY)
     {
-        $fieldGroup = array();
+        $fieldGroup = [];
         foreach ($this->fieldGroups as $group) {
             $cnt = $group->countDisplayField($op, Xoonips_Enum::USER_TYPE_USER);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = array('name' => $groupName,
-                     'view' => $group->getConfirmView($this->data, $cnt, $op), );
+                $fieldGroup[] = ['name' => $groupName,
+                    'view' => $group->getConfirmView($this->data, $cnt, $op), ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'detail');
@@ -174,14 +174,14 @@ class Xoonips_Item
     public function getEditView($iid)
     {
         $data = $this->getItemInformation($iid);
-        $fieldGroup = array();
+        $fieldGroup = [];
         foreach ($this->fieldGroups as $group) {
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_EDIT, Xoonips_Enum::USER_TYPE_USER);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = array('name' => $groupName,
-                     'isMust' => $group->isMust(Xoonips_Enum::OP_TYPE_EDIT, Xoonips_Enum::USER_TYPE_USER),
-                     'view' => $group->getEditView($data, $cnt), );
+                $fieldGroup[] = ['name' => $groupName,
+                    'isMust' => $group->isMust(Xoonips_Enum::OP_TYPE_EDIT, Xoonips_Enum::USER_TYPE_USER),
+                    'view' => $group->getEditView($data, $cnt), ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'input');
@@ -192,14 +192,14 @@ class Xoonips_Item
 
     public function getEditViewWithData()
     {
-        $fieldGroup = array();
+        $fieldGroup = [];
         foreach ($this->fieldGroups as $group) {
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_EDIT, Xoonips_Enum::USER_TYPE_USER);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = array('name' => $groupName,
-                     'isMust' => $group->isMust(Xoonips_Enum::OP_TYPE_EDIT, Xoonips_Enum::USER_TYPE_USER),
-                     'view' => $group->getEditViewWithData($this->data, $cnt), );
+                $fieldGroup[] = ['name' => $groupName,
+                    'isMust' => $group->isMust(Xoonips_Enum::OP_TYPE_EDIT, Xoonips_Enum::USER_TYPE_USER),
+                    'view' => $group->getEditViewWithData($this->data, $cnt), ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'input');
@@ -211,13 +211,13 @@ class Xoonips_Item
     public function getDetailView($iid, $certifyIndexId = null, $display = true)
     {
         $data = $this->getItemInformation($iid, $certifyIndexId);
-        $fieldGroup = array();
+        $fieldGroup = [];
         foreach ($this->fieldGroups as $group) {
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_DETAIL, Xoonips_Enum::USER_TYPE_USER);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = array('name' => $groupName,
-                     'view' => $group->getDetailView($data, $cnt, Xoonips_Enum::USER_TYPE_USER, $display), );
+                $fieldGroup[] = ['name' => $groupName,
+                    'view' => $group->getDetailView($data, $cnt, Xoonips_Enum::USER_TYPE_USER, $display), ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'detail');
@@ -229,14 +229,14 @@ class Xoonips_Item
     public function getItemOwnersEditView($iid)
     {
         $data = $this->getItemInformation($iid);
-        $fieldGroup = array();
+        $fieldGroup = [];
         foreach ($this->fieldGroups as $group) {
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_ITEMUSERSEDIT, Xoonips_Enum::USER_TYPE_USER);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = array('name' => $groupName,
-                     'isMust' => $group->isItemOwnersMust(),
-                     'view' => $group->getItemOwnersEditView($data, $cnt), );
+                $fieldGroup[] = ['name' => $groupName,
+                    'isMust' => $group->isItemOwnersMust(),
+                    'view' => $group->getItemOwnersEditView($data, $cnt), ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'input');
@@ -247,14 +247,14 @@ class Xoonips_Item
 
     public function getItemOwnersEditViewWithData()
     {
-        $fieldGroup = array();
+        $fieldGroup = [];
         foreach ($this->fieldGroups as $group) {
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_ITEMUSERSEDIT, Xoonips_Enum::USER_TYPE_USER);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = array('name' => $groupName,
-                     'isMust' => $group->isItemOwnersMust(),
-                     'view' => $group->getItemOwnersEditViewWithData($this->data, $cnt), );
+                $fieldGroup[] = ['name' => $groupName,
+                    'isMust' => $group->isItemOwnersMust(),
+                    'view' => $group->getItemOwnersEditViewWithData($this->data, $cnt), ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'input');
@@ -265,13 +265,13 @@ class Xoonips_Item
 
     public function getSearchView()
     {
-        $fieldGroup = array();
+        $fieldGroup = [];
         foreach ($this->fieldGroups as $group) {
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_SEARCH, Xoonips_Enum::USER_TYPE_USER);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = array('name' => $groupName,
-                     'view' => $group->getSearchView($cnt, Xoonips_Enum::USER_TYPE_USER, $this->itemtypeId), );
+                $fieldGroup[] = ['name' => $groupName,
+                    'view' => $group->getSearchView($cnt, Xoonips_Enum::USER_TYPE_USER, $this->itemtypeId), ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'detail');
@@ -282,13 +282,13 @@ class Xoonips_Item
 
     public function getSimpleSearchView()
     {
-        $fieldGroup = array();
+        $fieldGroup = [];
         foreach ($this->fieldGroups as $group) {
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_SIMPLESEARCH, Xoonips_Enum::USER_TYPE_USER);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = array('name' => $groupName,
-                     'view' => $group->getSimpleSearchView($this->data, $cnt, $this->itemtypeId), );
+                $fieldGroup[] = ['name' => $groupName,
+                    'view' => $group->getSimpleSearchView($this->data, $cnt, $this->itemtypeId), ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'simpleSearch');
@@ -318,7 +318,7 @@ class Xoonips_Item
     public function doSave(&$messages, $log)
     {
         $itemId = '';
-        $sqlStrings = array();
+        $sqlStrings = [];
         foreach ($this->fieldGroups as $fieldGroup) {
             $cnt = $fieldGroup->countDisplayField(Xoonips_Enum::OP_TYPE_REGISTRY, Xoonips_Enum::USER_TYPE_USER);
             if ($cnt > 0) {
@@ -399,7 +399,7 @@ class Xoonips_Item
     // do edit
     public function doEdit($itemId, &$messages, $log)
     {
-        $sqlStrings = array();
+        $sqlStrings = [];
         foreach ($this->fieldGroups as $fieldGroup) {
             $cnt = $fieldGroup->countDisplayField(Xoonips_Enum::OP_TYPE_EDIT, Xoonips_Enum::USER_TYPE_USER);
             if ($cnt > 0) {
@@ -422,7 +422,7 @@ class Xoonips_Item
         }
 
         // update xoonips_item_users_link
-        $changedUids = array();
+        $changedUids = [];
         if (isset($sqlStrings[$this->dirname.'_item_users_link'])) {
             // get changed users
             $changedUids = $this->getChangedUsers($sqlStrings, $itemId);
@@ -580,7 +580,7 @@ class Xoonips_Item
             return false;
         }
         // delete xoonips_item_extend
-        $extendTable = array();
+        $extendTable = [];
         $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
         $extendTable = $itemBean->getItemExtendTableByItemtypeId($this->itemtypeId);
         if ($extendTable) {
@@ -610,7 +610,7 @@ class Xoonips_Item
      */
     public function doSearch($search_type, $isExact = false)
     {
-        $sqlStrings = array();
+        $sqlStrings = [];
         $scopeSearchFlg = false;
         if (Xoonips_Enum::OP_TYPE_SEARCH == $search_type) {
             $scopeSearchFlg = true;
@@ -707,7 +707,7 @@ class Xoonips_Item
 
             return $detailSql;
         } else {
-            $detailSqlArr = array();
+            $detailSqlArr = [];
             $index = 1;
             foreach ($sqlStrings as $tableNm => $strings) {
                 $tableName = $xoopsDB->prefix($tableNm);
@@ -801,7 +801,7 @@ class Xoonips_Item
     // do item users edit
     public function doUsersEdit($itemId, &$messages, $log)
     {
-        $sqlStrings = array();
+        $sqlStrings = [];
         foreach ($this->fieldGroups as $fieldGroup) {
             $cnt = $fieldGroup->countDisplayField(Xoonips_Enum::OP_TYPE_ITEMUSERSEDIT, Xoonips_Enum::USER_TYPE_USER);
             if ($cnt > 0) {
@@ -873,7 +873,7 @@ class Xoonips_Item
 
         if ($userBean->isModerator($uid) && !$itemUsersBean->isLink($itemId, $uid)) {
             //send to item user
-            $itemUsersId = array();
+            $itemUsersId = [];
             $itemUsersInfo = $itemUsersBean->getItemUsersInfo($itemId);
             foreach ($itemUsersInfo as $itemUser) {
                 $itemUsersId[] = $itemUser['uid'];
@@ -886,8 +886,8 @@ class Xoonips_Item
     {
         global $xoopsUser;
         $logBean = Xoonips_BeanFactory::getBean('ItemChangeLogBean', $this->dirname, $this->trustDirname);
-        $changelog = array('uid' => $xoopsUser->getVar('uid'), 'item_id' => $itemId,
-            'log_date' => time(), 'log' => sprintf(_MD_XOONIPS_ITEM_CHANGE_LOG_AUTOFILL_TEXT, $logs), );
+        $changelog = ['uid' => $xoopsUser->getVar('uid'), 'item_id' => $itemId,
+            'log_date' => time(), 'log' => sprintf(_MD_XOONIPS_ITEM_CHANGE_LOG_AUTOFILL_TEXT, $logs), ];
         if (!$logBean->insert($changelog)) {
             return false;
         }
@@ -898,7 +898,7 @@ class Xoonips_Item
     private function getChangeLogs($newData, $itemId, &$edited)
     {
         $oldData = $this->getItemInformation($itemId);
-        $logs = array();
+        $logs = [];
 
         $viewTypeBean = Xoonips_BeanFactory::getBean('ViewTypeBean', $this->dirname, $this->trustDirname);
         $createDataView = $viewTypeBean->selectByName('create date');
@@ -1132,7 +1132,7 @@ class Xoonips_Item
     private function getUidsFromSqlStrings($sqlStrings)
     {
         $strings = $sqlStrings[$this->dirname.'_item_users_link'];
-        $selectUids = array();
+        $selectUids = [];
         foreach ($strings as $column => $values) {
             foreach ($values as $v) {
                 $selectUids[] = $v;
@@ -1156,7 +1156,7 @@ class Xoonips_Item
             $userNames = '';
             foreach ($changedUids[0] as $uid) {
                 $maxOrder = $usersLinkBean->getMaxWeight($itemId);
-                $userInfo = array();
+                $userInfo = [];
                 if (!is_null($itemtypeId)) {
                     $userInfo['item_type_id'] = $itemtypeId;
                 }
@@ -1179,7 +1179,7 @@ class Xoonips_Item
             }
             //send to item user
             $itemUsersInfo = $usersLinkBean->getItemUsersInfo($itemId);
-            $itemUsersId = array();
+            $itemUsersId = [];
             foreach ($itemUsersInfo as $itemUser) {
                 $itemUsersId[] = $itemUser['uid'];
             }
@@ -1190,7 +1190,7 @@ class Xoonips_Item
         // delete user
         if (isset($changedUids[1])) {
             $userNames = '';
-            $itemUsersId = array();
+            $itemUsersId = [];
             foreach ($changedUids[1] as $uid) {
                 $user = $usersBean->getUserBasicInfo($uid);
                 $userNames = $userNames.$user['uname'].',';
@@ -1319,7 +1319,7 @@ class Xoonips_Item
         if ($changedFlg) {
             global $xoopsUser;
             $changelogBean = Xoonips_BeanFactory::getBean('ItemChangeLogBean', $this->dirname, $this->trustDirname);
-            $changelog = array();
+            $changelog = [];
             $changelog['uid'] = $xoopsUser->getVar('uid');
             $changelog['item_id'] = $itemId;
             $changelog['log_date'] = time();
@@ -1344,7 +1344,7 @@ class Xoonips_Item
         }
         global $xoopsUser;
         $changelogBean = Xoonips_BeanFactory::getBean('ItemChangeLogBean', $this->dirname, $this->trustDirname);
-        $changelog = array();
+        $changelog = [];
         $changelog['uid'] = $xoopsUser->getVar('uid');
         $changelog['item_id'] = $itemId;
         $changelog['log_date'] = time();
@@ -1439,8 +1439,8 @@ class Xoonips_Item
         global $xoopsDB;
         $strings = $sqlStrings[$this->dirname.'_item_file'];
         $table = $xoopsDB->prefix($this->dirname.'_item_file');
-        $files = array();
-        $group = array();
+        $files = [];
+        $group = [];
         $loop = 1;
         $temp = '';
         foreach ($strings as $column => $v) {
@@ -1521,7 +1521,7 @@ class Xoonips_Item
         $linkBean = Xoonips_BeanFactory::getBean('IndexItemLinkBean', $this->dirname, $this->trustDirname);
         $statusBean = Xoonips_BeanFactory::getBean('OaipmhItemStatusBean', $this->dirname, $this->trustDirname);
         foreach ($strings as $column => $values) {
-            $indexes = array();
+            $indexes = [];
             foreach ($values as $v) {
                 $indexes[] = $v;
             }
@@ -1553,7 +1553,7 @@ class Xoonips_Item
         $linkBean = Xoonips_BeanFactory::getBean('IndexItemLinkBean', $this->dirname, $this->trustDirname);
         $statusBean = Xoonips_BeanFactory::getBean('OaipmhItemStatusBean', $this->dirname, $this->trustDirname);
         foreach ($strings as $column => $values) {
-            $indexes = array();
+            $indexes = [];
             foreach ($values as $v) {
                 $indexes[] = $v;
             }
@@ -1612,7 +1612,7 @@ class Xoonips_Item
     {
         $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
         $itemInfos = $itemBean->getItem($iid);
-        $ret = array();
+        $ret = [];
         foreach ($itemInfos as $tblIndex => $values) {
             // xoonips_item
             if ($tblIndex == $this->dirname.'_item') {
@@ -1635,7 +1635,7 @@ class Xoonips_Item
                         break;
                     }
                 }
-                $uids = array();
+                $uids = [];
                 foreach ($values as $val) {
                     $uids[] = $val['uid'];
                 }
@@ -1649,7 +1649,7 @@ class Xoonips_Item
                         break;
                     }
                 }
-                $iids = array();
+                $iids = [];
                 foreach ($values as $val) {
                     $iids[] = $val['child_item_id'];
                 }
@@ -1723,7 +1723,7 @@ class Xoonips_Item
                         break;
                     }
                 }
-                $logs = array();
+                $logs = [];
                 foreach ($values as $val) {
                     $logs[] = $val['log_id'];
                 }

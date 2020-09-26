@@ -78,10 +78,10 @@ class Xoonips_Admin_PolicyItemFieldSelectDeleteAction extends Xoonips_AbstractDe
         $id = $this->_getId();
         $this->mObjectHandler = &$this->_getHandler();
         $values = $this->mObjectHandler->getValueSet($id);
-        $this->mObject = array(
+        $this->mObject = [
             'name' => $id,
             'values' => $values,
-        );
+        ];
     }
 
     /**
@@ -104,27 +104,27 @@ class Xoonips_Admin_PolicyItemFieldSelectDeleteAction extends Xoonips_AbstractDe
         $dirname = $this->mAsset->mDirname;
         $constpref = '_AD_'.strtoupper($dirname);
         // breadcrumbs
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => constant($constpref.'_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=Policy',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_ITEM_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=PolicyItem',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_ITEM_FIELD_SELECT_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=PolicyItemQuickSearch',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_ITEM_FIELD_SELECT_DELETE_TITLE'),
-            ),
-        );
+            ],
+        ];
         $render->setTemplateName('policy_item_field_select_delete.html');
         $render->setAttribute('title', constant($constpref.'_POLICY_ITEM_FIELD_SELECT_TITLE'));
         $render->setAttribute('description', constant($constpref.'_POLICY_ITEM_FIELD_SELECT_DELETE_DESC'));

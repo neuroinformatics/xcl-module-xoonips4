@@ -23,7 +23,7 @@ class Xoonips_ViewTypeTimeZone extends Xoonips_ViewType
         $fieldName = $this->getFieldName($field, $groupLoopId);
         $tzoneHandler = &xoops_gethandler('timezone');
         $timezones = &$tzoneHandler->getObjects();
-        $list = array();
+        $list = [];
         foreach ($timezones as $time) {
             $list[] = $time->getVars();
         }
@@ -40,7 +40,7 @@ class Xoonips_ViewTypeTimeZone extends Xoonips_ViewType
         $fieldName = $this->getFieldName($field, $groupLoopId);
         $tzoneHandler = &xoops_gethandler('timezone');
         $timezones = &$tzoneHandler->getObjects();
-        $list = array();
+        $list = [];
         foreach ($timezones as $time) {
             $list[] = $time->getVars();
         }
@@ -57,7 +57,7 @@ class Xoonips_ViewTypeTimeZone extends Xoonips_ViewType
         $fieldName = $this->getFieldName($field, $groupLoopId);
         $tzoneHandler = &xoops_gethandler('timezone');
         $timezones = &$tzoneHandler->getObjects();
-        $list = array();
+        $list = [];
         foreach ($timezones as $time) {
             $list[] = $time->getVars();
         }
@@ -73,7 +73,7 @@ class Xoonips_ViewTypeTimeZone extends Xoonips_ViewType
     {
         $tzoneHandler = &xoops_gethandler('timezone');
         $timezones = &$tzoneHandler->getObjects();
-        $list = array();
+        $list = [];
         foreach ($timezones as $time) {
             $list[] = $time->getVars();
         }

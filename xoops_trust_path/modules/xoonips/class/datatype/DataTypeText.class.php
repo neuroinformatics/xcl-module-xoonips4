@@ -16,7 +16,7 @@ class Xoonips_DataTypeText extends Xoonips_DataType
         if (is_array($value)) {
             return true;
         } elseif ($field->getLen() > 0 && strlen(trim($value)) > $field->getLen()) {
-            $parameters = array();
+            $parameters = [];
             $parameters[] = $field->getName();
             $parameters[] = $field->getLen();
             $errors->addError('_MD_'.strtoupper($this->trustDirname).'_ERROR_MAXLENGTH', $fieldName, $parameters);
@@ -33,8 +33,8 @@ class Xoonips_DataTypeText extends Xoonips_DataType
 
     public function getValueSql($field)
     {
-        $value = array();
-        $essential = ($field->getEssential() == 1) ? 'NOT NULL' : '';
+        $value = [];
+        $essential = (1 == $field->getEssential()) ? 'NOT NULL' : '';
         $value[0] = ' text '.$essential;
         $value[1] = '(255)';
 

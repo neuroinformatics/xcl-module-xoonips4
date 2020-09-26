@@ -86,27 +86,27 @@ class Xoonips_Admin_PolicyItemFieldEditAction extends Xoonips_AbstractEditAction
             $description = constant($constpref.'_POLICY_ITEM_FIELD_EDIT_DESC');
         }
         // breadcrumbs
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => constant($constpref.'_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=Policy',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_ITEM_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=PolicyItem',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_ITEM_FIELD_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=PolicyItemField',
-            ),
-            array(
+            ],
+            [
                 'name' => $title,
-            ),
-        );
+            ],
+        ];
         $vtHandler = Functions::getXoonipsHandler('ViewType', $dirname);
         $viewTypes = $vtHandler->getViewTypes();
         $dtHandler = Functions::getXoonipsHandler('DataTypeObject', $dirname);

@@ -36,7 +36,7 @@ class Xoonips_Search
     public static function &getInstance()
     {
         static $instance;
-        if ($instance == null) {
+        if (null == $instance) {
             $instance = new self();
         }
 
@@ -142,7 +142,7 @@ class Xoonips_Search
         // - 's'  - zenkaku space to hankaku space
         $text = mb_convert_kana($text, 's', 'UTF-8');
         // convert latin1 suppliment characters to html numeric entities
-        $text = mb_encode_numericentity($text, array(0x0080, 0x00ff, 0, 0xffff), 'UTF-8');
+        $text = mb_encode_numericentity($text, [0x0080, 0x00ff, 0, 0xffff], 'UTF-8');
         // trim string
         $text = trim($text);
 
@@ -172,6 +172,7 @@ class Xoonips_Search
         } else {
             $sql = "('1' = '0')";
         } // TODO: Is this reasonable?
+
         return $sql;
     }
 
@@ -191,6 +192,7 @@ class Xoonips_Search
         } else {
             $sql = "('1' = '0')";
         } // TODO: Is this reasonable?
+
         return $sql;
     }
 
@@ -205,12 +207,12 @@ class Xoonips_Search
     {
         $pattern = sprintf('%s|%s', $this->patterns['sbword'], $this->patterns['mbword']);
         mb_ereg_search_init($text, $pattern);
-        $tokens = array();
+        $tokens = [];
         $len = strlen($text);
         for ($i = 0; $i < $len; $i = mb_ereg_search_getpos()) {
             mb_ereg_search_setpos($i);
             $regs = mb_ereg_search_regs();
-            if ($regs === false) {
+            if (false === $regs) {
                 break;
             }
             $tokens[] = $regs[0];
@@ -228,7 +230,7 @@ class Xoonips_Search
      */
     private function _makeFulltextSearchData($tokens)
     {
-        $ngram = array();
+        $ngram = [];
         $trailing = ($this->WINDOW_SIZE > 2);
         foreach ($tokens as $token) {
             if ($this->_isMultibyteWord($token)) {
@@ -256,7 +258,7 @@ class Xoonips_Search
      */
     private static function _ngram($word, $n, $leading, $trailing)
     {
-        $words = array();
+        $words = [];
         $word = trim($word);
         if (empty($word) || $n < 1) {
             return $words;
@@ -296,7 +298,7 @@ class Xoonips_Search
     {
         $result = mb_ereg($this->patterns['mbword'], $token);
 
-        return $result !== false;
+        return false !== $result;
     }
 
     /**
@@ -304,23 +306,23 @@ class Xoonips_Search
      */
     private function _initializePatterns()
     {
-        $mb_delimiter = array(
-            array(0xe3, 0x80, 0x81), // ,
-            array(0xe3, 0x80, 0x82), // .
-            array(0xe2, 0x80, 0x99), // '
-            array(0xe2, 0x80, 0x9d), // "
-            array(0xe3, 0x83, 0xbb), // centered dot
-            array(0xe3, 0x80, 0x8a), // case arc
-            array(0xe3, 0x80, 0x8b), // case arc
-            array(0xe3, 0x80, 0x8c), // case arc
-            array(0xe3, 0x80, 0x8d), // case arc
-            array(0xe3, 0x80, 0x8e), // case arc
-            array(0xe3, 0x80, 0x8f), // case arc
-            array(0xe3, 0x80, 0x90), // case arc
-            array(0xe3, 0x80, 0x91), // case arc
-            array(0xe3, 0x80, 0x94), // case arc
-            array(0xe3, 0x80, 0x95),  // case arc
-        );
+        $mb_delimiter = [
+            [0xe3, 0x80, 0x81], // ,
+            [0xe3, 0x80, 0x82], // .
+            [0xe2, 0x80, 0x99], // '
+            [0xe2, 0x80, 0x9d], // "
+            [0xe3, 0x83, 0xbb], // centered dot
+            [0xe3, 0x80, 0x8a], // case arc
+            [0xe3, 0x80, 0x8b], // case arc
+            [0xe3, 0x80, 0x8c], // case arc
+            [0xe3, 0x80, 0x8d], // case arc
+            [0xe3, 0x80, 0x8e], // case arc
+            [0xe3, 0x80, 0x8f], // case arc
+            [0xe3, 0x80, 0x90], // case arc
+            [0xe3, 0x80, 0x91], // case arc
+            [0xe3, 0x80, 0x94], // case arc
+            [0xe3, 0x80, 0x95],  // case arc
+        ];
         // non printable characters
         $patterns['noprint'] = sprintf('[\\x00-\\x1f\\x7f%s]', $this->_getStringFromLatin1Code(0x80, 0x9f));
         // single byte word
@@ -340,7 +342,7 @@ class Xoonips_Search
      */
     private function _getStringFromLatin1Code($from, $to)
     {
-        $chars = array();
+        $chars = [];
         for ($i = $from; $i <= $to; ++$i) {
             $chars[] = chr($i);
         }
@@ -355,13 +357,13 @@ class Xoonips_Search
      */
     private function _getStringFromUtf8Code($code_set)
     {
-        $chars = array();
+        $chars = [];
         foreach ($code_set as $code) {
-            if (count($code) == 2) {
+            if (2 == count($code)) {
                 $chars[] = pack('C*', $code[0], $code[1]);
-            } elseif (count($code) == 3) {
+            } elseif (3 == count($code)) {
                 $chars[] = pack('C*', $code[0], $code[1], $code[2]);
-            } elseif (count($code) == 4) {
+            } elseif (4 == count($code)) {
                 $chars[] = pack('C*', $code[0], $code[1], $code[2], $code[3]);
             }
         }
@@ -464,8 +466,8 @@ class Xoonips_Search_Query_Element extends Xoonips_Search_Query_Element_Base
  */
 class Xoonips_Search_Query_Component extends Xoonips_Search_Query_Element_Base
 {
-    private $elements = array();
-    private $conditions = array();
+    private $elements = [];
+    private $conditions = [];
 
     /**
      * constructor.
@@ -569,13 +571,13 @@ class Xoonips_Search_Query
     public function parse()
     {
         $op = null;
-        $brstack = array();
+        $brstack = [];
         $brstack_pos = 0;
         while ($this->lex()) {
             switch ($this->lex_retmean) {
             case 'WORD':
                 $val = new Xoonips_Search_Query_Element($this->lex_retval);
-                if ($brstack_pos == 0) {
+                if (0 == $brstack_pos) {
                     ++$brstack_pos;
                     $brstack[$brstack_pos] = new Xoonips_Search_Query_Component($val, 'AND');
                 } else {
@@ -595,7 +597,7 @@ class Xoonips_Search_Query
                 break;
             case 'RIGHTBR':
                 $tmp_stack = new Xoonips_Search_Query_Component();
-                if ($brstack_pos == 0) {
+                if (0 == $brstack_pos) {
                     ++$brstack_pos;
                     $brstack[$brstack_pos] = &$tmp_stack;
                 } else {
@@ -622,7 +624,7 @@ class Xoonips_Search_Query
                 return false;
             }
         }
-        if ($brstack_pos != 1) {
+        if (1 != $brstack_pos) {
             return false;
         }
         $this->stack = &$brstack[1];
@@ -647,31 +649,31 @@ class Xoonips_Search_Query
             $c = $this->lex_str[$pos];
             if ($in_quote) {
                 if ($in_escape) {
-                    if ($c == '"' || $c == '\\') {
+                    if ('"' == $c || '\\' == $c) {
                         $ret .= $c;
                         $in_escape = false;
                     }
                 } else {
-                    if ($c == '"') {
+                    if ('"' == $c) {
                         $in_quote = false;
-                    } elseif ($c == '\\') {
+                    } elseif ('\\' == $c) {
                         $in_escape = true;
                     } else {
                         $ret .= $c;
                     }
                 }
             } else {
-                if ($c == ')' || $c == '(') {
-                    if ($ret == null) {
+                if (')' == $c || '(' == $c) {
+                    if (null == $ret) {
                         $ret = $c;
-                        $mean = ($c == ')') ? 'LEFTBR' : 'RIGHTBR';
+                        $mean = (')' == $c) ? 'LEFTBR' : 'RIGHTBR';
                         $continue = false;
                     } else {
                         $continue = false;
                         $pop_require = true;
                     }
-                } elseif ($c == '"') {
-                    if ($ret == null) {
+                } elseif ('"' == $c) {
+                    if (null == $ret) {
                         $in_quote = true;
                         $mean = 'PHRASE';
                         $ret = '';
@@ -680,12 +682,12 @@ class Xoonips_Search_Query
                         $pop_require = true;
                     }
                 } else {
-                    if ($c == ' ') {
-                        if ($ret != null) {
+                    if (' ' == $c) {
+                        if (null != $ret) {
                             $continue = false;
                         }
                     } else {
-                        if ($ret == null) {
+                        if (null == $ret) {
                             $ret = $c;
                         } else {
                             $ret .= $c;
@@ -698,7 +700,7 @@ class Xoonips_Search_Query
         if ($pop_require) {
             --$pos;
         }
-        if ($mean == 'WORD') {
+        if ('WORD' == $mean) {
             switch (strtoupper($ret)) {
             case 'AND':
                 $mean = 'AND';
@@ -707,13 +709,13 @@ class Xoonips_Search_Query
                 $mean = 'OR';
                 break;
             }
-        } elseif ($mean == 'PHRASE') {
+        } elseif ('PHRASE' == $mean) {
             $mean = 'WORD';
         }
         $this->lex_pos = $pos;
         $this->lex_retmean = $mean;
         $this->lex_retval = $ret;
 
-        return $mean != 'EOF';
+        return 'EOF' != $mean;
     }
 }

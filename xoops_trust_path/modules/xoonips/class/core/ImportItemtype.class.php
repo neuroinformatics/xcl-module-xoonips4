@@ -30,7 +30,7 @@ class Xoonips_ImportItemType
     {
         $groupBean = Xoonips_BeanFactory::getBean('ItemFieldGroupBean', $this->dirname, $this->trustDirname);
         $detailBean = Xoonips_BeanFactory::getBean('ItemFieldDetailBean', $this->dirname, $this->trustDirname);
-        $groupid = array();
+        $groupid = [];
         $gWeight = 1;
         $dWeight = 1;
         $viewtypeid = self::getViewTypeId();
@@ -38,7 +38,7 @@ class Xoonips_ImportItemType
 
         //groupObj
         foreach ($xmlObj->group as $g) {
-            $group = array();
+            $group = [];
             $group['name'] = (string) $g->name;
             $group['xml'] = (string) $g->xml;
             $group['occurrence'] = (string) $g->occurrence;
@@ -55,7 +55,7 @@ class Xoonips_ImportItemType
             //detailObj
             $group_id = '';
             foreach ($g->item as $d) {
-                $detail = array();
+                $detail = [];
                 $detail['table_name'] = (string) $d->table_name;
                 $detail['column_name'] = (string) $d->column_name;
                 $detail['group_id'] = (string) $d->group_id;
@@ -92,13 +92,13 @@ class Xoonips_ImportItemType
                 if (!$detailBean->insert($detail, $id)) {
                     return false;
                 }
-                $link = array('group_id' => $groupid[$l_group_id],
+                $link = ['group_id' => $groupid[$l_group_id],
                     'item_field_detail_id' => $id,
                     'weight' => $dWeight,
                     'edit' => 1,
                     'edit_weight' => $dWeight,
                     'released' => 1,
-                );
+                ];
                 if (!$groupBean->insertLink($link, $lid)) {
                     return false;
                 }
@@ -140,14 +140,14 @@ class Xoonips_ImportItemType
      **/
     public function importItemType($uploaddir, $itemtype, $importFlag, &$errors)
     {
-        $itemtypeObj = array();
-        $groupObj = array();
-        $detailObj = array();
-        $listObj = array();
-        $complementObj = array();
-        $sortObj = array();
+        $itemtypeObj = [];
+        $groupObj = [];
+        $detailObj = [];
+        $listObj = [];
+        $complementObj = [];
+        $sortObj = [];
         //searchObj = array(); //Not Use
-        $oaipmhObj = array();
+        $oaipmhObj = [];
 
         //get XML object
         $xmlFile = $uploaddir.'/'.$itemtype.'/'.$itemtype.'.xml';
@@ -212,14 +212,14 @@ class Xoonips_ImportItemType
 
         //groupObj
         foreach ($xmlObj->group as $g) {
-            $group = array();
+            $group = [];
             $group['name'] = (string) $g->name;
             $group['xml'] = (string) $g->xml;
             $group['occurrence'] = (string) $g->occurrence;
             $groupObj[] = $group;
             //detailObj
             foreach ($g->item as $i) {
-                $item = array();
+                $item = [];
                 $item['table_name'] = (string) $i->table_name;
                 $item['column_name'] = (string) $i->column_name;
                 $item['group_id'] = (string) $i->group_id;
@@ -250,7 +250,7 @@ class Xoonips_ImportItemType
 
         //item_list
         foreach ($xmlObj->item_list as $l) {
-            $list = array();
+            $list = [];
             $list['select_name'] = (string) $l->select_name;
             $list['title_id'] = (string) $l->title_id;
             $list['title'] = (string) $l->title;
@@ -259,7 +259,7 @@ class Xoonips_ImportItemType
 
         //complementObj
         foreach ($xmlObj->complement as $c) {
-            $complement = array();
+            $complement = [];
             $complement['complement_id'] = (string) $c->complement_id;
             $complement['base_item_field_detail_id'] = (string) $c->base_item_field_detail_id;
             $complement['complement_detail_id'] = (string) $c->complement_detail_id;
@@ -272,7 +272,7 @@ class Xoonips_ImportItemType
 
         //sortObj
         foreach ($xmlObj->sort as $s) {
-            $sort = array();
+            $sort = [];
             $sort['sort_id'] = (string) $s->sort_id;
             $sort['item_field_detail_id'] = (string) $s->item_field_detail_id;
             $sortObj[] = $sort;
@@ -285,7 +285,7 @@ class Xoonips_ImportItemType
 
         //oaipmhObj
         foreach ($xmlObj->oaipmh as $o) {
-            $oaipmh = array();
+            $oaipmh = [];
             $oaipmh['schema_id'] = (string) $o->schema_id;
             $oaipmh['item_field_detail_id'] = (string) $o->item_field_detail_id;
             $oaipmh['value'] = (string) $o->value;
@@ -363,14 +363,14 @@ class Xoonips_ImportItemType
         if (count($complementObj) > 0) {
             $complementBean = Xoonips_BeanFactory::getBean('ComplementBean', $this->dirname, $this->trustDirname);
             $complementlist = $complementBean->getComplementInfo();
-            $complementid = array();
-            $complementtitle = array();
+            $complementid = [];
+            $complementtitle = [];
             foreach ($complementlist as $complement) {
                 $complementid[$complement['title']] = $complement['complement_id'];
                 $complementtitle[$complement['complement_id']] = $complement['title'];
             }
             $complementdetaillist = $complementBean->getComplementDetailInfo();
-            $complementdetailid = array();
+            $complementdetailid = [];
             foreach ($complementdetaillist as $complementdetail) {
                 $complementdetailid[($complementtitle[$complementdetail['complement_id']].':'.$complementdetail['code'])] = $complementdetail['complement_detail_id'];
             }
@@ -381,7 +381,7 @@ class Xoonips_ImportItemType
             }
         }
 
-        $map = array();
+        $map = [];
 
         $itemtypeBean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
         if (!$itemtypeBean->copyByObj($itemtypeObj, $map, false, true, false)) {
@@ -393,13 +393,13 @@ class Xoonips_ImportItemType
             return false;
         }
         foreach ($groupObj as $group) {
-            $link = array('item_type_id' => $map['itemtype'][$itemtypeObj['item_type_id']],
-                    'group_id' => $map['group'][$group['group_id']],
-                    'weight' => $group['weight'],
-                    'edit' => 1,
-                    'edit_weight' => $group['weight'],
-                    'released' => 1,
-                );
+            $link = ['item_type_id' => $map['itemtype'][$itemtypeObj['item_type_id']],
+                'group_id' => $map['group'][$group['group_id']],
+                'weight' => $group['weight'],
+                'edit' => 1,
+                'edit_weight' => $group['weight'],
+                'released' => 1,
+            ];
             if (!$itemtypeBean->insertLink($link, $lid)) {
                 return false;
             }
@@ -410,12 +410,12 @@ class Xoonips_ImportItemType
             return false;
         }
         foreach ($detailObj as $detail) {
-            $link = array('group_id' => $map['group'][$detail['group_id']],
-                    'item_field_detail_id' => $map['detail'][$detail['item_field_detail_id']],
-                    'weight' => $detail['weight'], 'edit' => 1,
-                    'edit_weight' => $detail['weight'],
-                    'released' => 1,
-                );
+            $link = ['group_id' => $map['group'][$detail['group_id']],
+                'item_field_detail_id' => $map['detail'][$detail['item_field_detail_id']],
+                'weight' => $detail['weight'], 'edit' => 1,
+                'edit_weight' => $detail['weight'],
+                'released' => 1,
+            ];
             $link_info = $groupBean->getGroupDetailById($link['group_id'], $link['item_field_detail_id']);
             if (0 == count($link_info)) {
                 if (!$groupBean->insertLink($link, $lid)) {
@@ -439,8 +439,8 @@ class Xoonips_ImportItemType
         $sortHandler = Functions::getXoonipsHandler('ItemSort', $this->dirname);
         $sortTitles = $sortHandler->getSortTitles();
         $sortIds = array_flip($sortTitles);
-        $sObjs = array();
-        $sFields = array();
+        $sObjs = [];
+        $sFields = [];
         foreach ($sortObj as &$obj) {
             $title = $obj['sort_id'];
             if (!isset($sortIds[$title])) {
@@ -464,14 +464,14 @@ class Xoonips_ImportItemType
 
         $oaipmhBean = Xoonips_BeanFactory::getBean('OaipmhSchemaBean', $this->dirname, $this->trustDirname);
         $schemalist = $oaipmhBean->getSchemaList();
-        $schemaid = array();
-        $schemaname = array();
+        $schemaid = [];
+        $schemaname = [];
         foreach ($schemalist as $schema) {
             $schemaid[($schema['metadata_prefix'].':'.$schema['name'])] = $schema['schema_id'];
             $schemaname[$schema['schema_id']] = ($schema['metadata_prefix'].':'.$schema['name']);
         }
 
-        $valuesetid = array();
+        $valuesetid = [];
         $prefixlist = $oaipmhBean->getPrefixList();
         foreach ($prefixlist as $prefix) {
             $valuesetlist = $oaipmhBean->getSchemaValueSetList($prefix);
@@ -480,15 +480,15 @@ class Xoonips_ImportItemType
             }
         }
 
-        $niiTypes = array(
-                'Journal Article', 'Thesis or Dissertation',
-                'Departmental Bulletin Paper', 'Conference Paper',
-                'Presentation', 'Book',
-                'Technical Report', 'Research Paper',
-                'Article', 'Preprint',
-                'Learning Material', 'Data or Dataset',
-                'Software', 'Others',
-            );
+        $niiTypes = [
+            'Journal Article', 'Thesis or Dissertation',
+            'Departmental Bulletin Paper', 'Conference Paper',
+            'Presentation', 'Book',
+            'Technical Report', 'Research Paper',
+            'Article', 'Preprint',
+            'Learning Material', 'Data or Dataset',
+            'Software', 'Others',
+        ];
         $linkBean = Xoonips_BeanFactory::getBean('OaipmhSchemaItemtypeLinkBean', $this->dirname, $this->trustDirname);
         foreach ($oaipmhObj as &$obj) {
             $schema = $obj['schema_id'];
@@ -499,8 +499,8 @@ class Xoonips_ImportItemType
                 if (in_array($obj['item_field_detail_id'], $niiTypes)) {
                     $obj['item_field_detail_id'] = $valuesetid[$schema.':'.$obj['item_field_detail_id']];
                 } else {
-                    $detail_id_list = array();
-                    $group_id_list = array();
+                    $detail_id_list = [];
+                    $group_id_list = [];
                     $idlist = explode(',', $obj['item_field_detail_id']);
                     foreach ($idlist as $id) {
                         $detail_id_list[] = $map['detail'][$id];
@@ -514,8 +514,8 @@ class Xoonips_ImportItemType
                 && 'itemtype' != $obj['item_field_detail_id'] && 'meta_author' != $obj['item_field_detail_id']
                 && 'owner' != $obj['item_field_detail_id'] && 'full_text' != $obj['item_field_detail_id']
                 && 'fixed_value' != $obj['item_field_detail_id'] && !in_array($obj['item_field_detail_id'], $niiTypes)) {
-                $detail_id_list = array();
-                $group_id_list = array();
+                $detail_id_list = [];
+                $group_id_list = [];
                 $idlist = explode(',', $obj['item_field_detail_id']);
                 foreach ($idlist as $id) {
                     $detail_id_list[] = $map['detail'][$id];
@@ -583,7 +583,7 @@ class Xoonips_ImportItemType
      **/
     private function getViewTypeId()
     {
-        $viewtypeid = array();
+        $viewtypeid = [];
         $viewTypeBean = Xoonips_BeanFactory::getBean('ViewTypeBean', $this->dirname, $this->trustDirname);
         $viewtypelist = $viewTypeBean->getViewtypeList();
         foreach ($viewtypelist as $viewtype) {
@@ -602,7 +602,7 @@ class Xoonips_ImportItemType
      **/
     private function getDataTypeId()
     {
-        $datatypeid = array();
+        $datatypeid = [];
         $dataTypeBean = Xoonips_BeanFactory::getBean('DataTypeBean', $this->dirname, $this->trustDirname);
         $datatypelist = $dataTypeBean->getDatatypeList();
         foreach ($datatypelist as $datatype) {

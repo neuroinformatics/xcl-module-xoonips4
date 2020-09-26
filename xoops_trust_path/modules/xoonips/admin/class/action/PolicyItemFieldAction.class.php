@@ -20,7 +20,7 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         $data_decimal_places = $request->getParameter('data_decimal_places');
         $default_value = $request->getParameter('default_value');
         $essential = $request->getParameter('essential');
-        $detail_display = ($request->getParameter('detail_display') === 0) ? 0 : 1;
+        $detail_display = (0 === $request->getParameter('detail_display')) ? 0 : 1;
         $detail_target = $request->getParameter('detail_target');
         $scope_search = $request->getParameter('scope_search');
         $scope_search_arr = $request->getParameter('scope_search_arr');
@@ -36,7 +36,7 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         $viewtypelist = $this->getViewTypeList($view_type);
 
         // do view_type change
-        if ($changeop == 'vtchange') {
+        if ('vtchange' == $changeop) {
             $data_type = '';
             $data_length = '';
             $data_decimal_places = '';
@@ -45,7 +45,7 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         }
 
         // do list change
-        if ($changeop == 'listchange') {
+        if ('listchange' == $changeop) {
             $default_value = '';
         }
 
@@ -120,7 +120,7 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         $viewtypelist = $this->getViewTypeList($view_type);
 
         // do view_type change
-        if ($changeop == 'vtchange') {
+        if ('vtchange' == $changeop) {
             $data_type = '';
             $data_length = '';
             $data_decimal_places = '';
@@ -129,7 +129,7 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         }
 
         // do list change
-        if ($changeop == 'listchange') {
+        if ('listchange' == $changeop) {
             $default_value = '';
         }
 
@@ -145,7 +145,7 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
 
         // do check
         $errors = new Xoonips_Errors();
-        $inputData = array();
+        $inputData = [];
         $inputData['name'] = $name;
         $inputData['xml'] = $xml;
         $inputData['view_type'] = $view_type;
@@ -193,7 +193,7 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         // insert itemtype detail
         $detailBean = Xoonips_BeanFactory::getBean('ItemFieldDetailBean', $this->dirname, $this->trustDirname);
 
-        $detail_info = array();
+        $detail_info = [];
         $detail_info['released'] = 0;
         $detail_info['preselect'] = 0;
         $detail_info['table_name'] = 'xoonips_item_extend';
@@ -205,10 +205,10 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         $detail_info['xml'] = $xml;
         $detail_info['view_type_id'] = $view_type;
         $detail_info['data_type_id'] = $data_type;
-        $detail_info['data_length'] = ($data_length == '') ? -1 : $data_length;
-        $detail_info['data_decimal_places'] = ($data_decimal_places == '') ? -1 : $data_decimal_places;
-        $detail_info['default_value'] = ($default_value == '') ? null : $default_value;
-        $detail_info['list'] = ($list == '') ? null : $list;
+        $detail_info['data_length'] = ('' == $data_length) ? -1 : $data_length;
+        $detail_info['data_decimal_places'] = ('' == $data_decimal_places) ? -1 : $data_decimal_places;
+        $detail_info['default_value'] = ('' == $default_value) ? null : $default_value;
+        $detail_info['list'] = ('' == $list) ? null : $list;
         $detail_info['essential'] = empty($essential) ? 0 : $essential;
         $detail_info['detail_display'] = empty($detail_display) ? 0 : $detail_display;
         $detail_info['detail_target'] = empty($detail_target) ? 0 : $detail_target;
@@ -244,7 +244,7 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         }
 
         // release mode
-        if ($mode == 1) {
+        if (1 == $mode) {
             if (!$detailBean->release($new_detail_id, $new_detail_id)) {
                 $transaction->rollback();
 
@@ -273,7 +273,7 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         $transaction->commit();
 
         $viewData['url'] = XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php?action=PolicyItemField';
-        if ($mode == 1) {
+        if (1 == $mode) {
             $viewData['redirect_msg'] = _AM_XOONIPS_POLICY_ITEMTYPE_DETAIL_RELEASE_MSG_SUCCESS;
         } else {
             $viewData['redirect_msg'] = _AM_XOONIPS_POLICY_ITEMTYPE_DETAIL_REGIST_MSG_SUCCESS;
@@ -319,7 +319,7 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         $baseInfo = $detailBean->getDetailEditInfo($base_detailid);
 
         // do copy
-        if ($baseInfo['a_released'] == 1 && $baseInfo['b_update_id'] == null) {
+        if (1 == $baseInfo['a_released'] && null == $baseInfo['b_update_id']) {
             // transaction
             $transaction = Xoonips_Transaction::getInstance();
             $transaction->start();
@@ -333,14 +333,14 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
 
             // success
             $transaction->commit();
-        } elseif ($baseInfo['a_released'] == 1) {
+        } elseif (1 == $baseInfo['a_released']) {
             $detailid = $baseInfo['b_item_field_detail_id'];
         }
 
         // check disabled edit
         $disedi = false;
         $detail_info = $detailBean->getItemTypeDetailById($base_detailid);
-        if ($detail_info['preselect'] == 1) {
+        if (1 == $detail_info['preselect']) {
             $disedi = true;
         }
 
@@ -349,13 +349,13 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         $detailInfo = $this->getDetailInfoForEdit($detailid, $disabled_arr);
 
         // get default_value title
-        if ($detailInfo['b_list'] != '' && $detailInfo['b_default_value'] != '') {
+        if ('' != $detailInfo['b_list'] && '' != $detailInfo['b_default_value']) {
             $valueSetBean = Xoonips_BeanFactory::getBean('ItemFieldValueSetBean', $this->dirname, $this->trustDirname);
             $detailInfo['b_default_value'] = $valueSetBean->getItemTypeValueTitle($detailInfo['b_list'], $detailInfo['b_default_value']);
         }
 
         // initialization
-        if ($changeop == '') {
+        if ('' == $changeop) {
             $name = $detailInfo['a_name'];
             $xml = $detailInfo['a_xml'];
             $view_type = $detailInfo['a_view_type'];
@@ -375,7 +375,7 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         $viewtypelist = $this->getViewTypeList($view_type);
 
         // do view_type change
-        if ($changeop == 'vtchange') {
+        if ('vtchange' == $changeop) {
             $data_type = '';
             $data_length = '';
             $data_decimal_places = '';
@@ -384,7 +384,7 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         }
 
         // do list change
-        if ($changeop == 'listchange') {
+        if ('listchange' == $changeop) {
             $default_value = '';
         }
 
@@ -472,7 +472,7 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         $detailInfo = $this->getDetailInfoForEdit($detailid, $disabled_arr, true);
 
         // get default_value title
-        if ($detailInfo['b_list'] != '' && $detailInfo['b_default_value'] != '') {
+        if ('' != $detailInfo['b_list'] && '' != $detailInfo['b_default_value']) {
             $valueSetBean = Xoonips_BeanFactory::getBean('ItemFieldValueSetBean', $this->dirname, $this->trustDirname);
             $detailInfo['b_default_value'] = $valueSetBean->getItemTypeValueTitle($detailInfo['b_list'], $detailInfo['b_default_value']);
         }
@@ -481,7 +481,7 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         $viewtypelist = $this->getViewTypeList($view_type);
 
         // do view_type change
-        if ($changeop == 'vtchange') {
+        if ('vtchange' == $changeop) {
             $data_type = '';
             $data_length = '';
             $data_decimal_places = '';
@@ -490,7 +490,7 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         }
 
         // do list change
-        if ($changeop == 'listchange') {
+        if ('listchange' == $changeop) {
             $default_value = '';
         }
 
@@ -506,7 +506,7 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
 
         // do check
         $errors = new Xoonips_Errors();
-        $inputData = array();
+        $inputData = [];
         $inputData['name'] = $name;
         $inputData['xml'] = $xml;
         $inputData['view_type'] = $view_type;
@@ -558,15 +558,15 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         }
 
         // update itemtype detail
-        $detail_info = array();
+        $detail_info = [];
         $detail_info['name'] = $name;
         $detail_info['xml'] = $xml;
         $detail_info['view_type_id'] = $view_type;
         $detail_info['data_type_id'] = $data_type;
-        $detail_info['data_length'] = ($data_length == '') ? -1 : $data_length;
-        $detail_info['data_decimal_places'] = ($data_decimal_places == '') ? -1 : $data_decimal_places;
-        $detail_info['default_value'] = ($default_value == '') ? null : $default_value;
-        $detail_info['list'] = ($list == '') ? null : $list;
+        $detail_info['data_length'] = ('' == $data_length) ? -1 : $data_length;
+        $detail_info['data_decimal_places'] = ('' == $data_decimal_places) ? -1 : $data_decimal_places;
+        $detail_info['default_value'] = ('' == $default_value) ? null : $default_value;
+        $detail_info['list'] = ('' == $list) ? null : $list;
         $detail_info['essential'] = empty($essential) ? 0 : $essential;
         $detail_info['detail_display'] = empty($detail_display) ? 0 : $detail_display;
         $detail_info['detail_target'] = empty($detail_target) ? 0 : $detail_target;
@@ -590,7 +590,7 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         }
 
         // release mode
-        if ($mode == 1) {
+        if (1 == $mode) {
             if (!$detailBean->release($detailid, $base_detailid)) {
                 $transaction->rollback();
 
@@ -619,7 +619,7 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         $transaction->commit();
 
         $viewData['url'] = XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php?action=PolicyItemField';
-        if ($mode == 1) {
+        if (1 == $mode) {
             $viewData['redirect_msg'] = _AM_XOONIPS_POLICY_ITEMTYPE_DETAIL_RELEASE_MSG_SUCCESS;
         } else {
             $viewData['redirect_msg'] = _AM_XOONIPS_POLICY_ITEMTYPE_DETAIL_MODIFY_MSG_SUCCESS;
@@ -664,27 +664,27 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
 
     private function setBreadcrumbs($title)
     {
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => _AM_XOONIPS_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => _AM_XOONIPS_POLICY_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php?action=Policy',
-            ),
-            array(
+            ],
+            [
                 'name' => _AD_XOONIPS_POLICY_ITEM_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php?action=PolicyItem',
-            ),
-            array(
+            ],
+            [
                 'name' => _AM_XOONIPS_POLICY_ITEMFIELD_TITLE,
                 'url' => XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php?action=PolicyItemField',
-            ),
-            array(
+            ],
+            [
                 'name' => $title,
-            ),
-        );
+            ],
+        ];
 
         return $breadcrumbs;
     }
@@ -698,42 +698,42 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         } else {
             $dinfo = $detailBean->getDetailEditInfo($detailid, true);
         }
-        $disabled_arr = $dinfo['b_released'] == 1 ? 'disabled="disabled"' : '';
-        $b_view_type_id = $dinfo['a_released'] == 1 ? $dinfo['a_view_type_id'] : $dinfo['b_view_type_id'];
-        $b_data_type_id = $dinfo['a_released'] == 1 ? $dinfo['a_data_type_id'] : $dinfo['b_data_type_id'];
-        $detailInfo = array(
-            'a_name' => $dinfo['a_released'] == 1 ? $dinfo['b_name'] : $dinfo['a_name'],
-            'a_xml' => $dinfo['a_released'] == 1 ? $dinfo['b_xml'] : $dinfo['a_xml'],
-            'a_view_type' => $dinfo['a_released'] == 1 ? $dinfo['b_view_type_id'] : $dinfo['a_view_type_id'],
-            'a_data_type' => $dinfo['a_released'] == 1 ? $dinfo['b_data_type_id'] : $dinfo['a_data_type_id'],
-            'a_data_length' => $dinfo['a_released'] == 1 ? $dinfo['b_data_length'] : $dinfo['a_data_length'],
-            'a_data_decimal_places' => $dinfo['a_released'] == 1 ? $dinfo['b_data_decimal_places'] : $dinfo['a_data_decimal_places'],
-            'a_default_value' => $dinfo['a_released'] == 1 ? $dinfo['b_default_value'] : $dinfo['a_default_value'],
-            'a_list' => $dinfo['a_released'] == 1 ? $dinfo['b_list'] : $dinfo['a_list'],
-            'a_essential' => $dinfo['a_released'] == 1 ? $dinfo['b_essential'] : $dinfo['a_essential'],
-            'a_detail_display' => $dinfo['a_released'] == 1 ? $dinfo['b_detail_display'] : $dinfo['a_detail_display'],
-            'a_detail_target' => $dinfo['a_released'] == 1 ? $dinfo['b_detail_target'] : $dinfo['a_detail_target'],
-            'a_scope_search' => $dinfo['a_released'] == 1 ? $dinfo['b_scope_search'] : $dinfo['a_scope_search'],
-            'a_nondisplay' => $dinfo['a_released'] == 1 ? $dinfo['b_nondisplay'] : $dinfo['a_nondisplay'],
-            'a_weight' => $dinfo['a_released'] == 1 ? $dinfo['b_weight'] : $dinfo['a_weight'],
-            'b_name' => $dinfo['a_released'] == 1 ? $dinfo['a_name'] : $dinfo['b_name'],
-            'b_xml' => $dinfo['a_released'] == 1 ? $dinfo['a_xml'] : $dinfo['b_xml'],
+        $disabled_arr = 1 == $dinfo['b_released'] ? 'disabled="disabled"' : '';
+        $b_view_type_id = 1 == $dinfo['a_released'] ? $dinfo['a_view_type_id'] : $dinfo['b_view_type_id'];
+        $b_data_type_id = 1 == $dinfo['a_released'] ? $dinfo['a_data_type_id'] : $dinfo['b_data_type_id'];
+        $detailInfo = [
+            'a_name' => 1 == $dinfo['a_released'] ? $dinfo['b_name'] : $dinfo['a_name'],
+            'a_xml' => 1 == $dinfo['a_released'] ? $dinfo['b_xml'] : $dinfo['a_xml'],
+            'a_view_type' => 1 == $dinfo['a_released'] ? $dinfo['b_view_type_id'] : $dinfo['a_view_type_id'],
+            'a_data_type' => 1 == $dinfo['a_released'] ? $dinfo['b_data_type_id'] : $dinfo['a_data_type_id'],
+            'a_data_length' => 1 == $dinfo['a_released'] ? $dinfo['b_data_length'] : $dinfo['a_data_length'],
+            'a_data_decimal_places' => 1 == $dinfo['a_released'] ? $dinfo['b_data_decimal_places'] : $dinfo['a_data_decimal_places'],
+            'a_default_value' => 1 == $dinfo['a_released'] ? $dinfo['b_default_value'] : $dinfo['a_default_value'],
+            'a_list' => 1 == $dinfo['a_released'] ? $dinfo['b_list'] : $dinfo['a_list'],
+            'a_essential' => 1 == $dinfo['a_released'] ? $dinfo['b_essential'] : $dinfo['a_essential'],
+            'a_detail_display' => 1 == $dinfo['a_released'] ? $dinfo['b_detail_display'] : $dinfo['a_detail_display'],
+            'a_detail_target' => 1 == $dinfo['a_released'] ? $dinfo['b_detail_target'] : $dinfo['a_detail_target'],
+            'a_scope_search' => 1 == $dinfo['a_released'] ? $dinfo['b_scope_search'] : $dinfo['a_scope_search'],
+            'a_nondisplay' => 1 == $dinfo['a_released'] ? $dinfo['b_nondisplay'] : $dinfo['a_nondisplay'],
+            'a_weight' => 1 == $dinfo['a_released'] ? $dinfo['b_weight'] : $dinfo['a_weight'],
+            'b_name' => 1 == $dinfo['a_released'] ? $dinfo['a_name'] : $dinfo['b_name'],
+            'b_xml' => 1 == $dinfo['a_released'] ? $dinfo['a_xml'] : $dinfo['b_xml'],
             'b_view_type' => $b_view_type_id,
             'b_data_type' => $b_data_type_id,
             'b_view_name' => empty($b_view_type_id) ? '' : Xoonips_ViewTypeFactory::getInstance($this->dirname, $this->trustDirname)->getViewType($b_view_type_id)->getName(),
             'b_data_name' => empty($b_data_type_id) ? '' : Xoonips_DataTypeFactory::getInstance($this->dirname, $this->trustDirname)->getDataType($b_data_type_id)->getName(),
-            'b_data_length' => $dinfo['a_released'] == 1 ? $dinfo['a_data_length'] : $dinfo['b_data_length'],
-            'b_data_decimal_places' => $dinfo['a_released'] == 1 ? $dinfo['a_data_decimal_places'] : $dinfo['b_data_decimal_places'],
-            'b_default_value' => $dinfo['a_released'] == 1 ? $dinfo['a_default_value'] : $dinfo['b_default_value'],
-            'b_list' => $dinfo['a_released'] == 1 ? $dinfo['a_list'] : $dinfo['b_list'],
-            'b_essential' => $dinfo['a_released'] == 1 ? $dinfo['a_essential'] : $dinfo['b_essential'],
-            'b_detail_display' => $dinfo['a_released'] == 1 ? $dinfo['a_detail_display'] : $dinfo['b_detail_display'],
-            'b_detail_target' => $dinfo['a_released'] == 1 ? $dinfo['a_detail_target'] : $dinfo['b_detail_target'],
-            'b_scope_search' => $dinfo['a_released'] == 1 ? $dinfo['a_scope_search'] : $dinfo['b_scope_search'],
-            'b_nondisplay' => $dinfo['a_released'] == 1 ? $dinfo['a_nondisplay'] : $dinfo['b_nondisplay'],
-            'b_weight' => $dinfo['a_released'] == 1 ? $dinfo['a_weight'] : $dinfo['b_weight'],
+            'b_data_length' => 1 == $dinfo['a_released'] ? $dinfo['a_data_length'] : $dinfo['b_data_length'],
+            'b_data_decimal_places' => 1 == $dinfo['a_released'] ? $dinfo['a_data_decimal_places'] : $dinfo['b_data_decimal_places'],
+            'b_default_value' => 1 == $dinfo['a_released'] ? $dinfo['a_default_value'] : $dinfo['b_default_value'],
+            'b_list' => 1 == $dinfo['a_released'] ? $dinfo['a_list'] : $dinfo['b_list'],
+            'b_essential' => 1 == $dinfo['a_released'] ? $dinfo['a_essential'] : $dinfo['b_essential'],
+            'b_detail_display' => 1 == $dinfo['a_released'] ? $dinfo['a_detail_display'] : $dinfo['b_detail_display'],
+            'b_detail_target' => 1 == $dinfo['a_released'] ? $dinfo['a_detail_target'] : $dinfo['b_detail_target'],
+            'b_scope_search' => 1 == $dinfo['a_released'] ? $dinfo['a_scope_search'] : $dinfo['b_scope_search'],
+            'b_nondisplay' => 1 == $dinfo['a_released'] ? $dinfo['a_nondisplay'] : $dinfo['b_nondisplay'],
+            'b_weight' => 1 == $dinfo['a_released'] ? $dinfo['a_weight'] : $dinfo['b_weight'],
             'b_item_field_detail_id' => $dinfo['b_item_field_detail_id'],
-        );
+        ];
 
         return $detailInfo;
     }
@@ -761,14 +761,14 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
     {
         $datatypeBean = Xoonips_BeanFactory::getBean('DataTypeBean', $this->dirname, $this->trustDirname);
         $datatypes = $datatypeBean->selectDatatypesByViewtype($view_type);
-        $datatypelist = array(array('datatype_id' => '0', 'name' => '-------------'));
+        $datatypelist = [['datatype_id' => '0', 'name' => '-------------']];
         foreach ($datatypes as $dt) {
             $datatype['datatype_id'] = $dt['data_type_id'];
             $datatype['name'] = $dt['name'];
             $datatype['data_length'] = $dt['data_length'];
             $datatype['data_decimal_places'] = $dt['data_decimal_places'];
             $datatype['selected'] = ($dt['data_type_id'] == $data_type) ? 'selected="selected"' : '';
-            if ($datatype['selected'] != '') {
+            if ('' != $datatype['selected']) {
                 $selected_datatype_name = $dt['name'];
             }
             $datatypelist[] = $datatype;
@@ -791,12 +791,12 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
     private function doDetailregistersaveInputCheck($inputData, &$errors)
     {
         // detail name
-        $parameters = array();
+        $parameters = [];
         $parameters[] = _AM_XOONIPS_LABEL_ITEMTYPE_DETAIL_NAME;
         $viewTypeBean = Xoonips_BeanFactory::getBean('ViewTypeBean', $this->dirname, $this->trustDirname);
         $dataTypeBean = Xoonips_BeanFactory::getBean('DataTypeBean', $this->dirname, $this->trustDirname);
 
-        if ($inputData['name'] == '') {
+        if ('' == $inputData['name']) {
             $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
         } else {
             // name double check except preview & file upload
@@ -811,9 +811,9 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         }
 
         // detail xml
-        $parameters = array();
+        $parameters = [];
         $parameters[] = _AM_XOONIPS_POLICY_ITEMFIELD_ID;
-        if ($inputData['xml'] == '') {
+        if ('' == $inputData['xml']) {
             $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
         } else {
             // xml double check except preview & file upload
@@ -826,36 +826,36 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         }
 
         // view_type
-        if ($inputData['view_type'] == '0') {
-            $parameters = array();
+        if ('0' == $inputData['view_type']) {
+            $parameters = [];
             $parameters[] = _AM_XOONIPS_LABEL_ITEMTYPE_VIEW_TYPE;
             $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
         } else {
             $detailBean = Xoonips_BeanFactory::getBean('ItemFieldDetailBean', $this->dirname, $this->trustDirname);
             $viewtypeObj = Xoonips_ViewTypeFactory::getInstance($this->dirname, $this->trustDirname)->getViewType($inputData['view_type']);
-            if ($viewtypeObj->isMulti() == false && $detailBean->existViewtype(0, $inputData['view_type'])) {
-                $parameters = array();
+            if (false == $viewtypeObj->isMulti() && $detailBean->existViewtype(0, $inputData['view_type'])) {
+                $parameters = [];
                 $parameters[] = '';
                 $errors->addError('_AM_XOONIPS_POLICY_ITEMTYPE_VIEWTYPE_DUPLICATE_MSG', '', $parameters);
             }
         }
 
         // data_type
-        if ($inputData['data_type'] == '0') {
-            $parameters = array();
+        if ('0' == $inputData['data_type']) {
+            $parameters = [];
             $parameters[] = _AM_XOONIPS_LABEL_ITEMTYPE_DATA_TYPE;
             $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
         }
 
         // list required when view_type is radio & select
-        if (($inputData['view_type'] == $viewTypeBean->selectByName('radio') || $inputData['view_type'] == $viewTypeBean->selectByName('checkbox')) && $inputData['list'] == '') {
-            $parameters = array();
+        if (($inputData['view_type'] == $viewTypeBean->selectByName('radio') || $inputData['view_type'] == $viewTypeBean->selectByName('checkbox')) && '' == $inputData['list']) {
+            $parameters = [];
             $parameters[] = _AM_XOONIPS_LABEL_ITEMTYPE_SUBTYPES;
             $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
         }
 
         // length
-        if ($inputData['length'] == '') {
+        if ('' == $inputData['length']) {
             if ($inputData['data_type'] == $dataTypeBean->selectByName('int')) {
                 $inputData['length'] = 11;
             } elseif ($inputData['data_type'] == $dataTypeBean->selectByName('float')) {
@@ -868,22 +868,22 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
                 $inputData['length'] = -1;
             }
         }
-        if ($inputData['length'] != '' && !is_numeric($inputData['length'])) {
-            $parameters = array();
+        if ('' != $inputData['length'] && !is_numeric($inputData['length'])) {
+            $parameters = [];
             $parameters[] = _AM_XOONIPS_LABEL_ITEMTYPE_DATA_LENGTH;
             $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
         }
 
         // length2
-        if ($inputData['length2'] == '') {
+        if ('' == $inputData['length2']) {
             if ($inputData['data_type'] == $dataTypeBean->selectByName('float') || $inputData['data_type'] == $dataTypeBean->selectByName('double')) {
                 $inputData['length2'] = 0;
             } else {
                 $inputData['length2'] = -1;
             }
         }
-        if ($inputData['length2'] != '' && !is_numeric($inputData['length2'])) {
-            $parameters = array();
+        if ('' != $inputData['length2'] && !is_numeric($inputData['length2'])) {
+            $parameters = [];
             $parameters[] = _AM_XOONIPS_LABEL_ITEMTYPE_DATA_LENGTH2;
             $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
         }
@@ -933,16 +933,16 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         // detail name
         $viewTypeBean = Xoonips_BeanFactory::getBean('ViewTypeBean', $this->dirname, $this->trustDirname);
 
-        $parameters = array();
+        $parameters = [];
         $parameters[] = _AM_XOONIPS_LABEL_ITEMTYPE_DETAIL_NAME;
-        if ($inputData['name'] == '') {
+        if ('' == $inputData['name']) {
             $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
         }
 
         // detail xml
-        $parameters = array();
+        $parameters = [];
         $parameters[] = _AM_XOONIPS_POLICY_ITEMFIELD_ID;
-        if ($inputData['xml'] == '') {
+        if ('' == $inputData['xml']) {
             $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
         } else {
             // xml double check except preview & file upload
@@ -955,44 +955,44 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         }
 
         // view_type
-        if ($inputData['view_type'] == '0') {
-            $parameters = array();
+        if ('0' == $inputData['view_type']) {
+            $parameters = [];
             $parameters[] = _AM_XOONIPS_LABEL_ITEMTYPE_VIEW_TYPE;
             $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
         } else {
             $detailBean = Xoonips_BeanFactory::getBean('ItemFieldDetailBean', $this->dirname, $this->trustDirname);
             $viewtypeObj = Xoonips_ViewTypeFactory::getInstance($this->dirname, $this->trustDirname)->getViewType($inputData['view_type']);
-            if ($viewtypeObj->isMulti() == false && $detailBean->existViewtype($detailid, $inputData['view_type'], $base_detailid)) {
-                $parameters = array();
+            if (false == $viewtypeObj->isMulti() && $detailBean->existViewtype($detailid, $inputData['view_type'], $base_detailid)) {
+                $parameters = [];
                 $parameters[] = '';
                 $errors->addError('_AM_XOONIPS_POLICY_ITEMTYPE_VIEWTYPE_DUPLICATE_MSG', '', $parameters);
             }
         }
 
         // data_type
-        if ($inputData['data_type'] == '0') {
-            $parameters = array();
+        if ('0' == $inputData['data_type']) {
+            $parameters = [];
             $parameters[] = _AM_XOONIPS_LABEL_ITEMTYPE_DATA_TYPE;
             $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
         }
 
         // list required when view_type is radio & select
-        if (($inputData['view_type'] == $viewTypeBean->selectByName('radio') || $inputData['view_type'] == $viewTypeBean->selectByName('select')) && $inputData['list'] == '') {
-            $parameters = array();
+        if (($inputData['view_type'] == $viewTypeBean->selectByName('radio') || $inputData['view_type'] == $viewTypeBean->selectByName('select')) && '' == $inputData['list']) {
+            $parameters = [];
             $parameters[] = _AM_XOONIPS_LABEL_ITEMTYPE_SUBTYPES;
             $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
         }
 
         // length
-        if ($inputData['length'] != '' && !is_numeric($inputData['length'])) {
-            $parameters = array();
+        if ('' != $inputData['length'] && !is_numeric($inputData['length'])) {
+            $parameters = [];
             $parameters[] = _AM_XOONIPS_LABEL_ITEMTYPE_DATA_LENGTH;
             $errors->addError('_AM_XOONIPS_CHECK_INPUT_ERROR_MSG', '', $parameters);
         }
 
         // length2
-        if ($inputData['length2'] != '' && !is_numeric($inputData['length2'])) {
-            $parameters = array();
+        if ('' != $inputData['length2'] && !is_numeric($inputData['length2'])) {
+            $parameters = [];
             $parameters[] = _AM_XOONIPS_LABEL_ITEMTYPE_DATA_LENGTH2;
             $errors->addError('_AM_XOONIPS_CHECK_INPUT_ERROR_MSG', '', $parameters);
         }
@@ -1073,7 +1073,7 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
     {
         $viewtypeBean = Xoonips_BeanFactory::getBean('ViewTypeBean', $this->dirname, $this->trustDirname);
         $viewtypes = $viewtypeBean->getViewtypeList();
-        $viewtypelist = array(array('viewtype_id' => '0', 'name' => '-------------'));
+        $viewtypelist = [['viewtype_id' => '0', 'name' => '-------------']];
         foreach ($viewtypes as $vt) {
             $viewtype['viewtype_id'] = $vt['view_type_id'];
             $viewtype['name'] = $vt['name'];
@@ -1086,7 +1086,7 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
 
     private function doCopyItemfield($itemfieldid, $isCopy, &$insertId)
     {
-        $map = array();
+        $map = [];
         if ($isCopy) {
             $detailBean = Xoonips_BeanFactory::getBean('ItemFieldDetailBean', $this->dirname, $this->trustDirname);
             if (!$detailBean->copyById($itemfieldid, $map)) {
@@ -1107,7 +1107,7 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
     /**
      * installItemSearch.
      *
-     * @param   $detailid
+     * @param $detailid
      *
      * @return bool
      **/

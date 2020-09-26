@@ -22,7 +22,7 @@ class ModuleUpdater
      *
      * @var array
      */
-    protected $mMilestone = array();
+    protected $mMilestone = [];
 
     /**
      * current xoops module.
@@ -78,14 +78,14 @@ class ModuleUpdater
      *
      * @var array
      */
-    protected $mPreUpdateHooks = array();
+    protected $mPreUpdateHooks = [];
 
     /**
      * custom post-update hooks.
      *
      * @var array
      */
-    protected $mPostUpdateHooks = array();
+    protected $mPostUpdateHooks = [];
 
     /**
      * constructor.
@@ -178,7 +178,7 @@ class ModuleUpdater
     {
         ksort($this->mMilestone);
         foreach ($this->mMilestone as $tVer => $tMethod) {
-            if ($tVer > $this->getCurrentVersion() && is_callable(array($this, $tMethod))) {
+            if ($tVer > $this->getCurrentVersion() && is_callable([$this, $tMethod])) {
                 return true;
             }
         }
@@ -222,7 +222,7 @@ class ModuleUpdater
     {
         ksort($this->mMilestone);
         foreach ($this->mMilestone as $tVer => $tMethod) {
-            if ($tVer > $this->getCurrentVersion() && is_callable(array($this, $tMethod))) {
+            if ($tVer > $this->getCurrentVersion() && is_callable([$this, $tMethod])) {
                 return $this->$tMethod();
             }
         }
@@ -289,7 +289,7 @@ class ModuleUpdater
             ksort($this->mPreUpdateHooks);
             foreach ($this->mPreUpdateHooks as $version => $func) {
                 if ($version > $currentVersion) {
-                    if (is_callable(array($this, $func))) {
+                    if (is_callable([$this, $func])) {
                         $this->$func();
                         if (!$this->mForceMode && $this->mLog->hasError()) {
                             break;
@@ -316,7 +316,7 @@ class ModuleUpdater
             ksort($this->mPostUpdateHooks);
             foreach ($this->mPostUpdateHooks as $version => $func) {
                 if ($version > $currentVersion) {
-                    if (is_callable(array($this, $func))) {
+                    if (is_callable([$this, $func])) {
                         $this->$func();
                         if (!$this->mForceMode && $this->mLog->hasError()) {
                             break;

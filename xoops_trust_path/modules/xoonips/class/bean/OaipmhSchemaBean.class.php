@@ -23,7 +23,7 @@ class Xoonips_OaipmhSchemaBean extends Xoonips_BeanBase
      */
     public function getSchemaList($metadataPrefix = null)
     {
-        $ret = array();
+        $ret = [];
         $sql = 'SELECT * FROM '.$this->table;
         if (!is_null($metadataPrefix)) {
             $sql = $sql." WHERE metadata_prefix='$metadataPrefix' ORDER BY weight";
@@ -49,7 +49,7 @@ class Xoonips_OaipmhSchemaBean extends Xoonips_BeanBase
      */
     public function getPrefixList()
     {
-        $ret = array();
+        $ret = [];
         $sql = 'SELECT DISTINCT metadata_prefix FROM '.$this->table.' ORDER BY metadata_prefix';
 
         $result = $this->execute($sql);
@@ -66,7 +66,7 @@ class Xoonips_OaipmhSchemaBean extends Xoonips_BeanBase
 
     public function getSchemaValueSetList($metadataPrefix)
     {
-        $ret = array();
+        $ret = [];
         $valueSetTable = $this->prefix($this->modulePrefix('oaipmh_schema_value_set'));
         $sql = "SELECT * FROM $valueSetTable WHERE schema_id IN (";
         $sql = $sql.'SELECT schema_id FROM '.$this->table;

@@ -63,7 +63,7 @@ class Xoonips_ItemKeywordBean extends Xoonips_BeanBase
      */
     public function getKeywords($id)
     {
-        $ret = array();
+        $ret = [];
         $sql = "SELECT * FROM $this->table WHERE item_id=$id ORDER BY keyword_id";
         $result = $this->execute($sql);
         if (!$result) {

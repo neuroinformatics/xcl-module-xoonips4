@@ -83,9 +83,9 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
         }
 
         // breadcrumbs
-        $breadcrumbs = array(
-            array('name' => _MD_XOONIPS_QUICK_SEARCH_TITLE),
-        );
+        $breadcrumbs = [
+            ['name' => _MD_XOONIPS_QUICK_SEARCH_TITLE],
+        ];
 
         $viewData['user_tab_chk'] = 1;
 
@@ -123,19 +123,19 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
 
         // making itemtype resouces
         $index = 1;
-        $blocks = array();
+        $blocks = [];
         foreach ($itemtypes as $itemtype) {
             $item = new Xoonips_Item($itemtype['item_type_id'], $this->dirname, $this->trustDirname);
-            $blocks[] = array(
+            $blocks[] = [
                 'itemtype_name' => $itemtype['name'],
                 'itemtype_id' => $itemtype['item_type_id'],
                 'itemtype_view' => $item->getSearchView(),
-            );
+            ];
             ++$index;
         }
 
         // breadcrumbs
-        $breadcrumbs = array(array('name' => _MD_XOONIPS_ITEM_ADVANCED_SEARCH_TITLE));
+        $breadcrumbs = [['name' => _MD_XOONIPS_ITEM_ADVANCED_SEARCH_TITLE]];
 
         // set view data
         $viewData['user_tab_chk'] = 1;
@@ -202,18 +202,18 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
         }
         $sess_orderby = isset($_SESSION[$this->dirname.'_order_by']) ? $_SESSION[$this->dirname.'_order_by'] : $default_orderby;
         $sess_orderdir = isset($_SESSION[$this->dirname.'_order_dir']) ? $_SESSION[$this->dirname.'_order_dir'] : XOONIPS_ASC;
-        $request_vars = array(
-            'op' => array('s', ''),
-            'print' => array('s', ''),
-            'page' => array('i', 1),
-            'itemcount' => array('i', 20),
-            'orderby' => array('s', $sess_orderby),
-            'order_dir' => array('i', $sess_orderdir),
-            'search_itemtype' => array('i', ''),
-            'search_subtype' => array('s', ''),
-            'keyword' => array('s', ''),
-            'search_condition' => array('i', ''),
-        );
+        $request_vars = [
+            'op' => ['s', ''],
+            'print' => ['s', ''],
+            'page' => ['i', 1],
+            'itemcount' => ['i', 20],
+            'orderby' => ['s', $sess_orderby],
+            'order_dir' => ['i', $sess_orderdir],
+            'search_itemtype' => ['i', ''],
+            'search_subtype' => ['s', ''],
+            'keyword' => ['s', ''],
+            'search_condition' => ['i', ''],
+        ];
         foreach ($request_vars as $key => $meta) {
             list($type, $default) = $meta;
             $$key = $request->getParameter($key);
@@ -223,10 +223,10 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
         }
         $_SESSION[$this->dirname.'_order_by'] = $orderby;
         $_SESSION[$this->dirname.'_order_dir'] = $order_dir;
-        $cri = array('start' => ($page - 1) * $itemcount,
-              'rows' => $itemcount,
-              'orderby' => $orderby,
-              'orderdir' => $order_dir, );
+        $cri = ['start' => ($page - 1) * $itemcount,
+            'rows' => $itemcount,
+            'orderby' => $orderby,
+            'orderdir' => $order_dir, ];
         $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
         $itemBean->filterCanViewItem($iids, $uid);
         $num_of_items = count($iids);
@@ -235,7 +235,7 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
 
         $export_enabled = true;
 
-        $item_htmls = array();
+        $item_htmls = [];
         if ($dis_iids) {
             foreach ($dis_iids as $dis_iid) {
                 $itemInfo = $itemBean->getItem2($dis_iid);
@@ -250,15 +250,15 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
         }
         $response->setViewDataByKey('item_htmls', $item_htmls);
 
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => _MD_XOONIPS_ITEM_SEARCH_RESULT,
-            ),
-        );
+            ],
+        ];
 
         $response->setViewDataByKey('xoops_breadcrumbs', $breadcrumbs);
         $response->setViewDataByKey('order_by_select', $sortTitles);
-        $response->setViewDataByKey('item_count_select', array('20', '50', '100'));
+        $response->setViewDataByKey('item_count_select', ['20', '50', '100']);
 
         //centering current page number(5th of $pages)
         $response->setViewDataByKey('pages', $this->getSelectablePageNumber($page, ceil($num_of_items / $itemcount)));
@@ -293,7 +293,7 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
 
     private function getCheckedItemtype(&$request)
     {
-        $checked = array();
+        $checked = [];
         $itemTypeBean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
         $itemtypes = $itemTypeBean->getItemTypeList();
         if (!$itemtypes) {
@@ -315,7 +315,7 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
     private function getSelectablePageNumber($page, $maxpage)
     {
         //centering current page number(5th of $pages)
-        $pages = array(min(max(1, $page - 4), max(1, $maxpage - 9)));
+        $pages = [min(max(1, $page - 4), max(1, $maxpage - 9))];
         for ($i = 1; $i < 10 && $pages[$i - 1] < $maxpage; ++$i) {
             $pages[$i] = $pages[$i - 1] + 1;
         }
@@ -331,7 +331,7 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
         $search_subtype = $request->getParameter('search_subtype');
         $keyword = $request->getParameter('keyword');
 
-        $items = array();
+        $items = [];
         if (!is_null($search_subtype) && '' != $search_subtype) {
             // do advanced search by subtype
             $items = $this->doAdvancedSearchBySubTypeExport($request, $response);
@@ -405,8 +405,8 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
     private function _doAdvancedSearchBody(&$request, $post_data, &$search_data)
     {
         $checkedValue = $this->getCheckedItemtype($request);
-        $search_data = array();
-        $search_var = array();
+        $search_data = [];
+        $search_var = [];
         foreach ($post_data as $key => $value) {
             $idArray = explode(Xoonips_Enum::ITEM_ID_SEPARATOR, $key);
             if (3 == count($idArray)) {
@@ -426,9 +426,9 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
             }
         }
 
-        $iids = array();
+        $iids = [];
         if (count($search_var) > 0) {
-            $searchSqlArr = array();
+            $searchSqlArr = [];
             foreach ($search_var as $key => $data) {
                 $item = new Xoonips_Item($key, $this->dirname, $this->trustDirname);
                 $item->setData($data);
@@ -450,12 +450,12 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
 
     private function _doQuickSearchBody($keyword, $search_condition)
     {
-        $iids = array();
+        $iids = [];
         if ('' != trim($keyword)) {
             $chandler = Functions::getXoonipsHandler('ItemQuickSearchCondition', $this->dirname);
             $cobj = &$chandler->get($search_condition);
             if (is_object($cobj)) {
-                $post_data = array();
+                $post_data = [];
                 $fieldIds = $chandler->getItemFieldIds($cobj);
                 foreach ($fieldIds as $fieldId) {
                     if (!$chandler->existItemFieldId($fieldId)) {
@@ -465,7 +465,7 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
                     $groupId = 0;
                     $post_data[$itemtypeId][$groupId.Xoonips_Enum::ITEM_ID_SEPARATOR.$itemtypeId.Xoonips_Enum::ITEM_ID_SEPARATOR.$fieldId] = $keyword;
                 }
-                $searchSqlArr = array();
+                $searchSqlArr = [];
                 foreach ($post_data as $key => $data) {
                     if (0 == $itemtypeId) {
                         $key = 0;

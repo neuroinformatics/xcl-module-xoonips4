@@ -62,7 +62,7 @@ class Xoonips_UserListAction extends User_UserListAction
         $userHandler = &xoops_gethandler('user');
         // update posts
         foreach (array_keys($postsArr) as $uid) {
-            if ($uid == 1) {
+            if (1 == $uid) {
                 continue;
             }
             $user = &$userHandler->get($uid);
@@ -82,10 +82,10 @@ class Xoonips_UserListAction extends User_UserListAction
         $userClass = Xoonips_User::getInstance();
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->mDirname, $this->mTrustDirname);
         foreach (array_keys($postsArr) as $uid) {
-            if ($uid == 1) {
+            if (1 == $uid) {
                 continue;
             }
-            if ($this->mActionForm->get('delete', $uid) != 1) {
+            if (1 != $this->mActionForm->get('delete', $uid)) {
                 continue;
             }
             $user = &$userHandler->get($uid);

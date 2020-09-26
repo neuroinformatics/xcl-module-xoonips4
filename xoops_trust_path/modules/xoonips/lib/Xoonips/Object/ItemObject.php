@@ -72,7 +72,7 @@ class ItemObject extends AbstractObject
         $criteriaOpenLevel = new \CriteriaCompo();
         $criteriaOpenLevelPublic = new \CriteriaCompo();
         $criteriaOpenLevelPublic->add(new \Criteria('open_level', $indexHandler::OPEN_LEVEL_PUBLIC, '=', $indexTable));
-        $criteriaOpenLevelPublic->add(new \Criteria('certify_state', array($indexItemLinkHandler::CERTIFY_STATE_CERTIFIED, $indexItemLinkHandler::CERTIFY_STATE_WITHDRAW_REQUIRED), 'IN', $indexItemLinkTable));
+        $criteriaOpenLevelPublic->add(new \Criteria('certify_state', [$indexItemLinkHandler::CERTIFY_STATE_CERTIFIED, $indexItemLinkHandler::CERTIFY_STATE_WITHDRAW_REQUIRED], 'IN', $indexItemLinkTable));
         $criteriaOpenLevel->add($criteriaOpenLevelPublic);
         if (!empty($adminGids) || !empty($myGids) || !empty($publicGids)) {
             $criteriaOpenLevelGroup = new \CriteriaCompo();
@@ -85,13 +85,13 @@ class ItemObject extends AbstractObject
             if (!empty($myGids)) {
                 $criteriaOpenLevelGroupSubMember = new \CriteriaCompo();
                 $criteriaOpenLevelGroupSubMember->add(new \Criteria('groupid', $myGids, 'IN', $indexTable));
-                $criteriaOpenLevelGroupSubMember->add(new \Criteria('certify_state', array($indexItemLinkHandler::CERTIFY_STATE_CERTIFIED, $indexItemLinkHandler::CERTIFY_STATE_WITHDRAW_REQUIRED), 'IN', $indexItemLinkTable));
+                $criteriaOpenLevelGroupSubMember->add(new \Criteria('certify_state', [$indexItemLinkHandler::CERTIFY_STATE_CERTIFIED, $indexItemLinkHandler::CERTIFY_STATE_WITHDRAW_REQUIRED], 'IN', $indexItemLinkTable));
                 $criteriaOpenLevelGroupSub->add($criteriaOpenLevelGroupSubMember);
             }
             if (!empty($publicGids)) {
                 $criteriaOpenLevelGroupSubOpen = new \CriteriaCompo();
                 $criteriaOpenLevelGroupSubOpen->add(new \Criteria('groupid', $publicGids, 'IN', $indexTable));
-                $criteriaOpenLevelGroupSubOpen->add(new \Criteria('certify_state', array($indexItemLinkHandler::CERTIFY_STATE_CERTIFIED, $indexItemLinkHandler::CERTIFY_STATE_WITHDRAW_REQUIRED), 'IN', $indexItemLinkTable));
+                $criteriaOpenLevelGroupSubOpen->add(new \Criteria('certify_state', [$indexItemLinkHandler::CERTIFY_STATE_CERTIFIED, $indexItemLinkHandler::CERTIFY_STATE_WITHDRAW_REQUIRED], 'IN', $indexItemLinkTable));
                 $criteriaOpenLevelGroupSub->add($criteriaOpenLevelGroupSubOpen);
             }
             $criteriaOpenLevel->add($criteriaOpenLevelGroup, 'OR');

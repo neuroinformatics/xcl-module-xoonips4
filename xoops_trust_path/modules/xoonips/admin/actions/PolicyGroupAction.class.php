@@ -14,18 +14,18 @@ class Xoonips_Admin_PolicyGroupAction extends Xoonips_AbstractEditAction
      *
      * @var array
      */
-    private $_mConfigKeys = array(
-        'general' => array(
+    private $_mConfigKeys = [
+        'general' => [
             'group_making',
             'group_making_certify',
             'group_publish_certify',
-        ),
-        'initval' => array(
+        ],
+        'initval' => [
             'group_item_number_limit',
             'group_index_number_limit',
             'group_item_storage_limit',
-        ),
-    );
+        ],
+    ];
 
     /**
      * is admin.
@@ -95,19 +95,19 @@ class Xoonips_Admin_PolicyGroupAction extends Xoonips_AbstractEditAction
         $dirname = $this->mAsset->mDirname;
         $constpref = '_AD_'.strtoupper($dirname);
         // breadcrumbs
-        $breadcrumbs = array(
-            array(
+        $breadcrumbs = [
+            [
                 'name' => constant($constpref.'_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_TITLE'),
                 'url' => XOOPS_URL.'/modules/'.$dirname.'/admin/index.php?action=Policy',
-            ),
-            array(
+            ],
+            [
                 'name' => constant($constpref.'_POLICY_GROUP_TITLE'),
-            ),
-        );
+            ],
+        ];
         $render->setTemplateName('policy_group.html');
         $render->setAttribute('title', constant($constpref.'_POLICY_GROUP_TITLE'));
         $render->setAttribute('description', constant($constpref.'_POLICY_GROUP_DESC'));
@@ -123,12 +123,12 @@ class Xoonips_Admin_PolicyGroupAction extends Xoonips_AbstractEditAction
      */
     protected function getGroupPolicies()
     {
-        $ret = array();
+        $ret = [];
         $ret['mode'] = '';
         foreach ($this->_mConfigKeys as $mode => $keys) {
             foreach ($keys as $key) {
                 $value = Functions::getXoonipsConfig($this->mAsset->mDirname, $key);
-                if ($key == 'group_item_storage_limit') {
+                if ('group_item_storage_limit' == $key) {
                     $value /= (1024 * 1024);
                 }
                 $ret[$key] = $value;
@@ -151,7 +151,7 @@ class Xoonips_Admin_PolicyGroupAction extends Xoonips_AbstractEditAction
             if ($mode == $policies['mode']) {
                 foreach ($keys as $key) {
                     $value = $policies[$key];
-                    if ($key == 'group_item_storage_limit') {
+                    if ('group_item_storage_limit' == $key) {
                         $value *= (1024 * 1024);
                     }
                     if (!Functions::setXoonipsConfig($this->mAsset->mDirname, $key, $value)) {

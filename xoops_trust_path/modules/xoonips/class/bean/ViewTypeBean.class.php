@@ -23,7 +23,7 @@ class Xoonips_ViewTypeBean extends Xoonips_BeanBase
      */
     public function getViewtypeList()
     {
-        $ret = array();
+        $ret = [];
         $sql = 'SELECT * FROM '.$this->table.' ORDER BY view_type_id';
         $result = $this->execute($sql);
         if (!$result) {

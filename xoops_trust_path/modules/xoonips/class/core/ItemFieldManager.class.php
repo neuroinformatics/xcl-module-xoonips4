@@ -7,10 +7,10 @@ require_once __DIR__.'/ItemField.class.php';
 
 class Xoonips_ItemFieldManager
 {
-    private $fieldGroups = array();
-    private $newFieldGroups = array();
-    private $fields = array();
-    private $newFields = array();
+    private $fieldGroups = [];
+    private $newFieldGroups = [];
+    private $fields = [];
+    private $newFields = [];
     private $dirname;
     private $trustDirname;
     private $xoopsTpl;
@@ -77,7 +77,7 @@ class Xoonips_ItemFieldManager
             $fieldGroup = new Xoonips_ItemFieldGroup($row['group_id']);
             $fieldGroup->setName($row['name']);
             $fieldGroup->setXmlTag($row['xml']);
-            if ($row['occurrence'] == 1) {
+            if (1 == $row['occurrence']) {
                 $fieldGroup->setOccurrence(true);
             } else {
                 $fieldGroup->setOccurrence(false);
@@ -145,7 +145,7 @@ class Xoonips_ItemFieldManager
                 $fieldGroupFlg = false;
             }
             if (!$fieldGroupFlg) {
-                $fields = array();
+                $fields = [];
                 $fieldsKey = 1;
             }
             $fieldGroupId = $groupId;

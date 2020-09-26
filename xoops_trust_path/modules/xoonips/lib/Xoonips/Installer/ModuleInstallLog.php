@@ -23,7 +23,7 @@ class ModuleInstallLog
      *
      * @var array
      */
-    public $mMessages = array();
+    public $mMessages = [];
 
     /**
      * add info message (alias).
@@ -42,7 +42,7 @@ class ModuleInstallLog
      */
     public function addReport($msg)
     {
-        $this->mMessages[] = array('type' => self::LOGTYPE_REPORT, 'message' => $msg);
+        $this->mMessages[] = ['type' => self::LOGTYPE_REPORT, 'message' => $msg];
     }
 
     /**
@@ -52,7 +52,7 @@ class ModuleInstallLog
      */
     public function addWarning($msg)
     {
-        $this->mMessages[] = array('type' => self::LOGTYPE_WARNING, 'message' => $msg);
+        $this->mMessages[] = ['type' => self::LOGTYPE_WARNING, 'message' => $msg];
     }
 
     /**
@@ -62,7 +62,7 @@ class ModuleInstallLog
      */
     public function addError($msg)
     {
-        $this->mMessages[] = array('type' => self::LOGTYPE_ERROR, 'message' => $msg);
+        $this->mMessages[] = ['type' => self::LOGTYPE_ERROR, 'message' => $msg];
         $this->mFetalErrorFlag = true;
     }
 

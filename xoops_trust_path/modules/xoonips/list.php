@@ -9,17 +9,17 @@ require_once __DIR__.'/class/action/ListAction.class.php';
 $request = new Xoonips_Request();
 $response = new Xoonips_Response();
 $op = $request->getParameter('op');
-if ($op == null) {
+if (null == $op) {
     $op = 'init';
 }
 
 // check request
-if (!in_array($op, array('init', 'export', 'exportselect'))) {
+if (!in_array($op, ['init', 'export', 'exportselect'])) {
     die('illegal request');
 }
 
 // set action map
-$actionMap = array();
+$actionMap = [];
 $actionMap['init_success'] = $mydirname.'_list.html';
 $actionMap['exportselect_success'] = $mydirname.'_export_select.html';
 
