@@ -154,7 +154,11 @@ class XoopsUtils
                     if (!array_key_exists($dirname, self::$mConfigs)) {
                         self::$mConfigs[$dirname] = $configHandler->getConfigsByDirname($dirname);
                     }
-                    self::$mConfigs[$cat] = self::$mConfig[$dirname];
+                    foreach (array_keys(self::$mConfigs[$dirname]) as $key) {
+                        if (!isset(self::$mConfigs[$cat][$key])) {
+                            self::$mConfigs[$cat][$key] = self::$mConfigs[$dirname][$key];
+                        }
+                    }
                     break;
                 }
             }
@@ -339,7 +343,7 @@ class XoopsUtils
     public static function getUserName($uid)
     {
         $name = null;
-        XCube_DelegateUtils::call('Legacy_User.GetUserName', new XCube_Ref($name), $uid);
+        \XCube_DelegateUtils::call('Legacy_User.GetUserName', new \XCube_Ref($name), $uid);
         if (!$name) {
             $handler = &xoops_gethandler('member');
             $user = &$handler->getUser(intval($uid));

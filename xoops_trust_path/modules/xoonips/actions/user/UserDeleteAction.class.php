@@ -57,14 +57,26 @@ class Xoonips_UserDeleteAction extends Xoonips_UserAction
         $this->_mDoDelete->add([&$this, '_doDelete']);
 
         // pre condition check
-
         if (!$this->mSelfDelete) {
             $controller->executeForward(XOOPS_URL.'/');
         }
 
+        $uid = is_object($xoopsUser) ? $xoopsUser->get('uid') : XOONIPS_UID_GUEST;
+        $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
+        // userType (0:guest 1:user 2:groupManager 3:moderator)
+        $userType = $userBean->getUserType($uid);
+        if (1 != $userType) {
+            $controller->executeRedirect(XOOPS_URL.'/', 3, _MD_XOONIPS_ITEM_FORBIDDEN);
+        }
+        $user = Xoonips_User::getInstance();
+        $message = '';
+        if (!$user->deleteUserCheck($uid, $message)) {
+            $controller->executeRedirect(XOOPS_URL.'/', 3, $message);
+        }
+
         if (is_object($xoopsUser)) {
-            $handler = &xoops_getmodulehandler('users', 'user');
-            $this->mObject = &$handler->get($xoopsUser->get('uid'));
+            $handler = xoops_getmodulehandler('users', 'user');
+            $this->mObject = $handler->get($xoopsUser->get('uid'));
         }
     }
 
@@ -75,28 +87,17 @@ class Xoonips_UserDeleteAction extends Xoonips_UserAction
 
     public function hasPermission(&$controller, &$xoopsUser, $moduleConfig)
     {
+        if (1 == $xoopsUser->get('uid')) {
+            return false;
+        }
+
         return true;
     }
 
     public function getDefaultView(&$controller, &$xoopsUser)
     {
-        $uid = isset($_GET['uid']) ? intval(xoops_getrequest('uid')) : $xoopsUser->get('uid');
+        $uid = $xoopsUser->get('uid');
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
-        // userType (0:guest 1:user 2:groupManager 3:moderator)
-        $userType = $userBean->getUserType($uid);
-        // userself
-        $isUserSelf = false;
-        $xoopsUserId = 0;
-        if (isset($_SESSION['xoopsUserId'])) {
-            $xoopsUserId = $_SESSION['xoopsUserId'];
-        }
-        if ($uid == $xoopsUserId) {
-            $isUserSelf = true;
-        }
-        if (Xoonips_Enum::USER_TYPE_USER != $userType || !$isUserSelf || !$this->mSelfDelete) {
-            $controller->executeRedirect(XOOPS_URL.'/', 3, _MD_XOONIPS_ITEM_FORBIDDEN);
-        }
-        //set ticket
         $user = $userBean->getUserBasicInfo($uid);
         $this->viewData['notice'] = $this->mSelfDeleteConfirmMessage;
         $this->viewData['username'] = $user['uname'];
@@ -111,39 +112,18 @@ class Xoonips_UserDeleteAction extends Xoonips_UserAction
      */
     public function execute(&$controller, &$xoopsUser)
     {
-        $uid = $xoopsUser->get('uid');
+        $flag = false;
+        $this->_mDoDelete->call(new XCube_Ref($flag), $controller, $xoopsUser);
 
-        // userself
-        $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
-        $userType = $userBean->getUserType($uid);
-        $isUserSelf = false;
-        if (isset($_SESSION['xoopsUserId']) && $uid == $_SESSION['xoopsUserId']) {
-            $isUserSelf = true;
+        if ($flag) {
+            XCube_DelegateUtils::call('Legacy.Event.UserDelete', new XCube_Ref($this->mObject));
+            XCube_DelegateUtils::call('Legacy.Admin.Event.UserDelete.Success', new XCube_Ref($this->mObject));
+
+            return USER_FRAME_VIEW_SUCCESS;
         }
-        if (Xoonips_Enum::USER_TYPE_USER != $userType || !$isUserSelf || !$this->mSelfDelete) {
-            $controller->executeRedirect(XOOPS_URL.'/', 3, $message);
+        XCube_DelegateUtils::call('Legacy.Admin.Event.UserDelete.Fail', new XCube_Ref($this->mObject));
 
-            return USER_FRAME_VIEW_ERROR;
-        }
-
-        $user = Xoonips_User::getInstance();
-        $message = '';
-        if (!$user->deleteUserCheck($uid, $message)) {
-            $controller->executeRedirect(XOOPS_URL.'/', 3, $message);
-
-            return USER_FRAME_VIEW_ERROR;
-        }
-
-        $xoopsUser = new XoopsUser($uid);
-        if (!$user->deleteUser($uid)) {
-            XCube_DelegateUtils::call('Legacy.Admin.Event.UserDelete.Fail', new XCube_Ref($xoopsUser));
-
-            return USER_FRAME_VIEW_ERROR;
-        } else {
-            XCube_DelegateUtils::call('Legacy.Admin.Event.UserDelete.Success', new XCube_Ref($xoopsUser));
-        }
-
-        return USER_FRAME_VIEW_SUCCESS;
+        return USER_FRAME_VIEW_ERROR;
     }
 
     /**
@@ -151,22 +131,15 @@ class Xoonips_UserDeleteAction extends Xoonips_UserAction
      *
      * @return bool
      */
-    public function _doDelete(&$flag, &$controller, &$xoopsUser)
+    public function _doDelete(&$flag, $controller, $xoopsUser)
     {
-        $uid = $_REQUEST['uid'];
-        $handler = &xoops_gethandler('member');
-        if ($handler->deleteUser($xoopsUser)) {
-            $handler = &xoops_gethandler('online');
-            $handler->destroy($this->mObject->get('uid'));
-            xoops_notification_deletebyuser($this->mObject->get('uid'));
-            $flag = true;
-        }
-
-        $flag |= false;
+        $user = Xoonips_User::getInstance();
+        $flag = $user->deleteUser($xoopsUser->get('uid'));
     }
 
     public function executeViewInput(&$controller, &$xoopsUser, &$render)
     {
+        // TODO: fix constant variable in template
         $render->setTemplateName('xoonips_user_delete.html');
         $this->setAttributes($render);
     }

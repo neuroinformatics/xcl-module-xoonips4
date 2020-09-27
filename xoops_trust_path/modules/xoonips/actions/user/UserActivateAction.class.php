@@ -11,7 +11,10 @@ class Xoonips_UserActivateAction extends Xoonips_UserAbstractEditAction
 {
     public function _getId()
     {
-        return isset($_REQUEST['uid']) ? intval(xoops_getrequest('uid')) : 0;
+        $root = &XCube_Root::getSingleton();
+        $uid = intval($root->mContext->mRequest->getRequest('uid'));
+
+        return $uid;
     }
 
     public function &_getHandler()
@@ -42,9 +45,10 @@ class Xoonips_UserActivateAction extends Xoonips_UserAbstractEditAction
     public function getDefaultView(&$controller, &$xoopsUser)
     {
         //set ticket
-        $this->viewData['op'] = $_REQUEST['op'];
-        $this->viewData['uid'] = $_REQUEST['uid'];
-        $this->viewData['actkey'] = $_REQUEST['actkey'];
+        $root = &XCube_Root::getSingleton();
+        $this->viewData['op'] = $root->mContext->mRequest->getRequest('op');
+        $this->viewData['uid'] = intval($root->mContext->mRequest->getRequest('uid'));
+        $this->viewData['actkey'] = $root->mContext->mRequest->getRequest('actkey');
 
         return USER_FRAME_VIEW_INPUT;
     }
@@ -64,13 +68,14 @@ class Xoonips_UserActivateAction extends Xoonips_UserAbstractEditAction
         $dataname = Xoonips_Enum::WORKFLOW_USER;
 
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
-        $uid = $_REQUEST['uid'];
+        $uid = intval($root->mContext->mRequest->getRequest('uid'));
         $user = $userBean->getUserBasicInfo($uid);
-        if ((!isset($_REQUEST['actkey'])) || (!$user)) {
+        $actkey = $root->mContext->mRequest->getRequest('actkey');
+        if (empty($actkey) || !$user) {
             $controller->executeForward(XOOPS_URL.'/');
         }
 
-        if ($user['actkey'] != xoops_getrequest('actkey')) {
+        if ($user['actkey'] != $actkey) {
             $controller->executeRedirect(XOOPS_URL.'/', 3, _MD_USER_MESSAGE_ACTKEYNOT);
         }
 
