@@ -23,7 +23,7 @@ if (null == $op) {
 if (!in_array($op, ['init', 'save', 'indexEdit', 'update', 'indexMove', 'move', 'indexDelete', 'delete', 'finish'])) {
     die('illegal request');
 }
-if (in_array($indexId, [0, 1])) {
+if (1 == $indexId) {
     die('illegal request');
 }
 
