@@ -40,7 +40,7 @@ class Xoonips_Admin_PolicyItemFieldSelectDeleteAction extends Xoonips_AbstractDe
     /**
      * get id.
      *
-     * @return int
+     * @return string
      */
     protected function _getId()
     {
