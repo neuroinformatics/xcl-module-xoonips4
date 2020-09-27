@@ -189,7 +189,6 @@ class Xoonips_PubmedService extends Xoonips_WebServiceBase
 }
 
 /**
- /**
  * The class for the PubMed eSearch data of the Journal Title Abbreviation
  * this class will works under following DTDs
  *  http://www.ncbi.nlm.nih.gov/entrez/query/DTD/eSearch_020511.dtd.
