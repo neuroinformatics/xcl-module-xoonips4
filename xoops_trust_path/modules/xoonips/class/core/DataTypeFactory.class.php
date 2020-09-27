@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 /**
  * data type factory class.
  */
@@ -20,29 +22,27 @@ class Xoonips_DataTypeFactory
      */
     private function __construct($dirname, $trustDirname)
     {
-        global $xoopsDB;
-
-        // get data type data
-        $sql = sprintf('SELECT * FROM `%s`', $xoopsDB->prefix($dirname.'_data_type'));
-
-        $result = $xoopsDB->query($sql);
-        while ($row = $xoopsDB->fetchArray($result)) {
-            $typeModule = $row['module'];
-            $className = ucfirst($trustDirname).'_'.$typeModule;
-            if (!file_exists($fpath = sprintf('%s/modules/%s/class/datatype/%s.class.php', XOOPS_TRUST_PATH, $trustDirname, $typeModule))) {
-                return false;
-            } // module class is not found
-            $mydirname = $dirname;
-            $mytrustdirname = $trustDirname;
-            require_once $fpath;
+        $dataTypeHandler = Functions::getXoonipsHandler('DataTypeObject', $dirname);
+        if (!$res = $dataTypeHandler->open()) {
+            die('fatal error');
+        }
+        while ($obj = $dataTypeHandler->getNext($res)) {
+            $dataTypeId = $obj->get('data_type_id');
+            $name = $obj->get('name');
+            $module = $obj->get('module');
+            $className = ucfirst($trustDirname).'_'.$module;
+            require_once XOONIPS_TRUST_PATH.'/class/datatype/'.$module.'.class.php';
+            if (!class_exists($className)) {
+                die('fatal error');
+            }
             $dataType = new $className();
-            $dataTypeId = $row['data_type_id'];
             $dataType->setId($dataTypeId);
-            $dataType->setName($row['name']);
-            $dataType->setModule($typeModule);
+            $dataType->setName($name);
+            $dataType->setModule($module);
             $dataType->setTrustDirname($trustDirname);
             $this->dataTypeInstances[$dataTypeId] = $dataType;
         }
+        $dataTypeHandler->close($res);
     }
 
     /**

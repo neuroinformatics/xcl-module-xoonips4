@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 /**
  * complement factory class.
  */
@@ -20,27 +22,24 @@ class Xoonips_ComplementFactory
      */
     private function __construct($dirname, $trustDirname)
     {
-        $bean = Xoonips_BeanFactory::getBean('ComplementBean', $dirname, $trustDirname);
-        $complements = $bean->getComplementInfo();
-        if (!$complements) {
-            return;
+        $complementHandler = Functions::getXoonipsHandler('ComplementObject', $dirname);
+        if (!$res = $complementHandler->open()) {
+            die('fatal error');
         }
-        foreach ($complements as $comp) {
-            $compId = $comp['complement_id'];
-            $vtId = $comp['view_type_id'];
-            $module = $comp['module'];
-            if (empty($module)) {
-                continue;
+        while ($obj = $complementHandler->getNext($res)) {
+            $complementId = $obj->get('complement_id');
+            $viewTypeId = $obj->get('view_type_id');
+            $module = $obj->get('module');
+            if (!empty($module)) {
+                $className = ucfirst($trustDirname).'_'.$module;
+                require_once XOONIPS_TRUST_PATH.'/class/complement/'.$module.'.class.php';
+                if (!class_exists($className)) {
+                    die('fatal error');
+                }
+                $this->complementInstances[$viewTypeId] = new $className($complementId, $dirname, $trustDirname);
             }
-            $className = ucfirst($trustDirname).'_'.$module;
-            if (!file_exists($fpath = sprintf('%s/modules/%s/class/complement/%s.class.php', XOOPS_TRUST_PATH, $trustDirname, $module))) {
-                return false;
-            } // module class is not found
-            $mydirname = $dirname;
-            $mytrustdirname = $trustDirname;
-            require_once $fpath;
-            $this->complementInstances[$vtId] = new $className($compId, $dirname, $trustDirname);
         }
+        $complementHandler->close($res);
     }
 
     /**

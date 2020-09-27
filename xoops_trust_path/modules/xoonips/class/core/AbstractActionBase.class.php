@@ -51,7 +51,9 @@ abstract class Xoonips_AbstractActionBase
             }
             $method = 'do'.ucfirst($op);
         }
-
+        if (!method_exists($this, $method)) {
+            die('fatal error');
+        }
         $result = $this->$method($request, $response);
         if (false != $this->transaction) {
             if ($result) {
