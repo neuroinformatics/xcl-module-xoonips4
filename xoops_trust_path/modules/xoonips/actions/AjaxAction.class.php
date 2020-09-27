@@ -79,6 +79,12 @@ class Xoonips_AjaxAction extends Xoonips_AbstractAction
         if (!in_array($this->mType, array_keys($this->mKnownTypes))) {
             return $this->_getFrameViewStatus('ERROR');
         }
+        if (!in_array(get_class($this->mMethod), ['Xoonips_InputTextFileAjaxMethod'])) {
+            // TODO: InputTextFile method is not ajax.
+            if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || 'xmlhttprequest' != strtolower($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+                return $this->_getFrameViewStatus('ERROR');
+            }
+        }
         if (!$this->mMethod->execute()) {
             return $this->_getFrameViewStatus('ERROR');
         }
