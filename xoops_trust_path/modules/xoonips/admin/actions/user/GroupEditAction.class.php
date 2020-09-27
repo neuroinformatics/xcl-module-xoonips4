@@ -31,10 +31,11 @@ class Xoonips_GroupEditAction extends User_GroupEditAction
         $groupsBean = Xoonips_BeanFactory::getBean('GroupsBean', $this->mDirname, $this->mTrustDirname);
         $group = ($gid > 0) ? $groupsBean->getGroup($gid) : [];
         if (empty($group)) {
+            $root = &XCube_Root::getSingleton();
             $isExtended = false;
-            if (Xoonips_Enum::GROUP_TYPE == xoops_getrequest('group_type')) {
+            if (Xoonips_Enum::GROUP_TYPE == $root->mContext->mRequest->getRequest('group_type')) {
                 $isExtended = true;
-            } elseif ('xoonips' == xoops_getrequest('type')) {
+            } elseif ('xoonips' == $root->mContext->mRequest->getRequest('type')) {
                 $isExtended = true;
             }
             $group = $this->_createGroupArray($isExtended);
