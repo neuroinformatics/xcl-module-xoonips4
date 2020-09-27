@@ -13,13 +13,11 @@ if (null == $op) {
 }
 
 // check request
-if (!in_array($op, ['init', 'register', 'registersave', 'edit', 'editsave', 'delete',
-    'release', 'detailregister', 'detailregistersave', 'sorteditsave', ])) {
+if (!in_array($op, ['init', 'register', 'registersave', 'edit', 'editsave', 'delete', 'release', 'detailregister', 'detailregistersave', 'sorteditsave'])) {
     die('illegal request');
 }
 
 // set action map
-$actionMap = [];
 $actionMap = [];
 $actionMap['init_success'] = 'policy_itemgroup.html';
 $actionMap['register_success'] = 'policy_itemgroup_register.html';
