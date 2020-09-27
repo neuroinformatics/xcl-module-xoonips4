@@ -7,7 +7,7 @@ class Xoonips_UserFilterForm extends User_UserFilterForm
         parent::fetch();
         $root = &XCube_Root::getSingleton();
         $option_field = $root->mContext->mRequest->getRequest('option_field');
-        if (isset($_REQUEST['option_field'])) {
+        if (!empty($option_field)) {
             if ('active' == $option_field) {
                 // only activated users
                 $this->_mCriteria->add(new Criteria('level', '2', '<'));

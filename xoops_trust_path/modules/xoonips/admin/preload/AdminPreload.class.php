@@ -64,7 +64,10 @@ class Xoonips_AdminPreloadBase extends XCube_ActionFilter
         if ('user' != $this->mRoot->mContext->mXoopsModule->get('dirname')) {
             return;
         }
-        $actionName = isset($_GET['action']) ? trim($_GET['action']) : 'UserList';
+        $actionName = $this->mRoot->mContext->mRequest->getRequest('action');
+        if (empty($actionName)) {
+            $actionName = 'UserList';
+        }
         static $actionHookNames = [
             'UserList',
             'UserEdit',
