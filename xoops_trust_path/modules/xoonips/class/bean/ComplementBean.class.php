@@ -23,7 +23,7 @@ class Xoonips_ComplementBean extends Xoonips_BeanBase
      */
     public function getComplementInfo()
     {
-        $sql = 'SELECT * FROM '.$this->table;
+        $sql = 'SELECT * FROM `'.$this->table.'`';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -49,9 +49,9 @@ class Xoonips_ComplementBean extends Xoonips_BeanBase
     {
         $table = $this->prefix($this->modulePrefix('complement_detail'));
         if (!is_null($id)) {
-            $sql = 'SELECT * FROM '.$table.' WHERE complement_id='.$id.' ORDER BY complement_detail_id';
+            $sql = 'SELECT * FROM `'.$table.'` WHERE `complement_id`='.intval($id).' ORDER BY `complement_detail_id`';
         } else {
-            $sql = 'SELECT * FROM '.$table.' ORDER BY complement_detail_id';
+            $sql = 'SELECT * FROM `'.$table.'` ORDER BY `complement_detail_id`';
         }
         $result = $this->execute($sql);
         if (!$result) {
@@ -70,7 +70,7 @@ class Xoonips_ComplementBean extends Xoonips_BeanBase
     /**
      * get complement list.
      *
-     * @param int $id $itemtypeid
+     * @param int $itemtypeid
      *
      * @return array
      */
@@ -80,13 +80,11 @@ class Xoonips_ComplementBean extends Xoonips_BeanBase
         $detailTable = $this->prefix($this->modulePrefix('item_field_detail'));
         $tlinkTable = $this->prefix($this->modulePrefix('item_field_detail_complement_link'));
 
-        $sql = 'SELECT lt.complement_id, dt.item_field_detail_id, gt.group_id'
-        .", dt.name as detail_name , gt.name as group_name FROM $tlinkTable lt"
-        ." LEFT JOIN $detailTable dt"
-        .' ON lt.base_item_field_detail_id=dt.item_field_detail_id'
-        ." LEFT JOIN $groupTable gt"
-        .' ON lt.base_group_id=gt.group_id'
-        ." WHERE lt.item_type_id=${itemtypeid}";
+        $sql = 'SELECT `lt`.`complement_id`, `dt`.`item_field_detail_id`, `gt`.`group_id`, `dt`.`name` AS `detail_name`, `gt`.`name` AS `group_name`';
+        $sql .= ' FROM `'.$tlinkTable.'` `lt`';
+        $sql .= ' LEFT JOIN `'.$detailTable.'` `dt` ON `lt`.`base_item_field_detail_id`=`dt`.`item_field_detail_id`';
+        $sql .= ' LEFT JOIN `'.$groupTable.'` `gt` ON `lt`.`base_group_id`=`gt`.`group_id`';
+        $sql .= ' WHERE `lt`.`item_type_id`='.intval($itemtypeid);
 
         $result = $this->execute($sql);
         if (!$result) {
@@ -96,9 +94,7 @@ class Xoonips_ComplementBean extends Xoonips_BeanBase
         while ($row = $this->fetchArray($result)) {
             $chk = true;
             foreach ($ret as $ret_tmp) {
-                if ($row['complement_id'] == $ret_tmp['complement_id']
-                        && $row['group_id'] == $ret_tmp['group_id']
-                        && $row['item_field_detail_id'] == $ret_tmp['item_field_detail_id']) {
+                if ($row['complement_id'] == $ret_tmp['complement_id'] && $row['group_id'] == $ret_tmp['group_id'] && $row['item_field_detail_id'] == $ret_tmp['item_field_detail_id']) {
                     $chk = false;
                     break;
                 }
@@ -123,10 +119,8 @@ class Xoonips_ComplementBean extends Xoonips_BeanBase
      */
     public function insert($complement, &$insertId)
     {
-        $sql = "INSERT INTO $this->table (view_type_id, title, module)";
-        $sql .= ' VALUES('.Xoonips_Utils::convertSQLNum($complement['view_type_id']);
-        $sql .= ','.Xoonips_Utils::convertSQLStr($complement['title']);
-        $sql .= ','.Xoonips_Utils::convertSQLStr($complement['module']).')';
+        $sql = 'INSERT INTO `'.$this->table.'` (`view_type_id`, `title`, `module`)';
+        $sql .= ' VALUES('.intval($complement['view_type_id']).', '.Xoonips_Utils::convertSQLStr($complement['title']).', '.Xoonips_Utils::convertSQLStr($complement['module']).')';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -147,10 +141,8 @@ class Xoonips_ComplementBean extends Xoonips_BeanBase
     public function insertDetail($detail, &$insertId)
     {
         $detailTable = $this->prefix($this->modulePrefix('complement_detail'));
-        $sql = "INSERT INTO $detailTable (complement_id, code, title)";
-        $sql .= ' VALUES('.Xoonips_Utils::convertSQLNum($detail['complement_id']);
-        $sql .= ','.Xoonips_Utils::convertSQLStr($detail['code']);
-        $sql .= ','.Xoonips_Utils::convertSQLStr($detail['title']).')';
+        $sql = 'INSERT INTO `'.$detailTable.'` (`complement_id`, `code`, `title`)';
+        $sql .= ' VALUES('.intval($detail['complement_id']).', '.Xoonips_Utils::convertSQLStr($detail['code']).', '.Xoonips_Utils::convertSQLStr($detail['title']).')';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -176,7 +168,7 @@ class Xoonips_ComplementBean extends Xoonips_BeanBase
 
         $ret = [];
         //check item_field_detail_complement_link exists
-        $check_sql = 'SELECT * FROM '.$tlinkTable.' WHERE item_type_id='.$item_type_id;
+        $check_sql = 'SELECT * FROM `'.$tlinkTable.'` WHERE `item_type_id`='.intval($item_type_id);
         $result = $this->execute($check_sql);
         if (!$result) {
             return false;
@@ -186,17 +178,13 @@ class Xoonips_ComplementBean extends Xoonips_BeanBase
             return $ret;
         }
         //TODO
-        $sql = 'SELECT ';
-        $sql .= $tlinkTable.'.seq_id, ';
-        $sql .= $groupTable.'.xml, ';
-        $sql .= $idetailTable.'.xml ';
-        $sql .= 'FROM '.$tlinkTable.', '.$this->table.', '.$detailTable.', ';
-        $sql .= $groupTable.', '.$idetailTable.' ';
-        $sql .= 'WHERE '.$tlinkTable.'.complement_id='.$this->table.'.complement_id ';
-        $sql .= 'AND '.$tlinkTable.'.complement_detail_id='.$detailTable.'.complement_detail_id ';
-        $sql .= 'AND '.$tlinkTable.'.base_group_id='.$groupTable.'.group_id ';
-        $sql .= 'AND '.$tlinkTable.'.base_item_field_detail_id='.$idetailTable.'.item_field_detail_id ';
-        $sql .= 'AND '.$tlinkTable.'.item_type_id='.$item_type_id;
+        $sql = 'SELECT `'.$tlinkTable.'`.`seq_id`, `'.$groupTable.'`.`xml`, `'.$idetailTable.'`.`xml`';
+        $sql .= ' FROM `'.$tlinkTable.'`, `'.$this->table.'`, `'.$detailTable.'`, `'.$groupTable.'`, `'.$idetailTable.'`';
+        $sql .= ' WHERE `'.$tlinkTable.'`.`complement_id`=`'.$this->table.'`.`complement_id`';
+        $sql .= ' AND `'.$tlinkTable.'`.`complement_detail_id`=`'.$detailTable.'`.`complement_detail_id`';
+        $sql .= ' AND `'.$tlinkTable.'`.`base_group_id`=`'.$groupTable.'`.`group_id`';
+        $sql .= ' AND `'.$tlinkTable.'`.`base_item_field_detail_id`=`'.$idetailTable.'`.`item_field_detail_id`';
+        $sql .= ' AND `'.$tlinkTable.'`.`item_type_id`='.intval($item_type_id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -207,19 +195,13 @@ class Xoonips_ComplementBean extends Xoonips_BeanBase
         }
         $this->freeRecordSet($result);
 
-        $sql = 'SELECT ';
-        $sql .= $tlinkTable.'.seq_id, ';
-        $sql .= $this->table.'.title, ';
-        $sql .= $detailTable.'.code, ';
-        $sql .= $groupTable.'.xml, ';
-        $sql .= $idetailTable.'.xml ';
-        $sql .= 'FROM '.$tlinkTable.', '.$this->table.', '.$detailTable.', ';
-        $sql .= $groupTable.', '.$idetailTable.' ';
-        $sql .= 'WHERE '.$tlinkTable.'.complement_id='.$this->table.'.complement_id ';
-        $sql .= 'AND '.$tlinkTable.'.complement_detail_id='.$detailTable.'.complement_detail_id ';
-        $sql .= 'AND '.$tlinkTable.'.group_id='.$groupTable.'.group_id ';
-        $sql .= 'AND '.$tlinkTable.'.item_field_detail_id='.$idetailTable.'.item_field_detail_id ';
-        $sql .= 'AND '.$tlinkTable.'.item_type_id='.$item_type_id;
+        $sql = 'SELECT `'.$tlinkTable.'`.`seq_id`, `'.$this->table.'`.`title`, `'.$detailTable.'`.`code`, `'.$groupTable.'`.`xml`, `'.$idetailTable.'`.`xml`';
+        $sql .= ' FROM `'.$tlinkTable.'`, `'.$this->table.'`, `'.$detailTable.'`, `'.$groupTable.'`, `'.$idetailTable.'`';
+        $sql .= ' WHERE `'.$tlinkTable.'`.`complement_id`=`'.$this->table.'`.`complement_id`';
+        $sql .= ' AND `'.$tlinkTable.'`.`complement_detail_id`=`'.$detailTable.'`.`complement_detail_id`';
+        $sql .= ' AND `'.$tlinkTable.'`.`group_id`=`'.$groupTable.'`.`group_id`';
+        $sql .= ' AND `'.$tlinkTable.'`.`item_field_detail_id`=`'.$idetailTable.'`.`item_field_detail_id`';
+        $sql .= ' AND `'.$tlinkTable.'`.`item_type_id`='.intval($item_type_id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;

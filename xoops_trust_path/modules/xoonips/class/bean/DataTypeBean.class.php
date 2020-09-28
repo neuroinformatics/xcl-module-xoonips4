@@ -28,7 +28,7 @@ class Xoonips_DataTypeBean extends Xoonips_BeanBase
             return $ret;
         }
         $table = $this->prefix($this->modulePrefix('view_data_relation'));
-        $sql = "SELECT * FROM $this->table t1, $table t2 WHERE t1.data_type_id=t2.data_type_id AND t2.view_type_id=$viewtypeId";
+        $sql = 'SELECT * FROM `'.$this->table.'` `t1`, `'.$table.'` `t2` WHERE `t1`.`data_type_id`=`t2`.`data_type_id` AND `t2`.`view_type_id`='.intval($viewtypeId);
         $result = $this->execute($sql);
         if (!$result) {
             return $ret;
@@ -51,7 +51,7 @@ class Xoonips_DataTypeBean extends Xoonips_BeanBase
     public function getDatatypeList()
     {
         $ret = [];
-        $sql = 'SELECT * FROM '.$this->table.' ORDER BY data_type_id';
+        $sql = 'SELECT * FROM `'.$this->table.'` ORDER BY `data_type_id`';
         $result = $this->execute($sql);
         if (!$result) {
             return $ret;
@@ -74,7 +74,7 @@ class Xoonips_DataTypeBean extends Xoonips_BeanBase
     public function getDatatypeById($dataId)
     {
         $ret = null;
-        $sql = 'SELECT * FROM '.$this->table.' where data_type_id='.$dataId;
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `data_type_id`='.intval($dataId);
         $result = $this->execute($sql);
         if (!$result) {
             return $ret;
@@ -97,7 +97,7 @@ class Xoonips_DataTypeBean extends Xoonips_BeanBase
     public function selectByName($name)
     {
         $ret = '';
-        $sql = "SELECT * FROM $this->table WHERE name=".Xoonips_Utils::convertSQLStr($name);
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `name`='.Xoonips_Utils::convertSQLStr($name);
         $result = $this->execute($sql);
         if (!$result) {
             return $ret;
@@ -120,8 +120,8 @@ class Xoonips_DataTypeBean extends Xoonips_BeanBase
      */
     public function insert($datatype, &$insertId)
     {
-        $sql = "INSERT INTO $this->table (name,module)";
-        $sql .= ' VALUES('.Xoonips_Utils::convertSQLStr($datatype['name']).','.Xoonips_Utils::convertSQLStr($datatype['module']).')';
+        $sql = 'INSERT INTO `'.$this->table.'` (`name`, `module`)';
+        $sql .= ' VALUES('.Xoonips_Utils::convertSQLStr($datatype['name']).', '.Xoonips_Utils::convertSQLStr($datatype['module']).')';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -141,9 +141,8 @@ class Xoonips_DataTypeBean extends Xoonips_BeanBase
     public function insertRelation($relation)
     {
         $table = $this->prefix($this->modulePrefix('view_data_relation'));
-        $sql = "INSERT INTO $table (view_type_id,data_type_id,data_length,data_decimal_places)";
-        $sql .= ' VALUES('.Xoonips_Utils::convertSQLNum($relation['view_type_id']).','.Xoonips_Utils::convertSQLNum($relation['data_type_id']);
-        $sql .= ','.Xoonips_Utils::convertSQLNum($relation['data_length']).','.Xoonips_Utils::convertSQLNum($relation['data_decimal_places']).')';
+        $sql = 'INSERT INTO `'.$table.'` (`view_type_id`, `data_type_id`, `data_length`, `data_decimal_places`)';
+        $sql .= ' VALUES('.Xoonips_Utils::convertSQLNum($relation['view_type_id']).', '.Xoonips_Utils::convertSQLNum($relation['data_type_id']).', '.Xoonips_Utils::convertSQLNum($relation['data_length']).', '.Xoonips_Utils::convertSQLNum($relation['data_decimal_places']).')';
 
         $result = $this->execute($sql);
         if (!$result) {
