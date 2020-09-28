@@ -3,7 +3,7 @@
         <img src="<{$item->getIconUrl()|xoops_escape}>" alt="icon_data" />
     </td>
     <td>
-        <a href="<{$item->getItemUrl()}>"><{$item->get(essential_titles,essential_title)|xoops_escape}></a><br />
+        <a href="<{$item->getItemUrl()|xoops_escape}>"><{$item->get(essential_titles,essential_title)|xoops_escape}></a><br />
         <{if (count($item->get(data_type,data_type)) != 0)}>
         <{if is_array($item->get(data_type,data_type)) }>
         <{foreach from=$item->get(data_type,data_type) key="key" item="data_type" }>

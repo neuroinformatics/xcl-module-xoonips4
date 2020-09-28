@@ -3,14 +3,14 @@
         <img src="<{$item->getIconUrl()|xoops_escape}>" alt="icon_simulator" />
     </td>
     <td>
-        <a href="<{$item->getItemUrl()}>"><{$item->get(essential_titles,essential_title)|xoops_escape}></a><br />
+        <a href="<{$item->getItemUrl()|xoops_escape}>"><{$item->get(essential_titles,essential_title)|xoops_escape}></a><br />
         <{if (count($item->get(simulator_type,simulator_type)) != 0)}>
         <{if is_array($item->get(simulator_type,simulator_type)) }>
         <{foreach from=$item->get(simulator_type,simulator_type) key="key" item="simulator_type" }>
         <{$simulator_type|xoops_escape}>
         <{/foreach}>
         <{else}>
-        <{$item->get(simulator_type,simulator_type)}>
+        <{$item->get(simulator_type,simulator_type)|xoops_escape}>
         <{/if}>
         <{/if}>
         <br />

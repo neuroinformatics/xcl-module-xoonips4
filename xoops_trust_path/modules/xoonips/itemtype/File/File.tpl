@@ -4,11 +4,11 @@
     </td>
     <td>
         <{if ($item->get(title,title)|count_characters != 0)}>
-        <a href="<{$item->getItemUrl()}>"><{$item->get(title,title)|xoops_escape}></a><br />
+        <a href="<{$item->getItemUrl()|xoops_escape}>"><{$item->get(title,title)|xoops_escape}></a><br />
         <{else}>
         <{foreach item=file from=$item->get(essential_files,essential_file)}>
         <{if $smarty.foreach.file.iteration > 1 }> . <{/if}>
-        <a href="<{$item->getItemUrl()}>"><{$file.original_file_name}></a><br />
+        <a href="<{$item->getItemUrl()|xoops_escape}>"><{$file.original_file_name|xoops_escape}></a><br />
         <{/foreach}>
         <{/if}>
         (

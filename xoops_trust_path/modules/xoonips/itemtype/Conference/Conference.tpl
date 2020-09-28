@@ -3,7 +3,7 @@
         <img src="<{$item->getIconUrl()|xoops_escape}>" alt="icon_conference" />
     </td>
     <td>
-        <a href="<{$item->getItemUrl()}>"><{$item->get(ctitle,ctitle)|xoops_escape}></a><br />
+        <a href="<{$item->getItemUrl()|xoops_escape}>"><{$item->get(ctitle,ctitle)|xoops_escape}></a><br />
         <{$item->get(ctitle, ctitle)|xoops_escape}>
         <{if (count($item->get(conference_presentation_type,conference_presentation_type)) != 0)}>
         <{if is_array($item->get(conference_presentation_type,conference_presentation_type)) }>
