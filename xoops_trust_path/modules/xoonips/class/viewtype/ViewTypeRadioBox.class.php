@@ -24,7 +24,6 @@ class Xoonips_ViewTypeRadioBox extends Xoonips_ViewType
         $this->getXoopsTpl()->assign('fieldName', $fieldName);
         $this->getXoopsTpl()->assign('value', $value);
         $this->getXoopsTpl()->assign('dirname', $this->dirname);
-        self::setTemplate();
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }
@@ -36,7 +35,6 @@ class Xoonips_ViewTypeRadioBox extends Xoonips_ViewType
         $this->getXoopsTpl()->assign('list', $field->getList());
         $this->getXoopsTpl()->assign('fieldName', $fieldName);
         $this->getXoopsTpl()->assign('value', $value);
-        self::setTemplate();
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }
@@ -53,7 +51,6 @@ class Xoonips_ViewTypeRadioBox extends Xoonips_ViewType
         $this->getXoopsTpl()->assign('valueName', $ret);
         $this->getXoopsTpl()->assign('fieldName', $fieldName);
         $this->getXoopsTpl()->assign('value', $value);
-        self::setTemplate();
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }
@@ -68,7 +65,6 @@ class Xoonips_ViewTypeRadioBox extends Xoonips_ViewType
         $this->getXoopsTpl()->assign('viewType', 'detail');
         $this->getXoopsTpl()->assign('valueName', $ret);
         $this->getXoopsTpl()->assign('value', $value);
-        self::setTemplate();
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }
@@ -98,7 +94,6 @@ class Xoonips_ViewTypeRadioBox extends Xoonips_ViewType
         $this->getXoopsTpl()->assign('selectValues', $selectValues);
         $this->getXoopsTpl()->assign('disabled', $disabled);
         $this->getXoopsTpl()->assign('value', $value);
-        self::setTemplate();
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }
@@ -124,7 +119,6 @@ class Xoonips_ViewTypeRadioBox extends Xoonips_ViewType
         $this->getXoopsTpl()->assign('selectValues', $selectValues);
         $this->getXoopsTpl()->assign('disabled', $disabled);
         $this->getXoopsTpl()->assign('value', $value);
-        self::setTemplate();
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }

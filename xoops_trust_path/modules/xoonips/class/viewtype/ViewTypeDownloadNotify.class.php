@@ -40,7 +40,6 @@ class Xoonips_ViewTypeDownloadNotify extends Xoonips_ViewTypeRadioBox
         $this->getXoopsTpl()->assign('list', $this->getList());
         $this->getXoopsTpl()->assign('fieldName', $fieldName);
         $this->getXoopsTpl()->assign('value', $value);
-        self::setTemplate();
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }
@@ -57,7 +56,6 @@ class Xoonips_ViewTypeDownloadNotify extends Xoonips_ViewTypeRadioBox
         $this->getXoopsTpl()->assign('valueName', $ret);
         $this->getXoopsTpl()->assign('fieldName', $fieldName);
         $this->getXoopsTpl()->assign('value', $value);
-        self::setTemplate();
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }

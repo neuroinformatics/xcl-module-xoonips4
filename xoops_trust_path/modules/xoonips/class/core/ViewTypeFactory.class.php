@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\Functions;
+
 require_once __DIR__.'/Search.class.php';
 
 /**
@@ -22,36 +24,32 @@ class Xoonips_ViewTypeFactory
      */
     private function __construct($dirname, $trustDirname)
     {
-        global $xoopsDB;
-        global $xoopsTpl;
+        $search = &Xoonips_Search::getInstance();
 
         // get view type data
-        $sql = sprintf('SELECT * FROM `%s`', $xoopsDB->prefix($dirname.'_view_type'));
-        $result = $xoopsDB->query($sql);
-        $search = &Xoonips_Search::getInstance();
-        while ($row = $xoopsDB->fetchArray($result)) {
-            $typeModule = $row['module'];
-            $className = ucfirst($trustDirname).'_'.$typeModule;
-            if (!file_exists($fpath = sprintf('%s/modules/%s/class/viewtype/%s.class.php', XOOPS_TRUST_PATH, $trustDirname, $typeModule))) {
-                return false;
-            } // module class is not found
-            $mydirname = $dirname;
-            $mytrustdirname = $trustDirname;
-            require_once $fpath;
-            $viewType = new $className();
-            $viewTypeId = $row['view_type_id'];
+        $viewTypeHandler = Functions::getXoonipsHandler('ViewTypeObject', $dirname);
+        if (!$res = $viewTypeHandler->open()) {
+            die('fatal error');
+        }
+        while ($obj = $viewTypeHandler->getNext($res)) {
+            $module = $obj->get('module');
+            $className = ucfirst($trustDirname).'_'.$module;
+            require_once XOONIPS_TRUST_PATH.'/class/viewtype/'.$module.'.class.php';
+            if (!class_exists($className)) {
+                die('fatal error');
+            }
+            $viewType = new $className($dirname, $trustDirname);
+            $viewTypeId = $obj->get('view_type_id');
             $viewType->setId($viewTypeId);
-            $viewType->setName($row['name']);
-            $viewType->setPreslect($row['preselect']);
-            $viewType->setModule($typeModule);
-            $viewType->setMulti($row['multi']);
-            $viewType->setDirname($dirname);
-            $viewType->setTrustDirname($trustDirname);
-            $viewType->setXoopsTpl($xoopsTpl);
+            $viewType->setName($obj->get('name'));
+            $viewType->setPreslect($obj->get('preselect'));
+            $viewType->setModule($module);
+            $viewType->setMulti($obj->get('multi'));
             $viewType->setTemplate();
             $viewType->setSearch($search);
             $this->viewTypeInstances[$viewTypeId] = $viewType;
         }
+        $viewTypeHandler->close($res);
     }
 
     /**

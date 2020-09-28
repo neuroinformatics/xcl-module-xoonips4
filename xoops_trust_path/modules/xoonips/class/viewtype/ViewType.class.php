@@ -15,6 +15,14 @@ abstract class Xoonips_ViewType
     private $xoopsTpl;
     private $template;
 
+    public function __construct($dirname, $trustDirname)
+    {
+        global $xoopsTpl;
+        $this->dirname = $dirname;
+        $this->trustDirname = $trustDirname;
+        $this->xoopsTpl = $xoopsTpl;
+    }
+
     abstract protected function getInputView($field, $value, $groupLoopId);
 
     abstract protected function getDisplayView($field, $value, $groupLoopId);
@@ -71,24 +79,9 @@ abstract class Xoonips_ViewType
         return $this->multi;
     }
 
-    public function setDirname($v)
-    {
-        $this->dirname = $v;
-    }
-
-    public function setTrustDirname($v)
-    {
-        $this->trustDirname = $v;
-    }
-
     public function setSearch($obj)
     {
         $this->search = $obj;
-    }
-
-    public function setXoopsTpl($obj)
-    {
-        $this->xoopsTpl = $obj;
     }
 
     protected function getXoopsTpl()
@@ -363,9 +356,6 @@ abstract class Xoonips_ViewType
 
         // get data
         $value = $this->getData($field, $data, $groupLoopId);
-        $tableData;
-        $groupData;
-        $columnData;
 
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];
@@ -468,12 +458,10 @@ abstract class Xoonips_ViewType
         if ('' != $value) {
             if (1 == $field->getScopeSearch() && $scopeSearchFlg) {
                 if ('' != $value[0]) {
-                    $v = $field->getDataType()->convertSQLStr($value[0]);
-                    $tableData[] = sprintf('"t1".%s>=%s', $columnName, $v);
+                    $tableData[] = '`t1`.`'.$columnName.'`>='.$field->getDataType()->convertSQLStr($value[0]);
                 }
                 if ('' != $value[1]) {
-                    $v = $field->getDataType()->convertSQLStr($value[1]);
-                    $tableData[] = sprintf('"t1".%s<=%s', $columnName, $v);
+                    $tableData[] = '`t1`.`'.$columnName.'`<='.$field->getDataType()->convertSQLStr($value[1]);
                 }
                 // scope search
             } else {
@@ -496,7 +484,7 @@ abstract class Xoonips_ViewType
         // scope search
         if (1 == $field->getScopeSearch()) {
             $fieldName = $field->getFieldGroupId().Xoonips_Enum::ITEM_ID_SEPARATOR.$groupLoopId.Xoonips_Enum::ITEM_ID_SEPARATOR.$field->getId();
-            $ret = str_replace("name=\"$fieldName\"", "name=\"$fieldName".'[]"', $ret);
+            $ret = str_replace('name="'.$fieldName.'"', 'name="'.$fieldName.'[]"', $ret);
         }
         $this->getXoopsTpl()->assign('viewType', 'search');
         $this->getXoopsTpl()->assign('from', $ret);
@@ -505,7 +493,6 @@ abstract class Xoonips_ViewType
         } else {
             $this->getXoopsTpl()->assign('to', null);
         }
-        self::setTemplate();
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }
@@ -526,8 +513,8 @@ abstract class Xoonips_ViewType
             if (is_array($value)) {
                 $from = $this->getSearchInputView($field, $value[0], $groupLoopId);
                 $to = $this->getSearchInputView($field, $value[1], $groupLoopId);
-                $from = str_replace("name=\"$fieldName\"", "name=\"$fieldName".'[]"', $from);
-                $to = str_replace("name=\"$fieldName\"", "name=\"$fieldName".'[]"', $to);
+                $from = str_replace('name="'.$fieldName.'"', 'name="'.$fieldName.'[]"', $from);
+                $to = str_replace('name="'.$fieldName.'"', 'name="'.$fieldName.'[]"', $to);
             } else {
                 $ret = $this->getSearchInputView($field, $value, $groupLoopId);
                 $from = $ret;
@@ -543,7 +530,6 @@ abstract class Xoonips_ViewType
         } else {
             $this->getXoopsTpl()->assign('to', null);
         }
-        self::setTemplate();
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }
@@ -672,7 +658,7 @@ abstract class Xoonips_ViewType
             foreach ($objs as $obj) {
                 $ret[] = $obj[$column];
             }
-            // return implode(',', $ret);
+
             return $ret;
         }
     }
@@ -728,7 +714,6 @@ abstract class Xoonips_ViewType
     {
         $this->getXoopsTpl()->assign('viewType', 'list');
         $this->getXoopsTpl()->assign('value', $value);
-        self::setTemplate();
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }
@@ -747,7 +732,6 @@ abstract class Xoonips_ViewType
         $this->getXoopsTpl()->assign('viewType', 'default');
         $this->getXoopsTpl()->assign('value', $value);
         $this->getXoopsTpl()->assign('disabled', $disabled);
-        self::setTemplate();
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }
@@ -767,7 +751,6 @@ abstract class Xoonips_ViewType
         $this->getXoopsTpl()->assign('viewType', 'simpleSearch');
         $this->getXoopsTpl()->assign('fieldName', $fieldName);
         $this->getXoopsTpl()->assign('value', $value);
-        self::setTemplate();
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }

@@ -10,9 +10,6 @@ class Xoonips_ViewTypeKeyword extends Xoonips_ViewTypeText
         $columnName = $field->getColumnName();
         $value = $this->getData($field, $data, $groupLoopId);
 
-        $tableData;
-        $columnData;
-
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];
         } else {

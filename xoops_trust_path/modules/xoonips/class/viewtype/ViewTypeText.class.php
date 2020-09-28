@@ -16,7 +16,6 @@ class Xoonips_ViewTypeText extends Xoonips_ViewType
         $this->getXoopsTpl()->assign('len', $field->getLen());
         $this->getXoopsTpl()->assign('fieldName', $fieldName);
         $this->getXoopsTpl()->assign('value', $value);
-        self::setTemplate();
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }
@@ -36,7 +35,6 @@ class Xoonips_ViewTypeText extends Xoonips_ViewType
         $this->getXoopsTpl()->assign('viewType', 'confirm');
         $this->getXoopsTpl()->assign('fieldName', $fieldName);
         $this->getXoopsTpl()->assign('value', $data);
-        self::setTemplate();
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }
@@ -54,7 +52,6 @@ class Xoonips_ViewTypeText extends Xoonips_ViewType
         }
         $this->getXoopsTpl()->assign('viewType', 'detail');
         $this->getXoopsTpl()->assign('value', $data);
-        self::setTemplate();
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }

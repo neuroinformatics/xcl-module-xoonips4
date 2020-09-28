@@ -21,7 +21,6 @@ class Xoonips_ViewTypeCheckBox extends Xoonips_ViewType
         $this->getXoopsTpl()->assign('fieldName', $fieldName);
         $this->getXoopsTpl()->assign('value', $value);
         $this->getXoopsTpl()->assign('dirname', $this->dirname);
-        self::setTemplate();
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }
@@ -35,7 +34,6 @@ class Xoonips_ViewTypeCheckBox extends Xoonips_ViewType
         $this->getXoopsTpl()->assign('name', $field->getName());
         $this->getXoopsTpl()->assign('fieldName', $fieldName);
         $this->getXoopsTpl()->assign('value', $value);
-        self::setTemplate();
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }
@@ -46,7 +44,6 @@ class Xoonips_ViewTypeCheckBox extends Xoonips_ViewType
         $this->getXoopsTpl()->assign('viewType', 'detail');
         $this->getXoopsTpl()->assign('checked', $checked);
         $this->getXoopsTpl()->assign('name', $field->getName());
-        self::setTemplate();
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }
@@ -70,7 +67,6 @@ class Xoonips_ViewTypeCheckBox extends Xoonips_ViewType
         $this->getXoopsTpl()->assign('checked', $checked);
         $this->getXoopsTpl()->assign('disabled', $disabled);
         $this->getXoopsTpl()->assign('value', $value);
-        self::setTemplate();
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }

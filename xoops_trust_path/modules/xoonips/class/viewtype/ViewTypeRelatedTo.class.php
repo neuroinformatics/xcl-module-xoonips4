@@ -122,9 +122,6 @@ class Xoonips_ViewTypeRelatedTo extends Xoonips_ViewType
         $columnName = $field->getColumnName();
         $value = $data[$this->getFieldName($field, $groupLoopId)];
 
-        $tableData;
-        $columnData;
-
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];
         } else {

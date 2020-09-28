@@ -36,7 +36,6 @@ class Xoonips_ViewTypeDate extends Xoonips_ViewType
         $this->getXoopsTpl()->assign('dayList', $dayList);
         $this->getXoopsTpl()->assign('fieldName', $fieldName);
         $this->getXoopsTpl()->assign('value', $value);
-        self::setTemplate();
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }
@@ -51,7 +50,6 @@ class Xoonips_ViewTypeDate extends Xoonips_ViewType
         $this->getXoopsTpl()->assign('dayList', $dayList);
         $this->getXoopsTpl()->assign('fieldName', $fieldName);
         $this->getXoopsTpl()->assign('scope', $field->getScopeSearch());
-        self::setTemplate();
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }
@@ -99,7 +97,6 @@ class Xoonips_ViewTypeDate extends Xoonips_ViewType
         $this->getXoopsTpl()->assign('yearToValue', $yearToValue);
         $this->getXoopsTpl()->assign('monthToValue', $monthToValue);
         $this->getXoopsTpl()->assign('dayToValue', $dayToValue);
-        self::setTemplate();
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }
@@ -111,7 +108,6 @@ class Xoonips_ViewTypeDate extends Xoonips_ViewType
         $this->getXoopsTpl()->assign('fieldName', $fieldName);
         $this->getXoopsTpl()->assign('date', $value);
         $this->getXoopsTpl()->assign('value', $value);
-        self::setTemplate();
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }
@@ -125,7 +121,6 @@ class Xoonips_ViewTypeDate extends Xoonips_ViewType
     {
         $this->getXoopsTpl()->assign('viewType', 'detail');
         $this->getXoopsTpl()->assign('date', $value);
-        self::setTemplate();
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }
@@ -173,8 +168,10 @@ class Xoonips_ViewTypeDate extends Xoonips_ViewType
 
     protected function getMonths()
     {
-        $ret = ['01' => 'Jan', '02' => 'Feb', '03' => 'Mar', '04' => 'Apr', '05' => 'May', '06' => 'Jun',
-            '07' => 'Jul', '08' => 'Aug', '09' => 'Sep', '10' => 'Oct', '11' => 'Nov', '12' => 'Dec', ];
+        $ret = [
+            '01' => 'Jan', '02' => 'Feb', '03' => 'Mar', '04' => 'Apr', '05' => 'May', '06' => 'Jun',
+            '07' => 'Jul', '08' => 'Aug', '09' => 'Sep', '10' => 'Oct', '11' => 'Nov', '12' => 'Dec',
+        ];
 
         return $ret;
     }
@@ -211,19 +208,16 @@ class Xoonips_ViewTypeDate extends Xoonips_ViewType
                 $value[1] = trim($value[1]);
                 if ('' != $value[0]) {
                     $value[0] = $this->getTimes($value[0]);
-                    $v = $field->getDataType()->convertSQLStr($value[0]);
-                    $tableData[] = "$columnName>=$v";
+                    $tableData[] = '`'.$columnName.'`>='.$field->getDataType()->convertSQLStr($value[0]);
                 }
                 if ('' != $value[1]) {
                     $value[1] = $this->getTimes($value[1]);
-                    $v = $field->getDataType()->convertSQLStr($value[1]);
-                    $tableData[] = "$columnName<=$v";
+                    $tableData[] = '`'.$columnName.'`<='.$field->getDataType()->convertSQLStr($value[1]);
                 }
             } else {
                 $value = $this->getTimes(trim($value));
                 $value = substr($value, 0, 5);
-                $v = $field->getDataType()->convertSQLStrLike($value);
-                $tableData[] = "$columnName like '%$v%'";
+                $tableData[] = '`'.$columnName.'` LIKE \'%'.$field->getDataType()->convertSQLStrLike($value).'%\'';
             }
         }
     }
@@ -251,7 +245,6 @@ class Xoonips_ViewTypeDate extends Xoonips_ViewType
     {
         $this->getXoopsTpl()->assign('viewType', 'default');
         $this->getXoopsTpl()->assign('value', $value);
-        self::setTemplate();
 
         return $this->getXoopsTpl()->fetch('db:'.$this->template);
     }
@@ -322,9 +315,6 @@ class Xoonips_ViewTypeDate extends Xoonips_ViewType
         $columnName = $field->getColumnName();
         //get data
         $value = $this->getData($field, $data, $groupLoopId);
-        $tableData;
-        $groupData;
-        $columnData;
 
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];

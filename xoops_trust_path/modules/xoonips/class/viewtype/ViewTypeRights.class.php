@@ -19,9 +19,6 @@ class Xoonips_ViewTypeRights extends Xoonips_ViewType
         $use_cc = '1';
         $cc_commercial_use = '1';
         $cc_modification = '2';
-        //$valueSetBean = Xoonips_BeanFactory::getBean('ItemFieldValueSetBean', $this->dirname, $this->trustDirname);
-        //$jurisdictions = $valueSetBean->getValueDetail('Rights');
-        //$jurisdiction = isset($jurisdictions[0]['title_id ']) ? $jurisdictions[0]['title_id '] : 'Unported';
         $text = '';
 
         if (strlen($value) >= 4) {
@@ -63,9 +60,6 @@ class Xoonips_ViewTypeRights extends Xoonips_ViewType
         $use_cc = '1';
         $cc_commercial_use = '1';
         $cc_modification = '2';
-        //$valueSetBean = Xoonips_BeanFactory::getBean('ItemFieldValueSetBean', $this->dirname, $this->trustDirname);
-        //$jurisdictions = $valueSetBean->getValueDetail('Rights');
-        //$jurisdiction = isset($jurisdictions[0]['title_id ']) ? $jurisdictions[0]['title_id '] : 'Unported';
         $text = '';
         if (strlen($value) >= 4) {
             $rightsValue = explode(',', $value);
@@ -95,9 +89,6 @@ class Xoonips_ViewTypeRights extends Xoonips_ViewType
         $use_cc = '1';
         $cc_commercial_use = '1';
         $cc_modification = '2';
-        //$valueSetBean = Xoonips_BeanFactory::getBean('ItemFieldValueSetBean', $this->dirname, $this->trustDirname);
-        //$jurisdictions = $valueSetBean->getValueDetail('Rights');
-        //$jurisdiction = isset($jurisdictions[0]['title_id ']) ? $jurisdictions[0]['title_id '] : 'Unported';
         $text = '';
         if (strlen($value) >= 4) {
             $rightsValue = explode(',', $value);
@@ -120,9 +111,6 @@ class Xoonips_ViewTypeRights extends Xoonips_ViewType
         $use_cc = '1';
         $cc_commercial_use = '1';
         $cc_modification = '2';
-        //$valueSetBean = Xoonips_BeanFactory::getBean('ItemFieldValueSetBean', $this->dirname, $this->trustDirname);
-        //$jurisdictions = $valueSetBean->getValueDetail('Rights');
-        //$jurisdiction = isset($jurisdictions[0]['title_id ']) ? $jurisdictions[0]['title_id '] : ' ';
         $text = '';
         if (strlen($value) >= 4) {
             $rightsValue = explode(',', $value);
@@ -166,9 +154,6 @@ class Xoonips_ViewTypeRights extends Xoonips_ViewType
         $use_cc = '1';
         $cc_commercial_use = '1';
         $cc_modification = '2';
-        //$valueSetBean = Xoonips_BeanFactory::getBean('ItemFieldValueSetBean', $this->dirname, $this->trustDirname);
-        //$jurisdictions = $valueSetBean->getValueDetail('Rights');
-        //$jurisdiction = isset($jurisdictions[0]['title_id ']) ? $jurisdictions[0]['title_id '] : ' ';
         $text = '';
 
         if (strlen($value) >= 4) {
@@ -187,8 +172,6 @@ class Xoonips_ViewTypeRights extends Xoonips_ViewType
         $check_com[$cc_commercial_use] = 'checked';
         $check_mod = ['', '', ''];
         $check_mod[$cc_modification] = 'checked';
-        //$valueSetBean = Xoonips_BeanFactory::getBean('ItemFieldValueSetBean', $this->dirname, $this->trustDirname);
-        //$jurisdictions = $valueSetBean->getValueDetail('Rights');
         $rightsJurisdic = $fieldName.'_select';
         $this->getXoopsTpl()->assign('viewType', 'default');
         $this->getXoopsTpl()->assign('fieldName', $fieldName);

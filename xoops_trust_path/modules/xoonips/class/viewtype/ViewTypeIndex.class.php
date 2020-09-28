@@ -176,21 +176,6 @@ class Xoonips_ViewTypeIndex extends Xoonips_ViewType
         return implode(',', $ret);
     }
 
-    private function getPrivateIndex()
-    {
-        global $xoopsDB;
-        global $xoopsUser;
-        $uid = $xoopsUser->getVar('uid');
-        $tblIndex = $xoopsDB->prefix($this->getDiname().'_index');
-        $sql = "SELECT index_id FROM $tblIndex WHERE parent_index_id=1 AND open_level=3 AND uid=$uid";
-        $result = $xoopsDB->queryF($sql);
-        while ($row = $xoopsDB->fetchArray($result)) {
-            return $row['index_id'];
-        }
-
-        return 1;
-    }
-
     public function inputCheck(&$errors, $field, $value, $fieldName)
     {
         return true;
@@ -211,9 +196,6 @@ class Xoonips_ViewTypeIndex extends Xoonips_ViewType
         $tableName = $field->getTableName();
         $columnName = $field->getColumnName();
         $value = $data[$this->getFieldName($field, $groupLoopId)];
-
-        $tableData;
-        $columnData;
 
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];

@@ -57,9 +57,7 @@ class Xoonips_ViewTypeKana extends Xoonips_ViewType
     public function doRegistry($field, &$data, &$sqlStrings, $groupLoopId)
     {
         $tableName = $field->getTableName();
-        $tableData;
-        $groupData;
-        $columnData;
+
         if ($tableName == $this->dirname.'_item_title') {
             $columnName = $field->getId();
             $value = $data[$this->getFieldName($field, $groupLoopId)];
@@ -80,8 +78,6 @@ class Xoonips_ViewTypeKana extends Xoonips_ViewType
         } else {
             $columnName = $field->getColumnName();
             $value = $this->getData($field, $data, $groupLoopId);
-            $tableData;
-            $columnData;
 
             if (isset($sqlStrings[$tableName])) {
                 $tableData = &$sqlStrings[$tableName];

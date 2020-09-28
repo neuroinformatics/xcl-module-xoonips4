@@ -9,8 +9,6 @@ class Xoonips_ViewTypeTitle extends Xoonips_ViewTypeText
         $tableName = $field->getTableName();
         $columnName = $field->getId();
         $value = $data[$this->getFieldName($field, $groupLoopId)];
-        $tableData;
-        $columnData;
 
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];
@@ -41,7 +39,7 @@ class Xoonips_ViewTypeTitle extends Xoonips_ViewTypeText
             $tableData = &$sqlStrings[$tableName];
             $cnt = count($tableData);
             if ($cnt > $oldCnt) {
-                $tableData[$cnt - 1] .= ' AND "t1".item_field_detail_id='.$field->getId();
+                $tableData[$cnt - 1] .= ' AND `t1`.`item_field_detail_id`='.intval($field->getId());
             }
         }
     }

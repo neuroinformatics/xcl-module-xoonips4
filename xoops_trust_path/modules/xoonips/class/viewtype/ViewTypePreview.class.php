@@ -179,8 +179,7 @@ class Xoonips_ViewTypePreview extends Xoonips_ViewType
         if ($result) {
             $value = $data[$this->getFieldName($field, $groupLoopId, $result[0]['item_field_detail_id'])];
         }
-        $tableData;
-        $columnData;
+
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];
         } else {

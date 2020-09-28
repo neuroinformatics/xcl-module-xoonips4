@@ -158,8 +158,9 @@ class Xoonips_ViewTypeFileUpload extends Xoonips_ViewType
     public function isDisplay($op)
     {
         if (Xoonips_Enum::OP_TYPE_METAINFO == $op) {
+            //hidden when metainfo form
             return false;
-        } //hidden when metainfo form
+        }
 
         return true;
     }
@@ -223,8 +224,7 @@ class Xoonips_ViewTypeFileUpload extends Xoonips_ViewType
     {
         $tableName = $field->getTableName();
         $columnName = $this->getData($field, $data, $groupLoopId);
-        $tableData;
-        $columnData;
+
         if (isset($sqlStrings[$tableName])) {
             $tableData = &$sqlStrings[$tableName];
         } else {

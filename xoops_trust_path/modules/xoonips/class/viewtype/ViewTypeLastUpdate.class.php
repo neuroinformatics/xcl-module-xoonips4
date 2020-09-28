@@ -79,21 +79,20 @@ class Xoonips_ViewTypeLastUpdate extends Xoonips_ViewTypeDate
                 $value[1] = trim($value[1]);
                 if ('' != $value[0]) {
                     $value[0] = $this->getTimes($value[0]);
-                    $v = $field->getDataType()->convertSQLStr($value[0]);
-                    $tableData[] = "$columnName>=$v";
+                    $tableData[] = '`'.$columnName.'`>='.$field->getDataType()->convertSQLStr($value[0]);
                 }
                 if ('' != $value[1]) {
                     $value[1] = $this->getTimes($value[1]);
-                    $v = $field->getDataType()->convertSQLStr($value[1]);
-                    $tableData[] = "$columnName<=$v";
+                    $tableData[] = '`'.$columnName.'`<='.$field->getDataType()->convertSQLStr($value[1]);
                 }
             } else {
                 $value = $field->getDataType()->convertSQLStrLike(trim($value));
                 $value2 = $this->getTimes($value);
                 if ($value2 != $value) {
-                    $tableData[] = "$columnName >= $value2 AND $columnName < $value2 + 86400";
+                    $value2 = $field->getDataType()->convertSQLStr($value2);
+                    $tableData[] = '`'.$columnName.'`<='.$value2.' AND `'.$columnName.'`<'.$value2.' + 86400';
                 } else {
-                    $tableData[] = "$columnName like '%$value%'";
+                    $tableData[] = '`'.$columnName.'` LIKE \'%'.$value.'%\'';
                 }
             }
         }
