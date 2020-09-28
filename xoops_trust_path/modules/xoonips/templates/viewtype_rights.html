@@ -43,14 +43,14 @@
 	<{if $use_cc=='0'}>
 		<textarea readonly="readonly" rows="5" cols="40" style="width:320px;"><{$text|xoops_escape}></textarea>
 	<{else}>
-		<{$ccLicense|xoops_escape}>
+		<{$ccLicense}>
 	<{/if}>
 	<input type="hidden" name="<{$fieldName|xoops_escape}>" value="<{$value|xoops_escape}>" id="<{$fieldName|xoops_escape}>" />
 <{elseif $viewType eq 'detail'}>
 	<{if $use_cc=='0'}>
 		<textarea readonly="readonly" rows="5" cols="40" style="width:320px;"><{$text|xoops_escape}></textarea>
 	<{else}>
-		<{$ccLicense|xoops_escape}>
+		<{$ccLicense}>
 	<{/if}>
 <{elseif $viewType eq 'search'}>
 	<input type="text" name="<{$fieldName|xoops_escape}>" size="50" value="" />
