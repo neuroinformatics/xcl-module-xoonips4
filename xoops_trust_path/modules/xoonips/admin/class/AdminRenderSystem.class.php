@@ -124,7 +124,7 @@ class Xoonips_AdminRenderSystem extends Legacy_AdminRenderSystem
             'dirname' => null,
             'file' => null,
         ];
-        if (false !== strpos($file, '..') || strpos($prefix, '..' !== false)) {
+        if (false !== strpos($file, '..') || false !== strpos($prefix, '..')) {
             return $ret;
         }
         $root = &XCube_Root::getSingleton();

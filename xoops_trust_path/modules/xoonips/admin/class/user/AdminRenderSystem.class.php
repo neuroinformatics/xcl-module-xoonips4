@@ -30,7 +30,7 @@ class Xoonips_UserAdminRenderSystem extends Xoonips_AdminRenderSystem
             'dirname' => null,
             'file' => null,
         ];
-        if (false !== strpos($file, '..') || strpos($prefix, '..' !== false)) {
+        if (false !== strpos($file, '..') || false !== strpos($prefix, '..')) {
             return $ret;
         }
         $trustDirname = basename(dirname(dirname(dirname(__DIR__))));
