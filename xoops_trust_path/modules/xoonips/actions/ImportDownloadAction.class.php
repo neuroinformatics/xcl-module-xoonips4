@@ -29,19 +29,19 @@ class Xoonips_ImportDownloadAction extends Xoonips_AbstractAction
      * - index.php/import/[ID]/download
      * - index.php/import/[ID]/download/[FILENAME].
      *
-     * @return string
+     * @return int
      */
     protected function _getId()
     {
         $req = $this->mRoot->mContext->mRequest;
-        $dataId = $req->getRequest(_REQUESTED_DATA_ID);
+        $dataId = intval($req->getRequest(_REQUESTED_DATA_ID));
         if (isset($_SERVER['PATH_INFO']) && preg_match('/^\/[^\/]+\/(\d+)\/[^\/]+(?:\/([a-zA-Z0-9][a-zA-Z0-9_.-]+))?$/', $_SERVER['PATH_INFO'], $matches)) {
             $dataId = intval($matches[1]);
             if (array_key_exists(2, $matches)) {
                 $this->mFileName = trim($matches[2]);
             }
         } else {
-            $dataId = $req->getRequest('import_id');
+            $dataId = intval($req->getRequest('import_id'));
         }
 
         return $dataId;

@@ -108,8 +108,8 @@ class Xoonips_DownloadAction extends Xoonips_AbstractAction
             }
         }
         $request = $this->mRoot->mContext->mRequest;
-        $file_id = $request->getRequest('file_id');
-        if (!empty($file_id)) {
+        $file_id = intval($request->getRequest('file_id'));
+        if (0 != $file_id) {
             $ret['file_id'] = $file_id;
         }
         $item_doi = $request->getRequest(XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME);
@@ -215,16 +215,6 @@ class Xoonips_DownloadAction extends Xoonips_AbstractAction
         $this->mFileName = $itemtypeName.'_'.$item_id.'.zip';
 
         return true;
-    }
-
-    /**
-     * delete zip file.
-     *
-     * @param string $zfpath
-     */
-    public function deleteZipFile($zfpath)
-    {
-        @unlink($zfpath);
     }
 
     /**

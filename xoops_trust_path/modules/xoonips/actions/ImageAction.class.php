@@ -44,15 +44,15 @@ class Xoonips_ImageAction extends Xoonips_AbstractAction
         $dataId = $req->getRequest(_REQUESTED_DATA_ID);
         if (isset($_SERVER['PATH_INFO']) && preg_match('/^\/image\/(.+)$/', $_SERVER['PATH_INFO'], $matches)) {
             $dataId = $matches[1];
-            if (preg_match('/[[:cntrl:]]/', $dataId)) {
-                return '';
-            }
-            if (preg_match('/\.\./', $dataId)) {
-                return '';
-            }
         }
         if (!isset($dataId)) {
             $dataId = $req->getRequest('file');
+        }
+        if (preg_match('/[[:cntrl:]]/', $dataId)) {
+            return '';
+        }
+        if (preg_match('/\.\./', $dataId)) {
+            return '';
         }
 
         return isset($dataId) ? trim($dataId) : '';
