@@ -1,12 +1,12 @@
 <{if $viewType eq 'input'}>
-	<textarea  name="<{$fieldName}>" rows="5" cols="50"><{$value|xoops_escape}></textarea>
+	<textarea  name="<{$fieldName|xoops_escape}>" rows="5" cols="50"><{$value|xoops_escape}></textarea>
 <{elseif $viewType eq 'confirm'}>
 	<pre style="word-wrap:break-word;white-space:pre-wrap;"><{$value|xoops_escape}></pre>
-	<textarea name="<{$fieldName}>" style='display:none'><{$value|xoops_escape}></textarea>
+	<textarea name="<{$fieldName|xoops_escape}>" style='display:none'><{$value|xoops_escape}></textarea>
 <{elseif $viewType eq 'detail'}>
 	<pre style="word-wrap:break-word;white-space:pre-wrap;"><{$value|xoops_escape}></pre>
 <{elseif $viewType eq 'default'}>
-	<textarea name="default_value" rows="2" cols="40" <{$disabled}> ><{$value|xoops_escape}></textarea>
+	<textarea name="default_value" rows="2" cols="40" <{$disabled|xoops_escape}> ><{$value|xoops_escape}></textarea>
 	<{if !empty($disabled)}>
 		<input type="hidden" name="default_value" value="<{$value|xoops_escape}>" />
 	<{/if}>

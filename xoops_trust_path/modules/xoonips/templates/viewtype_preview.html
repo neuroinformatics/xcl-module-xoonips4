@@ -1,37 +1,37 @@
 <{if $viewType eq 'input'}>
-	<input type="file" name="<{$fileName}>" size="50" />
+	<input type="file" name="<{$fileName|xoops_escape}>" size="50" />
 	<{if $fileId=='error'}>
 		<br /><font color="red"><{$smarty.const._MD_XOONIPS_ITEM_THUMBNAIL_BAD_FILETYPE}></font>
-		<input type="hidden" name="<{$fieldName}>" value="" />
+		<input type="hidden" name="<{$fieldName|xoops_escape}>" value="" />
 	<{elseif empty($value) && $fileId=='none'}>
-		<input type="hidden" name="<{$fieldName}>" value="" />
+		<input type="hidden" name="<{$fieldName|xoops_escape}>" value="" />
 	<{else}>
-		<br /><a href="<{$xoops_url}>/modules/<{$dirname}>/image.php/file/<{$fileId}>/<{$preview.original_file_name|xoops_escape}>" target="_blank">
+		<br /><a href="<{$xoops_url}>/modules/<{$dirname}>/image.php/file/<{$fileId|xoops_escape}>/<{$preview.original_file_name|xoops_escape}>" target="_blank">
 			<img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/thumbnail/<{$fileId}>/<{$preview.original_file_name|xoops_escape}>" alt="thumbnail" /></a>
-		<br /><input class="formButton" type="button" name="btnDel" value="<{$smarty.const._MD_XOONIPS_ITEM_DELETE_BUTTON_LABEL}>" onclick="<{$dirname}>Edit.deleteFile('<{$fieldName}>', '<{$fileId}>');" />
-		<input type="hidden" name="<{$fieldName}>" value="<{$fileId}>" />
+		<br /><input class="formButton" type="button" name="btnDel" value="<{$smarty.const._MD_XOONIPS_ITEM_DELETE_BUTTON_LABEL}>" onclick="<{$dirname}>Edit.deleteFile('<{$fieldName|xoops_escape}>', '<{$fileId|xoops_escape}>');" />
+		<input type="hidden" name="<{$fieldName|xoops_escape}>" value="<{$fileId|xoops_escape}>" />
 	<{/if}>
 <{elseif $viewType eq 'confirm'}>
 	<{if $fileId=='error'}>
 		<br /><font color="red"><{$smarty.const._MD_XOONIPS_ITEM_THUMBNAIL_BAD_FILETYPE}></font>
-		<input type="hidden" name="<{$fieldName}>" value="" />
+		<input type="hidden" name="<{$fieldName|xoops_escape}>" value="" />
 	<{elseif empty($value) && $fileId=='none'}>
-		<input type="hidden" name="<{$fieldName}>" value="" />
+		<input type="hidden" name="<{$fieldName|xoops_escape}>" value="" />
 	<{else}>
-		<br /><a href="<{$xoops_url}>/modules/<{$dirname}>/image.php/file/<{$fileId}>/<{$preview.original_file_name|xoops_escape}>" target="_blank">
-			<img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/thumbnail/<{$fileId}>/<{$preview.original_file_name|xoops_escape}>" alt="thumbnail" /></a>
-		<input type="hidden" name="<{$fieldName}>" value="<{$fileId}>" />
+		<br /><a href="<{$xoops_url}>/modules/<{$dirname}>/image.php/file/<{$fileId|xoops_escape}>/<{$preview.original_file_name|xoops_escape}>" target="_blank">
+			<img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/thumbnail/<{$fileId|xoops_escape}>/<{$preview.original_file_name|xoops_escape}>" alt="thumbnail" /></a>
+		<input type="hidden" name="<{$fieldName|xoops_escape}>" value="<{$fileId|xoops_escape}>" />
 	<{/if}>
 <{elseif $viewType eq 'detail'}>
-	<{if !empty($fileId)}>
-		<br /><a href="<{$xoops_url}>/modules/<{$dirname}>/image.php/file/<{$fileId}>/<{$preview.original_file_name|xoops_escape}>" target="_blank">
-			<img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/thumbnail/<{$fileId}>/<{$preview.original_file_name|xoops_escape}>" alt="thumbnail" /></a>
+	<{if !empty($fileId|xoops_escape)}>
+		<br /><a href="<{$xoops_url}>/modules/<{$dirname}>/image.php/file/<{$fileId|xoops_escape}>/<{$preview.original_file_name|xoops_escape}>" target="_blank">
+			<img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/thumbnail/<{$fileId|xoops_escape}>/<{$preview.original_file_name|xoops_escape}>" alt="thumbnail" /></a>
 	<{/if}>
 <{elseif $viewType eq 'search'}>
-	<input type="text" name="<{$fieldName}>" size="50" value="" />
+	<input type="text" name="<{$fieldName|xoops_escape}>" size="50" value="" />
 <{elseif $viewType eq 'fileUpload'}>
 	<{if empty($value) && $fileId!="none"}>
-		<input type="text" id="<{$dirname}>_fileId" name="<{$fieldName}>" value="<{$fileId}>" />
+		<input type="text" id="<{$dirname}>_fileId" name="<{$fieldName|xoops_escape}>" value="<{$fileId|xoops_escape}>" />
 	<{/if}>
 <{elseif $viewType eq 'default'}>
 	<input type="hidden" name="default_value" value="" />

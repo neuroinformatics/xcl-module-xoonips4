@@ -76,18 +76,18 @@ function submitPage(index_id, page, orderby, itemcount) {
 </div>
 <form id="<{$dirname}>_itemselectsubform" action="index.php?action=Ajax&amp;method=ItemSelect" method="post">
 <input type="hidden" name="op" value="search" />
-<input type="hidden" id="<{$dirname}>_item_select_index_id" name="indexId" value="<{$select_index_id}>" />
-<input type="hidden" id="<{$dirname}>_callbackid"  name="callbackid" value="<{$callbackid}>" />
+<input type="hidden" id="<{$dirname}>_item_select_index_id" name="indexId" value="<{$select_index_id|xoops_escape}>" />
+<input type="hidden" id="<{$dirname}>_callbackid"  name="callbackid" value="<{$callbackid|xoops_escape}>" />
 <input type="hidden" id="<{$dirname}>_callbackvalue" name="callbackvalue" value="" />
 <div style="margin: 0px; padding: 0px;font-size:80%;" id="<{$dirname}>_item_select_index_tree_tabs">
 <ul>
 <{foreach item=index from=$indexes}>
-	<li><a href="#<{$dirname}>_item_select_index_tree_div_<{$index.index_id}>"><{$index.title|xoops_escape}></a></li>
+	<li><a href="#<{$dirname}>_item_select_index_tree_div_<{$index.index_id|xoops_escape}>"><{$index.title|xoops_escape}></a></li>
 <{/foreach}>
 </ul>
 <{foreach item=tree from=$trees}>
-	<div id="<{$dirname}>_item_select_index_tree_div_<{$tree.index_id}>" style="width: 190px; height: 360px; overflow: auto; padding: 0px; margin: 0px;">
-	<ul id="<{$dirname}>_item_select_index_tree_<{$tree.index_id}>" class="filetree">
+	<div id="<{$dirname}>_item_select_index_tree_div_<{$tree.index_id|xoops_escape}>" style="width: 190px; height: 360px; overflow: auto; padding: 0px; margin: 0px;">
+	<ul id="<{$dirname}>_item_select_index_tree_<{$tree.index_id|xoops_escape}>" class="filetree">
 	<!-- <{$tree.html}> -->
 	</ul>
 	</div>
@@ -105,7 +105,7 @@ function submitPage(index_id, page, orderby, itemcount) {
 </tr>
 </table>
 <hr />
-<{if $item_no_label}><span><{$item_no_label}></span><{/if}>
+<{if $item_no_label}><span><{$item_no_label|xoops_escape}></span><{/if}>
 <{if $items}>
 	<table width="100%" border="0" cellspacing="5">
 	<tr valign="top">
@@ -113,10 +113,10 @@ function submitPage(index_id, page, orderby, itemcount) {
 		<{$smarty.const._MD_XOONIPS_ITEM_ORDER_BY}>
 		<select id="<{$dirname}>_order_by" name="order_by" onchange="submitOrderby();">
 		<{foreach key=key item=item from=$order_by_select}>
-   			<option value="<{$key}>" <{if $key == $orderby}> selected="selected" <{/if}> ><{$item}></option>
+   			<option value="<{$key|xoops_escape}>" <{if $key == $orderby}> selected="selected" <{/if}> ><{$item|xoops_escape}></option>
 		<{/foreach}>
 		</select>
-		<input type="hidden" id="<{$dirname}>_order_dir" name="order_dir" value="<{$order_dir}>" />
+		<input type="hidden" id="<{$dirname}>_order_dir" name="order_dir" value="<{$order_dir|xoops_escape}>" />
 		<{if $order_dir == $smarty.const.ASC}>
 			<{$smarty.const._MD_XOONIPS_ITEM_ASCEND}>
 			<a href="#" onclick="submitOrderDir('<{$smarty.const.XOONIPS_DESC}>');return false;"><{$smarty.const._MD_XOONIPS_ITEM_DESCEND}></a>
@@ -138,14 +138,14 @@ function submitPage(index_id, page, orderby, itemcount) {
 
 	<table>
 	<tr>
-	<td><{$page_no_label}></td>
+	<td><{$page_no_label|xoops_escape}></td>
 	<{if $maxpage > 1}>
 		<td align="right">
 		<{if $page > 1}>
 			<{if $index_id > 0}>
-				<a href="#" onclick="submitPage(<{$index_id}>, <{$page-1}>, <{$orderby}>, <{$itemcount}>);return false;">PREV</a>&nbsp;
+				<a href="#" onclick="submitPage(<{$index_id|xoops_escape}>, <{$page-1}>, <{$orderby|xoops_escape}>, <{$itemcount|xoops_escape}>);return false;">PREV</a>&nbsp;
 			<{else}>
-				<a href="#" onclick="submitPage('', <{$page-1}>, <{$orderby}>, <{$itemcount}>);return false;">PREV</a>&nbsp;
+				<a href="#" onclick="submitPage('', <{$page-1}>, <{$orderby|xoops_escape}>, <{$itemcount|xoops_escape}>);return false;">PREV</a>&nbsp;
 			<{/if}>
 		<{else}>
 			PREV&nbsp;
@@ -156,9 +156,9 @@ function submitPage(index_id, page, orderby, itemcount) {
 				<{$i}>
 			<{else}>
 				<{if $index_id > 0}>
-					<a href="#" onclick="submitPage(<{$index_id}>, <{$i}>, <{$orderby}>, <{$itemcount}>);return false;"><{$i}></a>
+					<a href="#" onclick="submitPage(<{$index_id|xoops_escape}>, <{$i}>, <{$orderby|xoops_escape}>, <{$itemcount|xoops_escape}>);return false;"><{$i}></a>
 				<{else}>
-					<a href="#" onclick="submitPage('', <{$i}>, <{$orderby}>, <{$itemcount}>);return false;"><{$i}></a>
+					<a href="#" onclick="submitPage('', <{$i}>, <{$orderby|xoops_escape}>, <{$itemcount|xoops_escape}>);return false;"><{$i}></a>
 				<{/if}>
 			<{/if}>
 			&nbsp;
@@ -166,9 +166,9 @@ function submitPage(index_id, page, orderby, itemcount) {
 
 		<{if $page < $maxpage}>
 			<{if $index_id > 0}>
-				<a href="#" onclick="submitPage(<{$index_id}>, <{$page+1}>, <{$orderby}>, <{$itemcount}>);return false;">NEXT</a>
+				<a href="#" onclick="submitPage(<{$index_id|xoops_escape}>, <{$page+1}>, <{$orderby|xoops_escape}>, <{$itemcount|xoops_escape}>);return false;">NEXT</a>
 			<{else}>
-				<a href="#" onclick="submitPage('', <{$page+1}>, <{$orderby}>, <{$itemcount}>);return false;">NEXT</a>
+				<a href="#" onclick="submitPage('', <{$page+1}>, <{$orderby|xoops_escape}>, <{$itemcount|xoops_escape}>);return false;">NEXT</a>
 			<{/if}>
 		<{else}>
 			NEXT
@@ -182,7 +182,7 @@ function submitPage(index_id, page, orderby, itemcount) {
 	<{foreach key=key item=item from=$items}>
 		<tr class="<{cycle values="even,odd"}>">
 		<td valign="middle">
-		<input type="checkbox" rel="select" name="sel<{$key}>" value="<{$item.item_id}>" />
+		<input type="checkbox" rel="select" name="sel<{$key|xoops_escape}>" value="<{$item.item_id|xoops_escape}>" />
 		</td>
 		<td>
 		<{$item.html}>
@@ -193,14 +193,14 @@ function submitPage(index_id, page, orderby, itemcount) {
 
 	<table>
 	<tr>
-	<td><{$page_no_label}></td>
+	<td><{$page_no_label|xoops_escape}></td>
 	<{if $maxpage > 1}>
 		<td align="right">
 		<{if $page > 1}>
 			<{if $index_id > 0}>
-				<a href="#" onclick="submitPage(<{$index_id}>, <{$page-1}>, <{$orderby}>, <{$itemcount}>);return false;">PREV</a>&nbsp;
+				<a href="#" onclick="submitPage(<{$index_id|xoops_escape}>, <{$page-1}>, <{$orderby|xoops_escape}>, <{$itemcount|xoops_escape}>);return false;">PREV</a>&nbsp;
 			<{else}>
-				<a href="#" onclick="submitPage('', <{$page-1}>, <{$orderby}>, <{$itemcount}>);return false;">PREV</a>&nbsp;
+				<a href="#" onclick="submitPage('', <{$page-1}>, <{$orderby|xoops_escape}>, <{$itemcount|xoops_escape}>);return false;">PREV</a>&nbsp;
 			<{/if}>
 		<{else}>
 			PREV&nbsp;
@@ -211,9 +211,9 @@ function submitPage(index_id, page, orderby, itemcount) {
 				<{$i}>
 			<{else}>
 				<{if $index_id > 0}>
-					<a href="#" onclick="submitPage(<{$index_id}>, <{$i}>, <{$orderby}>, <{$itemcount}>);return false;"><{$i}></a>
+					<a href="#" onclick="submitPage(<{$index_id|xoops_escape}>, <{$i}>, <{$orderby|xoops_escape}>, <{$itemcount|xoops_escape}>);return false;"><{$i}></a>
 				<{else}>
-					<a href="#" onclick="submitPage('', <{$i}>, <{$orderby}>, <{$itemcount}>);return false;"><{$i}></a>
+					<a href="#" onclick="submitPage('', <{$i}>, <{$orderby|xoops_escape}>, <{$itemcount|xoops_escape}>);return false;"><{$i}></a>
 				<{/if}>
 			<{/if}>
 			&nbsp;
@@ -221,9 +221,9 @@ function submitPage(index_id, page, orderby, itemcount) {
 
 		<{if $page < $maxpage}>
 			<{if $index_id > 0}>
-				<a href="#" onclick="submitPage(<{$index_id}>, <{$page+1}>, <{$orderby}>, <{$itemcount}>);return false;">NEXT</a>
+				<a href="#" onclick="submitPage(<{$index_id|xoops_escape}>, <{$page+1}>, <{$orderby|xoops_escape}>, <{$itemcount|xoops_escape}>);return false;">NEXT</a>
 			<{else}>
-				<a href="#" onclick="submitPage('', <{$page+1}>, <{$orderby}>, <{$itemcount}>);return false;">NEXT</a>
+				<a href="#" onclick="submitPage('', <{$page+1}>, <{$orderby|xoops_escape}>, <{$itemcount|xoops_escape}>);return false;">NEXT</a>
 			<{/if}>
 		<{else}>
 			NEXT

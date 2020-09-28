@@ -1,16 +1,16 @@
 <{if $viewType eq 'input'}>
-	<div id="<{$divName}>"><table>
+	<div id="<{$divName|xoops_escape}>"><table>
 	<{foreach item=userInfo from=$userInfos}>
 		<tr>
 			<td><{if empty($userInfo.name)}><{$userInfo.uname|xoops_escape}><{else}><{$userInfo.name|xoops_escape}>(<{$userInfo.uname|xoops_escape}>)<{/if}></td>
-			<td><a href="#" onclick="<{$dirname}>Edit.deleteUser('<{$fieldName}>', '<{$userInfo.uid}>', null);"><img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/delete.png" /></a></td>
+			<td><a href="#" onclick="<{$dirname}>Edit.deleteUser('<{$fieldName|xoops_escape}>', '<{$userInfo.uid|xoops_escape}>', null);"><img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/delete.png" /></a></td>
 		</tr>
 	<{/foreach}>
 	</table></div><br />
-	<input type="hidden" id="<{$dirname}>SearchUserID" name="<{$fieldName}>" value="<{$value|xoops_escape}>" />
-	<input type="button" href="index.php?action=Ajax&method=UserSelect&callbackid=<{$fieldName}>" rel="<{$mytrustdirname}>Popin" value="<{$smarty.const._MD_XOONIPS_ITEM_SEARCH_BUTTON_LABEL}>" />
+	<input type="hidden" id="<{$dirname}>SearchUserID" name="<{$fieldName|xoops_escape}>" value="<{$value|xoops_escape}>" />
+	<input type="button" href="index.php?action=Ajax&method=UserSelect&callbackid=<{$fieldName|xoops_escape}>" rel="<{$mytrustdirname}>Popin" value="<{$smarty.const._MD_XOONIPS_ITEM_SEARCH_BUTTON_LABEL}>" />
 <{elseif $viewType eq 'confirm'}>
-	<div id="<{$divName}>"><table>
+	<div id="<{$divName|xoops_escape}>"><table>
 	<{foreach item=userInfo from=$userInfos}>
 		<tr>
 			<td><{if empty($userInfo.name)}><{$userInfo.uname|xoops_escape}><{else}><{$userInfo.name|xoops_escape}>(<{$userInfo.uname|xoops_escape}>)<{/if}></td>
@@ -18,14 +18,14 @@
 		</tr>
 	<{/foreach}>
 	</table></div>
-	<input type="hidden" id="<{$dirname}>SearchUserID" name="<{$fieldName}>" value="<{$value|xoops_escape}>" />
+	<input type="hidden" id="<{$dirname}>SearchUserID" name="<{$fieldName|xoops_escape}>" value="<{$value|xoops_escape}>" />
 <{elseif $viewType eq 'detail'}>
 	<table>
 	<{foreach item=userInfo from=$userInfos name=loop}>
 		<tr>
 			<td><{if empty($userInfo.name)}><{$userInfo.uname|xoops_escape}><{else}><{$userInfo.name|xoops_escape}>(<{$userInfo.uname|xoops_escape}>)<{/if}></td>
 			<{if $smarty.foreach.loop.first}>
-				<td rowspan="<{$userInfos|@count}>" style="vertical-align: middle;">
+				<td rowspan="<{$userInfos|@count|xoops_escape}>" style="vertical-align: middle;">
 				<span class="no_print_span">
 				<span id="<{$dirname}>CreateUser" style="display: none;">
 				<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_EDIT_USERS_BUTTON_LABEL}>" onclick="document.<{$dirname}>_itemownersedit.submit();" />
@@ -37,18 +37,18 @@
 	<{/foreach}>
 	</table>
 <{elseif $viewType eq 'itemUsersEdit'}>
-	<div id="<{$divName}>"><table>
+	<div id="<{$divName|xoops_escape}>"><table>
 	<{foreach item=userInfo from=$userInfos}>
 		<tr>
 			<td><{if empty($userInfo.name)}><{$userInfo.uname|xoops_escape}><{else}><{$userInfo.name|xoops_escape}>(<{$userInfo.uname|xoops_escape}>)<{/if}></td>
-			<td><a href="#" onclick="<{$dirname}>Edit.deleteUser(null, '<{$userInfo.uid}>', 'deleteOwners');"><img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/delete.png" /></a></td>
+			<td><a href="#" onclick="<{$dirname}>Edit.deleteUser(null, '<{$userInfo.uid|xoops_escape}>', 'deleteOwners');"><img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/delete.png" /></a></td>
 		</tr>
 	<{/foreach}>
 	</table></div><br />
 	<input type="hidden" id="<{$dirname}>SearchUserID" name="<{$dirname}>CreateUser" value="<{$value|xoops_escape}>" />
 	<input type="button" href="index.php?action=Ajax&method=UserSelect&callbackid=<{$dirname}>CreateUser" rel="<{$mytrustdirname}>Popin" value="<{$smarty.const._MD_XOONIPS_ITEM_SEARCH_BUTTON_LABEL}>" />
 <{elseif $viewType eq 'search'}>
-	<input type="text" name="<{$fieldName}>" size="50" value="" />
+	<input type="text" name="<{$fieldName|xoops_escape}>" size="50" value="" />
 <{elseif $viewType eq 'default'}>
 	<input type="hidden" name="default_value" value="" />
 <{/if}>

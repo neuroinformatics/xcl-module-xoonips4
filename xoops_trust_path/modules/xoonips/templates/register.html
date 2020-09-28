@@ -174,12 +174,12 @@ jQuery(function(){
 <div style="margin: 0px; padding: 0px;font-size:80%;" id="<{$dirname}>_item_regist_index_tree_tabs">
 <ul>
 <{foreach item=index from=$indexes}>
-	<li><a href="#<{$dirname}>_item_regist_index_tree_div_<{$index.index_id}>"><{$index.title|xoops_escape}></a></li>
+	<li><a href="#<{$dirname}>_item_regist_index_tree_div_<{$index.index_id|xoops_escape}>"><{$index.title|xoops_escape}></a></li>
 <{/foreach}>
 </ul>
 <{foreach item=tree from=$trees}>
-	<div id="<{$dirname}>_item_regist_index_tree_div_<{$tree.index_id}>" style="width: 230px; height: 550px; overflow: auto; padding: 0px; margin: 0px;">
-	<ul id="<{$dirname}>_item_regist_index_tree_<{$tree.index_id}>" class="filetree">
+	<div id="<{$dirname}>_item_regist_index_tree_div_<{$tree.index_id|xoops_escape}>" style="width: 230px; height: 550px; overflow: auto; padding: 0px; margin: 0px;">
+	<ul id="<{$dirname}>_item_regist_index_tree_<{$tree.index_id|xoops_escape}>" class="filetree">
 	<!-- <{$tree.html}> -->
 	</ul>
 	</div>
@@ -189,7 +189,7 @@ jQuery(function(){
 <td width="70%">
 <{$errors}>
 <form id="<{$dirname}>_registerform" target="<{$dirname}>_uploadoutputiframe" name="<{$dirname}>_registerform" action="register.php" method="post" enctype="multipart/form-data">
-<input type="hidden" name="itemtype_id" value="<{$itemtype_id}>" />
+<input type="hidden" name="itemtype_id" value="<{$itemtype_id|xoops_escape}>" />
 <input id="<{$dirname}>_targetItemId" type="hidden" name="targetItemId" value="" />
 <input id="<{$dirname}>_fileuploadclick" type="hidden" name="fileuploadclick" value="0" />
 <{if !empty($registryView)}>

@@ -10,7 +10,7 @@ function indexSave(form) {
 <br /><br />
 <form id="<{$dirname}>_itemindexeditform" action="edit.php" name="<{$dirname}>_itemindexeditform" method="post">
 <{$token_ticket}>
-<input type="hidden" name="item_id" value="<{$item_id}>" />
+<input type="hidden" name="item_id" value="<{$item_id|xoops_escape}>" />
 <{$item_html}>
 <{$index_html}>
 <div style="text-align: center; margin-top: 20px;">

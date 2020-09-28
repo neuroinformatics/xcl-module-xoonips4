@@ -1,6 +1,6 @@
 <{if $messages == false && $warnings == false && $errors == false}>
 	<script type="text/javascript" charset="utf-8">
-		xoonipsCallback('<{$callbackid}>', '<{$callbackvalue}>');
+		xoonipsCallback('<{$callbackid|xoops_escape}>', '<{$callbackvalue|xoops_escape}>');
 	</script>
 <{else}>
 	<br /><br />
@@ -35,8 +35,8 @@
 	<{if $errors}>
 		<input type="button" rel="close" value="OK" />
 	<{else}>
-		<input type="hidden" id="<{$dirname}>_callbackid"  name="callbackid" value="<{$callbackid}>" />
-		<input type="hidden" id="<{$dirname}>_callbackvalue" name="callbackvalue" value="<{$callbackvalue}>" />
+		<input type="hidden" id="<{$dirname}>_callbackid"  name="callbackid" value="<{$callbackid|xoops_escape}>" />
+		<input type="hidden" id="<{$dirname}>_callbackvalue" name="callbackvalue" value="<{$callbackvalue|xoops_escape}>" />
 		<input type="button" id="<{$dirname}>_sub_msg_ok" rel="callback" value="OK" />
 	<{/if}>
 	</div>

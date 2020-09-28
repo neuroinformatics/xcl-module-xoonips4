@@ -24,13 +24,13 @@ function setSort(sortkey, order) {
 </tr>
 </table>
 
-<input type="hidden" id="<{$dirname}>_callbackid" name="callbackid" value="<{$callbackid}>" />
+<input type="hidden" id="<{$dirname}>_callbackid" name="callbackid" value="<{$callbackid|xoops_escape}>" />
 <input type="hidden" id="<{$dirname}>_callbackvalue" name="callbackvalue" value="" />
 <input type="hidden" id="<{$dirname}>_hiduname" name="hiduname" value="<{$uname|xoops_escape}>" />
 <input type="hidden" id="<{$dirname}>_hidname" name="hidname" value="<{$name|xoops_escape}>" />
-<input type="hidden" id="<{$dirname}>_hidkey" name="hidkey" value="<{$sortkey}>" />
-<input type="hidden" id="<{$dirname}>_hidorder" name="hidorder" value="<{$order}>" />
-<input type="hidden" name="mode" value="<{$mode}>" />
+<input type="hidden" id="<{$dirname}>_hidkey" name="hidkey" value="<{$sortkey|xoops_escape}>" />
+<input type="hidden" id="<{$dirname}>_hidorder" name="hidorder" value="<{$order|xoops_escape}>" />
+<input type="hidden" name="mode" value="<{$mode|xoops_escape}>" />
 
 <{* display page navigation *}>
 <{if $userlist}>
@@ -65,9 +65,9 @@ function setSort(sortkey, order) {
 		<tr class='<{cycle values="odd,even"}>'>
   			<td width="10%" style="text-align: center;">
 			<{if $mode eq 'single'}>
-  			<input type="radio" <{if $key eq 0}>checked="checked"<{/if}> name="seluser" value="<{$user.uid}>" />
+  			<input type="radio" <{if $key eq 0}>checked="checked"<{/if}> name="seluser" value="<{$user.uid|xoops_escape}>" />
 	  		<{else}>
-  				<input type="checkbox" rel="select" name="sel<{$key}>" value="<{$user.uid}>" />
+  				<input type="checkbox" rel="select" name="sel<{$key|xoops_escape}>" value="<{$user.uid|xoops_escape}>" />
   			<{/if}>
   			</td>	
   			<td width="45%"><{$user.uname|xoops_escape}></td>

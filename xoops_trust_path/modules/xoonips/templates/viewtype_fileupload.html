@@ -1,51 +1,51 @@
 <{if $viewType eq 'input'}>
-	<input type="file" name="<{$fileName}>" size="50" />
+	<input type="file" name="<{$fileName|xoops_escape}>" size="50" />
 	<{if empty($value) && $fileId=="none"}>
-		<input type="hidden" name="<{$fieldName}>" value="" />
+		<input type="hidden" name="<{$fieldName|xoops_escape}>" value="" />
 	<{else}>
 		<{if !empty($fileInfo)}>
 			<{foreach item=file from=$fileInfo}>
-				<br /><{$file.original_file_name}>(<{$file.file_size}> Bytes)
+				<br /><{$file.original_file_name|xoops_escape}>(<{$file.file_size|xoops_escape}> Bytes)
 			<{/foreach}>
-			<br /><input class="formButton" type="button" name="btnDel" value="<{$smarty.const._MD_XOONIPS_ITEM_DELETE_BUTTON_LABEL}>" onclick="<{$dirname}>Edit.deleteFile('<{$fieldName}>', '<{$fileId}>');" />
-			<input type="hidden" name="<{$fieldName}>" value="<{$fileId}>" />
+			<br /><input class="formButton" type="button" name="btnDel" value="<{$smarty.const._MD_XOONIPS_ITEM_DELETE_BUTTON_LABEL}>" onclick="<{$dirname}>Edit.deleteFile('<{$fieldName|xoops_escape}>', '<{$fileId|xoops_escape}>');" />
+			<input type="hidden" name="<{$fieldName|xoops_escape}>" value="<{$fileId|xoops_escape}>" />
 		<{/if}>
 	<{/if}>
 <{elseif $viewType eq 'confirm'}>
 	<{if empty($value) && $fileId=="none"}>
-		<input type="hidden" name="<{$fieldName}>" value="" />
+		<input type="hidden" name="<{$fieldName|xoops_escape}>" value="" />
 	<{else}>
 		<{if !empty($fileInfo)}>
 			<{foreach item=file from=$fileInfo}>
-				<{$file.original_file_name}><br />
+				<{$file.original_file_name|xoops_escape}><br />
 				<table>
 					<tr>
 						<td><{$smarty.const._MD_XOONIPS_ITEM_TYPE_LABEL}></td>
-						<td>:<{$file.mime_type}></td>
+						<td>:<{$file.mime_type|xoops_escape}></td>
 					</tr>
 					<tr>
 						<td><{$smarty.const._MD_XOONIPS_ITEM_SIZE_LABEL}></td>
-						<td>:<{if intval($file.file_size) >= 1024 * 1024}><{$file.file_size/1048576|string_format:"%01.1f MB"}>
-							<{elseif intval($file.file_size) >= 1024}><{$file.file_size/1024|string_format:"%01.1f KB"}>
-							<{else}><{$file.file_size|string_format:"%d bytes"}><{/if}></td>
+						<td>:<{if intval($file.file_size) >= 1024 * 1024}><{$file.file_size/1048576|string_format:"%01.1f MB"|xoops_escape}>
+							<{elseif intval($file.file_size) >= 1024}><{$file.file_size/1024|string_format:"%01.1f KB"|xoops_escape}>
+							<{else}><{$file.file_size|string_format:"%d bytes"|xoops_escape}><{/if}></td>
 					</tr>
 					<tr>
 						<td><{$smarty.const._MD_XOONIPS_ITEM_LAST_UPDATED_LABEL}></td>
-						<td>:<{$file.timestamp|date_format}></td>
+						<td>:<{$file.timestamp|date_format|xoops_escape}></td>
 					</tr>
 				</table>
 			<{/foreach}>
-			<input type="hidden" name="<{$fieldName}>" value="<{$fileId}>" />
+			<input type="hidden" name="<{$fieldName|xoops_escape}>" value="<{$fileId|xoops_escape}>" />
 		<{/if}>
 	<{/if}>
 <{elseif $viewType eq 'detail'}>
 	<{if !empty($fileInfo)}>
 		<{foreach item=file from=$fileInfo}>
-			<{$file.original_file_name}><br />
+			<{$file.original_file_name|xoops_escape}><br />
 			<table>
 				<tr>
 					<td><{$smarty.const._MD_XOONIPS_ITEM_TYPE_LABEL}></td>
-					<td>:<{$file.mime_type}></td>
+					<td>:<{$file.mime_type|xoops_escape}></td>
 					<{if $display}>
 					<td rowspan="4" style="vertical-align:middle;">
 					<{else}>
@@ -53,35 +53,35 @@
 					<{/if}>
 					<span class="<{$dirname}>_no_print_span">
 					<{if $file.limit}>
-						<a class="formButton" href="<{$file.download_url}>"<{if $file.notify}> onclick="return xoonipsDownloadConfirmation('<{$fileId}>')"<{/if}>><{$smarty.const._MD_XOONIPS_ITEM_DOWNLOAD_LABEL}></a>
+						<a class="formButton" href="<{$file.download_url|xoops_escape}>"<{if $file.notify}> onclick="return xoonipsDownloadConfirmation('<{$fileId|xoops_escape}>')"<{/if}>><{$smarty.const._MD_XOONIPS_ITEM_DOWNLOAD_LABEL}></a>
 					<{/if}>
 					</span>
 					</td>
 				</tr>
 				<tr>
 					<td><{$smarty.const._MD_XOONIPS_ITEM_SIZE_LABEL}></td>
-					<td>:<{if intval($file.file_size) >= 1024 * 1024}><{$file.file_size/1048576|string_format:"%01.1f MB"}>
-						<{elseif intval($file.file_size) >= 1024}><{$file.file_size/1024|string_format:"%01.1f KB"}>
-						<{else}><{$file.file_size|string_format:"%d bytes"}><{/if}></td>
+					<td>:<{if intval($file.file_size) >= 1024 * 1024}><{$file.file_size/1048576|string_format:"%01.1f MB"|xoops_escape}>
+						<{elseif intval($file.file_size) >= 1024}><{$file.file_size/1024|string_format:"%01.1f KB"|xoops_escape}>
+						<{else}><{$file.file_size|string_format:"%d bytes"|xoops_escape}><{/if}></td>
 				</tr>
 				<tr>
 					<td><{$smarty.const._MD_XOONIPS_ITEM_LAST_UPDATED_LABEL}></td>
-					<td>:<{$file.timestamp|date_format}></td>
+					<td>:<{$file.timestamp|date_format|xoops_escape}></td>
 				</tr>
 				<tr>
 					<td><{$smarty.const._MD_XOONIPS_ITEM_DOWNLOAD_COUNT_LABEL}></td>
-					<td>: <{$file.download_count}></td>
+					<td>: <{$file.download_count|xoops_escape}></td>
 				</tr>
 			</table>
 			<br />
-			<{$smarty.const._MD_XOONIPS_ITEM_TOTAL_DOWNLOAD_COUNT_SINCE_LABEL}><{$file.timestamp|date_format}> : <{$file.download_count}><br />
+			<{$smarty.const._MD_XOONIPS_ITEM_TOTAL_DOWNLOAD_COUNT_SINCE_LABEL}><{$file.timestamp|date_format|xoops_escape}> : <{$file.download_count|xoops_escape}><br />
 		<{/foreach}>
 	<{/if}>
 <{elseif $viewType eq 'search'}>
-	<input type="text" name="<{$fieldName}>" size="50" value="" />
+	<input type="text" name="<{$fieldName|xoops_escape}>" size="50" value="" />
 <{elseif $viewType eq 'fileUpload'}>
 	<{if empty($value) && $fileId!="none"}>
-		<input type="text" id="<{$dirname}>_fileId" name="<{$fieldName}>" value="<{$fileId}>" />
+		<input type="text" id="<{$dirname}>_fileId" name="<{$fieldName|xoops_escape}>" value="<{$fileId|xoops_escape}>" />
 	<{/if}>
 <{elseif $viewType eq 'default'}>
 	<input type="hidden" name="default_value" value="" />

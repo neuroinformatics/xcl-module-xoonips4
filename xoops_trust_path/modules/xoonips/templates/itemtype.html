@@ -1,17 +1,17 @@
 <{if $viewType eq 'input'}>
 	<{foreach item=field from=$fieldGroup name=field}>
-		<tr><td class="head" width="25%"><{$field.name}><{if $field.isMust}><span style="color: red;">*</span><{/if}></td>
+		<tr><td class="head" width="25%"><{$field.name|xoops_escape}><{if $field.isMust}><span style="color: red;">*</span><{/if}></td>
 		<td class=<{if $smarty.foreach.field.index % 2 == 1}>"odd"<{else}>"even"<{/if}>><{$field.view}></td></tr>
 	<{/foreach}>
 <{elseif $viewType eq 'detail'}>
 	<{foreach item=field from=$fieldGroup name=field}>
-		<tr><td class="head" width="25%"><{$field.name}></td>
+		<tr><td class="head" width="25%"><{$field.name|xoops_escape}></td>
 		<td class=<{if $smarty.foreach.field.index % 2 == 1}>"odd"<{else}>"even"<{/if}>><{$field.view}></td></tr>
 	<{/foreach}>
 <{elseif $viewType eq 'simpleSearch'}>
 	<{foreach item=field from=$fieldGroup name=field}>
 		<tr><td class="odd" width="10%"></td>
-		<td class="odd" width="15%"><{$field.name}></td>
+		<td class="odd" width="15%"><{$field.name|xoops_escape}></td>
 		<td class="odd" width="50%"><{$field.view}></td>
 		<td class="odd" width="25%"></td></tr>
 	<{/foreach}>

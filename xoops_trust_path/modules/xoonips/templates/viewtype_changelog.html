@@ -1,10 +1,10 @@
 <{if $viewType eq 'input'}>
-	<input type="hidden" name="<{$fieldName}>" value="<{$value|xoops_escape}>" />
+	<input type="hidden" name="<{$fieldName|xoops_escape}>" value="<{$value|xoops_escape}>" />
 	<table>
 	<{if !empty($changeLogInfos)}>
 		<{foreach item=changeLogInfo from=$changeLogInfos}>
 			<{if isset($changeLogInfo.logDate)}>
-				<tr><td nowrap><{$changeLogInfo.logDate}></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><{$changeLogInfo.log}></td></tr>
+				<tr><td nowrap><{$changeLogInfo.logDate|xoops_escape}></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><{$changeLogInfo.log|xoops_escape}></td></tr>
 			<{else}>
 				<tr></tr>
 			<{/if}>
@@ -14,12 +14,12 @@
 	<{/if}>
 	</table>
 <{elseif $viewType eq 'confirm'}>
-	<input type="hidden" name="<{$fieldName}>" value="<{$value|xoops_escape}>" />
+	<input type="hidden" name="<{$fieldName|xoops_escape}>" value="<{$value|xoops_escape}>" />
 	<table>
 	<{if !empty($changeLogInfos)}>
 		<{foreach item=changeLogInfo from=$changeLogInfos}>
 			<{if isset($changeLogInfo.logDate)}>
-				<tr><td nowrap><{$changeLogInfo.logDate}></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><{$changeLogInfo.log}></td></tr>
+				<tr><td nowrap><{$changeLogInfo.logDate|xoops_escape}></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><{$changeLogInfo.log|xoops_escape}></td></tr>
 			<{else}>
 				<tr></tr>
 			<{/if}>
@@ -33,7 +33,7 @@
 		<table>
 		<{foreach item=changeLogInfo from=$changeLogInfos}>
 			<{if isset($changeLogInfo.logDate)}>
-				<tr><td nowrap><{$changeLogInfo.logDate}></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><{$changeLogInfo.log}></td></tr>
+				<tr><td nowrap><{$changeLogInfo.logDate|xoops_escape}></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><{$changeLogInfo.log|xoops_escape}></td></tr>
 			<{else}>
 				<tr></tr>
 			<{/if}>
@@ -41,7 +41,7 @@
 		</table>
 	<{/if}>
 <{elseif $viewType eq 'search'}>
-	<input type="text" name="<{$fieldName}>" size="50" value="" />
+	<input type="text" name="<{$fieldName|xoops_escape}>" size="50" value="" />
 <{elseif $viewType eq "default"}>
 	<input type="hidden" name="default_value" value="" />
 <{/if}>

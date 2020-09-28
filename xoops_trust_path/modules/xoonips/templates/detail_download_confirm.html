@@ -29,22 +29,22 @@ $(document).ready(function() {
   });
 
 <{foreach name='files' item=file from=$files}>
-  var form = $('#<{$dirname}>_downloadform_<{$file.fileID}>');
+  var form = $('#<{$dirname}>_downloadform_<{$file.fileID|xoops_escape}>');
   form.submit(function() {
     $('#<{$dirname}>_overlay').hide();
     $('#<{$dirname}>_lightbox').hide();
-    $('#<{$dirname}>_download_page_<{$file.fileID}>').hide();
+    $('#<{$dirname}>_download_page_<{$file.fileID|xoops_escape}>').hide();
   })
   form.find(':button[name="cancel"]').click(function() {
     $('#<{$dirname}>_overlay').hide();
     $('#<{$dirname}>_lightbox').hide();
-    $('#<{$dirname}>_download_page_<{$file.fileID}>').hide();
+    $('#<{$dirname}>_download_page_<{$file.fileID|xoops_escape}>').hide();
   });
   form.find(':radio[name="radio_notify"]').change(function() {
-    <{$dirname}>ChangeDownloadEnabled(<{$file.fileID}>);
+    <{$dirname}>ChangeDownloadEnabled(<{$file.fileID|xoops_escape}>);
   });
   form.find(':radio[name="radio_license"]').change(function() {
-    <{$dirname}>ChangeDownloadEnabled(<{$file.fileID}>);
+    <{$dirname}>ChangeDownloadEnabled(<{$file.fileID|xoops_escape}>);
   });
 <{/foreach}>
 });
@@ -79,9 +79,9 @@ function xoonipsDownloadConfirmation(file_id) {
 	<div style="width: 570px;" id="<{$dirname}>_outerImageContainer" >
 		<div id="<{$dirname}>_imageContainer">
 		<{foreach name='files' item=file from=$files}>
-			<div id="<{$dirname}>_download_page_<{$file.fileID}>" style="display: none;" >
-			<form action="<{$download_url}>" method="post" id="<{$dirname}>_downloadform_<{$file.fileID}>">
-			<input type="hidden" name="file_id" value="<{$file.fileID}>" />
+			<div id="<{$dirname}>_download_page_<{$file.fileID|xoops_escape}>" style="display: none;" >
+			<form action="<{$download_url}>" method="post" id="<{$dirname}>_downloadform_<{$file.fileID|xoops_escape}>">
+			<input type="hidden" name="file_id" value="<{$file.fileID|xoops_escape}>" />
 				<div style="text-align: left">
 				<{$smarty.const._MD_XOONIPS_ITEM_ATTACHMENT_FILE_INFO_TITLE_LABEL}>
 					<div class="<{$dirname}>_download_box">

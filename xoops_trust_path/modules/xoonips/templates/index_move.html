@@ -2,13 +2,13 @@
 <form action="editindex.php" method="post">
 <{$token_ticket}>
 <input type="hidden" name="op" value="move" />
-<input type="hidden" id="<{$dirname}>_callbackid"  name="callbackid" value="<{$callbackid}>" />
+<input type="hidden" id="<{$dirname}>_callbackid"  name="callbackid" value="<{$callbackid|xoops_escape}>" />
 <input type="hidden" id="<{$dirname}>_callbackvalue" name="callbackvalue" value="" />
-<input type="hidden" name="index_id" value="<{$index.index_id}>" />
+<input type="hidden" name="index_id" value="<{$index.index_id|xoops_escape}>" />
 <{$smarty.const._MD_XOONIPS_INDEX_SUB_LABEL_MOVETO}>
 <select name="moveto">
 	<{foreach from=$index_path item=path}>
-        <option value='<{$path.index_id}>'><{$path.title|xoops_escape}></option>
+        <option value='<{$path.index_id|xoops_escape}>'><{$path.title|xoops_escape}></option>
     <{/foreach}>
 </select><br /><br />
 <div style="text-align: center;">

@@ -1,7 +1,7 @@
 <{include file="db:`$dirname`_header.html"}>
 <h4><{$smarty.const._MD_XOONIPS_ITEM_DELETE_ITEM_CONFIRM}></h4>
 <form id="<{$dirname}>_deleteconfirmform" name="<{$dirname}>_deleteconfirmform" action="edit.php" method="post">
-<input type="hidden" name="item_id" value="<{$item_id}>" />
+<input type="hidden" name="item_id" value="<{$item_id|xoops_escape}>" />
 <div style="text-align: left; margin: 1px;">
 <span id="<{$dirname}>_message_label_top">
 	<{$smarty.const._MD_XOONIPS_ITEM_DELETE_CONFIRMATION_MESSAGE}>

@@ -1,15 +1,15 @@
 <{if $viewType eq 'input'}>
-	<select name="<{$fieldName}>"><option> </option>
+	<select name="<{$fieldName|xoops_escape}>"><option> </option>
 	<{foreach key=key item=listName from=$list}>
-		<option value="<{$key}>" <{if $key==$value}>selected<{/if}>><{$listName|xoops_escape}></option>
+		<option value="<{$key|xoops_escape}>" <{if $key==$value}>selected<{/if}>><{$listName|xoops_escape}></option>
 	<{/foreach}>
 	</select>
 <{elseif $viewType eq 'confirm'}>
-	<{$valueName|xoops_escape}><input type="hidden" name="<{$fieldName}>" value="<{$value|xoops_escape}>" />
+	<{$valueName|xoops_escape}><input type="hidden" name="<{$fieldName|xoops_escape}>" value="<{$value|xoops_escape}>" />
 <{elseif $viewType eq 'detail'}>
 	<{$valueName|xoops_escape}>
 <{elseif $viewType eq 'list'}>
-	<select name="list" onchange="listChange()" <{$disabled}>>
+	<select name="list" onchange="listChange()" <{$disabled|xoops_escape}>>
 	<{foreach item=selectValue from=$selectValues}>
 		<option value="<{$selectValue|xoops_escape}>" <{if $selectValue==$value}>selected<{/if}>><{$selectValue|xoops_escape}></option>
 	<{/foreach}>
@@ -21,9 +21,9 @@
 	<{if count($selectValues) == 0}>
 		<input type="hidden" name="default_value" value="<{$value|xoops_escape}>" />
 	<{else}>
-		<select name="default_value" <{$disabled}>>
+		<select name="default_value" <{$disabled|xoops_escape}>>
 		<{foreach item=selectValue from=$selectValues}>
-			<option value="<{$selectValue.title_id}>" <{if $selectValue.title_id==$value}>selected<{/if}>><{$selectValue.title|xoops_escape}></option>
+			<option value="<{$selectValue.title_id|xoops_escape}>" <{if $selectValue.title_id==$value}>selected<{/if}>><{$selectValue.title|xoops_escape}></option>
 		<{/foreach}>
 		</select>
 		<{if !empty($disabled)}>

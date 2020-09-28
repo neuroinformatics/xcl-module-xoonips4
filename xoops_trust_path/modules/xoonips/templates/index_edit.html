@@ -3,8 +3,8 @@
 <form action="editindex.php" method="post">
 <{$token_ticket}>
 <input type="hidden" name="op" value="update" />
-<input type="hidden" name="index_id" value="<{$index.index_id}>" />
-<input type="hidden" name="parent_index_id" value="<{$parent_index_id}>" />
+<input type="hidden" name="index_id" value="<{$index.index_id|xoops_escape}>" />
+<input type="hidden" name="parent_index_id" value="<{$parent_index_id|xoops_escape}>" />
 <table class="outer">
 	<tr>
   		<td class="head" width="30%"><{$smarty.const._MD_XOONIPS_INDEX_NAME}></td>

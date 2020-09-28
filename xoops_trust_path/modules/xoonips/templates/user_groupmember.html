@@ -27,7 +27,7 @@ function deleteUser(id) {
 <form id="<{$dirname}>_groupMemberForm" name="<{$dirname}>_groupMemberForm" action="user.php?op=groupMember" method="post">
 <{$token_ticket}>
 <input type="hidden" id="<{$dirname}>_action" name="action" value="" />
-<input type="hidden" id="<{$dirname}>_groupid" name="groupid" value="<{$group.groupid}>" />
+<input type="hidden" id="<{$dirname}>_groupid" name="groupid" value="<{$group.groupid|xoops_escape}>" />
 <table class="outer" cellspacing="1" cellpadding="4">
  <tr>
   <td width="40%" class="head"><{$smarty.const._MD_XOONIPS_LANG_GROUP_NAME}></td>
@@ -41,7 +41,7 @@ function deleteUser(id) {
   <td class="head"><{$smarty.const._MD_XOONIPS_LANG_GROUP_ADMIN}><br /></td>
   <td class="<{cycle name="oddeven"}>">
   	<{foreach item=admin from=$admins}>
-  		<input type="hidden" name="adminid[]" value="<{$admin.uid}>" />
+  		<input type="hidden" name="adminid[]" value="<{$admin.uid|xoops_escape}>" />
     	<{$admin.name|xoops_escape}><{if $admin.name}>(<{/if}><{$admin.uname|xoops_escape}><{if $admin.name}>)<{/if}><br />
  	<{/foreach}>
   </td>
@@ -50,11 +50,11 @@ function deleteUser(id) {
   <td class="head"><{$smarty.const._MD_XOONIPS_LANG_GROUP_MEMBERS}><br /></td>
   <td class="<{cycle name="oddeven"}>">
   	<{foreach item=member from=$members}>
-  	 	<div id="<{$dirname}>_memberid<{$member.uid}>">
-  		<input type="hidden" name="memberid[]" value="<{$member.uid}>" />
+  	 	<div id="<{$dirname}>_memberid<{$member.uid|xoops_escape}>">
+  		<input type="hidden" name="memberid[]" value="<{$member.uid|xoops_escape}>" />
     	<{$member.name|xoops_escape}><{if $member.name}>(<{/if}><{$member.uname|xoops_escape}><{if $member.name}>)<{/if}>
     	<{if $member.deleteFlag}>
-    	<a href="javascript:deleteUser(<{$member.uid}>);">
+    	<a href="javascript:deleteUser(<{$member.uid|xoops_escape}>);">
        		<img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/delete.png" alt="<{$smarty.const._DELETE}>" title="<{$smarty.const._DELETE}>" />
        	</a>
        	<{else}><{if $member.activate==1}> (Join Pending)<{elseif $member.activate==2}> (Leave Pending)<{/if}>

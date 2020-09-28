@@ -17,7 +17,7 @@ jQuery(function(){
   </tr>
 </table>
 <form id="<{$dirname}>_registerconfirmform" name="<{$dirname}>_registerconfirmform" action="register.php?op=save" method="post">
-<input type="hidden" name="itemtype_id" value="<{$itemtype_id}>" />
+<input type="hidden" name="itemtype_id" value="<{$itemtype_id|xoops_escape}>" />
 <div style="text-align: left; margin: 1px;">
 <span id="<{$dirname}>_message_label_top">
 	<{$smarty.const._MD_XOONIPS_ITEM_SELECT_PRIVATE_INDEX_AUTO}>

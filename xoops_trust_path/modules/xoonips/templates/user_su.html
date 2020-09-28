@@ -36,13 +36,13 @@ $(':button[rel^="<{$mytrustdirname}>Popin"]').<{$mytrustdirname}>Popin({
 });
 })(jQuery);
 </script>
-<h3><{"`$constpref`_USER_LANG_SU"|constant}></h3>
-<{"`$constpref`_USER_MESSAGE_SU_EXPLAIN"|constant}>
+<h3><{"`$constpref`_USER_LANG_SU"|constant|xoops_escape}></h3>
+<{"`$constpref`_USER_MESSAGE_SU_EXPLAIN"|constant|xoops_escape}>
 <form id="<{$xoops_dirname}>_su_form" action="user.php?op=su" method="post">
 <input type="hidden" name="uid" value="" />
  <table class="outer">
   <tr>
-   <td class="head" width="40%"><{"`$constpref`_USER_LANG_SU_TARGET_USER"|constant}></td>
+   <td class="head" width="40%"><{"`$constpref`_USER_LANG_SU_TARGET_USER"|constant|xoops_escape}></td>
    <td class="even" width="60%"><span id="<{$xoops_dirname}>_su_username"></span>
 <{if $uid == 0}>
    <input type="button" href="<{$smarty.const.XOOPS_URL}>/modules/<{$dirname}>/index.php?action=Ajax&amp;method=UserSelect&amp;mode=single&amp;callbackid=1;1;1" rel="<{$mytrustdirname}>Popin" value="<{$smarty.const._MD_XOONIPS_LANG_SEARCH}>" />
@@ -50,7 +50,7 @@ $(':button[rel^="<{$mytrustdirname}>Popin"]').<{$mytrustdirname}>Popin({
    </td>
   </tr>
   <tr>
-   <td class="head"><{"`$constpref`_USER_LANG_SU_PASSWORD"|constant}></td>
+   <td class="head"><{"`$constpref`_USER_LANG_SU_PASSWORD"|constant|xoops_escape}></td>
    <td class="odd">
     <input type="password" name="pass" />
    </td>

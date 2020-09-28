@@ -1,8 +1,8 @@
 <{include file="db:`$dirname`_header.html"}>
 <h4><{$smarty.const._MD_XOONIPS_ITEM_INDEX_EDIT_CONFIRM_TITLE}></h4>
 <form id="<{$dirname}>_itemindexconfirmform" action="edit.php" name="<{$dirname}>_itemindexconfirmform" method="post">
-<input type="hidden" name="item_id" value="<{$item_id}>" />
-<input type="hidden" name="checked_indexes" value="<{$checked_indexes}>" />
+<input type="hidden" name="item_id" value="<{$item_id|xoops_escape}>" />
+<input type="hidden" name="checked_indexes" value="<{$checked_indexes|xoops_escape}>" />
 <{$token_ticket}>
 
 <{if count($edit_index_msgs) > 0}>
@@ -21,7 +21,7 @@
 <br /><br />
 
 <div style="text-align: center; margin-top: 20px;">
-<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_BACK_BUTTON_LABEL}>" onclick="jQuery('#<{$dirname}>_itemindexconfirmform').attr('action', 'edit.php?op=editIndex&item_id=<{$item_id}>');jQuery('#<{$dirname}>_itemindexconfirmform').submit();" />
+<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_BACK_BUTTON_LABEL}>" onclick="jQuery('#<{$dirname}>_itemindexconfirmform').attr('action', 'edit.php?op=editIndex&item_id=<{$item_id|xoops_escape}>');jQuery('#<{$dirname}>_itemindexconfirmform').submit();" />
 <{if $save_visible}>
 	<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_SAVE_BUTTON_LABEL}>" onclick="jQuery('#<{$dirname}>_itemindexconfirmform').attr('action', 'edit.php?op=saveIndex');jQuery('#<{$dirname}>_itemindexconfirmform').submit();" />
 <{/if}>

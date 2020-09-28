@@ -1,40 +1,40 @@
 <{if $viewType eq 'input'}>
-	<input type="hidden" id="<{$dirname}>SearchRelatedItem" name="<{$fieldName}>" value="<{$value|xoops_escape}>" />
+	<input type="hidden" id="<{$dirname}>SearchRelatedItem" name="<{$fieldName|xoops_escape}>" value="<{$value|xoops_escape}>" />
 	<div id="<{$divName}>"><table>
 	<{if !empty($value)}>
 		<{foreach item=item from=$itemInfo}>
 			<tr>
-				<td><{$item.listInfo}></td>
-				<td><a href="#" onclick="<{$dirname}>Edit.deleteRelatedItem('<{$fieldName}>', '<{$item.id}>');"><img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/delete.png" /></a></td>
+				<td><{$item.listInfo|xoops_escape}></td>
+				<td><a href="#" onclick="<{$dirname}>Edit.deleteRelatedItem('<{$fieldName|xoops_escape}>', '<{$item.id|xoops_escape}>');"><img src="<{$xoops_url|xoops_escape}>/modules/<{$dirname}>/image.php/icons/delete.png" /></a></td>
 			</tr>
 		<{/foreach}>
 	<{/if}>
 	</table></div><br />
-	<input class="formButton" type="button" href="index.php?action=Ajax&amp;method=ItemSelect&callbackid=<{$fieldName}>" rel="relatedItemPopin" value="<{$smarty.const._MD_XOONIPS_ITEM_SEARCH_BUTTON_LABEL}>" />
+	<input class="formButton" type="button" href="index.php?action=Ajax&amp;method=ItemSelect&callbackid=<{$fieldName|xoops_escape}>" rel="relatedItemPopin" value="<{$smarty.const._MD_XOONIPS_ITEM_SEARCH_BUTTON_LABEL}>" />
 <{elseif $viewType eq 'confirm'}>
 	<div id="<{$divName}>"><table>
 	<{if !empty($value)}>
 		<{foreach item=item from=$itemInfo}>
 			<tr>
-				<td><{$item}></td>
+				<td><{$item|xoops_escape}></td>
 				<td></td>
 			</tr>
 		<{/foreach}>
 	<{/if}>
 	</table></div>
-	<input type="hidden" id="<{$dirname}>SearchRelatedItem" name="<{$fieldName}>" value="<{$value|xoops_escape}>" />
+	<input type="hidden" id="<{$dirname}>SearchRelatedItem" name="<{$fieldName|xoops_escape}>" value="<{$value|xoops_escape}>" />
 <{elseif $viewType eq 'detail'}>
 	<{if !empty($value)}>
 		<table>
 		<{foreach item=item from=$itemInfo}>
 			<tr>
-				<td><{$item}></td>
+				<td><{$item|xoops_escape}></td>
 			</tr>
 		<{/foreach}>
 		</table>
 	<{/if}>
 <{elseif $viewType eq 'search'}>
-	<input type="text" name="<{$fieldName}>" size="50" value="" />
+	<input type="text" name="<{$fieldName|xoops_escape}>" size="50" value="" />
 <{elseif $viewType eq 'default'}>
 	<input type="hidden" name="default_value" value="" />
 <{/if}>

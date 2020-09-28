@@ -21,26 +21,26 @@ function openWindowWithPost(){
 <h3><{$smarty.const._MD_XOONIPS_ITEM_SEARCH_RESULT}></h3>
 
 <{if $op=='quicksearch' }>
-<{$smarty.const._MD_XOONIPS_ITEM_SEARCH_KEYWORD}> : <{$keyword}><br />
+<{$smarty.const._MD_XOONIPS_ITEM_SEARCH_KEYWORD}> : <{$keyword|xoops_escape}><br />
 <{/if}>
 
 <{if $item_no_label}><br /><span><{$item_no_label}></span><{/if}>
 
 <{if $item_htmls}>
 <form action="search.php" id="<{$dirname}>_itemselect_form" method="post">
-<input type="hidden" name="op" value="<{$op}>" />
-<input type="hidden" name="search_itemtype" value="<{$search_itemtype}>" />
-<input type="hidden" name="search_subtype" value="<{$search_subtype}>" />
-<input type="hidden" name="keyword" value="<{$keyword}>" />
-<input type="hidden" name="search_condition" value="<{$search_condition}>" />
+<input type="hidden" name="op" value="<{$op|xoops_escape}>" />
+<input type="hidden" name="search_itemtype" value="<{$search_itemtype|xoops_escape}>" />
+<input type="hidden" name="search_subtype" value="<{$search_subtype|xoops_escape}>" />
+<input type="hidden" name="keyword" value="<{$keyword|xoops_escape}>" />
+<input type="hidden" name="search_condition" value="<{$search_condition|xoops_escape}>" />
 <{foreach key=key item=item from=$search_data}>
 	<{if is_array($item)}>
 		<{foreach item=val from=$item}>
-			<input type="hidden" name="<{$key|cat:'[]'}>" value="<{$val}>" />
+			<input type="hidden" name="<{$key|cat:'[]'}>" value="<{$val|xoops_escape}>" />
 		<{/foreach}>
 	<{else}>
 		<{if $key!="op"}>
-			<input type="hidden" name="<{$key}>" value="<{$item}>" />
+			<input type="hidden" name="<{$key|xoops_escape}>" value="<{$item|xoops_escape}>" />
 		<{/if}>
 	<{/if}>
 <{/foreach}>
@@ -48,7 +48,7 @@ function openWindowWithPost(){
 <div class="no_print_div">
 	<{$smarty.const._MD_XOONIPS_ITEM_ORDER_BY}>
 	<{html_options name="orderby" options=$order_by_select selected=$orderby onchange="submit();" }> 
-	<input type="hidden" id="<{$dirname}>_order_dir" name="order_dir" value="<{$order_dir}>" />
+	<input type="hidden" id="<{$dirname}>_order_dir" name="order_dir" value="<{$order_dir|xoops_escape}>" />
 	<{if $order_dir == $smarty.const.XOONIPS_ASC }>
 		<{$smarty.const._MD_XOONIPS_ITEM_ASCEND}>
 		<span style="cursor:pointer;" onclick="submit_order_dir('<{$smarty.const.XOONIPS_DESC}>');"><{$smarty.const._MD_XOONIPS_ITEM_DESCEND}></span>
@@ -135,21 +135,21 @@ NEXT
 </table>
 
 <form action="" id="<{$dirname}>_print_form" method="post" target="_blank">
-<input type="hidden" name="op" value="<{$op}>" />
+<input type="hidden" name="op" value="<{$op|xoops_escape}>" />
 <input type="hidden" name="print" value="print" />
-<input type="hidden" name="page" value="<{$page}>" />
-<input type="hidden" name="itemcount" value="<{$itemcount}>" />
-<input type="hidden" name="search_itemtype" value="<{$search_itemtype}>" />
-<input type="hidden" name="search_subtype" value="<{$search_subtype}>" />
-<input type="hidden" name="keyword" value="<{$keyword}>" />
-<input type="hidden" name="search_condition" value="<{$search_condition}>" />
+<input type="hidden" name="page" value="<{$page|xoops_escape}>" />
+<input type="hidden" name="itemcount" value="<{$itemcount|xoops_escape}>" />
+<input type="hidden" name="search_itemtype" value="<{$search_itemtype|xoops_escape}>" />
+<input type="hidden" name="search_subtype" value="<{$search_subtype|xoops_escape}>" />
+<input type="hidden" name="keyword" value="<{$keyword|xoops_escape}>" />
+<input type="hidden" name="search_condition" value="<{$search_condition|xoops_escape}>" />
 <{foreach key=key item=item from=$search_data}>
 	<{if is_array($item)}>
 		<{foreach item=val from=$item}>
-			<input type="hidden" name="<{$key|cat:'[]'}>" value="<{$val}>" />
+			<input type="hidden" name="<{$key|cat:'[]'}>" value="<{$val|xoops_escape}>" />
 		<{/foreach}>
 	<{else}>
-		<input type="hidden" name="<{$key}>" value="<{$item}>" />
+		<input type="hidden" name="<{$key|xoops_escape}>" value="<{$item|xoops_escape}>" />
 	<{/if}>
 <{/foreach}>
 </form>

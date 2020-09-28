@@ -21,11 +21,11 @@ $('#<{$dirname}>_itemownerseditform :button[rel^="<{$mytrustdirname}>Popin"]').<
 <{$errors}>
 <form id="<{$dirname}>_itemownerseditform" action="edit.php" name="<{$dirname}>_itemownerseditform" method="post">
 <{$token_ticket}>
-<input type="hidden" name="item_id" value="<{$item_id}>" />
+<input type="hidden" name="item_id" value="<{$item_id|xoops_escape}>" />
 <{$item_html}>
 <table>
 <tr>
-<td class="head" width="25%"><{$detail_name}></td>
+<td class="head" width="25%"><{$detail_name|xoops_escape}></td>
 <td class="odd">
 <{$users_html}>
 </td>

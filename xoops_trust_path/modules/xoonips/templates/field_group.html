@@ -3,7 +3,7 @@
 		<{foreach item=field from=$fieldGroup}><{$field}><{/foreach}>
 	</table>
 	<{if $occurrence}>
-		<hr><input type="button" value="<{$_LABEL_ADD}>" onclick="<{$dirname}>Edit.addFieldGroup('<{$id}>')" />
+		<hr><input type="button" value="<{$_LABEL_ADD}>" onclick="<{$dirname}>Edit.addFieldGroup('<{$id|xoops_escape}>')" />
 	<{/if}>
 <{elseif $viewType eq 'edit'}>
 	<{if $occurrence}>
@@ -11,7 +11,7 @@
 	<{/if}>
 	<{foreach item=fieldGroup from=$fieldGroups name=fieldGroup}>
 		<{if !$smarty.foreach.fieldGroup.first}>
-			<hr></div><div><table><input type="button" value="<{$_LABEL_DELETE}>" onclick="<{$dirname}>Edit.deleteFieldGroup('<{$fieldGroup.id}>');" />
+			<hr></div><div><table><input type="button" value="<{$_LABEL_DELETE}>" onclick="<{$dirname}>Edit.deleteFieldGroup('<{$fieldGroup.id|xoops_escape}>');" />
 		<{/if}>
 		<div><table class=<{$dirname}>_cursor_title>
 		<{foreach item=field from=$fieldGroup.fieldGroup}>
@@ -20,7 +20,7 @@
 		</table>
 	<{/foreach}>
 	<{if $occurrence}>
-		<hr></div><input type="button" value="<{$_LABEL_ADD}>" onclick="<{$dirname}>Edit.addFieldGroup('<{$id}>')" />
+		<hr></div><input type="button" value="<{$_LABEL_ADD}>" onclick="<{$dirname}>Edit.addFieldGroup('<{$id|xoops_escape}>')" />
 	<{/if}>
 	</div></td>
 <{elseif $viewType eq 'confirm'}>

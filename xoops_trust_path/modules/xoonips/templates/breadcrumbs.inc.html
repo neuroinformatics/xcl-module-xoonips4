@@ -3,9 +3,9 @@
   <{foreach from=$xoops_breadcrumbs item="item"}>
    &nbsp;&raquo;&raquo;&nbsp;
     <{if $item.url}>
-      <a href="<{$item.url}>"><{$item.name}></a>
+      <a href="<{$item.url}>"><{$item.name|xoops_escape}></a>
     <{else}>
-      <{$item.name}>
+      <{$item.name|xoops_escape}>
     <{/if}>
   <{/foreach}>
 </div>

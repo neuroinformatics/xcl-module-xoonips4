@@ -21,9 +21,9 @@
     <select name="index_select" size="1" onchange="submit();">
       <{foreach item=obj from=$index_select_arr}>
        <{if $obj.selected == 'yes'}>
-          <option value="<{$obj.value}>" selected="selected"><{$obj.label}></option>
+          <option value="<{$obj.value|xoops_escape}>" selected="selected"><{$obj.label|xoops_escape}></option>
       <{else}>
-      	  <option value="<{$obj.value}>"><{$obj.label}></option>
+      	  <option value="<{$obj.value|xoops_escape}>"><{$obj.label|xoops_escape}></option>
        <{/if}>
        <{/foreach}>
       </select>
@@ -102,13 +102,13 @@ if(window.addEventListener) {
 <div style="margin: 0px; padding: 0px;font-size:80%;" id="<{$dirname}>_item_import_index_tree_tabs">
 <ul>
 <{foreach item=index from=$indexes}>
-	<li><a href="#<{$dirname}>_item_import_index_tree_div_<{$index.index_id}>"><{$index.title|xoops_escape}></a></li>
+	<li><a href="#<{$dirname}>_item_import_index_tree_div_<{$index.index_id|xoops_escape}>"><{$index.title|xoops_escape}></a></li>
 <{/foreach}>
 </ul>
 <{foreach item=tree from=$trees}>
 	<div id="<{$dirname}>_item_import_index_tree_div_<{$tree.index_id}>" style="border-right: 1px solid #404040;border-top: 1px solid #e4e4e4; border-left: 1px solid #e4e4e4;
             border-bottom: 1px solid #858585; border-right: 1px solid #858585; padding: 0px; margin: 0px;">
-	<ul id="<{$dirname}>_item_import_index_tree_<{$tree.index_id}>" class="filetree">
+	<ul id="<{$dirname}>_item_import_index_tree_<{$tree.index_id|xoops_escape}>" class="filetree">
 	<!-- <{$tree.html}> -->
 	</ul>
 	</div>

@@ -10,6 +10,6 @@
 		<{html_options options=$search_conditions|xoops_escape selected=$search_conditions_selected|xoops_escape}>
 	</select>
 	<br /><br />
-	<input class="formButton" type="submit" value="<{$lang_search}>" />
+	<input class="formButton" type="submit" value="<{$lang_search|xoops_escape}>" />
 </form>
 <{include file="db:`$dirname`_footer.html"}>

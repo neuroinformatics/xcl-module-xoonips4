@@ -16,7 +16,7 @@
 <{$smarty.const._MD_XOONIPS_ITEM_SELECT_ITEM_TYPE_LABEL}>
 <select name="itemtype_id">
 	<{foreach item=itemtype from=$itemtypelist}>
-		<option value="<{$itemtype.item_type_id}>"><{$itemtype.name|xoops_escape}></option>
+		<option value="<{$itemtype.item_type_id|xoops_escape}>"><{$itemtype.name|xoops_escape}></option>
 	<{/foreach}>
 </select>
 </div>

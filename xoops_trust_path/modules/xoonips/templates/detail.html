@@ -1,5 +1,5 @@
 <script type="text/javascript" charset="utf-8">
-var <{$dirname}>Edit = new XoonipsLibrary.edit('<{$xoops_url}>', '<{$dirname}>', 'detailform', 'detail', '<{$item_id}>');
+var <{$dirname}>Edit = new XoonipsLibrary.edit('<{$xoops_url}>', '<{$dirname}>', 'detailform', 'detail', '<{$item_id|xoops_escape}>');
 
 (function($) {
 $(function() {
@@ -35,7 +35,7 @@ function xoonipsCallback(id, value) {
 	</script>
 	<form name="<{$dirname}>_itemownersedit" action="edit.php" method="get">
 	<input type="hidden" name="op" value="editOwners" />
-	<input type="hidden" name="item_id" value="<{$item_id}>" />
+	<input type="hidden" name="item_id" value="<{$item_id|xoops_escape}>" />
 	</form>
 <{/if}>
 
@@ -55,15 +55,15 @@ function xoonipsCallback(id, value) {
 	</script>
 <{/if}>
 
-<form id="<{$dirname}>_detailform" action="detail.php?item_id=<{$item_id}>" name="<{$dirname}>_detailform" method="post">
+<form id="<{$dirname}>_detailform" action="detail.php?item_id=<{$item_id|xoops_escape}>" name="<{$dirname}>_detailform" method="post">
 <{$token_ticket}>
-<input type="hidden" name="item_id" value="<{$item_id}>" />
+<input type="hidden" name="item_id" value="<{$item_id|xoops_escape}>" />
 <input type="hidden" name="op" value="" />
 <input id="<{$dirname}>_url" type="hidden" name="url" value="" />
 <input id="<{$dirname}>_redirect_msg" type="hidden" name="redirect_msg" value="" />
 <div class="no_print_div">
 <{if $buttonVisible.item_edit}>
-	<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_MODIFY_BUTTON_LABEL}>" href="<{$xoops_url}>/modules/<{$dirname}>/edit.php?item_id=<{$item_id}>" rel="itemModifyPopin" />
+	<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_MODIFY_BUTTON_LABEL}>" href="<{$xoops_url}>/modules/<{$dirname}>/edit.php?item_id=<{$item_id|xoops_escape}>" rel="itemModifyPopin" />
 <{/if}>
 <{if $buttonVisible.users_edit}>
 	<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_EDIT_USERS_BUTTON_LABEL}>" onclick="document.<{$dirname}>_itemownersedit.submit();" />
@@ -74,7 +74,7 @@ function xoonipsCallback(id, value) {
 <{if $buttonVisible.item_delete}>
 	<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_DELETE_BUTTON_LABEL}>" onclick="<{$dirname}>Edit.itemDelete();" />
 <{/if}>
-<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_PRINT_FRIENDLY_BUTTON_LABEL}>" onclick="window.open('<{$xoops_url}>/modules/<{$dirname}>/detail.php?op=print&item_id=<{$item_id}>');" />
+<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_PRINT_FRIENDLY_BUTTON_LABEL}>" onclick="window.open('<{$xoops_url}>/modules/<{$dirname}>/detail.php?op=print&item_id=<{$item_id|xoops_escape}>');" />
 <{if $buttonVisible.item_export}>
 	<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_LABEL_EXPORT}>" onclick="op.value='export'; submit();" />
 <{/if}>

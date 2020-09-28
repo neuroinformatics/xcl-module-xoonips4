@@ -38,7 +38,7 @@ $('input.<{$dirname}>_search_block_checkbox').each(function(){
 <table class="outer">
 <tr>
 	<th align="left">
-		<input type="checkbox" name="<{$block.itemtype_id}>" class="<{$dirname}>_search_block_checkbox" id="<{$dirname}>_search_block_<{$block_key}>" value="on" />
+		<input type="checkbox" name="<{$block.itemtype_id|xoops_escape}>" class="<{$dirname}>_search_block_checkbox" id="<{$dirname}>_search_block_<{$block_key}>" value="on" />
 		<{$block.itemtype_name|escape}>
 	</th>
 </tr>

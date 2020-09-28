@@ -39,15 +39,15 @@ function back(back) {
 </script>
 <h3><{$smarty.const._MD_XOONIPS_INDEX_DETAILED_DESCRIPTION}></h3>
 <{foreach item=index from=$index_path}>
- / <a href="<{$itemListUrl}>?index_id=<{$index.index_id}>"><{$index.html_title|xoops_escape}></a>
+ / <a href="<{$itemListUrl}>?index_id=<{$index.index_id|xoops_escape}>"><{$index.html_title|xoops_escape}></a>
 <{/foreach}>&nbsp;&nbsp;
 <br />
 <{$errors}>
 <form id="<{$dirname}>_indexDescriptionForm" name="<{$dirname}>_indexDescriptionForm" action="indexdescription.php?op=update" method="post" enctype="multipart/form-data">
 <{$token_ticket}>
 <input type="hidden" id="<{$dirname}>_action" name="action" value="" />
-<input type="hidden" id="<{$dirname}>_index_id" name="index_id" value="<{$index_id}>" />
-<input type="hidden" id="<{$dirname}>_show_thumbnail" name="show_thumbnail" value="<{$show_thumbnail}>" />
+<input type="hidden" id="<{$dirname}>_index_id" name="index_id" value="<{$index_id|xoops_escape}>" />
+<input type="hidden" id="<{$dirname}>_show_thumbnail" name="show_thumbnail" value="<{$show_thumbnail|xoops_escape}>" />
 <table class="outer" cellspacing="1" cellpadding="4">
  <tr>
   <td width="40%" class="head"><{$smarty.const._MD_XOONIPS_INDEX_NAME}><span style="color: red;">*</span></td>
@@ -87,7 +87,7 @@ function back(back) {
 <div style="text-align: center">
  <input type="button" value="<{$smarty.const._MD_XOONIPS_LANG_UPDATE}>" onclick="update()" />
  <input type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_DELETE_BUTTON_LABEL}>" onclick="deleteConfirm()" />
- <input type="button" value="<{$smarty.const._MD_XOONIPS_LANG_BACK}>" onclick="back('<{$back}>')" />
+ <input type="button" value="<{$smarty.const._MD_XOONIPS_LANG_BACK}>" onclick="back('<{$back|xoops_escape}>')" />
 </div>
 </form>
 <{include file="db:`$dirname`_footer.html"}>

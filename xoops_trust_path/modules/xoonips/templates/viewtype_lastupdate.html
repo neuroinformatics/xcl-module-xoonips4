@@ -1,8 +1,8 @@
 <{if $viewType eq 'edit'}>
-	<input type="hidden" name="<{$fieldName}>" value="<{$value|xoops_escape}>" />
-	<label for="<{$fieldName}>"><{$value|date_format:"%b %d, %Y %H:%M:%S"}></label>
+	<input type="hidden" name="<{$fieldName|xoops_escape}>" value="<{$value|xoops_escape}>" />
+	<label for="<{$fieldName|xoops_escape}>"><{$value|date_format:"%b %d, %Y %H:%M:%S|xoops_escape"}></label>
 <{elseif $viewType eq 'detail'}>
-	<{$value|date_format:"%b %d, %Y %H:%M:%S"}>
+	<{$value|xoops_escape|date_format:"%b %d, %Y %H:%M:%S"}>
 <{elseif $viewType eq 'default'}>
 	<input type="hidden" name="default_value" value="" />
 <{/if}>

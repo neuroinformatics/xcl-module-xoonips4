@@ -11,12 +11,12 @@ function deleteLink(){
 </script>
 <h3><{$smarty.const._MD_USER_LANG_ACCOUNT_DELETE_CONFIRM}></h3>
 
-<{$smarty.const._MD_USER_LANG_USERNAME}><{$username}><br />
-<pre><{$notice}></pre><br />
+<{$smarty.const._MD_USER_LANG_USERNAME}><{$username|xoops_escape}><br />
+<pre><{$notice|xoops_escape}></pre><br />
 
 <form name="<{$dirname}>_deleteUserForm" method="post">
 <{$token_ticket}>
-<input type="hidden" id="<{$dirname}>_userId" value="<{$uid}>" />
+<input type="hidden" id="<{$dirname}>_userId" value="<{$uid|xoops_escape}>" />
 <input type="button" value="<{$smarty.const._MD_USER_LANG_STOP}>" onclick="cancelLink();" />
 <input type="button" value="<{$smarty.const._MD_USER_LANG_DELETE}>" onclick="deleteLink();" />
 </form>

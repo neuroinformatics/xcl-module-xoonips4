@@ -3,18 +3,18 @@
 <{foreach item=i key=itemId from=$items}>
   <url>
     <loc>
-      <{$smarty.const.XOOPS_URL}>/modules/<{$dirname}>/<{$i.detail}>
+      <{$smarty.const.XOOPS_URL}>/modules/<{$dirname}>/<{$i.detail|xoops_escape}>
     </loc>
-    <lastmod><{$i.lastmod}></lastmod>
+    <lastmod><{$i.lastmod|xoops_escape}></lastmod>
     <changefreq>never</changefreq>
   </url>
   <{if !empty($i.file_id)}>
   <url>
     <loc>
-      <{$smarty.const.XOOPS_URL}>/modules/<{$dirname}>/download.php/<{$i.original_file_name}>?file_id=<{$i.file_id}>
+      <{$smarty.const.XOOPS_URL}>/modules/<{$dirname}>/download.php/<{$i.original_file_name|xoops_escape}>?file_id=<{$i.file_id|xoops_escape}>
     </loc>
   </url>
-    <lastmod><{$i.lastmod}></lastmod>
+    <lastmod><{$i.lastmod|xoops_escape}></lastmod>
     <changefreq>never</changefreq>
   <{/if}>
 <{/foreach}>

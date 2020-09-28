@@ -1,55 +1,55 @@
 <{if $viewType eq 'input'}>
-	<select name="<{$fieldName}>_m" id="<{$fieldName}>_m" rel="date">
+	<select name="<{$fieldName|xoops_escape}>_m" id="<{$fieldName|xoops_escape}>_m" rel="date">
 	<option></option>
 	<{foreach key=key item=monthName from=$monthList}>
-		<option value="<{$key}>" <{if $key==$monthValue}>selected<{/if}>><{$monthName}></option>
+		<option value="<{$key|xoops_escape}>" <{if $key==$monthValue}>selected<{/if}>><{$monthName|xoops_escape}></option>
 	<{/foreach}>
 	</select>&nbsp;&nbsp;
-	<select name="<{$fieldName}>_d" id="<{$fieldName}>_d" rel="date">
+	<select name="<{$fieldName|xoops_escape}>_d" id="<{$fieldName|xoops_escape}>_d" rel="date">
 	<option></option>
 	<{foreach key=key item=dayName from=$dayList}>
-		<option value="<{$key}>" <{if $key==$dayValue}>selected<{/if}>><{$dayName}></option>
+		<option value="<{$key|xoops_escape}>" <{if $key==$dayValue}>selected<{/if}>><{$dayName|xoops_escape}></option>
 	<{/foreach}>
 	</select>&nbsp;&nbsp;
-	<input type="text" name="<{$fieldName}>_y" maxlength="4" size="5" rel="date" id="<{$fieldName}>_y" value="<{$yearValue}>" />
-	<input type="hidden" name="<{$fieldName}>" id="<{$fieldName}>" value="<{$value|xoops_escape}>" />
+	<input type="text" name="<{$fieldName|xoops_escape}>_y" maxlength="4" size="5" rel="date" id="<{$fieldName|xoops_escape}>_y" value="<{$yearValue|xoops_escape}>" />
+	<input type="hidden" name="<{$fieldName|xoops_escape}>" id="<{$fieldName|xoops_escape}>" value="<{$value|xoops_escape}>" />
 <{elseif $viewType eq 'confirm'}>
-	<label><{$date|date_format}></label>
-	<input type="hidden" name="<{$fieldName}>" value="<{$value|xoops_escape}>" />
+	<label><{$date|date_format|xoops_escape}></label>
+	<input type="hidden" name="<{$fieldName|xoops_escape}>" value="<{$value|xoops_escape}>" />
 <{elseif $viewType eq 'detail'}>
-	<label><{$date|date_format}></label>
+	<label><{$date|date_format|xoops_escape}></label>
 <{elseif $viewType eq 'search'}>
 	<{if $scope=='1'}>From<{/if}>
-	<select name="<{$fieldName}>_from_m" id="<{$fieldName}>_from_m" rel="date">
+	<select name="<{$fieldName|xoops_escape}>_from_m" id="<{$fieldName|xoops_escape}>_from_m" rel="date">
 	<option></option>
 	<{foreach key=key item=monthName from=$monthList}>
-		<option value="<{$key}>" <{if $key==$monthFromValue}>selected<{/if}>><{$monthName}></option>
+		<option value="<{$key|xoops_escape}>" <{if $key==$monthFromValue}>selected<{/if}>><{$monthName|xoops_escape}></option>
 	<{/foreach}>
 	</select>&nbsp;&nbsp;
-	<select name="<{$fieldName}>_from_d" id="<{$fieldName}>_from_d" rel="date">
+	<select name="<{$fieldName|xoops_escape}>_from_d" id="<{$fieldName|xoops_escape}>_from_d" rel="date">
 	<option></option>
 	<{foreach key=key item=dayName from=$dayList}>
-		<option value="<{$key}>" <{if $key==$dayFromValue}>selected<{/if}>><{$dayName}></option>
+		<option value="<{$key|xoops_escape}>" <{if $key==$dayFromValue}>selected<{/if}>><{$dayName|xoops_escape}></option>
 	<{/foreach}>
 	</select>&nbsp;&nbsp;
-	<input type="text" name="<{$fieldName}>_from_y" maxlength="4" size="5" rel="date" id="<{$fieldName}>_from_y" value="<{$yearFromValue}>" />
-	<input type="hidden" name="<{$fieldName}>[]" id="<{$fieldName}>_from" value="<{$dateFromValue}>" />
+	<input type="text" name="<{$fieldName|xoops_escape}>_from_y" maxlength="4" size="5" rel="date" id="<{$fieldName|xoops_escape}>_from_y" value="<{$yearFromValue|xoops_escape}>" />
+	<input type="hidden" name="<{$fieldName|xoops_escape}>[]" id="<{$fieldName|xoops_escape}>_from" value="<{$dateFromValue|xoops_escape}>" />
 	<{if $scope=='1'}>
 		&nbsp;&nbsp;To
-		<select name="<{$fieldName}>_to_m" id="<{$fieldName}>_to_m" rel="date">
+		<select name="<{$fieldName|xoops_escape}>_to_m" id="<{$fieldName|xoops_escape}>_to_m" rel="date">
 		<option></option>
 		<{foreach key=key item=monthName from=$monthList}>
-			<option value="<{$key}>" <{if $key==$monthToValue}>selected<{/if}>><{$monthName}></option>
+			<option value="<{$key|xoops_escape}>" <{if $key==$monthToValue}>selected<{/if}>><{$monthName|xoops_escape}></option>
 		<{/foreach}>
 		</select>&nbsp;&nbsp;
-		<select name="<{$fieldName}>_to_d" id="<{$fieldName}>_to_d" rel="date">
+		<select name="<{$fieldName|xoops_escape}>_to_d" id="<{$fieldName|xoops_escape}>_to_d" rel="date">
 		<option></option>
 		<{foreach key=key item=dayName from=$dayList}>
-			<option value="<{$key}>" <{if $key==$dayToValue}>selected<{/if}>><{$dayName}></option>
+			<option value="<{$key|xoops_escape}>" <{if $key==$dayToValue}>selected<{/if}>><{$dayName|xoops_escape}></option>
 		<{/foreach}>
 		</select>&nbsp;&nbsp;
-		<input type="text" name="<{$fieldName}>_to_y" maxlength="4" size="5" rel="date" id="<{$fieldName}>_to_y" value="<{$yearToValue}>" />
-		<input type="hidden" name="<{$fieldName}>[]" id="<{$fieldName}>_to" value="<{$dateToValue}>" />
+		<input type="text" name="<{$fieldName|xoops_escape}>_to_y" maxlength="4" size="5" rel="date" id="<{$fieldName|xoops_escape}>_to_y" value="<{$yearToValue|xoops_escape}>" />
+		<input type="hidden" name="<{$fieldName|xoops_escape}>[]" id="<{$fieldName|xoops_escape}>_to" value="<{$dateToValue|xoops_escape}>" />
 	<{/if}>
 <{elseif $viewType eq 'default'}>
 	<input type="hidden" name="default_value" value="" />

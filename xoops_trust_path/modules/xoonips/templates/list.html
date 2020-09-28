@@ -21,10 +21,10 @@ function submit_order_dir( str ){
 <h4><{$smarty.const._MD_XOONIPS_ITEM_LISTING_ITEM}></h4>
 <{if isset($index_path) }>
 <form action="export.php" method="post">
-<input type="hidden" name="index_id" value="<{$index_id}>" />
+<input type="hidden" name="index_id" value="<{$index_id|xoops_escape}>" />
 <input type="hidden" name="op" value="" />
 <{foreach item=index from=$index_path}>
- / <a href="<{$itemListUrl}>?index_id=<{$index.index_id}>"><{$index.html_title|xoops_escape}></a>
+ / <a href="<{$itemListUrl}>?index_id=<{$index.index_id|xoops_escape}>"><{$index.html_title|xoops_escape}></a>
 <{/foreach}>&nbsp;&nbsp;
 <{$description|xoops_escape}>
 <span class="no_print_span">
@@ -32,7 +32,7 @@ function submit_order_dir( str ){
  <input class="formButton" type="button" name="edit_index" value="<{$smarty.const._MD_XOONIPS_ITEM_EDIT_INDEX_BUTTON_LABEL}>" onclick="submit_edit_index();" />
  <input class="formButton" type="button" name="edit_index" value="<{$smarty.const._MD_XOONIPS_ITEM_INDEX_DESCRIPTION_BUTTON_LABEL}>" onclick="submit_index_description();" />
 <{/if}>
-<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_PRINT_FRIENDLY_BUTTON_LABEL}>" onclick="window.open('<{$smarty.const.XOOPS_URL}>/modules/xoonips/<{$itemListUrl}>?isPrint=print&index_id=<{$index_id}>&page=<{$page}>&orderby=<{$orderby}>&itemcount=<{$itemcount}>&num_of_items=<{$num_of_items}>');" />
+<input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_ITEM_PRINT_FRIENDLY_BUTTON_LABEL}>" onclick="window.open('<{$smarty.const.XOOPS_URL}>/modules/xoonips/<{$itemListUrl}>?isPrint=print&index_id=<{$index_id|xoops_escape}>&page=<{$page|xoops_escape}>&orderby=<{$orderby|xoops_escape}>&itemcount=<{$itemcount|xoops_escape}>&num_of_items=<{$num_of_items|xoops_escape}>');" />
 <{if !empty($export_enabled)}>
  <input class="formButton" type="button" value="<{$smarty.const._MD_XOONIPS_LABEL_EXPORT}>" onclick="form.action='<{$itemListUrl}>'; op.value='<{if $export_select==1}>exportselect<{else}>export<{/if}>'; submit();" />
 <{/if}>
@@ -84,10 +84,10 @@ function submit_order_dir( str ){
      <{$smarty.const._MD_XOONIPS_ITEM_ORDER_BY}>
      <select name="orderby" onchange="submit();">
 		<{foreach key=key item=item from=$order_by_select}>
-      	<option value="<{$key}>" <{if $key==$orderby}> selected="selected" <{/if}> ><{$item}></option>
+      	<option value="<{$key|xoops_escape}>" <{if $key==$orderby}> selected="selected" <{/if}> ><{$item|xoops_escape}></option>
 		<{/foreach}>
      </select>
-     <input type="hidden" id="<{$dirname}>_order_dir" name="order_dir" value="<{$order_dir}>" />
+     <input type="hidden" id="<{$dirname}>_order_dir" name="order_dir" value="<{$order_dir|xoops_escape}>" />
 	 <{if $order_dir == $smarty.const.XOONIPS_ASC }>
     	<{$smarty.const._MD_XOONIPS_ITEM_ASCEND}>
     	<a href="#" onclick="submit_order_dir('<{$smarty.const.XOONIPS_DESC}>');"><{$smarty.const._MD_XOONIPS_ITEM_DESCEND}></a>
@@ -108,9 +108,9 @@ function submit_order_dir( str ){
 </table>
 </div>
 <input type="hidden" name="page" value="1" />
-<input type="hidden" name="num_of_items" value="<{$num_of_items}>" />
+<input type="hidden" name="num_of_items" value="<{$num_of_items|xoops_escape}>" />
 <{if $index_id > 0}>
-<input type="hidden" name="index_id" value="<{$index_id}>" />
+<input type="hidden" name="index_id" value="<{$index_id|xoops_escape}>" />
 <{/if}>
 </form>
 <{/if}>
@@ -121,9 +121,9 @@ function submit_order_dir( str ){
 <div align="right">
 <{if $page > 1}>
 <{if $index_id > 0}>
-<a href="?index_id=<{$index_id}>&amp;page=<{$page-1}>&amp;orderby=<{$orderby}>&amp;itemcount=<{$itemcount}>&amp;num_of_items=<{$num_of_items}>">PREV</a>&nbsp;
+<a href="?index_id=<{$index_id|xoops_escape}>&amp;page=<{$page-1|xoops_escape}>&amp;orderby=<{$orderby|xoops_escape}>&amp;itemcount=<{$itemcount|xoops_escape}>&amp;num_of_items=<{$num_of_items|xoops_escape}>">PREV</a>&nbsp;
 <{else}>
-<a href="?page=<{$page-1}>&amp;orderby=<{$orderby}>&amp;itemcount=<{$itemcount}>&amp;num_of_items=<{$num_of_items}>">PREV</a>&nbsp;
+<a href="?page=<{$page-1|xoops_escape}>&amp;orderby=<{$orderby|xoops_escape}>&amp;itemcount=<{$itemcount|xoops_escape}>&amp;num_of_items=<{$num_of_items|xoops_escape}>">PREV</a>&nbsp;
 <{/if}>
 <{else}>
 PREV&nbsp;
@@ -134,9 +134,9 @@ PREV&nbsp;
 <{$i}>
 <{else}>
  <{if $index_id > 0}>
-<a href="?index_id=<{$index_id}>&amp;page=<{$i}>&amp;orderby=<{$orderby}>&amp;itemcount=<{$itemcount}>&amp;num_of_items=<{$num_of_items}>"><{$i}></a>
+<a href="?index_id=<{$index_id|xoops_escape}>&amp;page=<{$i}>&amp;orderby=<{$orderby|xoops_escape}>&amp;itemcount=<{$itemcount|xoops_escape}>&amp;num_of_items=<{$num_of_items|xoops_escape}>"><{$i}></a>
  <{else}>
-<a href="?page=<{$i}>&amp;orderby=<{$orderby}>&amp;itemcount=<{$itemcount}>&amp;num_of_items=<{$num_of_items}>"><{$i}></a>
+<a href="?page=<{$i}>&amp;orderby=<{$orderby|xoops_escape}>&amp;itemcount=<{$itemcount|xoops_escape}>&amp;num_of_items=<{$num_of_items|xoops_escape}>"><{$i}></a>
  <{/if}>
 <{/if}>
 &nbsp;
@@ -144,9 +144,9 @@ PREV&nbsp;
 
 <{if $page < $maxpage }>
  <{if $index_id > 0}>
-<a href="?index_id=<{$index_id}>&amp;page=<{$page+1}>&amp;orderby=<{$orderby}>&amp;itemcount=<{$itemcount}>&amp;num_of_items=<{$num_of_items}>">NEXT</a>
+<a href="?index_id=<{$index_id|xoops_escape}>&amp;page=<{$page+1|xoops_escape}>&amp;orderby=<{$orderby|xoops_escape}>&amp;itemcount=<{$itemcount|xoops_escape}>&amp;num_of_items=<{$num_of_items|xoops_escape}>">NEXT</a>
  <{else}>
-<a href="?page=<{$page+1}>&amp;orderby=<{$orderby}>&amp;itemcount=<{$itemcount}>&amp;num_of_items=<{$num_of_items}>">NEXT</a>
+<a href="?page=<{$page+1|xoops_escape}>&amp;orderby=<{$orderby|xoops_escape}>&amp;itemcount=<{$itemcount|xoops_escape}>&amp;num_of_items=<{$num_of_items|xoops_escape}>">NEXT</a>
  <{/if}>
 <{else}>
 NEXT

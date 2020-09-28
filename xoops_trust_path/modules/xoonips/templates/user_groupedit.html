@@ -46,18 +46,18 @@ function hiddenClick(value) {
 }
 </script>
 <h3><{$smarty.const._MD_XOONIPS_LANG_GROUP_EDIT}></h3>
-<{$errors}>
+<{$errors|xoops_escape}>
 <form id="<{$dirname}>_groupEditForm" name="<{$dirname}>_groupEditForm" action="user.php?op=groupEdit" method="post" enctype="multipart/form-data">
 <{$token_ticket}>
 <input type="hidden" id="<{$dirname}>_action" name="action" value="" />
-<input type="hidden" name="moderator" value="<{$moderator}>" />
-<input type="hidden" name="groupid" value="<{$group.groupid}>" />
+<input type="hidden" name="moderator" value="<{$moderator|xoops_escape}>" />
+<input type="hidden" name="groupid" value="<{$group.groupid|xoops_escape}>" />
 <input type="hidden" name="gname" value="<{$gname|xoops_escape}>" />
-<input type="hidden" id="<{$dirname}>_groupentry" name="groupentry" value="<{$groupentry}>" />
-<input type="hidden" id="<{$dirname}>_grouppublic" name="grouppublic" value="<{$grouppublic}>" />
-<input type="hidden" id="<{$dirname}>_grouphidden" name="grouphidden" value="<{$grouphidden}>" />
-<input type="hidden" id="<{$dirname}>_warning" name="warning" value="<{$warning}>" />
-<input type="hidden" id="<{$dirname}>_showThumbnail" name="showThumbnail" value="<{$showThumbnail}>" />
+<input type="hidden" id="<{$dirname}>_groupentry" name="groupentry" value="<{$groupentry|xoops_escape}>" />
+<input type="hidden" id="<{$dirname}>_grouppublic" name="grouppublic" value="<{$grouppublic|xoops_escape}>" />
+<input type="hidden" id="<{$dirname}>_grouphidden" name="grouphidden" value="<{$grouphidden|xoops_escape}>" />
+<input type="hidden" id="<{$dirname}>_warning" name="warning" value="<{$warning|xoops_escape}>" />
+<input type="hidden" id="<{$dirname}>_showThumbnail" name="showThumbnail" value="<{$showThumbnail|xoops_escape}>" />
   
 <table class="outer" cellspacing="1" cellpadding="4">
  <tr>
@@ -76,10 +76,10 @@ function hiddenClick(value) {
   <td class="head"><{$smarty.const._MD_XOONIPS_LANG_GROUP_ADMIN}><span style="color: red;">*</span></td>
   <td class="<{cycle name="oddeven"}>">
   	<{foreach item=admin from=$admins}>
-  	 	<div id="<{$dirname}>_uid<{$admin.uid}>">
-  		<input type="hidden" name="uid[]" value="<{$admin.uid}>" />
+  	 	<div id="<{$dirname}>_uid<{$admin.uid|xoops_escape}>">
+  		<input type="hidden" name="uid[]" value="<{$admin.uid|xoops_escape}>" />
     	<{$admin.name|xoops_escape}><{if $admin.name}>(<{/if}><{$admin.uname|xoops_escape}><{if $admin.name}>)<{/if}>
-    	<a href="javascript:deleteUser(<{$admin.uid}>);">
+    	<a href="javascript:deleteUser(<{$admin.uid|xoops_escape}>);">
        		<img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/delete.png" alt="<{$smarty.const._DELETE}>" title="<{$smarty.const._DELETE}>" />
        	</a><br />
        	</div>
@@ -118,7 +118,7 @@ function hiddenClick(value) {
   	<{else}>
   		<input type="radio" name="is_public" value="1" disabled="disabled" /><{$smarty.const._MD_XOONIPS_LANG_ALL}>
   		<input type="radio" name="is_public" value="0" checked="checked" disabled="disabled" /><{$smarty.const._MD_XOONIPS_LANG_GROUP_ONLY}>
-  		<span style="color: red;">&nbsp;&nbsp;&nbsp;<{$warning}></span>
+  		<span style="color: red;">&nbsp;&nbsp;&nbsp;<{$warning|xoops_escape}></span>
   	<{/if}>
   <{/if}>
   </td>
@@ -152,11 +152,11 @@ function hiddenClick(value) {
   	<{if $group.is_hidden eq 1}>
   	 <input type="radio" name="is_hidden" value="0" disabled="disabled" /><{$smarty.const._MD_XOONIPS_LANG_NO}> 	
   	 <input type="radio" name="is_hidden" value="1" checked="checked" disabled="disabled" /><{$smarty.const._MD_XOONIPS_LANG_YES}> 			 		
-  	 <span style="color: red;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<{$warning}></span>
+  	 <span style="color: red;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<{$warning|xoops_escape}></span>
   	<{else}>
   	 <input type="radio" name="is_hidden" value="0" checked="checked" disabled="disabled" /><{$smarty.const._MD_XOONIPS_LANG_NO}>
   	 <input type="radio" name="is_hidden" value="1" disabled="disabled" /><{$smarty.const._MD_XOONIPS_LANG_YES}> 		
-   	 <span style="color: red;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<{$warning}></span>
+   	 <span style="color: red;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<{$warning|xoops_escape}></span>
     <{/if}>
   <{/if}>
   </td>
@@ -203,9 +203,9 @@ function hiddenClick(value) {
   <input type="text" name="item_storage_limit" size="50" value="<{$group.item_storage_limit|xoops_escape}>" /></td>
  </tr>
 <{else}>
- 	<input type="hidden" name="item_number_limit" value="<{$group.item_number_limit}>" />
- 	<input type="hidden" name="index_number_limit" value="<{$group.index_number_limit}>" />
- 	<input type="hidden" name="item_storage_limit" value="<{$group.item_storage_limit}>" />
+ 	<input type="hidden" name="item_number_limit" value="<{$group.item_number_limit|xoops_escape}>" />
+ 	<input type="hidden" name="index_number_limit" value="<{$group.index_number_limit|xoops_escape}>" />
+ 	<input type="hidden" name="item_storage_limit" value="<{$group.item_storage_limit|xoops_escape}>" />
  <{/if}>
 </table>
 <div style="text-align: center">

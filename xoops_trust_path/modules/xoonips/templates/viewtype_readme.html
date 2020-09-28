@@ -1,22 +1,22 @@
 <{if $viewType eq 'input'}>
 	<table width="100%">
 	<tr>
-		<td><div id="<{$showTextDiv}>"><pre><{$value|xoops_escape}></pre></div></td>
+		<td><div id="<{$showTextDiv|xoops_escape}>"><pre><{$value|xoops_escape}></pre></div></td>
 		<td style="vertical-align: text-bottom; text-align:right">
-			<a href="#" onclick="return <{$dirname}>Edit.openInputTextFileWindow('readme','<{$fieldName}>')"><{$smarty.const._MD_XOONIPS_ITEM_TEXT_FILE_EDIT_LABEL}></a>
+			<a href="#" onclick="return <{$dirname}>Edit.openInputTextFileWindow('readme','<{$fieldName|xoops_escape}>')"><{$smarty.const._MD_XOONIPS_ITEM_TEXT_FILE_EDIT_LABEL}></a>
 		</td>
 	</tr>
 	</table>
-	<input type="hidden" name="<{$fieldName}>" value="<{$value|xoops_escape}>" id="<{$fieldName}>" />
+	<input type="hidden" name="<{$fieldName|xoops_escape}>" value="<{$value|xoops_escape}>" id="<{$fieldName|xoops_escape}>" />
 <{elseif $viewType eq 'confirm'}>
 	<textarea readonly="readonly" rows="5" cols="40" style="width:320px;"><{$value|xoops_escape}></textarea>
-	<input type="hidden" name="<{$fieldName}>" value="<{$value|xoops_escape}>" id="<{$fieldName}>" />
+	<input type="hidden" name="<{$fieldName|xoops_escape}>" value="<{$value|xoops_escape}>" id="<{$fieldName|xoops_escape}>" />
 <{elseif $viewType eq 'detail'}>
 	<textarea readonly="readonly" rows="5" cols="40" style="width:320px;"><{$value|xoops_escape}></textarea>
 <{elseif $viewType eq 'search'}>
-	<input type="text" name="<{$fieldName}>" size="50" value="" />
+	<input type="text" name="<{$fieldName|xoops_escape}>" size="50" value="" />
 <{elseif $viewType eq 'default'}>
-	<textarea name="default_value" rows="2" cols="40" <{$disabled}> ><{$value|xoops_escape}></textarea>
+	<textarea name="default_value" rows="2" cols="40" <{$disabled|xoops_escape}> ><{$value|xoops_escape}></textarea>
 	<{if !empty($disabled)}>
 		<input type="hidden" name="default_value" value="<{$value|xoops_escape}>" />
 	<{/if}>

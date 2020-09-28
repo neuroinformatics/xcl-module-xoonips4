@@ -1,16 +1,16 @@
 <{if $viewType eq 'search'}>
 	<{if !empty($to)}>
-		From<{$from}>&nbsp;&nbsp;To<{$to}>
+		From<{$from|xoops_escape}>&nbsp;&nbsp;To<{$to}>
 	<{else}>
-		<{$from}>
+		<{$from|xoops_escape}>
 	<{/if}>
 <{elseif $viewType eq 'list'}>
 	<input type="hidden" name="list" value="<{$value|xoops_escape}>" />
 <{elseif $viewType eq 'default'}>
-	<input type="text" name="default_value" size="30" maxlength="30" value="<{$value|xoops_escape}>" <{$disabled}> />
+	<input type="text" name="default_value" size="30" maxlength="30" value="<{$value|xoops_escape}>" <{$disabled|xoops_escape}> />
 	<{if !empty($disabled)}>
 		<input type="hidden" name="default_value" value="<{$value|xoops_escape}>" />
 	<{/if}>
 <{elseif $viewType eq 'simpleSearch'}>
-	<input type="checkbox" name="<{$fieldName}>" value="1" rel="onClick" <{if $value=='1'}>checked="checked"<{/if}> />
+	<input type="checkbox" name="<{$fieldName|xoops_escape}>" value="1" rel="onClick" <{if $value=='1'}>checked="checked"<{/if}> />
 <{/if}>

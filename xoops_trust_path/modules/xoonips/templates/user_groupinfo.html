@@ -79,15 +79,15 @@
  </tr>
  <tr>
   <td class="head"><{$smarty.const._MD_XOONIPS_LANG_ITEM_LIMIT}></td>
-  <td class="<{cycle name="oddeven"}>"><{$itemNum}>/<{if $itemNumberLimit>0}><{$itemNumberLimit}><{else}><{$smarty.const._MD_XOONIPS_LANG_UNLIMIT}><{/if}></td>
+ <td class="<{cycle name="oddeven"}>"><{$itemNum|xoops_escape}>/<{if $itemNumberLimit>0}><{$itemNumberLimit|xoops_escape}><{else}><{$smarty.const._MD_XOONIPS_LANG_UNLIMIT}><{/if}></td>
  </tr>
  <tr>
   <td class="head"><{$smarty.const._MD_XOONIPS_LANG_INDEX_LIMIT}></td>
-  <td class="<{cycle name="oddeven"}>"><{$indexNum}>/<{if $indexNumberLimit>0}><{$indexNumberLimit}><{else}><{$smarty.const._MD_XOONIPS_LANG_UNLIMIT}><{/if}></td>
+  <td class="<{cycle name="oddeven"}>"><{$indexNum|xoops_escape}>/<{if $indexNumberLimit>0}><{$indexNumberLimit|xoops_escape}><{else}><{$smarty.const._MD_XOONIPS_LANG_UNLIMIT}><{/if}></td>
  </tr>
  <tr>
   <td class="head"><{$smarty.const._MD_XOONIPS_LANG_ITEM_STORAGE_LIMIT}></td>
-  <td class="<{cycle name="oddeven"}>"><{$fileSize}>/<{if $itemStorageLimit>0}><{$itemStorageLimit}><{else}><{$smarty.const._MD_XOONIPS_LANG_UNLIMIT}><{/if}></td>
+  <td class="<{cycle name="oddeven"}>"><{$fileSize|xoops_escape}>/<{if $itemStorageLimit>0}><{$itemStorageLimit|xoops_escape}><{else}><{$smarty.const._MD_XOONIPS_LANG_UNLIMIT}><{/if}></td>
  </tr>
 </table>
 <div style="text-align: center">

@@ -2,9 +2,9 @@
 <form action="editindex.php" method="post">
 <{$token_ticket}>
 <input type="hidden" name="op" value="delete" />
-<input type="hidden" id="<{$dirname}>_callbackid"  name="callbackid" value="<{$callbackid}>" />
+<input type="hidden" id="<{$dirname}>_callbackid"  name="callbackid" value="<{$callbackid|xoops_escape}>" />
 <input type="hidden" id="<{$dirname}>_callbackvalue" name="callbackvalue" value="" />
-<input type="hidden" name="index_id" value="<{$index.index_id}>" />
+<input type="hidden" name="index_id" value="<{$index.index_id|xoops_escape}>" />
 <table class="outer">
 	<tr>
   		<td class="head" width="30%"><{$smarty.const._MD_XOONIPS_INDEX_NAME}></td>

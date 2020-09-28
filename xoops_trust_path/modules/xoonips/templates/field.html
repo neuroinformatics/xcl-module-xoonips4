@@ -1,18 +1,18 @@
 <{if $viewType eq 'input'}>
 	<tr>
 	<{if !empty($fieldName)}>
-		<td valign="top"><{$fieldName}><{if $essential}><span style="color: red;">*</span><{/if}></td>
+		<td valign="top"><{$fieldName|xoops_escape}><{if $essential}><span style="color: red;">*</span><{/if}></td>
 	<{/if}>
 	<td><{$viewTypeInput}></td>
 	</tr>
 <{elseif $viewType eq 'detail'}>
 	<tr>
 	<{if !empty($fieldName)}>
-		<td valign="top"><{$fieldName}></td>
+		<td valign="top"><{$fieldName|xoops_escape}></td>
 	<{/if}>
 	<td><{$viewTypeDetail}></td>
 	</tr>
 <{elseif $viewType eq 'simpleSearch'}>
-	<tr><td valign="top" width="30%"><{$fieldTitle}></td>
+	<tr><td valign="top" width="30%"><{$fieldTitle|xoops_escape}></td>
 	<td width="70%"><{$viewTypeSimpleSearch}></td></tr>
 <{/if}>

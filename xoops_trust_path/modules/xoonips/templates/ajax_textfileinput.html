@@ -124,9 +124,9 @@ function getTextFromOpener(){
 <tr>
 <td class="head"><{$displayName|xoops_escape}></td>
 <td class="even">
-<input type="hidden" name="elementId" value="<{$elementId}>" id="<{$dirname}>_ElementId" />
+<input type="hidden" name="elementId" value="<{$elementId|xoops_escape}>" id="<{$dirname}>_ElementId" />
 <input type="hidden" name="name" value="<{$name|xoops_escape}>" id="<{$dirname}>_Name" />
-<input type="hidden" name="elementId" value="<{$elementId}>" id="<{$dirname}>_ElementId" />
+<input type="hidden" name="elementId" value="<{$elementId|xoops_escape}>" id="<{$dirname}>_ElementId" />
 <input type="file" name="file" />
 <input class="formButton" type="submit" name="" value="<{$smarty.const._MD_XOONIPS_ITEM_UPLOAD_LABEL}>" />
 <br />

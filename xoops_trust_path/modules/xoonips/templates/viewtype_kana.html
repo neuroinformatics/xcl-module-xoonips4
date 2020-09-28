@@ -1,14 +1,14 @@
 <{if $viewType eq 'input'}>
 	<{if $len==-1}>
-		<input type="text" name="<{$fieldName}>" size="50" value="<{$value|xoops_escape}>" />
+		<input type="text" name="<{$fieldName|xoops_escape}>" size="50" value="<{$value|xoops_escape}>" />
 	<{else}>
-		<input type="text" name="<{$fieldName}>" maxlength="<{$len}>" size="<{if $len < 50}><{$len}><{else}>50<{/if}>" value="<{$value|xoops_escape}>" />
+		<input type="text" name="<{$fieldName|xoops_escape}>" maxlength="<{$len|xoops_escape}>" size="<{if $len < 50}><{$len|xoops_escape}><{else}>50<{/if}>" value="<{$value|xoops_escape}>" />
 	<{/if}>
-	&nbsp;<input type="button" value="<{$smarty.const._MD_XOONIPS_LABEL_ROMAJI}>" onclick="<{$dirname}>Edit.complete('<{$fieldName}>');" />
+	&nbsp;<input type="button" value="<{$smarty.const._MD_XOONIPS_LABEL_ROMAJI}>" onclick="<{$dirname}>Edit.complete('<{$fieldName|xoops_escape}>');" />
 <{elseif $viewType eq 'confirm'}>
-	<{$value|xoops_escape}><input type="hidden" name="<{$fieldName}>" value="<{$value|xoops_escape}>" />
+	<{$value|xoops_escape}><input type="hidden" name="<{$fieldName|xoops_escape}>" value="<{$value|xoops_escape}>" />
 <{elseif $viewType eq 'detail'}>
 	<{$value|xoops_escape}>
 <{elseif $viewType eq 'search'}>
-	<input type="text" name="<{$fieldName}>" maxlength="<{$len}>" size="<{if $len < 50}><{$len}><{else}>50<{/if}>" value="" />
+	<input type="text" name="<{$fieldName|xoops_escape}>" maxlength="<{$len|xoops_escape}>" size="<{if $len < 50}><{$len|xoops_escape}><{else}>50<{/if}>" value="" />
 <{/if}>

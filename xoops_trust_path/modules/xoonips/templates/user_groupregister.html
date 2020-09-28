@@ -33,12 +33,12 @@ function hiddenClick(value) {
 }
 </script>
 <h3><{$smarty.const._MD_XOONIPS_LANG_GROUP_REGISTER}></h3>
-<{$errors}>
+<{$errors|xoops_escape}>
 <form id="<{$dirname}>_groupRegisterForm" name="<{$dirname}>_groupRegisterForm" action="user.php?op=groupRegister" method="post" enctype="multipart/form-data">
 <{$token_ticket}>
 <input type="hidden" id="<{$dirname}>_op" name="action" value="register" />
-<input type="hidden" name="moderator" value="<{$moderator}>" />
-<input type="hidden" name="is_public" value="<{$group.is_public}>" />
+<input type="hidden" name="moderator" value="<{$moderator|xoops_escape}>" />
+<input type="hidden" name="is_public" value="<{$group.is_public|xoops_escape}>" />
 <table class="outer" cellspacing="1" cellpadding="4">
  <tr>
   <td width="40%" class="head"><{$smarty.const._MD_XOONIPS_LANG_GROUP_NAME}><span style="color: red;">*</span></td>
@@ -56,11 +56,11 @@ function hiddenClick(value) {
   <td class="head"><{$smarty.const._MD_XOONIPS_LANG_GROUP_ADMIN}><span style="color: red;">*</span></td>
   <td class="<{cycle name="oddeven"}>">
   	<{foreach item=u from=$user}>
-  		 <div id="<{$dirname}>_uid<{$u.uid}>">
-  		 	<input type="hidden" name="uid[]" value="<{$u.uid}>" />
+  		 <div id="<{$dirname}>_uid<{$u.uid|xoops_escape}>">
+  		 	<input type="hidden" name="uid[]" value="<{$u.uid|xoops_escape}>" />
   		 	<{$u.name|xoops_escape}><{if $u.name}>(<{/if}><{$u.uname|xoops_escape}><{if $u.name}>)<{/if}> 
   		 	<{if $moderator}>  
-  		 		<a href="javascript:deleteUser(<{$u.uid}>);">
+  		 		<a href="javascript:deleteUser(<{$u.uid|xoops_escape}>);">
        				<img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/delete.png" alt="<{$smarty.const._DELETE}>" title="<{$smarty.const._DELETE}>" />
        			</a>
        		<{/if}><br />
@@ -144,9 +144,9 @@ function hiddenClick(value) {
      <input type="text" name="item_storage_limit" size="50" value="<{$group.item_storage_limit|xoops_escape}>" /></td>
  </tr>
  <{else}>
- 	<input type="hidden" name="item_number_limit" value="<{$group.item_number_limit}>" />
- 	<input type="hidden" name="index_number_limit" value="<{$group.index_number_limit}>" />
- 	<input type="hidden" name="item_storage_limit" value="<{$group.item_storage_limit}>" />
+ 	<input type="hidden" name="item_number_limit" value="<{$group.item_number_limit|xoops_escape}>" />
+ 	<input type="hidden" name="index_number_limit" value="<{$group.index_number_limit|xoops_escape}>" />
+ 	<input type="hidden" name="item_storage_limit" value="<{$group.item_storage_limit|xoops_escape}>" />
  <{/if}>
 </table>
 <div style="text-align: center">
