@@ -29,7 +29,7 @@ class Xoonips_LayeredWindow
     {
         $ret = $this->getHeaderHtml().$this->getContentHtml().$this->getFooterHtml();
         if (_CHARSET != 'UTF-8') {
-            $ret = mb_convert_encoding($ret, 'utf-8', _CHARSET);
+            $ret = mb_convert_encoding($ret, 'UTF-8', _CHARSET);
         }
 
         return $ret;

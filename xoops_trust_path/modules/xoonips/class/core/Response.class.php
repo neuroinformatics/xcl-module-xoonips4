@@ -72,7 +72,7 @@ class Xoonips_Response
         // if redirect
         if ('redirect_header' == $target) {
             if (isset($this->viewData['redirect_msg'])) {
-                redirect_header($this->viewData['url'], 3, $this->viewData['redirect_msg']);
+                redirect_header($this->viewData['url'], 3, htmlspecialchars($this->viewData['redirect_msg'], ENT_QUOTES));
             } else {
                 redirect_header($this->viewData['url'], 3, 'Succeed');
             }
@@ -128,7 +128,7 @@ class Xoonips_Response
                 $renderSystem->renderMain($render);
                 $ret = $render->getResult();
                 if (_CHARSET != 'UTF-8') {
-                    $ret = mb_convert_encoding($ret, 'utf-8', _CHARSET);
+                    $ret = mb_convert_encoding($ret, 'UTF-8', _CHARSET);
                 }
                 echo $ret;
             } else {
@@ -143,7 +143,7 @@ class Xoonips_Response
             // if redirect
             if ('redirect_header' == $target) {
                 if (isset($this->viewData['redirect_msg'])) {
-                    redirect_header($this->viewData['url'], 3, $this->viewData['redirect_msg']);
+                    redirect_header($this->viewData['url'], 3, htmlspecialchars($this->viewData['redirect_msg'], ENT_QUOTES));
                 } else {
                     redirect_header($this->viewData['url'], 3, 'Succeed');
                 }
@@ -169,7 +169,7 @@ class Xoonips_Response
                 $renderSystem->renderMain($render);
                 $ret = $render->getResult();
                 if (_CHARSET != 'UTF-8') {
-                    $ret = mb_convert_encoding($ret, 'utf-8', _CHARSET);
+                    $ret = mb_convert_encoding($ret, 'UTF-8', _CHARSET);
                 }
                 echo $ret;
             } else {

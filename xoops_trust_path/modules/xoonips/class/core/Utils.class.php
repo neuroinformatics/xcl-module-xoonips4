@@ -6,13 +6,11 @@ class Xoonips_Utils
 {
     public static function convertSQLStr($v)
     {
+        global $xoopsDB;
         if (is_null($v)) {
             $ret = 'NULL';
-        } elseif ('' === $v) {
-            $ret = "''";
         } else {
-            $v = addslashes($v);
-            $ret = "'$v'";
+            $ret = $xoopsDB->quoteString($v);
         }
 
         return $ret;
@@ -59,15 +57,15 @@ class Xoonips_Utils
         $sessionTable = $xoopsDB->prefix('session');
         $searchTextTable = $xoopsDB->prefix($dirname.'_search_text');
         // remove file if no-related sessions and files
-        $sql = "select file_id from $fileTable as tf left join $sessionTable as ts on tf.sess_id=ts.sess_id where tf.item_id is NULL and ts.sess_id is NULL";
+        $sql = 'SELECT `file_id` FROM `'.$fileTable.'` AS `tf` LEFT JOIN `'.$sessionTable.'` AS `ts` ON `tf`.`sess_id`=`ts`.`sess_id` WHERE `tf`.`item_id` IS NULL AND `ts`.`sess_id` IS NULL';
         $result = $xoopsDB->query($sql);
         while (list($file_id) = $xoopsDB->fetchRow($result)) {
             $path = getUploadFilePath($file_id);
             if (is_file($path)) {
                 unlink($path);
             }
-            $xoopsDB->queryF("delete from $searchTextTable where file_id=$file_id");
-            $xoopsDB->queryF("delete from $fileTable where file_id=$file_id");
+            $xoopsDB->queryF('DELETE FROM `'.$searchTextTable.'` WHERE `file_id`='.intval($file_id));
+            $xoopsDB->queryF('DELETE FROM `'.$fileTable.'` WHERE `file_id`='.intval($file_id));
         }
     }
 

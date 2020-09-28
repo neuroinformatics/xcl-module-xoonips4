@@ -281,8 +281,6 @@ class Xoonips_ImportItemType
             $obj['item_type_id'] = $itemtypeObj['item_type_id'];
         }
 
-        //$searchObj = array(); //Not Use
-
         //oaipmhObj
         foreach ($xmlObj->oaipmh as $o) {
             $oaipmh = [];

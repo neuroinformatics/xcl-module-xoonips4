@@ -30,8 +30,7 @@ class Xoonips_ItemFieldManagerFactory
     public static function getInstance($dirname = null, $trustDirname = null)
     {
         if (!isset(self::$instance)) {
-            $c = __CLASS__;
-            self::$instance = new $c($dirname, $trustDirname);
+            self::$instance = new self($dirname, $trustDirname);
         }
 
         return self::$instance;

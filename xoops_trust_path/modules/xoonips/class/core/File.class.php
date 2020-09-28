@@ -58,7 +58,7 @@ class Xoonips_File
 
         $request = new Xoonips_Request();
         $file = $request->getFile($fileName, $this->dirname, $this->trustDirname);
-        $itemtypeId = $request->getParameter('itemtype_id');
+        $itemtypeId = intval($request->getParameter('itemtype_id'));
         $xnpsid = session_id();
 
         if (empty($file)) {

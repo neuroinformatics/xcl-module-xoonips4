@@ -92,7 +92,7 @@ class Xoonips_Sitemaps
         $fileInfo = [];
         global $xoopsDB;
         $tableName = XOOPS_DB_PREFIX.'_'.$this->dirname.'_item_file';
-        $sql = sprintf('SELECT * FROM `%s` WHERE `item_id` = %d', $tableName, $item_id);
+        $sql = sprintf('SELECT * FROM `%s` WHERE `item_id`=%u', $tableName, $item_id);
         $result = $xoopsDB->query($sql);
         if (false == $result) {
             return;
@@ -121,7 +121,7 @@ class Xoonips_Sitemaps
         if (empty($index_id)) {
             $template = $this->sitemapsPath.'/sitemapindex.xml';
         } else {
-            $template = $this->sitemapsPath.'/sitemaps'.$index_id.'.xml';
+            $template = $this->sitemapsPath.'/sitemaps'.intval($index_id).'.xml';
         }
 
         if (!file_exists($template)) {
