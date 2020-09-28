@@ -71,10 +71,10 @@ class Xoonips_MaintenanceItemWithdrawAction extends Xoonips_MaintenanceItemCommo
         }
 
         // get parameter
-        $uid = $request->getParameter('searchUserID');
+        $uid = intval($request->getParameter('searchUserID'));
 
         // get index
-        $req_indexes = explode(',', $request->getParameter('checked_indexes'));
+        $req_indexes = array_map('intval', explode(',', $request->getParameter('checked_indexes')));
 
         // not choose index
         if (0 == count($req_indexes)) {
@@ -133,7 +133,7 @@ class Xoonips_MaintenanceItemWithdrawAction extends Xoonips_MaintenanceItemCommo
         }
 
         // get parameter
-        $uid = $request->getParameter('searchUserID');
+        $uid = intval($request->getParameter('searchUserID'));
 
         // get index
         $req_indexes = $this->getRequestIndexes($request, $uid, '_withdraw');

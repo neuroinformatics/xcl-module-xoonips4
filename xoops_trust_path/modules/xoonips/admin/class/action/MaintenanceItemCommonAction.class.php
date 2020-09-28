@@ -3,7 +3,7 @@
 require_once dirname(dirname(dirname(__DIR__))).'/class/core/ActionBase.class.php';
 require_once dirname(dirname(dirname(__DIR__))).'/class/core/Item.class.php';
 
-class Xoonips_MaintenanceItemCommonAction extends Xoonips_ActionBase
+abstract class Xoonips_MaintenanceItemCommonAction extends Xoonips_ActionBase
 {
     protected function indexTree($uid, &$indexes, &$trees, $flg, $req, $public_flg = 0)
     {

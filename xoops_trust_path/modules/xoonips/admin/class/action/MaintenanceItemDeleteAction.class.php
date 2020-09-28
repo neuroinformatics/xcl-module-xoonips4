@@ -48,7 +48,7 @@ class Xoonips_MaintenanceItemDeleteAction extends Xoonips_MaintenanceItemCommonA
         $token_ticket = $this->createToken($this->modulePrefix('do_item_delete_index'));
 
         // get parameter
-        $uid = $request->getParameter('searchUserID');
+        $uid = intval($request->getParameter('searchUserID'));
 
         // get userinfo
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
@@ -102,11 +102,11 @@ class Xoonips_MaintenanceItemDeleteAction extends Xoonips_MaintenanceItemCommonA
         }
 
         // get parameter
-        $uid = $request->getParameter('searchUserID');
+        $uid = intval($request->getParameter('searchUserID'));
         $uname = $request->getParameter('searchUserName');
 
         // get index
-        $req_indexes = explode(',', $request->getParameter('checked_indexes'));
+        $req_indexes = array_map('intval', explode(',', $request->getParameter('checked_indexes')));
 
         // not choose index
         if (0 == count($req_indexes)) {
@@ -169,7 +169,7 @@ class Xoonips_MaintenanceItemDeleteAction extends Xoonips_MaintenanceItemCommonA
         }
 
         // get parameter
-        $uid = $request->getParameter('searchUserID');
+        $uid = intval($request->getParameter('searchUserID'));
         $uname = $request->getParameter('searchUserName');
 
         // get index

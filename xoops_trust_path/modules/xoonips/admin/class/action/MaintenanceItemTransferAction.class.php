@@ -47,8 +47,8 @@ class Xoonips_MaintenanceItemTransferAction extends Xoonips_MaintenanceItemCommo
         $token_ticket = $this->createToken($this->modulePrefix('do_item_transfer_index'));
 
         // get parameter
-        $uid_from = $request->getParameter('searchUserID_from');
-        $uid_to = $request->getParameter('searchUserID_to');
+        $uid_from = intval($request->getParameter('searchUserID_from'));
+        $uid_to = intval($request->getParameter('searchUserID_to'));
 
         // get userinfo
         $uname_from = '';
@@ -124,14 +124,14 @@ class Xoonips_MaintenanceItemTransferAction extends Xoonips_MaintenanceItemCommo
         }
 
         // get parameter
-        $uid_from = $request->getParameter('searchUserID_from');
+        $uid_from = intval($request->getParameter('searchUserID_from'));
         $uname_from = $request->getParameter('searchUserName_from');
-        $uid_to = $request->getParameter('searchUserID_to');
+        $uid_to = intval($request->getParameter('searchUserID_to'));
         $uname_to = $request->getParameter('searchUserName_to');
 
         // get index
-        $req_indexes_from = explode(',', $request->getParameter('checked_indexes_from'));
-        $req_indexes_to = explode(',', $request->getParameter('checked_indexes_to'));
+        $req_indexes_from = array_map('intval', explode(',', $request->getParameter('checked_indexes_from')));
+        $req_indexes_to = array_map('intval', explode(',', $request->getParameter('checked_indexes_to')));
 
         // error check
         $index_chk = true;
@@ -224,9 +224,9 @@ class Xoonips_MaintenanceItemTransferAction extends Xoonips_MaintenanceItemCommo
         }
 
         // get parameter
-        $uid_from = $request->getParameter('searchUserID_from');
+        $uid_from = intval($request->getParameter('searchUserID_from'));
         $uname_from = $request->getParameter('searchUserName_from');
-        $uid_to = $request->getParameter('searchUserID_to');
+        $uid_to = intval($request->getParameter('searchUserID_to'));
         $uname_to = $request->getParameter('searchUserName_to');
 
         // get index
