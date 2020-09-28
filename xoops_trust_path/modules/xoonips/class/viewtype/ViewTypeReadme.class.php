@@ -13,23 +13,23 @@ class Xoonips_ViewTypeReadme extends Xoonips_ViewType
     {
         $fieldName = $this->getFieldName($field, $groupLoopId);
         $showTextDiv = $fieldName.'ShowText';
-        $this->getXoopsTpl()->assign('viewType', 'input');
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
-        $this->getXoopsTpl()->assign('showTextDiv', $showTextDiv);
-        $this->getXoopsTpl()->assign('value', $value);
-        $this->getXoopsTpl()->assign('dirname', $this->dirname);
+        $this->xoopsTpl->assign('viewType', 'input');
+        $this->xoopsTpl->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('showTextDiv', $showTextDiv);
+        $this->xoopsTpl->assign('value', $value);
+        $this->xoopsTpl->assign('dirname', $this->dirname);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getDisplayView($field, $value, $groupLoopId)
     {
         $fieldName = $this->getFieldName($field, $groupLoopId);
-        $this->getXoopsTpl()->assign('viewType', 'confirm');
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
-        $this->getXoopsTpl()->assign('value', $value);
+        $this->xoopsTpl->assign('viewType', 'confirm');
+        $this->xoopsTpl->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('value', $value);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getEditView($field, $value, $groupLoopId)
@@ -39,19 +39,19 @@ class Xoonips_ViewTypeReadme extends Xoonips_ViewType
 
     public function getDetailDisplayView($field, $value, $display)
     {
-        $this->getXoopsTpl()->assign('viewType', 'detail');
-        $this->getXoopsTpl()->assign('value', $value);
+        $this->xoopsTpl->assign('viewType', 'detail');
+        $this->xoopsTpl->assign('value', $value);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getSearchView($field, $groupLoopId)
     {
         $fieldName = $this->getFieldName($field, $groupLoopId);
-        $this->getXoopsTpl()->assign('viewType', 'search');
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('viewType', 'search');
+        $this->xoopsTpl->assign('fieldName', $fieldName);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     /**
@@ -63,10 +63,10 @@ class Xoonips_ViewTypeReadme extends Xoonips_ViewType
      */
     public function getDefaultValueBlockView($list, $value, $disabled = '')
     {
-        $this->getXoopsTpl()->assign('viewType', 'default');
-        $this->getXoopsTpl()->assign('disabled', $disabled);
-        $this->getXoopsTpl()->assign('value', $value);
+        $this->xoopsTpl->assign('viewType', 'default');
+        $this->xoopsTpl->assign('disabled', $disabled);
+        $this->xoopsTpl->assign('value', $value);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 }

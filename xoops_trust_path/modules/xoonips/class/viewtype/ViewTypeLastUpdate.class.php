@@ -16,11 +16,11 @@ class Xoonips_ViewTypeLastUpdate extends Xoonips_ViewTypeDate
     public function getEditView($field, $value, $groupLoopId)
     {
         $fieldName = $this->getFieldName($field, $groupLoopId);
-        $this->getXoopsTpl()->assign('viewType', 'edit');
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
-        $this->getXoopsTpl()->assign('value', $value + $this->getTimeZoneOffset());
+        $this->xoopsTpl->assign('viewType', 'edit');
+        $this->xoopsTpl->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('value', $value + $this->getTimeZoneOffset());
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getDisplayView($field, $value, $groupLoopId)
@@ -30,10 +30,10 @@ class Xoonips_ViewTypeLastUpdate extends Xoonips_ViewTypeDate
 
     public function getDetailDisplayView($field, $value, $display)
     {
-        $this->getXoopsTpl()->assign('viewType', 'detail');
-        $this->getXoopsTpl()->assign('value', $value + $this->getTimeZoneOffset());
+        $this->xoopsTpl->assign('viewType', 'detail');
+        $this->xoopsTpl->assign('value', $value + $this->getTimeZoneOffset());
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getMetaInfo($field, $value)
@@ -112,10 +112,10 @@ class Xoonips_ViewTypeLastUpdate extends Xoonips_ViewTypeDate
 
     public function getDefaultValueBlockView($list, $value, $disabled = '')
     {
-        $this->getXoopsTpl()->assign('viewType', 'default');
-        $this->getXoopsTpl()->assign('value', $value);
+        $this->xoopsTpl->assign('viewType', 'default');
+        $this->xoopsTpl->assign('value', $value);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function mustCreateItemExtendTable()

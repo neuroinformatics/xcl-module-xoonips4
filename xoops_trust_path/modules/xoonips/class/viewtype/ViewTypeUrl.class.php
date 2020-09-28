@@ -11,13 +11,12 @@ class Xoonips_ViewTypeUrl extends Xoonips_ViewTypeText
 
     public function getDetailDisplayView($field, $value, $display)
     {
-        $tpl = $this->getXoopsTpl();
-        $tpl->assign('viewType', 'detail');
-        $tpl->assign('fieldId', $field->getId());
-        $tpl->assign('groupId', $field->getFieldGroupId());
-        $tpl->assign('value', $value);
-        $tpl->assign('xoops_dirname', $this->dirname);
+        $this->xoopsTpl->assign('viewType', 'detail');
+        $this->xoopsTpl->assign('fieldId', $field->getId());
+        $this->xoopsTpl->xoopsTpl->assign('groupId', $field->getFieldGroupId());
+        $this->xoopsTpl->assign('value', $value);
+        $this->xoopsTpl->assign('xoops_dirname', $this->dirname);
 
-        return $tpl->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 }

@@ -38,21 +38,21 @@ class Xoonips_ViewTypeRights extends Xoonips_ViewType
         $check_mod = ['', '', ''];
         $check_mod[$cc_modification] = 'checked';
         $rightsJurisdic = $fieldName.'_select';
-        $this->getXoopsTpl()->assign('viewType', 'input');
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
-        $this->getXoopsTpl()->assign('rightsUseCC', $rightsUseCC);
-        $this->getXoopsTpl()->assign('rightsCCCommercialUse', $rightsCCCommercialUse);
-        $this->getXoopsTpl()->assign('rightsCCModification', $rightsCCModification);
-        $this->getXoopsTpl()->assign('showTextDiv', $showTextDiv);
-        $this->getXoopsTpl()->assign('value', $value);
-        $this->getXoopsTpl()->assign('text', $text);
-        $this->getXoopsTpl()->assign('check_cc', $check_cc);
-        $this->getXoopsTpl()->assign('check_com', $check_com);
-        $this->getXoopsTpl()->assign('check_mod', $check_mod);
-        $this->getXoopsTpl()->assign('rightsJurisdic', $rightsJurisdic);
-        $this->getXoopsTpl()->assign('dirname', $this->dirname);
+        $this->xoopsTpl->assign('viewType', 'input');
+        $this->xoopsTpl->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('rightsUseCC', $rightsUseCC);
+        $this->xoopsTpl->assign('rightsCCCommercialUse', $rightsCCCommercialUse);
+        $this->xoopsTpl->assign('rightsCCModification', $rightsCCModification);
+        $this->xoopsTpl->assign('showTextDiv', $showTextDiv);
+        $this->xoopsTpl->assign('value', $value);
+        $this->xoopsTpl->assign('text', $text);
+        $this->xoopsTpl->assign('check_cc', $check_cc);
+        $this->xoopsTpl->assign('check_com', $check_com);
+        $this->xoopsTpl->assign('check_mod', $check_mod);
+        $this->xoopsTpl->assign('rightsJurisdic', $rightsJurisdic);
+        $this->xoopsTpl->assign('dirname', $this->dirname);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getDisplayView($field, $value, $groupLoopId)
@@ -69,14 +69,14 @@ class Xoonips_ViewTypeRights extends Xoonips_ViewType
             $text = (strlen($value) > strlen($rightsValue[0]) + 1) ? substr($value, strlen($rightsValue[0]) + 1) : '';
         }
         $fieldName = $this->getFieldName($field, $groupLoopId);
-        $this->getXoopsTpl()->assign('viewType', 'confirm');
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
-        $this->getXoopsTpl()->assign('value', $value);
-        $this->getXoopsTpl()->assign('text', $text);
-        $this->getXoopsTpl()->assign('use_cc', $use_cc);
-        $this->getXoopsTpl()->assign('ccLicense', Xoonips_Utils::getCcLicense($cc_commercial_use, $cc_modification));
+        $this->xoopsTpl->assign('viewType', 'confirm');
+        $this->xoopsTpl->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('value', $value);
+        $this->xoopsTpl->assign('text', $text);
+        $this->xoopsTpl->assign('use_cc', $use_cc);
+        $this->xoopsTpl->assign('ccLicense', Xoonips_Utils::getCcLicense($cc_commercial_use, $cc_modification));
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getEditView($field, $value, $groupLoopId)
@@ -97,12 +97,12 @@ class Xoonips_ViewTypeRights extends Xoonips_ViewType
             $cc_modification = substr($rightsValue[0], 2, 1);
             $text = (strlen($value) > strlen($rightsValue[0]) + 1) ? substr($value, strlen($rightsValue[0]) + 1) : '';
         }
-        $this->getXoopsTpl()->assign('viewType', 'detail');
-        $this->getXoopsTpl()->assign('text', $text);
-        $this->getXoopsTpl()->assign('use_cc', $use_cc);
-        $this->getXoopsTpl()->assign('ccLicense', Xoonips_Utils::getCcLicense($cc_commercial_use, $cc_modification));
+        $this->xoopsTpl->assign('viewType', 'detail');
+        $this->xoopsTpl->assign('text', $text);
+        $this->xoopsTpl->assign('use_cc', $use_cc);
+        $this->xoopsTpl->assign('ccLicense', Xoonips_Utils::getCcLicense($cc_commercial_use, $cc_modification));
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getMetaInfo($field, $value)
@@ -131,10 +131,10 @@ class Xoonips_ViewTypeRights extends Xoonips_ViewType
     public function getSearchView($field, $groupLoopId)
     {
         $fieldName = $this->getFieldName($field, $groupLoopId);
-        $this->getXoopsTpl()->assign('viewType', 'search');
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('viewType', 'search');
+        $this->xoopsTpl->assign('fieldName', $fieldName);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     /**
@@ -173,22 +173,22 @@ class Xoonips_ViewTypeRights extends Xoonips_ViewType
         $check_mod = ['', '', ''];
         $check_mod[$cc_modification] = 'checked';
         $rightsJurisdic = $fieldName.'_select';
-        $this->getXoopsTpl()->assign('viewType', 'default');
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
-        $this->getXoopsTpl()->assign('rightsUseCC', $rightsUseCC);
-        $this->getXoopsTpl()->assign('rightsCCCommercialUse', $rightsCCCommercialUse);
-        $this->getXoopsTpl()->assign('rightsCCModification', $rightsCCModification);
-        $this->getXoopsTpl()->assign('showTextDiv', $showTextDiv);
-        $this->getXoopsTpl()->assign('disabled', $disabled);
-        $this->getXoopsTpl()->assign('value', $value);
-        $this->getXoopsTpl()->assign('text', $text);
-        $this->getXoopsTpl()->assign('check_cc', $check_cc);
-        $this->getXoopsTpl()->assign('check_com', $check_com);
-        $this->getXoopsTpl()->assign('check_mod', $check_mod);
-        $this->getXoopsTpl()->assign('rightsJurisdic', $rightsJurisdic);
-        $this->getXoopsTpl()->assign('dirname', $this->dirname);
+        $this->xoopsTpl->assign('viewType', 'default');
+        $this->xoopsTpl->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('rightsUseCC', $rightsUseCC);
+        $this->xoopsTpl->assign('rightsCCCommercialUse', $rightsCCCommercialUse);
+        $this->xoopsTpl->assign('rightsCCModification', $rightsCCModification);
+        $this->xoopsTpl->assign('showTextDiv', $showTextDiv);
+        $this->xoopsTpl->assign('disabled', $disabled);
+        $this->xoopsTpl->assign('value', $value);
+        $this->xoopsTpl->assign('text', $text);
+        $this->xoopsTpl->assign('check_cc', $check_cc);
+        $this->xoopsTpl->assign('check_com', $check_com);
+        $this->xoopsTpl->assign('check_mod', $check_mod);
+        $this->xoopsTpl->assign('rightsJurisdic', $rightsJurisdic);
+        $this->xoopsTpl->assign('dirname', $this->dirname);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     /**

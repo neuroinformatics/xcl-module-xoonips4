@@ -14,38 +14,38 @@ class Xoonips_ViewTypeCheckBox extends Xoonips_ViewType
         $fieldName = $this->getFieldName($field, $groupLoopId);
         $chkName = $fieldName.'_checkbox';
         $checked = ('1' == $value) ? 'checked' : '';
-        $this->getXoopsTpl()->assign('viewType', 'input');
-        $this->getXoopsTpl()->assign('chkName', $chkName);
-        $this->getXoopsTpl()->assign('checked', $checked);
-        $this->getXoopsTpl()->assign('name', $field->getName());
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
-        $this->getXoopsTpl()->assign('value', $value);
-        $this->getXoopsTpl()->assign('dirname', $this->dirname);
+        $this->xoopsTpl->assign('viewType', 'input');
+        $this->xoopsTpl->assign('chkName', $chkName);
+        $this->xoopsTpl->assign('checked', $checked);
+        $this->xoopsTpl->assign('name', $field->getName());
+        $this->xoopsTpl->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('value', $value);
+        $this->xoopsTpl->assign('dirname', $this->dirname);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getDisplayView($field, $value, $groupLoopId)
     {
         $fieldName = $this->getFieldName($field, $groupLoopId);
         $checked = ('1' == $value) ? 'checked' : '';
-        $this->getXoopsTpl()->assign('viewType', 'confirm');
-        $this->getXoopsTpl()->assign('checked', $checked);
-        $this->getXoopsTpl()->assign('name', $field->getName());
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
-        $this->getXoopsTpl()->assign('value', $value);
+        $this->xoopsTpl->assign('viewType', 'confirm');
+        $this->xoopsTpl->assign('checked', $checked);
+        $this->xoopsTpl->assign('name', $field->getName());
+        $this->xoopsTpl->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('value', $value);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getDetailDisplayView($field, $value, $display)
     {
         $checked = ('1' == $value) ? 'checked' : '';
-        $this->getXoopsTpl()->assign('viewType', 'detail');
-        $this->getXoopsTpl()->assign('checked', $checked);
-        $this->getXoopsTpl()->assign('name', $field->getName());
+        $this->xoopsTpl->assign('viewType', 'detail');
+        $this->xoopsTpl->assign('checked', $checked);
+        $this->xoopsTpl->assign('name', $field->getName());
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function isDisplayFieldName()
@@ -63,11 +63,11 @@ class Xoonips_ViewTypeCheckBox extends Xoonips_ViewType
     public function getDefaultValueBlockView($list, $value, $disabled = '')
     {
         $checked = ('1' == $value) ? 'checked' : '';
-        $this->getXoopsTpl()->assign('viewType', 'default');
-        $this->getXoopsTpl()->assign('checked', $checked);
-        $this->getXoopsTpl()->assign('disabled', $disabled);
-        $this->getXoopsTpl()->assign('value', $value);
+        $this->xoopsTpl->assign('viewType', 'default');
+        $this->xoopsTpl->assign('checked', $checked);
+        $this->xoopsTpl->assign('disabled', $disabled);
+        $this->xoopsTpl->assign('value', $value);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 }

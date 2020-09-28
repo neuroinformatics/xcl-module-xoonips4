@@ -28,16 +28,16 @@ class Xoonips_ViewTypeDate extends Xoonips_ViewType
         }
         $monthList = $this->getMonths();
         $dayList = $this->getDays();
-        $this->getXoopsTpl()->assign('viewType', 'input');
-        $this->getXoopsTpl()->assign('yearValue', $yearValue);
-        $this->getXoopsTpl()->assign('monthValue', $monthValue);
-        $this->getXoopsTpl()->assign('dayValue', $dayValue);
-        $this->getXoopsTpl()->assign('monthList', $monthList);
-        $this->getXoopsTpl()->assign('dayList', $dayList);
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
-        $this->getXoopsTpl()->assign('value', $value);
+        $this->xoopsTpl->assign('viewType', 'input');
+        $this->xoopsTpl->assign('yearValue', $yearValue);
+        $this->xoopsTpl->assign('monthValue', $monthValue);
+        $this->xoopsTpl->assign('dayValue', $dayValue);
+        $this->xoopsTpl->assign('monthList', $monthList);
+        $this->xoopsTpl->assign('dayList', $dayList);
+        $this->xoopsTpl->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('value', $value);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getSearchView($field, $groupLoopId)
@@ -45,13 +45,13 @@ class Xoonips_ViewTypeDate extends Xoonips_ViewType
         $fieldName = $this->getFieldName($field, $groupLoopId);
         $monthList = $this->getMonths();
         $dayList = $this->getDays();
-        $this->getXoopsTpl()->assign('viewType', 'search');
-        $this->getXoopsTpl()->assign('monthList', $monthList);
-        $this->getXoopsTpl()->assign('dayList', $dayList);
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
-        $this->getXoopsTpl()->assign('scope', $field->getScopeSearch());
+        $this->xoopsTpl->assign('viewType', 'search');
+        $this->xoopsTpl->assign('monthList', $monthList);
+        $this->xoopsTpl->assign('dayList', $dayList);
+        $this->xoopsTpl->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('scope', $field->getScopeSearch());
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getSearchViewWithData($field, $value, $groupLoopId)
@@ -84,32 +84,32 @@ class Xoonips_ViewTypeDate extends Xoonips_ViewType
                 $dateToValue = $yearToValue.'-'.$monthToValue.'-'.$dayToValue;
             }
         }
-        $this->getXoopsTpl()->assign('viewType', 'search');
-        $this->getXoopsTpl()->assign('monthList', $monthList);
-        $this->getXoopsTpl()->assign('dayList', $dayList);
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
-        $this->getXoopsTpl()->assign('scope', $field->getScopeSearch());
-        $this->getXoopsTpl()->assign('dateFromValue', $dateFromValue);
-        $this->getXoopsTpl()->assign('yearFromValue', $yearFromValue);
-        $this->getXoopsTpl()->assign('monthFromValue', $monthFromValue);
-        $this->getXoopsTpl()->assign('dayFromValue', $dayFromValue);
-        $this->getXoopsTpl()->assign('dateToValue', $dateToValue);
-        $this->getXoopsTpl()->assign('yearToValue', $yearToValue);
-        $this->getXoopsTpl()->assign('monthToValue', $monthToValue);
-        $this->getXoopsTpl()->assign('dayToValue', $dayToValue);
+        $this->xoopsTpl->assign('viewType', 'search');
+        $this->xoopsTpl->assign('monthList', $monthList);
+        $this->xoopsTpl->assign('dayList', $dayList);
+        $this->xoopsTpl->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('scope', $field->getScopeSearch());
+        $this->xoopsTpl->assign('dateFromValue', $dateFromValue);
+        $this->xoopsTpl->assign('yearFromValue', $yearFromValue);
+        $this->xoopsTpl->assign('monthFromValue', $monthFromValue);
+        $this->xoopsTpl->assign('dayFromValue', $dayFromValue);
+        $this->xoopsTpl->assign('dateToValue', $dateToValue);
+        $this->xoopsTpl->assign('yearToValue', $yearToValue);
+        $this->xoopsTpl->assign('monthToValue', $monthToValue);
+        $this->xoopsTpl->assign('dayToValue', $dayToValue);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getDisplayView($field, $value, $groupLoopId)
     {
         $fieldName = $this->getFieldName($field, $groupLoopId);
-        $this->getXoopsTpl()->assign('viewType', 'confirm');
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
-        $this->getXoopsTpl()->assign('date', $value);
-        $this->getXoopsTpl()->assign('value', $value);
+        $this->xoopsTpl->assign('viewType', 'confirm');
+        $this->xoopsTpl->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('date', $value);
+        $this->xoopsTpl->assign('value', $value);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getEditView($field, $value, $groupLoopId)
@@ -119,10 +119,10 @@ class Xoonips_ViewTypeDate extends Xoonips_ViewType
 
     public function getDetailDisplayView($field, $value, $display)
     {
-        $this->getXoopsTpl()->assign('viewType', 'detail');
-        $this->getXoopsTpl()->assign('date', $value);
+        $this->xoopsTpl->assign('viewType', 'detail');
+        $this->xoopsTpl->assign('date', $value);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getMetaInfo($field, $value)
@@ -243,10 +243,10 @@ class Xoonips_ViewTypeDate extends Xoonips_ViewType
      */
     public function getDefaultValueBlockView($list, $value, $disabled = '')
     {
-        $this->getXoopsTpl()->assign('viewType', 'default');
-        $this->getXoopsTpl()->assign('value', $value);
+        $this->xoopsTpl->assign('viewType', 'default');
+        $this->xoopsTpl->assign('value', $value);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getRegistryView($field)

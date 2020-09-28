@@ -12,8 +12,8 @@ abstract class Xoonips_ViewType
     protected $dirname;
     protected $trustDirname;
     protected $search;
-    private $xoopsTpl;
-    private $template;
+    protected $xoopsTpl;
+    protected $template;
 
     public function __construct($dirname, $trustDirname)
     {
@@ -82,11 +82,6 @@ abstract class Xoonips_ViewType
     public function setSearch($obj)
     {
         $this->search = $obj;
-    }
-
-    protected function getXoopsTpl()
-    {
-        return $this->xoopsTpl;
     }
 
     public function isMulti()
@@ -486,15 +481,15 @@ abstract class Xoonips_ViewType
             $fieldName = $field->getFieldGroupId().Xoonips_Enum::ITEM_ID_SEPARATOR.$groupLoopId.Xoonips_Enum::ITEM_ID_SEPARATOR.$field->getId();
             $ret = str_replace('name="'.$fieldName.'"', 'name="'.$fieldName.'[]"', $ret);
         }
-        $this->getXoopsTpl()->assign('viewType', 'search');
-        $this->getXoopsTpl()->assign('from', $ret);
+        $this->xoopsTpl->assign('viewType', 'search');
+        $this->xoopsTpl->assign('from', $ret);
         if (1 == $field->getScopeSearch()) {
-            $this->getXoopsTpl()->assign('to', $ret);
+            $this->xoopsTpl->assign('to', $ret);
         } else {
-            $this->getXoopsTpl()->assign('to', null);
+            $this->xoopsTpl->assign('to', null);
         }
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     /**
@@ -523,15 +518,15 @@ abstract class Xoonips_ViewType
             $ret = $this->getSearchInputView($field, $value, $groupLoopId);
             $from = $ret;
         }
-        $this->getXoopsTpl()->assign('viewType', 'search');
-        $this->getXoopsTpl()->assign('from', $from);
+        $this->xoopsTpl->assign('viewType', 'search');
+        $this->xoopsTpl->assign('from', $from);
         if (1 == $field->getScopeSearch() && is_array($value)) {
-            $this->getXoopsTpl()->assign('to', $to);
+            $this->xoopsTpl->assign('to', $to);
         } else {
-            $this->getXoopsTpl()->assign('to', null);
+            $this->xoopsTpl->assign('to', null);
         }
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     /**
@@ -712,10 +707,10 @@ abstract class Xoonips_ViewType
      */
     public function getListBlockView($value, $disabled = '')
     {
-        $this->getXoopsTpl()->assign('viewType', 'list');
-        $this->getXoopsTpl()->assign('value', $value);
+        $this->xoopsTpl->assign('viewType', 'list');
+        $this->xoopsTpl->assign('value', $value);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     /**
@@ -729,11 +724,11 @@ abstract class Xoonips_ViewType
      */
     public function getDefaultValueBlockView($list, $value, $disabled = '')
     {
-        $this->getXoopsTpl()->assign('viewType', 'default');
-        $this->getXoopsTpl()->assign('value', $value);
-        $this->getXoopsTpl()->assign('disabled', $disabled);
+        $this->xoopsTpl->assign('viewType', 'default');
+        $this->xoopsTpl->assign('value', $value);
+        $this->xoopsTpl->assign('disabled', $disabled);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     /**
@@ -748,11 +743,11 @@ abstract class Xoonips_ViewType
     public function getSimpleSearchView($field, $value, $itemtypeId)
     {
         $fieldName = $this->getFieldName($field, $itemtypeId);
-        $this->getXoopsTpl()->assign('viewType', 'simpleSearch');
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
-        $this->getXoopsTpl()->assign('value', $value);
+        $this->xoopsTpl->assign('viewType', 'simpleSearch');
+        $this->xoopsTpl->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('value', $value);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     /**

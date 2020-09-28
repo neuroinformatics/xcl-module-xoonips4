@@ -18,14 +18,14 @@ class Xoonips_ViewTypeDownloadNotify extends Xoonips_ViewTypeRadioBox
     {
         $fieldName = $this->getFieldName($field, $groupLoopId);
         $radioName = $fieldName.'_radiobox';
-        $this->getXoopsTpl()->assign('viewType', 'input');
-        $this->getXoopsTpl()->assign('list', $this->getList());
-        $this->getXoopsTpl()->assign('radioName', $radioName);
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
-        $this->getXoopsTpl()->assign('value', $value);
-        $this->getXoopsTpl()->assign('dirname', $this->dirname);
+        $this->xoopsTpl->assign('viewType', 'input');
+        $this->xoopsTpl->assign('list', $this->getList());
+        $this->xoopsTpl->assign('radioName', $radioName);
+        $this->xoopsTpl->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('value', $value);
+        $this->xoopsTpl->assign('dirname', $this->dirname);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getEditView($field, $value, $groupLoopId)
@@ -36,12 +36,12 @@ class Xoonips_ViewTypeDownloadNotify extends Xoonips_ViewTypeRadioBox
     public function getSearchInputView($field, $value, $groupLoopId)
     {
         $fieldName = $this->getFieldName($field, $groupLoopId);
-        $this->getXoopsTpl()->assign('viewType', 'search');
-        $this->getXoopsTpl()->assign('list', $this->getList());
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
-        $this->getXoopsTpl()->assign('value', $value);
+        $this->xoopsTpl->assign('viewType', 'search');
+        $this->xoopsTpl->assign('list', $this->getList());
+        $this->xoopsTpl->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('value', $value);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getDisplayView($field, $value, $groupLoopId)
@@ -52,21 +52,21 @@ class Xoonips_ViewTypeDownloadNotify extends Xoonips_ViewTypeRadioBox
             $ret = isset($list[$value]) ? $list[$value] : '';
         }
         $fieldName = $this->getFieldName($field, $groupLoopId);
-        $this->getXoopsTpl()->assign('viewType', 'confirm');
-        $this->getXoopsTpl()->assign('valueName', $ret);
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
-        $this->getXoopsTpl()->assign('value', $value);
+        $this->xoopsTpl->assign('viewType', 'confirm');
+        $this->xoopsTpl->assign('valueName', $ret);
+        $this->xoopsTpl->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('value', $value);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getDetailDisplayView($field, $value, $display)
     {
         $list = $this->getList();
-        $this->getXoopsTpl()->assign('viewType', 'detail');
-        $this->getXoopsTpl()->assign('valueName', $list[$value]);
+        $this->xoopsTpl->assign('viewType', 'detail');
+        $this->xoopsTpl->assign('valueName', $list[$value]);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getMetaInfo($field, $value)
@@ -92,13 +92,13 @@ class Xoonips_ViewTypeDownloadNotify extends Xoonips_ViewTypeRadioBox
             }
             break;
         }
-        $this->getXoopsTpl()->assign('viewType', 'default');
-        $this->getXoopsTpl()->assign('selectValues', $selectValues);
-        $this->getXoopsTpl()->assign('disabled', $disabled);
-        $this->getXoopsTpl()->assign('value', $value);
+        $this->xoopsTpl->assign('viewType', 'default');
+        $this->xoopsTpl->assign('selectValues', $selectValues);
+        $this->xoopsTpl->assign('disabled', $disabled);
+        $this->xoopsTpl->assign('value', $value);
         self::setTemplate();
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     protected function getList()

@@ -34,15 +34,15 @@ class Xoonips_ViewTypeCreateUser extends Xoonips_ViewType
         }
         $fieldName = $this->getFieldName($field, $groupLoopId);
         $divName = $fieldName.'_div';
-        $this->getXoopsTpl()->assign('viewType', 'input');
-        $this->getXoopsTpl()->assign('dirname', $this->dirname);
-        $this->getXoopsTpl()->assign('mytrustdirname', $this->trustDirname);
-        $this->getXoopsTpl()->assign('divName', $divName);
-        $this->getXoopsTpl()->assign('userInfos', $userInfos);
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
-        $this->getXoopsTpl()->assign('value', implode(',', $userIds));
+        $this->xoopsTpl->assign('viewType', 'input');
+        $this->xoopsTpl->assign('dirname', $this->dirname);
+        $this->xoopsTpl->assign('mytrustdirname', $this->trustDirname);
+        $this->xoopsTpl->assign('divName', $divName);
+        $this->xoopsTpl->assign('userInfos', $userInfos);
+        $this->xoopsTpl->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('value', implode(',', $userIds));
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getDisplayView($field, $value, $groupLoopId)
@@ -62,15 +62,15 @@ class Xoonips_ViewTypeCreateUser extends Xoonips_ViewType
         }
         $fieldName = $this->getFieldName($field, $groupLoopId);
         $divName = $fieldName.'_div';
-        $this->getXoopsTpl()->assign('viewType', 'confirm');
-        $this->getXoopsTpl()->assign('dirname', $this->dirname);
-        $this->getXoopsTpl()->assign('mytrustdirname', $this->trustDirname);
-        $this->getXoopsTpl()->assign('divName', $divName);
-        $this->getXoopsTpl()->assign('userInfos', $userInfos);
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
-        $this->getXoopsTpl()->assign('value', implode(',', $userIds));
+        $this->xoopsTpl->assign('viewType', 'confirm');
+        $this->xoopsTpl->assign('dirname', $this->dirname);
+        $this->xoopsTpl->assign('mytrustdirname', $this->trustDirname);
+        $this->xoopsTpl->assign('divName', $divName);
+        $this->xoopsTpl->assign('userInfos', $userInfos);
+        $this->xoopsTpl->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('value', implode(',', $userIds));
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getEditView($field, $value, $groupLoopId)
@@ -91,12 +91,12 @@ class Xoonips_ViewTypeCreateUser extends Xoonips_ViewType
                 }
             }
         }
-        $this->getXoopsTpl()->assign('viewType', 'detail');
-        $this->getXoopsTpl()->assign('dirname', $this->dirname);
-        $this->getXoopsTpl()->assign('mytrustdirname', $this->trustDirname);
-        $this->getXoopsTpl()->assign('userInfos', $userInfos);
+        $this->xoopsTpl->assign('viewType', 'detail');
+        $this->xoopsTpl->assign('dirname', $this->dirname);
+        $this->xoopsTpl->assign('mytrustdirname', $this->trustDirname);
+        $this->xoopsTpl->assign('userInfos', $userInfos);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getItemOwnersEditView($field, $value, $groupLoopId)
@@ -124,24 +124,24 @@ class Xoonips_ViewTypeCreateUser extends Xoonips_ViewType
         }
         $fieldName = $this->getFieldName($field, $groupLoopId);
         $divName = $fieldName.'_div';
-        $this->getXoopsTpl()->assign('viewType', 'itemUsersEdit');
-        $this->getXoopsTpl()->assign('dirname', $this->dirname);
-        $this->getXoopsTpl()->assign('mytrustdirname', $this->trustDirname);
-        $this->getXoopsTpl()->assign('divName', $divName);
-        $this->getXoopsTpl()->assign('userInfos', $userInfos);
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
-        $this->getXoopsTpl()->assign('value', implode(',', $userIds));
+        $this->xoopsTpl->assign('viewType', 'itemUsersEdit');
+        $this->xoopsTpl->assign('dirname', $this->dirname);
+        $this->xoopsTpl->assign('mytrustdirname', $this->trustDirname);
+        $this->xoopsTpl->assign('divName', $divName);
+        $this->xoopsTpl->assign('userInfos', $userInfos);
+        $this->xoopsTpl->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('value', implode(',', $userIds));
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getSearchView($field, $groupLoopId)
     {
         $fieldName = $this->getFieldName($field, $groupLoopId);
-        $this->getXoopsTpl()->assign('viewType', 'search');
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('viewType', 'search');
+        $this->xoopsTpl->assign('fieldName', $fieldName);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getMetaInfo($field, $value)
@@ -267,10 +267,10 @@ class Xoonips_ViewTypeCreateUser extends Xoonips_ViewType
      */
     public function getDefaultValueBlockView($list, $value, $disabled = '')
     {
-        $this->getXoopsTpl()->assign('viewType', 'default');
-        $this->getXoopsTpl()->assign('value', $value);
+        $this->xoopsTpl->assign('viewType', 'default');
+        $this->xoopsTpl->assign('value', $value);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     /**

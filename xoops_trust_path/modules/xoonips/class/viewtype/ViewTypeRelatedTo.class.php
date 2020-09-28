@@ -23,14 +23,14 @@ class Xoonips_ViewTypeRelatedTo extends Xoonips_ViewType
         }
         $fieldName = $this->getFieldName($field, $groupLoopId);
         $divName = $fieldName.'_div';
-        $this->getXoopsTpl()->assign('viewType', 'input');
-        $this->getXoopsTpl()->assign('dirname', $this->dirname);
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
-        $this->getXoopsTpl()->assign('divName', $divName);
-        $this->getXoopsTpl()->assign('value', $value);
-        $this->getXoopsTpl()->assign('itemInfo', $itemInfo);
+        $this->xoopsTpl->assign('viewType', 'input');
+        $this->xoopsTpl->assign('dirname', $this->dirname);
+        $this->xoopsTpl->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('divName', $divName);
+        $this->xoopsTpl->assign('value', $value);
+        $this->xoopsTpl->assign('itemInfo', $itemInfo);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getEditView($field, $value, $groupLoopId)
@@ -49,14 +49,14 @@ class Xoonips_ViewTypeRelatedTo extends Xoonips_ViewType
         }
         $fieldName = $this->getFieldName($field, $groupLoopId);
         $divName = $fieldName.'_div';
-        $this->getXoopsTpl()->assign('viewType', 'confirm');
-        $this->getXoopsTpl()->assign('dirname', $this->dirname);
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
-        $this->getXoopsTpl()->assign('divName', $divName);
-        $this->getXoopsTpl()->assign('value', $value);
-        $this->getXoopsTpl()->assign('itemInfo', $itemInfo);
+        $this->xoopsTpl->assign('viewType', 'confirm');
+        $this->xoopsTpl->assign('dirname', $this->dirname);
+        $this->xoopsTpl->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('divName', $divName);
+        $this->xoopsTpl->assign('value', $value);
+        $this->xoopsTpl->assign('itemInfo', $itemInfo);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getDetailDisplayView($field, $value, $display)
@@ -68,11 +68,11 @@ class Xoonips_ViewTypeRelatedTo extends Xoonips_ViewType
                 $itemInfo[] = $this->getItemInfo($va);
             }
         }
-        $this->getXoopsTpl()->assign('viewType', 'detail');
-        $this->getXoopsTpl()->assign('value', $value);
-        $this->getXoopsTpl()->assign('itemInfo', $itemInfo);
+        $this->xoopsTpl->assign('viewType', 'detail');
+        $this->xoopsTpl->assign('value', $value);
+        $this->xoopsTpl->assign('itemInfo', $itemInfo);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getMetaInfo($field, $value)
@@ -92,10 +92,10 @@ class Xoonips_ViewTypeRelatedTo extends Xoonips_ViewType
     public function getSearchView($field, $groupLoopId)
     {
         $fieldName = $this->getFieldName($field, $groupLoopId);
-        $this->getXoopsTpl()->assign('viewType', 'search');
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('viewType', 'search');
+        $this->xoopsTpl->assign('fieldName', $fieldName);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function inputCheck(&$errors, $field, $value, $fieldName)
@@ -173,10 +173,10 @@ class Xoonips_ViewTypeRelatedTo extends Xoonips_ViewType
      */
     public function getDefaultValueBlockView($list, $value, $disabled = '')
     {
-        $this->getXoopsTpl()->assign('viewType', 'default');
-        $this->getXoopsTpl()->assign('value', $value);
+        $this->xoopsTpl->assign('viewType', 'default');
+        $this->xoopsTpl->assign('value', $value);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     /**

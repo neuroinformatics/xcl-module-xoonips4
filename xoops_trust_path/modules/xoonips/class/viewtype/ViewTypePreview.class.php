@@ -30,15 +30,15 @@ class Xoonips_ViewTypePreview extends Xoonips_ViewType
             }
         }
         $preview = !empty($fileId) ? $fileBean->getFile($fileId) : false;
-        $this->getXoopsTpl()->assign('preview', $preview);
-        $this->getXoopsTpl()->assign('viewType', 'input');
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
-        $this->getXoopsTpl()->assign('fileName', $fileName);
-        $this->getXoopsTpl()->assign('value', $value);
-        $this->getXoopsTpl()->assign('fileId', $fileId);
-        $this->getXoopsTpl()->assign('dirname', $this->dirname);
+        $this->xoopsTpl->assign('preview', $preview);
+        $this->xoopsTpl->assign('viewType', 'input');
+        $this->xoopsTpl->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('fileName', $fileName);
+        $this->xoopsTpl->assign('value', $value);
+        $this->xoopsTpl->assign('fileId', $fileId);
+        $this->xoopsTpl->assign('dirname', $this->dirname);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function fileUpload($field, $value, $groupLoopId)
@@ -53,14 +53,14 @@ class Xoonips_ViewTypePreview extends Xoonips_ViewType
             $fileId = $value;
         }
         $preview = !empty($fileId) ? $fileBean->getFile($fileId) : false;
-        $this->getXoopsTpl()->assign('preview', $preview);
-        $this->getXoopsTpl()->assign('viewType', 'fileUpload');
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
-        $this->getXoopsTpl()->assign('value', $value);
-        $this->getXoopsTpl()->assign('fileId', $fileId);
-        $this->getXoopsTpl()->assign('dirname', $this->dirname);
+        $this->xoopsTpl->assign('preview', $preview);
+        $this->xoopsTpl->assign('viewType', 'fileUpload');
+        $this->xoopsTpl->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('value', $value);
+        $this->xoopsTpl->assign('fileId', $fileId);
+        $this->xoopsTpl->assign('dirname', $this->dirname);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getDisplayView($field, $value, $groupLoopId)
@@ -82,14 +82,14 @@ class Xoonips_ViewTypePreview extends Xoonips_ViewType
             }
         }
         $preview = !empty($fileId) ? $fileBean->getFile($fileId) : false;
-        $this->getXoopsTpl()->assign('preview', $preview);
-        $this->getXoopsTpl()->assign('viewType', 'confirm');
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
-        $this->getXoopsTpl()->assign('value', $value);
-        $this->getXoopsTpl()->assign('fileId', $fileId);
-        $this->getXoopsTpl()->assign('dirname', $this->dirname);
+        $this->xoopsTpl->assign('preview', $preview);
+        $this->xoopsTpl->assign('viewType', 'confirm');
+        $this->xoopsTpl->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('value', $value);
+        $this->xoopsTpl->assign('fileId', $fileId);
+        $this->xoopsTpl->assign('dirname', $this->dirname);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getEditView($field, $value, $groupLoopId)
@@ -102,21 +102,21 @@ class Xoonips_ViewTypePreview extends Xoonips_ViewType
         $fileBean = Xoonips_BeanFactory::getBean('ItemFileBean', $this->dirname, $this->trustDirname);
         $fileId = $value;
         $preview = !empty($fileId) ? $fileBean->getFile($fileId) : false;
-        $this->getXoopsTpl()->assign('preview', $preview);
-        $this->getXoopsTpl()->assign('viewType', 'detail');
-        $this->getXoopsTpl()->assign('fileId', $fileId);
-        $this->getXoopsTpl()->assign('dirname', $this->dirname);
+        $this->xoopsTpl->assign('preview', $preview);
+        $this->xoopsTpl->assign('viewType', 'detail');
+        $this->xoopsTpl->assign('fileId', $fileId);
+        $this->xoopsTpl->assign('dirname', $this->dirname);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function getSearchView($field, $groupLoopId)
     {
         $fieldName = $this->getFieldName($field, $groupLoopId);
-        $this->getXoopsTpl()->assign('viewType', 'search');
-        $this->getXoopsTpl()->assign('fieldName', $fieldName);
+        $this->xoopsTpl->assign('viewType', 'search');
+        $this->xoopsTpl->assign('fieldName', $fieldName);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     public function mustCheck(&$errors, $field, $value, $fieldName)
@@ -223,10 +223,10 @@ class Xoonips_ViewTypePreview extends Xoonips_ViewType
      */
     public function getDefaultValueBlockView($list, $value, $disabled = '')
     {
-        $this->getXoopsTpl()->assign('viewType', 'default');
-        $this->getXoopsTpl()->assign('value', $value);
+        $this->xoopsTpl->assign('viewType', 'default');
+        $this->xoopsTpl->assign('value', $value);
 
-        return $this->getXoopsTpl()->fetch('db:'.$this->template);
+        return $this->xoopsTpl->fetch('db:'.$this->template);
     }
 
     /**
