@@ -154,9 +154,9 @@ class XoopsUtils
                     if (!array_key_exists($dirname, self::$mConfigs)) {
                         self::$mConfigs[$dirname] = $configHandler->getConfigsByDirname($dirname);
                     }
-                    foreach (array_keys(self::$mConfigs[$dirname]) as $key) {
-                        if (!isset(self::$mConfigs[$cat][$key])) {
-                            self::$mConfigs[$cat][$key] = self::$mConfigs[$dirname][$key];
+                    foreach (array_keys(self::$mConfigs[$dirname]) as $mKey) {
+                        if (!isset(self::$mConfigs[$cat][$mKey])) {
+                            self::$mConfigs[$cat][$mKey] = self::$mConfigs[$dirname][$mKey];
                         }
                     }
                     break;
