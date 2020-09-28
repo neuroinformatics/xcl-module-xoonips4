@@ -82,7 +82,7 @@
     var obj = this;
     // admin uids
 <{foreach item=adminUid from=$actionForm->get('adminUids')}>
-    this.addGroupAdmin(<{$adminUid}>, '<{$adminUid|xoops_user:"uname"|escape:javascript}>', '<{$adminUid|xoops_user:"name"|escape:javascript}>');
+    this.addGroupAdmin(<{$adminUid|xoops_escape}>, '<{$adminUid|xoops_user:"uname"|escape:javascript|xoops_escape}>', '<{$adminUid|xoops_user:"name"|escape:javascript|xoops_escape}>');
 <{/foreach}>
     // admin user search
     $('#<{$xoops_dirname}>_AdminGroupEditForm [rel^="<{$dirname}>Popin"]').<{$mytrustdirname}>Popin({
@@ -143,9 +143,9 @@ new <{$xoops_dirname}>_AdminGroupEditJS();
 
 <{if $actionForm->get('groupid') }>
 <{if $isExtended }>
-  <h3 class="admintitle"><{"`$constpref`_USER_LANG_GROUP_EDIT"|constant}> (<{$actionForm->get('name')}>)</h3>
+  <h3 class="admintitle"><{"`$constpref`_USER_LANG_GROUP_EDIT"|constant}> (<{$actionForm->get('name')|xoops_escape}>)</h3>
 <{else}>
-  <h3 class="admintitle"><{$smarty.const._AD_USER_LANG_GROUP_EDIT}> (<{$actionForm->get('name')}>)</h3>
+  <h3 class="admintitle"><{$smarty.const._AD_USER_LANG_GROUP_EDIT}> (<{$actionForm->get('name')|xoops_escape}>)</h3>
 <{/if}>
 <{else}>
 <{if $isExtended }>
@@ -214,7 +214,7 @@ new <{$xoops_dirname}>_AdminGroupEditJS();
         <{xoops_input type=hidden id=`$xoops_dirname`_iconDelete name=iconDelete value="0"}>
         <div id="<{$xoops_dirname}>_icon">
         <{if $icon }>
-          <img src="<{$xoops_url}>/modules/<{$xoops_dirname}>/image.php/group/<{$actionForm->get('groupid')}>/<{$icon.file_name|xoops_escape}>" alt="<{$icon.file_name|xoops_escape}>" title="<{$icon.file_name|xoops_escape}>" />
+          <img src="<{$xoops_url}>/modules/<{$xoops_dirname}>/image.php/group/<{$actionForm->get('groupid')|xoops_escape}>/<{$icon.file_name|xoops_escape}>" alt="<{$icon.file_name|xoops_escape}>" title="<{$icon.file_name|xoops_escape}>" />
           <input type="button" id="<{$xoops_dirname}>_iconDeleteButton" class="formButton" value="<{$smarty.const._DELETE}>" />
         <{/if}>
         </div>
@@ -260,20 +260,20 @@ new <{$xoops_dirname}>_AdminGroupEditJS();
     <tr>
       <td class="head"><{"`$constpref`_USER_LANG_GROUP_MAXITEM"|constant}></td>
       <td class="<{cycle values="odd,even"}>">
-        <input type="text" name="item_number_limit" size="50" value="<{$actionForm->get('item_number_limit')}>" />
+        <input type="text" name="item_number_limit" size="50" value="<{$actionForm->get('item_number_limit')|xoops_escape}>" />
         <br /><{"`$constpref`_USER_MESSAGE_UNLIMIT_IFZERO"|constant}></td>
 
     </tr>
     <tr>
       <td class="head"><{"`$constpref`_USER_LANG_GROUP_MAXINDEX"|constant}></td>
       <td class="<{cycle values="odd,even"}>">
-        <input type="text" name="index_number_limit" size="50" value="<{$actionForm->get('index_number_limit')}>" />
+        <input type="text" name="index_number_limit" size="50" value="<{$actionForm->get('index_number_limit')|xoops_escape}>" />
         <br /><{"`$constpref`_USER_MESSAGE_UNLIMIT_IFZERO"|constant}></td>
     </tr>
     <tr>
       <td class="head"><{"`$constpref`_USER_LANG_GROUP_MAXDISK"|constant}></td>
       <td class="<{cycle values="odd,even"}>">
-        <input type="text" name="item_storage_limit" size="50" value="<{$actionForm->get('item_storage_limit')}>" />
+        <input type="text" name="item_storage_limit" size="50" value="<{$actionForm->get('item_storage_limit')|xoops_escape}>" />
         <br /><{"`$constpref`_USER_MESSAGE_UNLIMIT_IFZERO"|constant}></td>
     </tr>
     <{/if}>

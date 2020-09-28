@@ -2,7 +2,7 @@
 
 <form name="<{$xoops_dirname}>_policy_item_field_deleteform" id="<{$xoops_dirname}>_policy_item_field_deleteform" action="index.php" method="post">
 <input type="hidden" name="action" value="PolicyItemFieldDelete" />
-<input type="hidden" name="field_id" value="<{$object->getShow('item_field_detail_id')}>" />
+<input type="hidden" name="field_id" value="<{$object->getShow('item_field_detail_id')|xoops_escape}>" />
 
 <{xoops_token form=$actionForm}>
 <table width="100%" cellspacing="1" class="outer">
@@ -16,7 +16,7 @@
       <{"`$constpref`_LANG_ITEM_FIELD_ID"|constant}>
     </th>
     <td style="width: 80%;" class="even">
-      <{$object->getShow('xml')}>
+      <{$object->getShow('xml')|xoops_escape}>
     </td>
   </tr>
   <tr>
@@ -24,7 +24,7 @@
       <{"`$constpref`_LANG_ITEM_FIELD_NAME"|constant}>
     </th>
     <td style="width: 80%;" class="even">
-      <{$object->getShow('name')}>
+      <{$object->getShow('name')|xoops_escape}>
     </td>
   </tr>
 </table>

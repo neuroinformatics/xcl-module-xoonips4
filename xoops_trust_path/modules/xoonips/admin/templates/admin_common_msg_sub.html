@@ -1,6 +1,6 @@
 <{if $messages == false && $warnings == false && $errors == false}>
 	<script type="text/javascript" charset="utf-8">
-		xoonipsCallback('<{$callbackid}>', '<{$callbackvalue}>');
+		xoonipsCallback('<{$callbackid|xoops_escape}>', '<{$callbackvalue|xoops_escape}>');
 	</script>
 <{else}>
 	<br><br>
@@ -8,7 +8,7 @@
 		<span style="color: black;">
 		<ul>
 		<{foreach item=message from=$messages}>
-	  		<li><{$message}></li>
+	  		<li><{$message|xoops_escape}></li>
 		<{/foreach}>
 		</ul>
 		</span>
@@ -17,7 +17,7 @@
 		<span style="color: blue;">
 		<ul>
 		<{foreach item=warning from=$warnings}>
-  			<li><{$warning}></li>
+  			<li><{$warning|xoops_escape}></li>
 		<{/foreach}>
 		</ul>
 		</span>
@@ -26,7 +26,7 @@
 		<span style="color: red;">
 		<ul>
 		<{foreach item=error from=$errors}>
-	  		<li><{$error}></li>
+	  		<li><{$error|xoops_escape}></li>
 		<{/foreach}>
 		</ul>
 		</span>
@@ -35,8 +35,8 @@
 	<{if $errors}>
 		<input type="button" rel="cancel" value="OK" >
 	<{else}>
-		<input type="hidden" id="<{$dirname}>_callbackid"  name="callbackid" value="<{$callbackid}>">
-		<input type="hidden" id="<{$dirname}>_callbackvalue" name="callbackvalue" value="<{$callbackvalue}>">
+		<input type="hidden" id="<{$dirname}>_callbackid"  name="callbackid" value="<{$callbackid|xoops_escape}>">
+		<input type="hidden" id="<{$dirname}>_callbackvalue" name="callbackvalue" value="<{$callbackvalue|xoops_escape}>">
 		<input type="button" id="<{$dirname}>_sub_msg_ok" rel="callback" value="OK">
 	<{/if}>
 	</div>

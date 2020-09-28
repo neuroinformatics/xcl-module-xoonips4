@@ -4,12 +4,12 @@
 </div>
 <form name="<{$dirname}>_policy_itemtype_group_registerform" id="<{$dirname}>_policy_itemtype_group_registerform" action="policy_itemtype.php" method="post">
 <input type="hidden" name="op" value="groupregistersave">
-<input type="hidden" name="itemtypeid"  value="<{$itemtypeid}>"/>
-<input type="hidden" name="base_itemtypeid"  value="<{$base_itemtypeid}>"/>
+<input type="hidden" name="itemtypeid"  value="<{$itemtypeid|xoops_escape}>"/>
+<input type="hidden" name="base_itemtypeid"  value="<{$base_itemtypeid|xoops_escape}>"/>
 <{$token_ticket}>
 
 <table width="100%" cellspacing="1" class="outer">
-  <{$smarty.const._AM_XOONIPS_POLICY_ITEMTYPE_TITLE}>&nbsp;&nbsp;<b><{$itemtype_name}></b>
+  <{$smarty.const._AM_XOONIPS_POLICY_ITEMTYPE_TITLE}>&nbsp;&nbsp;<b><{$itemtype_name|xoops_escape}></b>
   <tbody>
   <tr>
     <th style="text-align: center;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_SELECT}></th>
@@ -20,9 +20,9 @@
   <tr class= "<{cycle values='odd,even'}>">
     <td style="text-align: center;">
       <{if $group.select=='1'}>
-      <input type="checkbox" name="checkbox_<{$group.groupid}>" value="1" checked <{if $group.preselect=='1'}>disabled<{/if}> />
+      <input type="checkbox" name="checkbox_<{$group.groupid|xoops_escape}>" value="1" checked <{if $group.preselect=='1'}>disabled<{/if}> />
       <{else}>
-      <input type="checkbox" name="checkbox_<{$group.groupid}>" value="1" <{if $group.preselect=='1'}>disabled<{/if}> />
+      <input type="checkbox" name="checkbox_<{$group.groupid|xoops_escape}>" value="1" <{if $group.preselect=='1'}>disabled<{/if}> />
       <{/if}>
     </td>
     <td style="text-align: left;"><{$group.name|xoops_escape}></td>
@@ -40,7 +40,7 @@
 </table>
 
 <div style="text-align: left">
-  <input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_BACK}>" onclick="window.location='policy_itemtype.php?op=edit&itemtypeid=<{$base_itemtypeid}>'" />&nbsp;&nbsp;
+  <input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_BACK}>" onclick="window.location='policy_itemtype.php?op=edit&itemtypeid=<{$base_itemtypeid|xoops_escape}>'" />&nbsp;&nbsp;
    <input class="formButton" type="submit" value="<{$smarty.const._AM_XOONIPS_LABEL_OK}>">
 </div>
 </form>

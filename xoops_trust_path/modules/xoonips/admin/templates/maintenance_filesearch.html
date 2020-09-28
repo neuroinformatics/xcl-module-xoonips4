@@ -70,7 +70,7 @@
       field.append(' . ');
     }
     num++;
-    if (num <= <{$fileCount}>) {
+    if (num <= <{$fileCount|xoops_escape}>) {
       this.do_file_rescan(mode, num);
     } else {
       this.stop_file_rescan(mode);    	
@@ -82,7 +82,7 @@
    * @param string mode, 'info' or 'index'
    */
   onclick_file_rescan: function (mode) {
-    if (<{$fileCount}> > 0) {
+    if (<{$fileCount|xoops_escape}> > 0) {
       this.start_file_rescan(mode);
       this.do_file_rescan(mode, 1);
     }
@@ -147,7 +147,7 @@ new <{$xoops_dirname}>_AdminFileSearchJS();
 <table width="100%" cellspacing="1" class="outer">
   <tbody>
   <tr>
-    <th colspan="2"><{"`$constpref`_MAINTENANCE_FILESEARCH_LANG_FILECOUNT"|constant}> : <{$fileCount}></th>
+    <th colspan="2"><{"`$constpref`_MAINTENANCE_FILESEARCH_LANG_FILECOUNT"|constant}> : <{$fileCount|xoops_escape}></th>
   </tr>
   <tr>
     <td class="head" style="width: 40%;">

@@ -11,9 +11,9 @@
   <tr class= "<{cycle values='odd,even'}>">
     <td><{$title|xoops_escape}></td>
     <td style="text-align: center;">
-      <a href="index.php?action=PolicyItemSortEdit&amp;sort_id=<{$sort_id}>"><img src="<{"icons/edit.png"|theme}>" alt="<{"`$constpref`_LANG_MODIFY"|constant}>" title="<{"`$constpref`_LANG_MODIFY"|constant}>" /></a>
+      <a href="index.php?action=PolicyItemSortEdit&amp;sort_id=<{$sort_id|xoops_escape}>"><img src="<{"icons/edit.png"|theme}>" alt="<{"`$constpref`_LANG_MODIFY"|constant}>" title="<{"`$constpref`_LANG_MODIFY"|constant}>" /></a>
 <{if $sort_id != 1}>
-      <a href="index.php?action=PolicyItemSortDelete&amp;sort_id=<{$sort_id}>"><img src="<{"icons/delete.png"|theme}>" alt="<{"`$constpref`_LANG_DELETE"|constant}>" title="<{"`$constpref`_LANG_DELETE"|constant}>" /></a>
+      <a href="index.php?action=PolicyItemSortDelete&amp;sort_id=<{$sort_id|xoops_escape}>"><img src="<{"icons/delete.png"|theme}>" alt="<{"`$constpref`_LANG_DELETE"|constant}>" title="<{"`$constpref`_LANG_DELETE"|constant}>" /></a>
 <{/if}>
     </td>
   </tr>

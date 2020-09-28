@@ -9,9 +9,9 @@
 </div>
 
 <{if $isExtended}>
-<h3 class="admintitle"><{"`$constpref`_USER_LANG_GROUP_DELETE"|constant}> (<{$object->getShow('name')}>)</h3>
+<h3 class="admintitle"><{"`$constpref`_USER_LANG_GROUP_DELETE"|constant}> (<{$object->getShow('name')|xoops_escape}>)</h3>
 <{else}>
-<h3 class="admintitle"><{$smarty.const._AD_USER_LANG_GROUP_DELETE}> (<{$object->getShow('name')}>)</h3>
+<h3 class="admintitle"><{$smarty.const._AD_USER_LANG_GROUP_DELETE}> (<{$object->getShow('name')|xoops_escape}>)</h3>
 <{/if}>
 
 <div class="confirm">
@@ -39,31 +39,31 @@
 
 <form action="?action=GroupDelete" method="post">
   <{xoops_token form=$actionForm}>
-  <{xoops_input type=hidden name=groupid value=$object->get('groupid')}>
+  <{xoops_input type=hidden name=groupid value=$object->get('groupid')|xoops_escape}>
 <table class="outer">
   <tr>
 <{if $isExtended}>
     <th colspan="2"><img src="<{"icons/group.png"|theme}>" alt="<{$smarty.const._AD_USER_LANG_GROUP}>" title="<{$smarty.const._AD_USER_LANG_GROUP}>" />
-    <{"`$constpref`_USER_LANG_GROUP_DELETE"|constant}> (<{$object->getShow('name')}>)</th>
+    <{"`$constpref`_USER_LANG_GROUP_DELETE"|constant}> (<{$object->getShow('name')|xoops_escape}>)</th>
 <{else}>
-    <th colspan="2"><img src="<{"icons/group.png"|theme}>" alt="<{$smarty.const._AD_USER_LANG_GROUP}>" title="<{$smarty.const._AD_USER_LANG_GROUP}>" /> <{$smarty.const._AD_USER_LANG_GROUP_DELETE}> (<{$object->getShow('name')}>)</th>
+    <th colspan="2"><img src="<{"icons/group.png"|theme}>" alt="<{$smarty.const._AD_USER_LANG_GROUP}>" title="<{$smarty.const._AD_USER_LANG_GROUP}>" /> <{$smarty.const._AD_USER_LANG_GROUP_DELETE}> (<{$object->getShow('name')|xoops_escape}>)</th>
 <{/if}>
   </tr>
   <tr>
     <td class="head"><{$smarty.const._AD_USER_LANG_GROUP_GID}></td>
-    <td class="<{cycle values="odd,even"}>"><{$object->getShow('groupid')}></td>
+    <td class="<{cycle values="odd,even"}>"><{$object->getShow('groupid')|xoops_escape}></td>
   </tr>
   <tr>
     <td class="head"><{$smarty.const._AD_USER_LANG_GROUP_NAME}></td>
-    <td class="<{cycle values="odd,even"}>"><{$object->getShow('name')}></td>
+    <td class="<{cycle values="odd,even"}>"><{$object->getShow('name')|xoops_escape}></td>
   </tr>
   <tr>
     <td class="head"><{$smarty.const._AD_USER_LANG_GROUP_DESC}></td>
-    <td class="<{cycle values="odd,even"}>"><{$object->getShow('description')}></td>
+    <td class="<{cycle values="odd,even"}>"><{$object->getShow('description')|xoops_escape}></td>
   </tr>
   <tr>
     <td class="head"><{$smarty.const._AD_USER_LANG_GROUP_TYPE}></td>
-    <td class="<{cycle values="odd,even"}>"><{$object->getShow('group_type')}></td>
+    <td class="<{cycle values="odd,even"}>"><{$object->getShow('group_type')|xoops_escape}></td>
   </tr>
   <tr>
     <td class="head"><{$smarty.const._AD_USER_LANG_GROUP_AMMO}></td>

@@ -23,8 +23,8 @@ function dconfirm(action){
 </div>
 <form name="<{$dirname}>_policy_itemtype_group_editform" id="<{$dirname}>_policy_itemtype_group_editform" action="policy_itemgroup.php" method="post">
 <input type="hidden" id="<{$dirname}>_op" name="op" value="">
-<input type="hidden" name="base_groupid" value="<{$base_groupid}>">
-<input type="hidden" name="groupid" value="<{$groupid}>">
+<input type="hidden" name="base_groupid" value="<{$base_groupid|xoops_escape}>">
+<input type="hidden" name="groupid" value="<{$groupid|xoops_escape}>">
 <input type="hidden" name="mode" value="">
 <{$token_ticket}>
 <table width="100%" cellspacing="1" class="outer">
@@ -72,7 +72,7 @@ function dconfirm(action){
 </div>
 <div style="text-align: left">
  	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_POLICY_ITEMTYPE_DETAIL_SELECT_TITLE}>" <{if $select_btn=='0'}>disabled<{/if}>
- 	onclick="window.location='policy_itemgroup.php?op=detailregister&amp;groupid=<{$groupid}>&amp;base_groupid=<{$base_groupid}>'"/>&nbsp;<{if $detail_editing=='1'}><span class="<{$dirname}>_diff"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_EDITING}></span><{/if}>
+ 	onclick="window.location='policy_itemgroup.php?op=detailregister&amp;groupid=<{$groupid|xoops_escape}>&amp;base_groupid=<{$base_groupid|xoops_escape}>'"/>&nbsp;<{if $detail_editing=='1'}><span class="<{$dirname}>_diff"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_EDITING}></span><{/if}>
 </div>
 <div class="<{$dirname}>_sortable">
 <table width="60%" cellspacing="1" class="outer">
@@ -85,8 +85,8 @@ function dconfirm(action){
   <tbody>
   <{foreach item=detail from=$details}>
   <tr class= "<{cycle values='odd,even'}>">
- 	<input type="hidden" name="detail_ids[]" value="<{$detail.detail_id}>">
-	<input type="hidden" name="weights[]" value="<{$detail.weight}>">
+ 	<input type="hidden" name="detail_ids[]" value="<{$detail.detail_id|xoops_escape}>">
+	<input type="hidden" name="weights[]" value="<{$detail.weight|xoops_escape}>">
     <td class="<{$dirname}>_cursor_title" width="50%"><{$detail.name|xoops_escape}></td>
     <td class="<{$dirname}>_cursor_title" width="50%"><{$detail.xml|xoops_escape}></td>
   </tr>
@@ -105,7 +105,7 @@ function dconfirm(action){
 </div>
 <div style="text-align: left">
 	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_BACK}>"
-	onclick="window.location='policy_itemgroup.php?perpage=<{$perpage}>&amp;start=<{$startpage}>'" />&nbsp;&nbsp;
+	onclick="window.location='policy_itemgroup.php?perpage=<{$perpage|xoops_escape}>&amp;start=<{$startpage|xoops_escape}>'" />&nbsp;&nbsp;
 	<{if !$disedi}>
  	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_UPDATE}>" onclick="op.value='editsave'; mode.value=0; submit();" />&nbsp;&nbsp;
 	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_RELEASE}>" onclick="op.value='editsave'; mode.value=1; submit();"/>

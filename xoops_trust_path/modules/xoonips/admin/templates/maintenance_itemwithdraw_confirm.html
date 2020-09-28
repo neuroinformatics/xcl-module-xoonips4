@@ -10,7 +10,7 @@
     <td style="width: 80%; text-align: left;" class="odd">
 	<{foreach item=index from=$req_indexes}>
 	<ul>
-	<{$index.path}><input type="hidden" name="<{$dirname}>_index_tree_chk_withdraw_<{$index.id}>" value="<{$index.id}>">
+	<{$index.path}><input type="hidden" name="<{$dirname}>_index_tree_chk_withdraw_<{$index.id|xoops_escape}>" value="<{$index.id|xoops_escape}>">
 	</ul>
 	<{/foreach}>
 	</td>

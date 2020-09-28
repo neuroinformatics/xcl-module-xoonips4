@@ -30,8 +30,8 @@ function doExport(){
 <form name="<{$dirname}>_policy_itemtype_editform" id="<{$dirname}>_policy_itemtype_editform" action="policy_itemtype.php" method="post" enctype="multipart/form-data">
 <input type="hidden" id="<{$dirname}>_op" name="op" value="">
 <input type="hidden" id="<{$dirname}>_mode" name="mode" value="">
-<input type="hidden" name="itemtypeid" value="<{$base_itemtypeid}>">
-<input type="hidden" name="upd_itemtypeid" value="<{$upd_itemtypeid}>">
+<input type="hidden" name="itemtypeid" value="<{$base_itemtypeid|xoops_escape}>">
+<input type="hidden" name="upd_itemtypeid" value="<{$upd_itemtypeid|xoops_escape}>">
 <{$token_ticket}>
 <table width="100%" cellspacing="1" class="outer">
   <thead>
@@ -77,7 +77,7 @@ function doExport(){
 </div>
 <div style="text-align: left">
  	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_POLICY_ITEMTYPE_GROUP_SELECT_TITLE}>"
- 	onclick="window.location='policy_itemtype.php?op=groupregister&itemtypeid=<{$upd_itemtypeid}>&base_itemtypeid=<{$base_itemtypeid}>'"/>&nbsp;<{if $group_diff=='1'}><span class="<{$dirname}>_diff"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_EDITING}></span><{/if}>
+ 	onclick="window.location='policy_itemtype.php?op=groupregister&itemtypeid=<{$upd_itemtypeid|xoops_escape}>&base_itemtypeid=<{$base_itemtypeid|xoops_escape}>'"/>&nbsp;<{if $group_diff=='1'}><span class="<{$dirname}>_diff"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_EDITING}></span><{/if}>
 </div>
 <div class="<{$dirname}>_sortable">
 <table width="60%" cellspacing="1" class="outer">
@@ -90,8 +90,8 @@ function doExport(){
   <tbody>
   <{foreach item=group from=$groups}>
   <tr class= "<{cycle values='odd,even'}>">
- 	<input type="hidden" name="group_ids[]" value="<{$group.group_id}>">
-	<input type="hidden" name="weights[]" value="<{$group.weight}>">
+ 	<input type="hidden" name="group_ids[]" value="<{$group.group_id|xoops_escape}>">
+	<input type="hidden" name="weights[]" value="<{$group.weight|xoops_escape}>">
     <td class="<{$dirname}>_cursor_title" width="50%"><{$group.name|xoops_escape}></td>
     <td class="<{$dirname}>_cursor_title" width="50%"><{$group.xml|xoops_escape}></td>
   </tr>
@@ -110,9 +110,9 @@ function doExport(){
 </div>
 <div style="text-align: left">
 	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_BACK}>"
-	onclick="window.location='policy_itemtype.php?perpage=<{$perpage}>&amp;start=<{$startpage}>'" />&nbsp;&nbsp;
+	onclick="window.location='policy_itemtype.php?perpage=<{$perpage|xoops_escape}>&amp;start=<{$startpage|xoops_escape}>'" />&nbsp;&nbsp;
  	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_COMPLEMENT}>"
- 	onclick="window.location='policy_itemtype.php?op=complement&itemtypeid=<{$upd_itemtypeid}>&base_itemtypeid=<{$base_itemtypeid}>'"/>
+ 	onclick="window.location='policy_itemtype.php?op=complement&itemtypeid=<{$upd_itemtypeid|xoops_escape}>&base_itemtypeid=<{$base_itemtypeid|xoops_escape}>'"/>
  	<{if $complement_diff}><span class="<{$dirname}>_diff"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_EDITING}></span><{/if}>&nbsp;&nbsp;
  	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_UPDATE}>" onclick="op.value='editsave'; submit();" />&nbsp;&nbsp;
  	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_RELEASE}>" onclick="op.value='release'; submit();"/>&nbsp;&nbsp;

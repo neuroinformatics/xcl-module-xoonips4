@@ -42,7 +42,7 @@ function doImport(){
 <div>
 <table>
 <tr>
-<td style="width: 50%; text-align: right;"><{$navi_title}></td>
+<td style="width: 50%; text-align: right;"><{$navi_title|xoops_escape}></td>
 </tr>
 </table>
 </div>
@@ -58,25 +58,25 @@ function doImport(){
   <{foreach item=itemtype from=$itemtypes}>
   <tr class= "<{cycle values='odd,even'}>">
     <td style="width: 7%; text-align: center;">
-      <{if ($itemtype.icon)}><img src="<{$itemtype.icon}>" alt="<{$itemtype.name|xoops_escape}>" title="<{$itemtype.name|xoops_escape}>"/><{/if}>
+      <{if ($itemtype.icon)}><img src="<{$itemtype.icon|xoops_escape}>" alt="<{$itemtype.name|xoops_escape}>" title="<{$itemtype.name|xoops_escape}>"/><{/if}>
     </td>
     <td style="width: 20%; text-align: center;"><{$itemtype.name|xoops_escape}>&nbsp;&nbsp;<{if $itemtype.editing ne ''}><span class="<{$dirname}>_diff"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_EDITING}></span><{/if}></td>
     <td style="width: 25%; text-align: left;"><{$itemtype.desc|xoops_escape}></td>
     <td style="width: 35%; text-align: left;"><{$itemtype.subtypes|xoops_escape}></td>
     <td style="width: 13%; text-align: center;">
-      <a href="policy_itemtype.php?op=edit&amp;itemtypeid=<{$itemtype.itemtypeid}>&amp;perpage=<{$perpage}>&amp;start=<{$startpage}>">
+      <a href="policy_itemtype.php?op=edit&amp;itemtypeid=<{$itemtype.itemtypeid|xoops_escape}>&amp;perpage=<{$perpage|xoops_escape}>&amp;start=<{$startpage|xoops_escape}>">
         <img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/edit.png" alt="<{$smarty.const._AM_XOONIPS_LABEL_MODIFY}>" title="<{$smarty.const._AM_XOONIPS_LABEL_MODIFY}>"/>
       </a>
-      <a href="policy_itemtype.php?op=copy&amp;itemtypeid=<{$itemtype.itemtypeid}>">
+      <a href="policy_itemtype.php?op=copy&amp;itemtypeid=<{$itemtype.itemtypeid|xoops_escape}>">
         <img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/clone.png" alt="<{$smarty.const._AM_XOONIPS_LABEL_COPY}>" title="<{$smarty.const._AM_XOONIPS_LABEL_COPY}>"/>
       </a>
       <{if ($itemtype.disdel)}>
       <a href="#">
         <img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/delete.png" alt="<{$smarty.const._AM_XOONIPS_LABEL_DELETE}>" title="<{$smarty.const._AM_XOONIPS_LABEL_DELETE}>"
-        onclick="return dconfirm('policy_itemtype.php?op=delete&amp;itemtypeid=<{$itemtype.itemtypeid}>')" />
+        onclick="return dconfirm('policy_itemtype.php?op=delete&amp;itemtypeid=<{$itemtype.itemtypeid|xoops_escape}>')" />
       </a>
       <{/if}>
-      <a href="policy_itemtype.php?op=export&amp;itemtypeid=<{$itemtype.itemtypeid}>">
+      <a href="policy_itemtype.php?op=export&amp;itemtypeid=<{$itemtype.itemtypeid|xoops_escape}>">
         <img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/download.png" alt="<{$smarty.const._AM_XOONIPS_LABEL_EXPORT}>" title="<{$smarty.const._AM_XOONIPS_LABEL_EXPORT}>"/>
       </a>
     </td>

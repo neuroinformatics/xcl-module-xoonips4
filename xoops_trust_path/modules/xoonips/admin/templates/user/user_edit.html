@@ -10,7 +10,7 @@
 </div>
 
 <{if $actionForm->get('uid')}>
-  <h3 class="admintitle"><{$smarty.const._AD_USER_LANG_USER_EDIT}> (<{$actionForm->get('uname')}>)</h3>
+  <h3 class="admintitle"><{$smarty.const._AD_USER_LANG_USER_EDIT}> (<{$actionForm->get('uname')|xoops_escape}>)</h3>
   <div class="tips"><{$smarty.const._AD_USER_TIPS_USER_EDIT}></div>
 <{else}>
   <h3 class="admintitle"><{$smarty.const._AD_USER_LANG_USER_NEW}></h3>

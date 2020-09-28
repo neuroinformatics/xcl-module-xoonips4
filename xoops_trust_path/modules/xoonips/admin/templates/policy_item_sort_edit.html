@@ -4,7 +4,7 @@
 <input type="hidden" name="action" value="PolicyItemSortEdit" />
 
 <{xoops_token form=$actionForm}>
-<{xoops_input type=hidden name=sort_id value=$actionForm->get('sort_id')}>
+<{xoops_input type=hidden name=sort_id value=$actionForm->get('sort_id')|xoops_escape}>
 
 <table width="100%" cellspacing="1" class="outer">
   <tr>

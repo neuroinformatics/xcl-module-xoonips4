@@ -11,7 +11,7 @@ $(document).ready(function () {
 
 <form name="<{$xoops_dirname}>_policy_item_quicksearchform" id="<{$xoops_dirname}>_policy_item_quicksearchform" action="index.php" method="post">
 <input type="hidden" name="action" value="PolicyItemQuickSearchEdit" />
-<input type="hidden" name="condition_id" value="<{$actionForm->get('condition_id')}>" />
+<input type="hidden" name="condition_id" value="<{$actionForm->get('condition_id')|xoops_escape}>" />
 
 <{xoops_token form=$actionForm}>
 <table width="100%" cellspacing="1" class="outer">
@@ -35,16 +35,16 @@ $(document).ready(function () {
 <{foreach item=itemFieldObject from=$itemFieldObjects}>
   <tr class= "<{cycle values='odd,even'}>">
     <td style="text-align: center;">
-      <input type="checkbox" name="itemFieldIds[]" value="<{$itemFieldObject->get('item_field_detail_id')}>"<{if in_array($itemFieldObject->get('item_field_detail_id'), $actionForm->get('itemFieldIds'))}> checked="checked"<{/if}> />
+      <input type="checkbox" name="itemFieldIds[]" value="<{$itemFieldObject->get('item_field_detail_id')|xoops_escape}>"<{if in_array($itemFieldObject->get('item_field_detail_id'), $actionForm->get('itemFieldIds'))}> checked="checked"<{/if}> />
     </td>
     <td style="text-align: left;">
-      <{$itemFieldObject->getShow('name')}>
+      <{$itemFieldObject->getShow('name')|xoops_escape}>
       <{if in_array($itemFieldObject->get('item_field_detail_id'), $pendingIds) }>
         &nbsp;
         <span class="notice"><{"`$constpref`_LANG_ITEM_EDITING"|constant}></span>
       <{/if}>
     </td>
-    <td style="text-align: left;"><{$itemFieldObject->getShow('xml')}></td>
+    <td style="text-align: left;"><{$itemFieldObject->getShow('xml')|xoops_escape}></td>
   </tr>
 <{/foreach}>
 <{if empty($itemFieldObjects)}>

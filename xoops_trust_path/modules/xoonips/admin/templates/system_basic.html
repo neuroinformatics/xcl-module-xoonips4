@@ -18,7 +18,7 @@
     <td class="even" style="width: 60%; vertical-align: top;">
       <select name="moderator_gid" size="1">
       <{foreach item=gname key=gid from=$groups}>
-          <option value="<{$gid}>"<{if $gid == $actionForm->get('moderator_gid') }> selected="selected"<{/if}>><{$gname|xoops_escape}></option>
+          <option value="<{$gid|xoops_escape}>"<{if $gid == $actionForm->get('moderator_gid') }> selected="selected"<{/if}>><{$gname|xoops_escape}></option>
       <{/foreach}>
       </select>
     </td>

@@ -2,7 +2,7 @@
 
 <form name="<{$xoops_dirname}>_policy_item_quicksearchform" id="<{$xoops_dirname}>_policy_item_quicksearchform" action="index.php" method="post">
 <input type="hidden" name="action" value="PolicyItemQuickSearchDelete" />
-<input type="hidden" name="condition_id" value="<{$actionForm->get('condition_id')}>" />
+<input type="hidden" name="condition_id" value="<{$actionForm->get('condition_id')|xoops_escape}>" />
 
 <{xoops_token form=$actionForm}>
 <table width="100%" cellspacing="1" class="outer">
@@ -16,7 +16,7 @@
       <{"`$constpref`_POLICY_ITEM_QUICKSEARCH_LABEL"|constant}>
     </th>
     <td style="width: 80%;" class="even">
-      <{$object->getShow('title')}>
+      <{$object->getShow('title')|xoops_escape}>
     </td>
   </tr>
 </table>

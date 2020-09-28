@@ -2,7 +2,7 @@
 
 <form name="<{$xoops_dirname}>_policy_item_sort_deleteform" id="<{$xoops_dirname}>_policy_item_sort_deleteform" action="index.php" method="post">
 <input type="hidden" name="action" value="PolicyItemSortDelete" />
-<input type="hidden" name="sort_id" value="<{$object->getShow('sort_id')}>" />
+<input type="hidden" name="sort_id" value="<{$object->getShow('sort_id')|xoops_escape}>" />
 
 <{xoops_token form=$actionForm}>
 <table width="100%" cellspacing="1" class="outer">
@@ -16,7 +16,7 @@
       <{"`$constpref`_POLICY_ITEM_SORT_LABEL"|constant}>
     </th>
     <td style="width: 80%;" class="even">
-      <{$object->getShow('title')}>
+      <{$object->getShow('title')|xoops_escape}>
     </td>
   </tr>
 </table>

@@ -59,12 +59,12 @@
   <{if $selectedprefix eq '' || $selecteditemtype eq ''}>
     <select name="selectedprefix" size="1">
     <{foreach item=prefix from=$prefixList }>
-    <option value="<{$prefix}>" <{if $selectedprefix==$prefix}>selected="selected"<{/if}>><{$prefix|xoops_escape}></option>
+    <option value="<{$prefix|xoops_escape}>" <{if $selectedprefix==$prefix}>selected="selected"<{/if}>><{$prefix|xoops_escape}></option>
     <{/foreach}>
     </select>
   <{else}>
-    <b><{$selectedprefix}></b>
-    <input id="<{$dirname}>_selectedprefix" name="selectedprefix" value="<{$selectedprefix}>" type="hidden"/>
+    <b><{$selectedprefix|xoops_escape}></b>
+    <input id="<{$dirname}>_selectedprefix" name="selectedprefix" value="<{$selectedprefix|xoops_escape}>" type="hidden"/>
   <{/if}>
   </td>
   </tr>
@@ -76,12 +76,12 @@
   <{if $selectedprefix eq '' || $selecteditemtype eq ''}>
     <select name="selecteditemtype" size="1">
     <{foreach item=itemtype from=$itemtypeList }>
-    <option value="<{$itemtype.item_type_id}>" <{if $selecteditemtype==$itemtype.item_type_id}>selected="selected"<{/if}>><{$itemtype.name|xoops_escape}></option>
+    <option value="<{$itemtype.item_type_id|xoops_escape}>" <{if $selecteditemtype==$itemtype.item_type_id}>selected="selected"<{/if}>><{$itemtype.name|xoops_escape}></option>
     <{/foreach}>
     </select>
   <{else}>
-    <b><{$selecteditemtypename}></b>
-    <input id="<{$dirname}>_selecteditemtype" name="selecteditemtype" value="<{$selecteditemtype}>" type="hidden"/>
+    <b><{$selecteditemtypename|xoops_escape}></b>
+    <input id="<{$dirname}>_selecteditemtype" name="selecteditemtype" value="<{$selecteditemtype|xoops_escape}>" type="hidden"/>
   <{/if}>
   </td>
   </tr>
@@ -101,46 +101,46 @@
   <{foreach item=schema from=$schemaList}>
   <tr>
     <td class="head" style="width: 20%; vertical-align: top;">
-      <{$schema.name}><{if $schema.min_occurences==1}><span style="color:red;">*</span><{/if}>
+      <{$schema.name|xoops_escape}><{if $schema.min_occurences==1}><span style="color:red;">*</span><{/if}>
     </td>
     <td class="<{cycle values="odd,even" name="c0"}>" style="width: 80%; vertical-align: top;">
     <{if $schema.data}>
     <{foreach item=data key=dk from=$schema.data }>
       <{foreach item=select key=sk from=$data.selects }>
       <{if $sk>0 || $dk>0}><br/><{/if}>
-        <select name="select_<{$schema.schema_id}>_<{$dk}>[]" size="1">
+        <select name="select_<{$schema.schema_id|xoops_escape}>_<{$dk|xoops_escape}>[]" size="1">
           <option value="fixed_value"></option>
           <{foreach item=valueset from=$schema.list }>
-            <option value="<{$valueset.key}>" <{if $valueset.key==$select}>selected="selected"<{/if}>><{$valueset.value|xoops_escape}></option>
+            <option value="<{$valueset.key|xoops_escape}>" <{if $valueset.key==$select}>selected="selected"<{/if}>><{$valueset.value|xoops_escape}></option>
           <{/foreach}>
         </select>
       <{if $dk>0 || $sk>0}>
-         <a href="#" onclick="del('<{$schema.schema_id}>_<{$dk}>_<{$sk}>')"><img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/delete.png" alt="<{$smarty.const._AM_XOONIPS_LABEL_DELETE}>" title="<{$smarty.const._AM_XOONIPS_LABEL_DELETE}>" /></a>
+         <a href="#" onclick="del('<{$schema.schema_id|xoops_escape}>_<{$dk|xoops_escape}>_<{$sk|xoops_escape}>')"><img src="<{$xoops_url}>/modules/<{$dirname}>/image.php/icons/delete.png" alt="<{$smarty.const._AM_XOONIPS_LABEL_DELETE}>" title="<{$smarty.const._AM_XOONIPS_LABEL_DELETE}>" /></a>
       <{/if}>
       <{/foreach}>
       <{if $schema.hasValueSet==false}>
       <br />
-      <input type="checkbox" name="checkbox_<{$schema.schema_id}>_<{$dk}>" value="1" <{if $data.checkbox==1}>checked="checked"<{/if}>/>
-      <input type="text" size="80" value="<{$data.text|xoops_escape}>" name="text_<{$schema.schema_id}>_<{$dk}>"/><br/>
-      <input type="submit" value="<{$smarty.const._AM_XOONIPS_LABEL_JOIN}>" onclick="join('<{$schema.schema_id}>_<{$dk}>')"/>
+      <input type="checkbox" name="checkbox_<{$schema.schema_id|xoops_escape}>_<{$dk|xoops_escape}>" value="1" <{if $data.checkbox==1}>checked="checked"<{/if}>/>
+      <input type="text" size="80" value="<{$data.text|xoops_escape}>" name="text_<{$schema.schema_id|xoops_escape}>_<{$dk|xoops_escape}>"/><br/>
+      <input type="submit" value="<{$smarty.const._AM_XOONIPS_LABEL_JOIN}>" onclick="join('<{$schema.schema_id|xoops_escape}>_<{$dk|xoops_escape}>')"/>
       <{/if}>
     <{/foreach}>
     <{else}>
-      <select name="select_<{$schema.schema_id}>_0[]" size="1">
+      <select name="select_<{$schema.schema_id|xoops_escape}>_0[]" size="1">
       <option value=""></option>
       <{foreach item=valueset from=$schema.list }>
-          <option value="<{$valueset.key}>"><{$valueset.value|xoops_escape}></option>
+          <option value="<{$valueset.key|xoops_escape}>"><{$valueset.value|xoops_escape}></option>
       <{/foreach}>
       </select>
       <{if $schema.hasValueSet==false}>
         <br />
-        <input type="checkbox" name="checkbox_<{$schema.schema_id}>_0" value="1" />
-        <input type="text" size="80" value="" name="text_<{$schema.schema_id}>_0"/><br/>
-        <input type="submit" value="<{$smarty.const._AM_XOONIPS_LABEL_JOIN}>" onclick="join('<{$schema.schema_id}>_0')"/>
+        <input type="checkbox" name="checkbox_<{$schema.schema_id|xoops_escape}>_0" value="1" />
+        <input type="text" size="80" value="" name="text_<{$schema.schema_id|xoops_escape}>_0"/><br/>
+        <input type="submit" value="<{$smarty.const._AM_XOONIPS_LABEL_JOIN}>" onclick="join('<{$schema.schema_id|xoops_escape}>_0')"/>
       <{/if}>
     <{/if}>
     <{if $schema.max_occurences==0}>
-        <br/><input type="submit" value="<{$smarty.const._AM_XOONIPS_LABEL_ADD}>" onclick="add('<{$schema.schema_id}>')"/>
+        <br/><input type="submit" value="<{$smarty.const._AM_XOONIPS_LABEL_ADD}>" onclick="add('<{$schema.schema_id|xoops_escape}>')"/>
     <{/if}>
     </td>
   </tr>

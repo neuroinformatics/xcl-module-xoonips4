@@ -2,7 +2,7 @@
 
 <{if $pageNavi->getTotalItems() > 0}>
 <div class="pageinfo">
-<{math equation="x + 1" x=$pageNavi->getStart()}> - <{if $pageNavi->hasNextPage()}><{$pageNavi->getNextStart()}><{else}><{$pageNavi->getTotalItems()}><{/if}> of <{$pageNavi->getTotalItems()}> Entries
+<{math equation="x + 1" x=$pageNavi->getStart()}> - <{if $pageNavi->hasNextPage()}><{$pageNavi->getNextStart()|xoops_escape}><{else}><{$pageNavi->getTotalItems()|xoops_escape}><{/if}> of <{$pageNavi->getTotalItems()|xoops_escape}> Entries
 </div>
 <{/if}>
 
@@ -10,29 +10,29 @@
 <tbody>
   <tr>
     <th style="width: 30%; text-align: center;"><{"`$constpref`_LANG_ITEM_FIELD_ID"|constant}>
-      <a href="<{$pageNavi->renderUrlForSort()}>&amp;sort=<{"Xoonips_Admin_PolicyItemFieldFilterForm::SORT_KEY_XML"|constant}>"><img src="<{"icons/up.png"|theme}>" alt="<{$smarty.const._ASCENDING}>" title="<{$smarty.const._ASCENDING}>" /></a>
-      <a href="<{$pageNavi->renderUrlForSort()}>&amp;sort=-<{"Xoonips_Admin_PolicyItemFieldFilterForm::SORT_KEY_XML"|constant}>"><img src="<{"icons/down.png"|theme}>" alt="<{$smarty.const._DESCENDING}>" title="<{$smarty.const._DESCENDING}>" /></a>
+      <a href="<{$pageNavi->renderUrlForSort()|xoops_escape}>&amp;sort=<{"Xoonips_Admin_PolicyItemFieldFilterForm::SORT_KEY_XML"|constant}>"><img src="<{"icons/up.png"|theme}>" alt="<{$smarty.const._ASCENDING}>" title="<{$smarty.const._ASCENDING}>" /></a>
+      <a href="<{$pageNavi->renderUrlForSort()|xoops_escape}>&amp;sort=-<{"Xoonips_Admin_PolicyItemFieldFilterForm::SORT_KEY_XML"|constant}>"><img src="<{"icons/down.png"|theme}>" alt="<{$smarty.const._DESCENDING}>" title="<{$smarty.const._DESCENDING}>" /></a>
     </th>
     <th style="width: 50%; text-align: center;"><{"`$constpref`_LANG_ITEM_FIELD_NAME"|constant}>
-      <a href="<{$pageNavi->renderUrlForSort()}>&amp;sort=<{"Xoonips_Admin_PolicyItemFieldFilterForm::SORT_KEY_NAME"|constant}>"><img src="<{"icons/up.png"|theme}>" alt="<{$smarty.const._ASCENDING}>" title="<{$smarty.const._ASCENDING}>" /></a>
-      <a href="<{$pageNavi->renderUrlForSort()}>&amp;sort=-<{"Xoonips_Admin_PolicyItemFieldFilterForm::SORT_KEY_NAME"|constant}>"><img src="<{"icons/down.png"|theme}>" alt="<{$smarty.const._DESCENDING}>" title="<{$smarty.const._DESCENDING}>" /></a>
+      <a href="<{$pageNavi->renderUrlForSort()|xoops_escape}>&amp;sort=<{"Xoonips_Admin_PolicyItemFieldFilterForm::SORT_KEY_NAME"|constant}>"><img src="<{"icons/up.png"|theme}>" alt="<{$smarty.const._ASCENDING}>" title="<{$smarty.const._ASCENDING}>" /></a>
+      <a href="<{$pageNavi->renderUrlForSort()|xoops_escape}>&amp;sort=-<{"Xoonips_Admin_PolicyItemFieldFilterForm::SORT_KEY_NAME"|constant}>"><img src="<{"icons/down.png"|theme}>" alt="<{$smarty.const._DESCENDING}>" title="<{$smarty.const._DESCENDING}>" /></a>
     </th>
     <th style="width: 15%; text-align: center;"><{"`$constpref`_LANG_ACTION"|constant}></th>
   </tr>
   <{foreach item=object from=$objects}>
   <tr class= "<{cycle values='odd,even'}>">
-    <td style="text-align: left;"><{$object->getShow('xml')}>
+    <td style="text-align: left;"><{$object->getShow('xml')|xoops_escape}>
       <{if $object->isEditing()}>
         &nbsp;
         <span class="notice"><{"`$constpref`_LANG_ITEM_EDITING"|constant}></span>
       <{/if}>
     </td>
-    <td style="text-align: left;"><{$object->getShow('name')}></td>
+    <td style="text-align: left;"><{$object->getShow('name')|xoops_escape}></td>
     <td style="text-align: center;">
-      <{* <a href="index.php?action=PolicyItemFieldEdit&amp;field_id=<{$object->get('item_field_detail_id')}>"><img src="<{"icons/edit.png"|theme}>" alt="<{"`$constpref`_LANG_MODIFY"|constant}>" title="<{"`$constpref`_LANG_MODIFY"|constant}>" /></a> *}>
-      <a href="policy_itemfield.php?op=edit&amp;detailid=<{$object->get('item_field_detail_id')}>"><img src="<{"icons/edit.png"|theme}>" alt="<{"`$constpref`_LANG_MODIFY"|constant}>" title="<{"`$constpref`_LANG_MODIFY"|constant}>" /></a>
+      <{* <a href="index.php?action=PolicyItemFieldEdit&amp;field_id=<{$object->get('item_field_detail_id')|xoops_escape}>"><img src="<{"icons/edit.png"|theme}>" alt="<{"`$constpref`_LANG_MODIFY"|constant}>" title="<{"`$constpref`_LANG_MODIFY"|constant}>" /></a> *}>
+      <a href="policy_itemfield.php?op=edit&amp;detailid=<{$object->get('item_field_detail_id')|xoops_escape}>"><img src="<{"icons/edit.png"|theme}>" alt="<{"`$constpref`_LANG_MODIFY"|constant}>" title="<{"`$constpref`_LANG_MODIFY"|constant}>" /></a>
       <{if $object->isDeletable()}>
-      <a href="index.php?action=PolicyItemFieldDelete&amp;field_id=<{$object->get('item_field_detail_id')}>"><img src="<{"icons/delete.png"|theme}>" alt="<{"`$constpref`_LANG_DELETE"|constant}>" title="<{"`$constpref`_LANG_DELETE"|constant}>" /></a>
+      <a href="index.php?action=PolicyItemFieldDelete&amp;field_id=<{$object->get('item_field_detail_id')|xoops_escape}>"><img src="<{"icons/delete.png"|theme}>" alt="<{"`$constpref`_LANG_DELETE"|constant}>" title="<{"`$constpref`_LANG_DELETE"|constant}>" /></a>
       <{/if}>
     </td>
   </tr>

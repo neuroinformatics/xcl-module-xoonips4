@@ -11,7 +11,7 @@
       <{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_NAME}><{$smarty.const._AM_XOONIPS_LABEL_REQUIRED_MARK}>
     </td>
     <td style="width: 75%; text-align: left;" class="even">&nbsp;&nbsp;
-      <input type="text" name="name" size="50" maxlength="30" value="<{$name}>">
+      <input type="text" name="name" size="50" maxlength="30" value="<{$name|xoops_escape}>">
     </td>
   </tr>
   <tr>
@@ -19,7 +19,7 @@
       <{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DESCRIPTION}>
     </td>
     <td style="width: 75%; text-align: left;" class="even">&nbsp;&nbsp;
-      <input type="text" name="descrip" size="50" maxlength="255" value="<{$descrip}>">
+      <input type="text" name="descrip" size="50" maxlength="255" value="<{$descrip|xoops_escape}>">
     </td>
   </tr>
   <tr>
@@ -35,7 +35,7 @@
       <{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DISPLAY_ORDER}>
     </td>
     <td style="width: 75%; text-align: left;" class="even">&nbsp;&nbsp;
-      <input type="text" name="weight" size="10" maxlength="3" value="<{$weight}>">
+      <input type="text" name="weight" size="10" maxlength="3" value="<{$weight|xoops_escape}>">
     </td>
   </tr>
   <tr>
@@ -43,7 +43,7 @@
       <{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_TEMPLATE}>
     </td>
     <td style="width: 75%; text-align: left;" class="even">&nbsp;&nbsp;
-      <textarea name="template" rows="5" cols="50" ><{$template}></textarea>
+      <textarea name="template" rows="5" cols="50" ><{$template|xoops_escape}></textarea>
     </td>
   </tr>
 </table>
@@ -61,9 +61,9 @@
   <tr class= "<{cycle values='odd,even'}>">
     <td style="text-align: center;">
       <{if $group.select=='1'}>
-      <input type="checkbox" name="checkbox_<{$group.groupid}>" value="1" checked <{if $group.preselect=='1'}>disabled<{/if}> />
+      <input type="checkbox" name="checkbox_<{$group.groupid|xoops_escape}>" value="1" checked <{if $group.preselect=='1'}>disabled<{/if}> />
       <{else}>
-      <input type="checkbox" name="checkbox_<{$group.groupid}>" value="1" <{if $group.preselect=='1'}>disabled<{/if}> />
+      <input type="checkbox" name="checkbox_<{$group.groupid|xoops_escape}>" value="1" <{if $group.preselect=='1'}>disabled<{/if}> />
       <{/if}>
     </td>
     <td style="text-align: left;"><{$group.name|xoops_escape}></td>

@@ -4,9 +4,9 @@
 <div class="adminnavi">
 <{foreach name=breadcrumbs from=$breadcrumbs item="item"}>
 <{if $item.url}>
-  <a href="<{$item.url}>"><{$item.name}></a>
+  <a href="<{$item.url|xoops_escape}>"><{$item.name|xoops_escape}></a>
 <{else}>
-  <span class="adminnaviTitle"><{$item.name}></span>
+  <span class="adminnaviTitle"><{$item.name|xoops_escape}></span>
 <{/if}>
 <{if !$smarty.foreach.breadcrumbs.last}>
   &raquo;&raquo;
@@ -15,19 +15,19 @@
 </div>
 <{/if}>
 
-<h3 class="admintitle"><{$title}></h3>
+<h3 class="admintitle"><{$title|xoops_escape}></h3>
 
 <{if $description}>
 <div class="tips">
   <div class="admininfo">
-    <{$description}>
+    <{$description|xoops_escape}>
   </div>
 </div>
 <{/if}>
 
 <{if !empty($errors) }>
 <div class="error">
-<{$errors}>
+<{$errors|xoops_escape}>
 </div>
 <{/if}>
 

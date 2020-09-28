@@ -1,27 +1,27 @@
 <{include file="file:admin_header.html"}>
 <script type="text/javascript" charset="utf-8">
 function relationChange(value){
-	window.location = 'policy_itemtype.php?op=complement&itemtypeid=<{$itemtypeid}>&base_itemtypeid=<{$base_itemtypeid}>&select=' + value;
+	window.location = 'policy_itemtype.php?op=complement&itemtypeid=<{$itemtypeid|xoops_escape}>&base_itemtypeid=<{$base_itemtypeid|xoops_escape}>&select=' + value;
 }
 </script>
 <form name="<{$dirname}>_policy_itemtype_complementform" id="<{$dirname}>_policy_itemtype_complementform" action="policy_itemtype.php" method="post">
 <input name="op" type="hidden" value="complementsave"/>
-<input name="itemtypeid" type="hidden" value="<{$itemtypeid}>"/>
-<input name="base_itemtypeid" type="hidden" value="<{$base_itemtypeid}>"/>
+<input name="itemtypeid" type="hidden" value="<{$itemtypeid|xoops_escape}>"/>
+<input name="base_itemtypeid" type="hidden" value="<{$base_itemtypeid|xoops_escape}>"/>
 <{$token_ticket}>
 <div style="text-align:right; margin-left: 10px; margin-bottom: 25px;">
 </div>
 <table width="100%" cellspacing="1" class="outer">
   <tr>
     <td style="width: 25%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEM_TYPE}></td>
-    <td style="width: 75%; text-align: left;" class="odd">&nbsp;&nbsp;<{$itemtypename}></td>
+    <td style="width: 75%; text-align: left;" class="odd">&nbsp;&nbsp;<{$itemtypename|xoops_escape}></td>
   </tr>
   <tr>
     <td style="width: 25%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_COMPLEMENT}></td>
     <td style="width: 75%; text-align: left;" class="even">&nbsp;&nbsp;
       <select size="1" name="selectid" onchange="relationChange(this.value);">
       <{foreach item=relation from=$relationlist}>
-        <option value="<{$relation.complement_id}>" <{$relation.selected}>><{$relation.title}></option>
+        <option value="<{$relation.complement_id|xoops_escape}>" <{$relation.selected|xoops_escape}>><{$relation.title|xoops_escape}></option>
       <{/foreach}>
       </select>
     </td>
@@ -38,15 +38,15 @@ function relationChange(value){
   </tr>
   <{foreach item=relationdetail from=$relationdetaillist name=comp}>
   <tr>
-    <td style="width: 20%; text-align: left;" class="head"><{$relationdetail.title}></td>
+    <td style="width: 20%; text-align: left;" class="head"><{$relationdetail.title|xoops_escape}></td>
     <td style="width: 40%; text-align: left;" class="<{if $smarty.foreach.comp.iteration % 2}>odd<{else}>even<{/if}>">&nbsp;&nbsp;
       <select size="1" name="selectdetailid[]" disabled>
       <{assign var=title value=''}>
       <{foreach item=detail from=$detaillist}>
       <{if $relationdetail.item_field_detail_id==$detail.detail_id && $relationdetail.group_id==$detail.group_id}>
-        <option value="<{$relationdetail.complement_detail_id}>,<{$detail.detail_id}>,<{$detail.group_id}>" selected><{assign var=title value=$detail.title}><{$detail.title}></option>
+        <option value="<{$relationdetail.complement_detail_id|xoops_escape}>,<{$detail.detail_id|xoops_escape}>,<{$detail.group_id|xoops_escape}>" selected><{assign var=title value=$detail.title}><{$detail.title|xoops_escape}></option>
       <{else}>
-      	 <option value="<{$relationdetail.complement_detail_id}>,<{$detail.detail_id}>,<{$detail.group_id}>"><{$detail.title}></option>
+      	 <option value="<{$relationdetail.complement_detail_id|xoops_escape}>,<{$detail.detail_id|xoops_escape}>,<{$detail.group_id|xoops_escape}>"><{$detail.title|xoops_escape}></option>
       <{/if}>
 
       <{/foreach}>
@@ -54,7 +54,7 @@ function relationChange(value){
     </td>
     <td style="width: 40%; text-align: left;" class="<{if $smarty.foreach.comp.iteration % 2}>odd<{else}>even<{/if}>">&nbsp;&nbsp;
       <{foreach key=key item=basecomplement from=$basecomplementlist}>
-		<{if $key==$relationdetail.complement_detail_id}><{if $title!=$basecomplement.title}><span class="<{$dirname}>_diff"><{$basecomplement.title}></span><{else}><{$basecomplement.title}><{/if}><{/if}>
+		<{if $key==$relationdetail.complement_detail_id}><{if $title!=$basecomplement.title}><span class="<{$dirname}>_diff"><{$basecomplement.title|xoops_escape}></span><{else}><{$basecomplement.title|xoops_escape}><{/if}><{/if}>
       <{/foreach}>
     </td>
   </tr>

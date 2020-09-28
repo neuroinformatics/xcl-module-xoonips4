@@ -2,8 +2,8 @@
 
 <form id="<{$dirname}>_itemform" name="<{$dirname}>_itemform" action="maintenance_itemdelete.php" method="post" enctype="multipart/form-data">
 <input type="hidden" name="op" value="">
-<input type="hidden" name="searchUserID" value="<{$searchUserID}>">
-<input type="hidden" name="searchUserName" value="<{$searchUserName}>">
+<input type="hidden" name="searchUserID" value="<{$searchUserID|xoops_escape}>">
+<input type="hidden" name="searchUserName" value="<{$searchUserName|xoops_escape}>">
 <{$token_ticket}>
 <table width="100%" cellspacing="0" class="outer">
   <tbody>
@@ -18,7 +18,7 @@
     <td style="width: 80%; text-align: left;" class="odd">
 	<{foreach item=index from=$req_indexes}>
 	<ul>
-	<{$index.path}><input type="hidden" name="<{$dirname}>_index_tree_chk_del_<{$index.id}>" value="<{$index.id}>">
+	<{$index.path}><input type="hidden" name="<{$dirname}>_index_tree_chk_del_<{$index.id|xoops_escape}>" value="<{$index.id|xoops_escape}>">
 	</ul>
 	<{/foreach}>
 	</td>

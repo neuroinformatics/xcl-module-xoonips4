@@ -32,17 +32,17 @@ function listChange() {
   form.submit();
 }
 </script>
-<{$errors}>
+<{$errors|xoops_escape}>
 <div style="text-align:right; margin-left: 10px; margin-bottom: 15px;">
 </div>
 <form name="<{$dirname}>_policy_itemtype_detail_registerform" id="<{$dirname}>_policy_itemtype_detail_registerform" action="policy_itemgroup.php" method="post">
 <input type="hidden" name="op" id="<{$dirname}>_op" value="">
 <input type="hidden" name="changeop" id="<{$dirname}>_changeop" value="">
-<input type="hidden" name="groupid" value="<{$groupid}>">
+<input type="hidden" name="groupid" value="<{$groupid|xoops_escape}>">
 <{$token_ticket}>
 
 <table width="100%" cellspacing="1" class="outer">
-  <{$smarty.const._AM_XOONIPS_POLICY_ITEMFIELDGROUP_TITLE}>&nbsp;&nbsp;<b><{$group_name}></b>
+  <{$smarty.const._AM_XOONIPS_POLICY_ITEMFIELDGROUP_TITLE}>&nbsp;&nbsp;<b><{$group_name|xoops_escape}></b>
   <tbody>
   <tr>
     <th style="text-align: center;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_SELECT}></th>
@@ -53,9 +53,9 @@ function listChange() {
   <tr class= "<{cycle values='odd,even'}>">
     <td style="text-align: center;">
     	<{if $itemfield.select=='1'}>
-    	<input type="checkbox" name="checkbox_<{$itemfield.itemfieldid}>" value="1" checked/>
+    	<input type="checkbox" name="checkbox_<{$itemfield.itemfieldid|xoops_escape}>" value="1" checked/>
     	<{else}>
-    	<input type="checkbox" name="checkbox_<{$itemfield.itemfieldid}>" value="1" />
+    	<input type="checkbox" name="checkbox_<{$itemfield.itemfieldid|xoops_escape}>" value="1" />
     	<{/if}>
     </td>
     <td style="text-align: left;"><{$itemfield.name|xoops_escape}>&nbsp;&nbsp;<{if $itemfield.editing ne ''}><span class="<{$dirname}>_diff"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_EDITING}></span><{/if}></td>
@@ -74,7 +74,7 @@ function listChange() {
 
 <div style="text-align: left">
 	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_BACK}>"
-	onclick="window.location='policy_itemgroup.php?op=edit&groupid=<{$groupid}>'" />&nbsp;&nbsp;
+	onclick="window.location='policy_itemgroup.php?op=edit&groupid=<{$groupid|xoops_escape}>'" />&nbsp;&nbsp;
  	<input class="formButton" type="button" value="<{$smarty.const._AM_XOONIPS_LABEL_OK}>" onclick="op.value='detailregistersave'; submit();" />
 </div>
 </form>

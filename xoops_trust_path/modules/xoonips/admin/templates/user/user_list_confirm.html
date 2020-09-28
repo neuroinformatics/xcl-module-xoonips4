@@ -34,16 +34,16 @@
 <{foreach item=uid from=$uids}>
 <{if $uid != 1}>
   <tr class="even">
-    <td class="user_list_id"><{$uid}></td>
-    <td class="user_list_title"><{$userObjects[$uid]->getShow('uname')}></td>
-    <td class="user_list_name"><{$userObjects[$uid]->get('name')}></td>
+    <td class="user_list_id"><{$uid|xoops_escape}></td>
+    <td class="user_list_title"><{$userObjects[$uid]->getShow('uname')|xoops_escape}></td>
+    <td class="user_list_name"><{$userObjects[$uid]->get('name')|xoops_escape}></td>
     <td class="user_list_number">
       <{if $actionForm->get('posts',$uid) == $userObjects[$uid]->get('posts')}>
         <{$actionForm->get('posts',$uid)|xoops_escape}>
       <{else}>
          (<{$userObjects[$uid]->getShow('posts')}>) &raquo; <b  class="user_module_error"><{$actionForm->get('posts',$uid)|xoops_escape}></b>
       <{/if}>
-      <input type="hidden" name="posts[<{$uid}>]" value="<{$actionForm->get('posts',$uid)|xoops_escape:edit}>" />
+      <input type="hidden" name="posts[<{$uid|xoops_escape}>]" value="<{$actionForm->get('posts',$uid)|xoops_escape:edit}>" />
     </td>
     <td class="user_list_order">
       <{if $userObjects[$uid]->get('level') == 0}>
@@ -65,9 +65,9 @@
         <{/if}>
 	</b>
       <{if $actionForm->get('delete',$uid)}>
-        <input type="hidden" name="delete[<{$uid}>]" value="1" />
+        <input type="hidden" name="delete[<{$uid|xoops_escape}>]" value="1" />
       <{else}>
-        <input type="hidden" name="delete[<{$uid}>]" value="0" />
+        <input type="hidden" name="delete[<{$uid|xoops_escape}>]" value="0" />
       <{/if}>
     </td>
   </tr>

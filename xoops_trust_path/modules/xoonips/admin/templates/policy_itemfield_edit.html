@@ -35,8 +35,8 @@ function listChange() {
 <form name="<{$dirname}>_policy_itemfield_editform" id="<{$dirname}>_policy_itemfield_editform" action="policy_itemfield.php" method="post">
 <input type="hidden" name="op" id="<{$dirname}>_op" value="">
 <input type="hidden" name="changeop" id="<{$dirname}>_changeop" value="">
-<input type="hidden" name="base_detailid" value="<{$base_detailid}>">
-<input type="hidden" name="detailid" value="<{$detailid}>">
+<input type="hidden" name="base_detailid" value="<{$base_detailid|xoops_escape}>">
+<input type="hidden" name="detailid" value="<{$detailid|xoops_escape}>">
 <input type="hidden" name="mode" id="<{$dirname}>_mode" value="">
 <{$token_ticket}>
 <table width="100%" cellspacing="1" class="outer">
@@ -60,13 +60,13 @@ function listChange() {
   <tr>
     <td style="width: 20%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_VIEW_TYPE}><{$smarty.const._AM_XOONIPS_LABEL_REQUIRED_MARK}></td>
     <td style="width: 40%; text-align: left;" class="odd">&nbsp;
-   		<select id="viewtype" name="view_type" onchange="op.value='edit'; changeop.value='vtchange'; submit();" <{$disabled_arr}>>
+   		<select id="viewtype" name="view_type" onchange="op.value='edit'; changeop.value='vtchange'; submit();" <{$disabled_arr|xoops_escape}>>
       	<{foreach item=viewtype from=$viewtypelist}>
-        <option value="<{$viewtype.viewtype_id}>" <{$viewtype.selected}>><{$viewtype.name}></option>
+        <option value="<{$viewtype.viewtype_id|xoops_escape}>" <{$viewtype.selected|xoops_escape}>><{$viewtype.name|xoops_escape}></option>
       	<{/foreach}>
       	</select>
       	<{if !empty($disabled_arr)}>
-      	<input type="hidden" name="view_type" value="<{$view_type}>">
+      	<input type="hidden" name="view_type" value="<{$view_type|xoops_escape}>">
       	<{/if}>
     </td>
     <td style="width: 40%; text-align: left;" class="odd">&nbsp;&nbsp;<{if $view_type!=$detailInfo.b_view_type}><span class="<{$dirname}>_diff"><{$detailInfo.b_view_name|xoops_escape}></span><{else}><{$detailInfo.b_view_name|xoops_escape}><{/if}></td>
@@ -79,14 +79,14 @@ function listChange() {
   <tr>
     <td style="width: 20%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DATA_TYPE}><{$smarty.const._AM_XOONIPS_LABEL_REQUIRED_MARK}></td>
     <td style="width: 40%; text-align: left;" class="odd">&nbsp;
-       	<select id="datatype" name="data_type" onchange="op.value='edit'; changeop.value='dtchange'; submit();" <{$disabled_arr}>>
+       	<select id="datatype" name="data_type" onchange="op.value='edit'; changeop.value='dtchange'; submit();" <{$disabled_arr|xoops_escape}>>
       	<{foreach item=datatype from=$datatypelist}>
       	<{if $datatype.selected ne ''}><{assign var=default_data_length value=$datatype.data_length}><{assign var=default_data_decimal_places value=$datatype.data_decimal_places}><{/if}>
-        <option value="<{$datatype.datatype_id}>" <{$datatype.selected}>><{$datatype.name}></option>
+        <option value="<{$datatype.datatype_id|xoops_escape}>" <{$datatype.selected|xoops_escape}>><{$datatype.name|xoops_escape}></option>
       	<{/foreach}>
       	</select>
       	<{if !empty($disabled_arr)}>
-      	<input type="hidden" name="data_type" value="<{$data_type}>">
+      	<input type="hidden" name="data_type" value="<{$data_type|xoops_escape}>">
       	<{/if}>
 	</td>
 	<td style="width: 40%; text-align: left;" class="odd">&nbsp;&nbsp;<{if $data_type!=$detailInfo.b_data_type}><span class="<{$dirname}>_diff"><{$detailInfo.b_data_name|xoops_escape}></span><{else}><{$detailInfo.b_data_name|xoops_escape}><{/if}></td>
@@ -94,9 +94,9 @@ function listChange() {
   <tr>
     <td style="width: 20%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DATA_LENGTH}></td>
     <td style="width: 40%; text-align: left;" class="even">&nbsp;
-       	<input type="text" id="datalength" name="data_length" size="6" maxlength="5" value="<{if $data_length!=0}><{if $data_length!=-1}><{$data_length}><{/if}><{else}><{if $default_data_length!=-1}><{$default_data_length}><{/if}><{/if}>" <{$disabled_arr}> />
+       	<input type="text" id="datalength" name="data_length" size="6" maxlength="5" value="<{if $data_length!=0}><{if $data_length!=-1}><{$data_length|xoops_escape}><{/if}><{else}><{if $default_data_length!=-1}><{$default_data_length|xoops_escape}><{/if}><{/if}>" <{$disabled_arr|xoops_escape}> />
        	<{if !empty($disabled_arr)}>
-       	<input type="hidden" name="data_length" value="<{$data_length}>">
+       	<input type="hidden" name="data_length" value="<{$data_length|xoops_escape}>">
        	<{/if}>
 	</td>
 	<td style="width: 40%; text-align: left;" class="even">&nbsp;&nbsp;<{if $data_length!=$detailInfo.b_data_length}><span class="<{$dirname}>_diff"><{if $detailInfo.b_data_length!=-1}><{$detailInfo.b_data_length|xoops_escape}><{/if}></span><{else}><{if $detailInfo.b_data_length!=-1}><{$detailInfo.b_data_length|xoops_escape}><{/if}><{/if}></td>
@@ -105,9 +105,9 @@ function listChange() {
   <tr>
     <td style="width: 20%; text-align: left;" class="head"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_DATA_LENGTH2}></td>
     <td style="width: 40%; text-align: left;" class="odd">&nbsp;
-      	<input type="text" id="datalength2" name="data_decimal_places" size="3" maxlength="2" value="<{if $data_decimal_places ne ''}><{$data_decimal_places}><{else}><{$default_decimal_places}><{/if}>" <{$disabled_arr}> />
+      	<input type="text" id="datalength2" name="data_decimal_places" size="3" maxlength="2" value="<{if $data_decimal_places ne ''}><{$data_decimal_places|xoops_escape}><{else}><{$default_decimal_places|xoops_escape}><{/if}>" <{$disabled_arr|xoops_escape}> />
       	<{if !empty($disabled_arr)}>
-      	<input type="hidden" name="data_decimal_places" value="<{$data_decimal_places}>">
+      	<input type="hidden" name="data_decimal_places" value="<{$data_decimal_places|xoops_escape}>">
       	<{/if}>
 	</td>
 	<td style="width: 40%; text-align: left;" class="odd">&nbsp;&nbsp;<{if $data_decimal_places!=$detailInfo.b_data_decimal_places}><span class="<{$dirname}>_diff"><{$detailInfo.b_data_decimal_places|xoops_escape}></span><{else}><{$detailInfo.b_data_decimal_places|xoops_escape}><{/if}></td>
@@ -176,11 +176,11 @@ function listChange() {
   <tr>
     <td style="width: 40%; text-align: left;" class="even">&nbsp;&nbsp;<{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_SCOPE_SEARCH}>&nbsp;&nbsp;&nbsp;&nbsp;
         <{if $scope_search=='1'}>
-    	<input type="checkbox" name="scope_search" value="1" checked <{$scope_search_arr}> />
+    	<input type="checkbox" name="scope_search" value="1" checked <{$scope_search_arr|xoops_escape}> />
     	<{else}>
-    	<input type="checkbox" name="scope_search" value="1" <{$scope_search_arr}> />
+    	<input type="checkbox" name="scope_search" value="1" <{$scope_search_arr|xoops_escape}> />
     	<{/if}>
-    	<input type="hidden" name="scope_search_arr" value="<{$scope_search_arr}>">
+    	<input type="hidden" name="scope_search_arr" value="<{$scope_search_arr|xoops_escape}>">
     	<br /><span style="font-weight: normal;"><{$smarty.const._AM_XOONIPS_LABEL_ITEMTYPE_SCOPE_SEARCH_DESC}></span>
     </td>
     <td style="width: 40%; text-align: left;" class="even">&nbsp;&nbsp;

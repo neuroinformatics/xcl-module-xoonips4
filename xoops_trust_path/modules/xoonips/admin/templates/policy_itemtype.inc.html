@@ -1,2 +1,2 @@
-<{if $flg}><input type="hidden" name="list" value="<{$value}>" /><{else}>
-<input type="text" name="default_value" size="30" maxlength="30" value="<{$value}>" /><{/if}>
+<{if $flg}><input type="hidden" name="list" value="<{$value|xoops_escape}>" /><{else}>
+<input type="text" name="default_value" size="30" maxlength="30" value="<{$value|xoops_escape}>" /><{/if}>

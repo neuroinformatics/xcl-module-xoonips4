@@ -8,7 +8,7 @@
 <{if $import_success}>
 <div class="tips">
 <{foreach item=msg from=$import_success_msg}>
-<li><{$msg}></li>
+<li><{$msg|xoops_escape}></li>
 <{/foreach}>
 </div>
 <{/if}>
