@@ -293,6 +293,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
             }
             $html['parent'] = $parent;
             // text
+            isset($GLOBALS['cubeUtilMlang']) && $index['title'] = $GLOBALS['cubeUtilMlang']->obFilter($index['title']);
             $text = sprintf('%s(%s)', $index['title'], $index['num_items']);
             if ('0' == $index['num_items']) {
                 $text = $index['title'];
@@ -353,6 +354,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
             }
             $html['parent'] = $parent;
             // text
+            isset($GLOBALS['cubeUtilMlang']) && $index['title'] = $GLOBALS['cubeUtilMlang']->obFilter($index['title']);
             $text = sprintf('%s(%s)', $index['title'], $index['num_items']);
             if ('0' == $index['num_items']) {
                 $text = $index['title'];
@@ -417,6 +419,7 @@ class Xoonips_GetIndexesInfoAjaxMethod extends Xoonips_AbstractAjaxMethod
             }
             $html['parent'] = $parent;
             // text
+            isset($GLOBALS['cubeUtilMlang']) && $index['title'] = $GLOBALS['cubeUtilMlang']->obFilter($index['title']);
             $text = sprintf('%s(%s)', $index['title'], $index['num_items']);
             if ('0' == $index['num_items']) {
                 $text = $index['title'];
