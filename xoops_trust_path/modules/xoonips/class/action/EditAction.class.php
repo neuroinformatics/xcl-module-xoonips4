@@ -2,6 +2,7 @@
 
 use Xoonips\Core\FileUtils;
 use Xoonips\Core\Functions;
+use Xoonips\Core\XoopsUtils;
 
 require_once dirname(__DIR__).'/core/Item.class.php';
 require_once dirname(__DIR__).'/core/ItemField.class.php';
@@ -13,25 +14,14 @@ class Xoonips_EditAction extends Xoonips_ActionBase
 {
     protected function doInit(&$request, &$response)
     {
-        $itemId = $request->getParameter('item_id');
-
-        global $xoopsUser;
-        $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
-
-        $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
-        if (!$itemBean->canItemEdit($itemId, $uid)) {
-            redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_ITEM_CANNOT_ACCESS_ITEM);
-            exit();
-        }
-
-        $itemtypeId = $request->getParameter('itemtype_id');
-        if (empty($itemtypeId)) {
-            $itemtypeId = $this->getItemtypeIdByItemId($itemId);
-        }
+        $uid = XoopsUtils::getUid();
+        $itemId = intval($request->getParameter('item_id'));
+        $itemTypeId = $this->getItemtypeIdByItemId($itemId);
+        $this->checkAccessPermission($itemId, $uid, 'itemEdit');
 
         $viewData = [];
-        $this->setCommonViewData($viewData, $itemId, $itemtypeId, $request, $response);
-        $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
+        $this->setCommonViewData($viewData, $itemId, $itemTypeId, $request, $response);
+        $item = new Xoonips_Item($itemTypeId, $this->dirname, $this->trustDirname);
         $viewData['editryView'] = $item->getEditView($itemId);
         $response->setViewData($viewData);
         $response->setForward('init_success');
@@ -50,11 +40,15 @@ class Xoonips_EditAction extends Xoonips_ActionBase
 
     protected function doComplete(&$request, &$response)
     {
-        $itemId = $request->getParameter('item_id');
-        $itemtypeId = $request->getParameter('itemtype_id');
+        $uid = XoopsUtils::getUid();
+        $itemId = intval($request->getParameter('item_id'));
+        $itemTypeId = $this->getItemtypeIdByItemId($itemId);
+        $this->checkAccessPermission($itemId, $uid, 'itemEdit');
+
         $viewData = [];
-        $this->setCommonViewData($viewData, $itemId, $itemtypeId, $request, $response);
-        $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
+        $this->setCommonViewData($viewData, $itemId, $itemTypeId, $request, $response);
+        $item = new Xoonips_Item($itemTypeId, $this->dirname, $this->trustDirname);
+        // targetItemId is editing item group annd field id. ex. '10:1:11'
         $targetItemId = $request->getParameter('targetItemId');
         $item->setData($_POST, true);
         if (false === $item->complete($targetItemId)) {
@@ -69,11 +63,15 @@ class Xoonips_EditAction extends Xoonips_ActionBase
 
     protected function doAddFieldGroup(&$request, &$response)
     {
-        $itemId = $request->getParameter('item_id');
-        $itemtypeId = $request->getParameter('itemtype_id');
+        $uid = XoopsUtils::getUid();
+        $itemId = intval($request->getParameter('item_id'));
+        $itemTypeId = $this->getItemtypeIdByItemId($itemId);
+        $this->checkAccessPermission($itemId, $uid, 'itemEdit');
+
         $viewData = [];
-        $this->setCommonViewData($viewData, $itemId, $itemtypeId, $request, $response);
-        $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
+        $this->setCommonViewData($viewData, $itemId, $itemTypeId, $request, $response);
+        $item = new Xoonips_Item($itemTypeId, $this->dirname, $this->trustDirname);
+        // targetItemId is editing item group annd field id. ex. '10:1:11'
         $targetItemId = $request->getParameter('targetItemId');
         $item->setData($_POST, true);
         $item->addFieldGroup($targetItemId);
@@ -86,11 +84,15 @@ class Xoonips_EditAction extends Xoonips_ActionBase
 
     protected function doDeleteFieldGroup(&$request, &$response)
     {
-        $itemId = $request->getParameter('item_id');
-        $itemtypeId = $request->getParameter('itemtype_id');
+        $uid = XoopsUtils::getUid();
+        $itemId = intval($request->getParameter('item_id'));
+        $itemTypeId = $this->getItemtypeIdByItemId($itemId);
+        $this->checkAccessPermission($itemId, $uid, 'itemEdit');
+
         $viewData = [];
-        $this->setCommonViewData($viewData, $itemId, $itemtypeId, $request, $response);
-        $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
+        $this->setCommonViewData($viewData, $itemId, $itemTypeId, $request, $response);
+        $item = new Xoonips_Item($itemTypeId, $this->dirname, $this->trustDirname);
+        // targetItemId is editing item group annd field id. ex. '10:1:11'
         $targetItemId = $request->getParameter('targetItemId');
         $item->setData($_POST, true);
         $item->deleteFieldGroup($targetItemId);
@@ -103,8 +105,12 @@ class Xoonips_EditAction extends Xoonips_ActionBase
 
     protected function doUploadFile(&$request, &$response)
     {
-        $itemtypeId = $request->getParameter('itemtype_id');
-        $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
+        $uid = XoopsUtils::getUid();
+        $itemId = intval($request->getParameter('item_id'));
+        $itemTypeId = $this->getItemtypeIdByItemId($itemId);
+        $this->checkAccessPermission($itemId, $uid, 'itemEdit');
+
+        $item = new Xoonips_Item($itemTypeId, $this->dirname, $this->trustDirname);
         $item->setData($_POST);
         $viewData['fileUpload'] = $item->fileUpload();
         $response->setViewData($viewData);
@@ -115,14 +121,18 @@ class Xoonips_EditAction extends Xoonips_ActionBase
 
     protected function doDeleteFile(&$request, &$response)
     {
-        $itemId = $request->getParameter('item_id');
-        $itemtypeId = $request->getParameter('itemtype_id');
+        $uid = XoopsUtils::getUid();
+        $itemId = intval($request->getParameter('item_id'));
+        $itemTypeId = $this->getItemtypeIdByItemId($itemId);
+        $this->checkAccessPermission($itemId, $uid, 'itemEdit');
+
         $viewData = [];
-        $this->setCommonViewData($viewData, $itemId, $itemtypeId, $request, $response);
-        $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
+        $this->setCommonViewData($viewData, $itemId, $itemTypeId, $request, $response);
+        $item = new Xoonips_Item($itemTypeId, $this->dirname, $this->trustDirname);
+        // targetItemId is editing item group annd field id. ex. '10:1:11'
         $targetItemId = $request->getParameter('targetItemId');
         $item->setData($_POST, true);
-        $item->delFile($targetItemId, $request->getParameter('fileId'));
+        $item->delFile($targetItemId, intval($request->getParameter('fileId')));
         $viewData['editryView'] = $item->getEditViewWithData();
         $response->setViewData($viewData);
         $response->setForward('deleteFile_success');
@@ -132,6 +142,10 @@ class Xoonips_EditAction extends Xoonips_ActionBase
 
     protected function doSearchUser(&$request, &$response)
     {
+        $uid = XoopsUtils::getUid();
+        $itemId = intval($request->getParameter('item_id'));
+        $this->checkAccessPermission($itemId, $uid, 'itemUsersEdit');
+
         $this->doCommon($request, $response);
         $response->setForward('searchUser_success');
 
@@ -140,6 +154,10 @@ class Xoonips_EditAction extends Xoonips_ActionBase
 
     protected function doDeleteUser(&$request, &$response)
     {
+        $uid = XoopsUtils::getUid();
+        $itemId = intval($request->getParameter('item_id'));
+        $this->checkAccessPermission($itemId, $uid, 'itemUsersEdit');
+
         $this->doCommon($request, $response);
         $response->setForward('deleteUser_success');
 
@@ -148,6 +166,10 @@ class Xoonips_EditAction extends Xoonips_ActionBase
 
     protected function doSearchRelatedItem(&$request, &$response)
     {
+        $uid = XoopsUtils::getUid();
+        $itemId = intval($request->getParameter('item_id'));
+        $this->checkAccessPermission($itemId, $uid, 'itemEdit');
+
         $this->doCommon($request, $response);
         $response->setForward('searchRelatedItem_success');
 
@@ -156,6 +178,10 @@ class Xoonips_EditAction extends Xoonips_ActionBase
 
     protected function doDeleteRelatedItem(&$request, &$response)
     {
+        $uid = XoopsUtils::getUid();
+        $itemId = intval($request->getParameter('item_id'));
+        $this->checkAccessPermission($itemId, $uid, 'itemEdit');
+
         $this->doCommon($request, $response);
         $response->setForward('deleteRelatedItem_success');
 
@@ -172,11 +198,14 @@ class Xoonips_EditAction extends Xoonips_ActionBase
 
     protected function doConfirm(&$request, &$response)
     {
-        $itemId = $request->getParameter('item_id');
-        $itemtypeId = $request->getParameter('itemtype_id');
+        $uid = XoopsUtils::getUid();
+        $itemId = intval($request->getParameter('item_id'));
+        $itemTypeId = $this->getItemtypeIdByItemId($itemId);
+        $this->checkAccessPermission($itemId, $uid, 'itemEdit');
+
         $viewData = [];
-        $this->setCommonViewData($viewData, $itemId, $itemtypeId, $request, $response);
-        $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
+        $this->setCommonViewData($viewData, $itemId, $itemTypeId, $request, $response);
+        $item = new Xoonips_Item($itemTypeId, $this->dirname, $this->trustDirname);
         $errors = new Xoonips_Errors();
         $insertInfo = [];
         $item->setData($_POST, true);
@@ -194,11 +223,11 @@ class Xoonips_EditAction extends Xoonips_ActionBase
             // view data
             $viewData = [];
             $viewData['item_id'] = $itemId;
-            $viewData['itemtype_id'] = $itemtypeId;
-            $viewData['itemtype_name'] = $this->getItemtypeName($itemtypeId);
+            $viewData['itemtype_id'] = $itemTypeId;
+            $viewData['itemtype_name'] = $this->getItemtypeName($itemTypeId);
             $viewData['token_titcket'] = $token_ticket;
 
-            //$item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
+            //$item = new Xoonips_Item($itemTypeId, $this->dirname, $this->trustDirname);
             $item->setData($_POST, true);
             $viewData['confirmView'] = $item->getConfirmView(4);
             $response->setViewData($viewData);
@@ -210,14 +239,18 @@ class Xoonips_EditAction extends Xoonips_ActionBase
 
     protected function doSave(&$request, &$response)
     {
+        $uid = XoopsUtils::getUid();
+        $itemId = intval($request->getParameter('item_id'));
+        $itemTypeId = $this->getItemtypeIdByItemId($itemId);
+        $this->checkAccessPermission($itemId, $uid, 'itemEdit');
+
         if (!$this->validateToken($this->modulePrefix('confirm_edit'))) {
             $response->setSystemError('Ticket error');
 
             return false;
         }
-        $itemId = $request->getParameter('item_id');
-        $itemtypeId = $request->getParameter('itemtype_id');
-        $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
+
+        $item = new Xoonips_Item($itemTypeId, $this->dirname, $this->trustDirname);
         $item->setData($_POST, true);
         $this->startTransaction();
         $certify_msg = '';
@@ -256,18 +289,9 @@ class Xoonips_EditAction extends Xoonips_ActionBase
 
     protected function doEditIndex(&$request, &$response)
     {
-        // get item indexes
-        global $xoopsUser;
-        $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
-
-        $itemId = $request->getParameter('item_id');
-
-        // check index can edit
-        $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
-        if (!$itemBean->canItemIndexEdit($itemId, $uid)) {
-            redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_ITEM_CANNOT_ACCESS_ITEM);
-            exit();
-        }
+        $uid = XoopsUtils::getUid();
+        $itemId = intval($request->getParameter('item_id'));
+        $this->checkAccessPermission($itemId, $uid, 'itemIndexEdit');
 
         // get user's index
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
@@ -308,15 +332,15 @@ class Xoonips_EditAction extends Xoonips_ActionBase
 
     protected function doConfirmIndex(&$request, &$response)
     {
-        global $xoopsUser;
-        $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
+        $uid = XoopsUtils::getUid();
+        $itemId = intval($request->getParameter('item_id'));
+        $this->checkAccessPermission($itemId, $uid, 'itemIndexEdit');
 
         // user's index id
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         $indexId = $indexBean->getItemlistLinkIndex($uid);
 
         // checked index ids
-        $itemId = $request->getParameter('item_id');
         $checkedIndexes = $request->getParameter('checked_indexes');
 
         // index change information
@@ -365,19 +389,21 @@ class Xoonips_EditAction extends Xoonips_ActionBase
 
     protected function doSaveIndex(&$request, &$response)
     {
+        $uid = XoopsUtils::getUid();
+        $itemId = intval($request->getParameter('item_id'));
+        $itemTypeId = $this->getItemtypeIdByItemId($itemId);
+        $this->checkAccessPermission($itemId, $uid, 'itemIndexEdit');
+
         if (!$this->validateToken($this->modulePrefix('item_index_edit_confirm'))) {
             $response->setSystemError('Ticket error');
 
             return false;
         }
-        $itemId = $request->getParameter('item_id');
+
         $checkedIndexes = $request->getParameter('checked_indexes');
         $certify_msg = '';
         $this->startTransaction();
-        $bean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
-        $result = $bean->getItemBasicInfo($itemId);
-        $itemtypeId = $result['item_type_id'];
-        $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
+        $item = new Xoonips_Item($itemTypeId, $this->dirname, $this->trustDirname);
         $ret = $item->doIndexEdit($itemId, $checkedIndexes, $certify_msg);
         if ($ret) {
             $viewData['url'] = 'detail.php?item_id='.$itemId;
@@ -403,17 +429,9 @@ class Xoonips_EditAction extends Xoonips_ActionBase
 
     protected function doEditOwners(&$request, &$response)
     {
-        $itemId = $request->getParameter('item_id');
-
-        global $xoopsUser;
-        $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
-
-        // check item users can edit
-        $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
-        if (!$itemBean->canItemUsersEdit($itemId, $uid)) {
-            redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_ITEM_CANNOT_ACCESS_ITEM);
-            exit();
-        }
+        $uid = XoopsUtils::getUid();
+        $itemId = intval($request->getParameter('item_id'));
+        $this->checkAccessPermission($itemId, $uid, 'itemUsersEdit');
 
         // get item users
         $itemUsersBean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $this->dirname, $this->trustDirname);
@@ -434,12 +452,15 @@ class Xoonips_EditAction extends Xoonips_ActionBase
 
     protected function doSearchOwners(&$request, &$response)
     {
-        $itemId = $request->getParameter('item_id');
+        $uid = XoopsUtils::getUid();
+        $itemId = intval($request->getParameter('item_id'));
+        $this->checkAccessPermission($itemId, $uid, 'itemUsersEdit');
+
         $uids = $request->getParameter($this->dirname.'CreateUser');
 
         // item limit check
-        $errors = new Xoonips_Errors();
         $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
+        $errors = new Xoonips_Errors();
         $uid_arr = explode(',', $uids);
         $uids = '';
         foreach ($uid_arr as $uid) {
@@ -471,7 +492,10 @@ class Xoonips_EditAction extends Xoonips_ActionBase
 
     protected function doDeleteOwners(&$request, &$response)
     {
-        $itemId = $request->getParameter('item_id');
+        $uid = XoopsUtils::getUid();
+        $itemId = intval($request->getParameter('item_id'));
+        $this->checkAccessPermission($itemId, $uid, 'itemUsersEdit');
+
         $uids = $request->getParameter($this->dirname.'CreateUser');
 
         $viewData = [];
@@ -485,7 +509,10 @@ class Xoonips_EditAction extends Xoonips_ActionBase
 
     protected function doSaveOwners(&$request, &$response)
     {
-        $itemId = $request->getParameter('item_id');
+        $uid = XoopsUtils::getUid();
+        $itemId = intval($request->getParameter('item_id'));
+        $this->checkAccessPermission($itemId, $uid, 'itemUsersEdit');
+
         $uids = $request->getParameter($this->dirname.'CreateUser');
 
         if (!$this->validateToken($this->modulePrefix('item_owners_edit'))) {
@@ -520,16 +547,10 @@ class Xoonips_EditAction extends Xoonips_ActionBase
 
     protected function doDeleteConfirm(&$request, &$response)
     {
-        $itemId = $request->getParameter('item_id');
-
-        global $xoopsUser;
-        $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
-
-        $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
-        if (!$itemBean->canItemDelete($itemId, $uid)) {
-            redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_ITEM_CANNOT_ACCESS_ITEM);
-            exit();
-        }
+        $uid = XoopsUtils::getUid();
+        $itemId = intval($request->getParameter('item_id'));
+        $itemTypeId = $this->getItemtypeIdByItemId($itemId);
+        $this->checkAccessPermission($itemId, $uid, 'itemDelete');
 
         $breadcrumbs = [
             [
@@ -545,14 +566,11 @@ class Xoonips_EditAction extends Xoonips_ActionBase
         $token_ticket = $this->createToken($this->modulePrefix('item_delete_confirm'));
 
         // get item infomation
-        $bean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
-        $result = $bean->getItemBasicInfo($itemId);
-        $itemtypeId = $result['item_type_id'];
-        $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
+        $item = new Xoonips_Item($itemTypeId, $this->dirname, $this->trustDirname);
         $viewData = [];
         $viewData['confirmView'] = $item->getDetailView($itemId);
         $viewData['item_id'] = $itemId;
-        $viewData['itemtype_name'] = $this->getItemtypeName($itemtypeId);
+        $viewData['itemtype_name'] = $this->getItemtypeName($itemTypeId);
         $viewData['xoops_breadcrumbs'] = $breadcrumbs;
         $viewData['token_titcket'] = $token_ticket;
         $viewData['dirname'] = $this->dirname;
@@ -565,22 +583,15 @@ class Xoonips_EditAction extends Xoonips_ActionBase
 
     protected function doDelete(&$request, &$response)
     {
+        $uid = XoopsUtils::getUid();
+        $itemId = intval($request->getParameter('item_id'));
+        $itemTypeId = $this->getItemtypeIdByItemId($itemId);
+        $this->checkAccessPermission($itemId, $uid, 'itemDelete');
+
         if (!$this->validateToken($this->modulePrefix('item_delete_confirm'))) {
             $response->setSystemError('Ticket error');
 
             return false;
-        }
-        $itemId = $request->getParameter('item_id');
-        $bean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
-        $result = $bean->getItemBasicInfo($itemId);
-        $itemtypeId = $result['item_type_id'];
-
-        global $xoopsUser;
-        $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
-        $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
-        if (!$itemBean->canItemDelete($itemId, $uid)) {
-            redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_ITEM_CANNOT_ACCESS_ITEM);
-            exit();
         }
 
         // get item users
@@ -602,7 +613,7 @@ class Xoonips_EditAction extends Xoonips_ActionBase
         $transaction->start();
 
         // delete xoonips_item
-        $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
+        $item = new Xoonips_Item($itemTypeId, $this->dirname, $this->trustDirname);
         $certify_msg = '';
         $ret = $item->doDelete($itemId, $certify_msg, $this->log);
         if ($ret) {
@@ -636,11 +647,10 @@ class Xoonips_EditAction extends Xoonips_ActionBase
 
     private function setCommonViewDataByEditOwners($itemId, $uids, &$viewData)
     {
+        $uid = XoopsUtils::getUid();
+
         // get item information
         $this->getItemInfoByOwnersEdit($itemId, $uids, $viewData);
-
-        global $xoopsUser;
-        $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
 
         // get user's index id
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
@@ -675,10 +685,7 @@ class Xoonips_EditAction extends Xoonips_ActionBase
     // get item info
     private function getItemInfoByOwnersEdit($itemId, $uids, &$viewData)
     {
-        // get item basic
-        $bean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
-        $result = $bean->getItemBasicInfo($itemId);
-        $itemtypeId = $result['item_type_id'];
+        $itemTypeId = $this->getItemtypeIdByItemId($itemId);
 
         // get item info
         $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
@@ -687,7 +694,7 @@ class Xoonips_EditAction extends Xoonips_ActionBase
 
         // get create user detail
         $detailBean = Xoonips_BeanFactory::getBean('ItemFieldDetailBean', $this->dirname, $this->trustDirname);
-        $detailInfo = $detailBean->getCreateUserDetail($itemtypeId);
+        $detailInfo = $detailBean->getCreateUserDetail($itemTypeId);
         $detail_name = $detailInfo['name'];
 
         $field = new Xoonips_ItemField();
@@ -708,17 +715,14 @@ class Xoonips_EditAction extends Xoonips_ActionBase
     // do update
     private function updateItemUsers($itemId, $uids, &$messages)
     {
-        // get item basic
-        $bean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
-        $result = $bean->getItemBasicInfo($itemId);
-        $itemtypeId = $result['item_type_id'];
+        $itemTypeId = $this->getItemtypeIdByItemId($itemId);
 
         // get create user detail
         $detailBean = Xoonips_BeanFactory::getBean('ItemFieldDetailBean', $this->dirname, $this->trustDirname);
-        $detailInfo = $detailBean->getCreateUserDetail($itemtypeId);
+        $detailInfo = $detailBean->getCreateUserDetail($itemTypeId);
         $detailName = $detailInfo['name'];
 
-        $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
+        $item = new Xoonips_Item($itemTypeId, $this->dirname, $this->trustDirname);
 
         if (!$item->insertChangelogUsersEdit($itemId, $uids, $detailName)) {
             return false;
@@ -726,7 +730,7 @@ class Xoonips_EditAction extends Xoonips_ActionBase
         if (!$item->updateItemUsersPrivateIndex($itemId, $uids)) {
             return false;
         }
-        if (!$item->updateXoonipsItemUsers($itemId, $uids, $itemtypeId, $messages, $this->log)) {
+        if (!$item->updateXoonipsItemUsers($itemId, $uids, $itemTypeId, $messages, $this->log)) {
             return false;
         }
 
@@ -757,21 +761,19 @@ class Xoonips_EditAction extends Xoonips_ActionBase
     private function getItemtypeIdByItemId($iid)
     {
         $bean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
-        $result = $bean->getItemBasicInfo($iid);
-        if ($result) {
-            return $result['item_type_id'];
-        }
+        $basic = $bean->getItemBasicInfo($iid);
 
-        return '';
+        return !empty($basic) ? intval($basic['item_type_id']) : 0;
     }
 
     private function doCommon(&$request, &$response)
     {
-        $itemId = $request->getParameter('item_id');
-        $itemtypeId = $request->getParameter('itemtype_id');
+        $uid = XoopsUtils::getUid();
+        $itemId = intval($request->getParameter('item_id'));
+        $itemTypeId = $this->getItemtypeIdByItemId($itemId);
         $viewData = [];
-        $this->setCommonViewData($viewData, $itemId, $itemtypeId, $request, $response);
-        $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
+        $this->setCommonViewData($viewData, $itemId, $itemTypeId, $request, $response);
+        $item = new Xoonips_Item($itemTypeId, $this->dirname, $this->trustDirname);
         $item->setData($_POST, true);
         $viewData['editryView'] = $item->getEditViewWithData();
         $viewData['dirname'] = $this->dirname;
@@ -779,16 +781,15 @@ class Xoonips_EditAction extends Xoonips_ActionBase
         $response->setViewData($viewData);
     }
 
-    private function setCommonViewData(&$viewData, $itemId, $itemtypeId, &$request, &$response)
+    private function setCommonViewData(&$viewData, $itemId, $itemTypeId, &$request, &$response)
     {
+        $uid = XoopsUtils::getUid();
+
         $viewData['item_id'] = $itemId;
-        $viewData['itemtype_id'] = $itemtypeId;
+        $viewData['itemtype_id'] = $itemTypeId;
         $viewData['next_url'] = 'edit.php?op=editry';
         $viewData['dirname'] = $this->dirname;
         $viewData['mytrustdirname'] = $this->trustDirname;
-
-        global $xoopsUser;
-        $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
 
         // item_limit, storage_limit
         $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
@@ -848,15 +849,48 @@ class Xoonips_EditAction extends Xoonips_ActionBase
         $viewData['trees'] = $trees;
     }
 
-    // get itemtype_name by itemtype_id
-    private function getItemtypeName($itemtypeId)
+    /**
+     * get item type name by item type id.
+     *
+     * @param int $itemTypeId
+     *
+     * @return string
+     */
+    private function getItemtypeName($itemTypeId)
     {
         $bean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
-        $result = $bean->getItemTypeName($itemtypeId);
-        if (!$result) {
-            return '';
-        }
+        $name = $bean->getItemTypeName($itemTypeId);
 
-        return $result;
+        return !empty($name) ? $name : '';
+    }
+
+    /**
+     * access permission check.
+     *
+     * @param int    $itemId
+     * @param string $type
+     */
+    private function checkAccessPermission($itemId, $uid, $type)
+    {
+        $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
+        $hasPerm = false;
+        switch ($type) {
+        case 'itemEdit':
+            $hasPerm = $itemBean->canItemEdit($itemId, $uid);
+            break;
+        case 'itemDelete':
+            $hasPerm = $itemBean->canItemDelete($itemId, $uid);
+            break;
+        case 'itemUsersEdit':
+            $hasPerm = $itemBean->canItemUsersEdit($itemId, $uid);
+            break;
+        case 'itemIndexEdit':
+            $hasPerm = $itemBean->canItemIndexEdit($itemId, $uid);
+            break;
+        }
+        if (!$hasPerm) {
+            redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_ITEM_CANNOT_ACCESS_ITEM);
+            exit();
+        }
     }
 }

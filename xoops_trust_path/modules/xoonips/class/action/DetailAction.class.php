@@ -1,6 +1,9 @@
 <?php
 
+use Xoonips\Core\CacheUtils;
 use Xoonips\Core\Functions;
+use Xoonips\Core\JoinCriteria;
+use Xoonips\Core\XoopsUtils;
 
 require_once dirname(__DIR__).'/core/Item.class.php';
 require_once dirname(__DIR__).'/core/ActionBase.class.php';
@@ -10,14 +13,13 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
 {
     protected function doInit(&$request, &$response)
     {
-        $bean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
-        $itemId = $request->getParameter('item_id');
-        if (empty($itemId)) {
-            $itemId = $bean->getItemIdBydoi($request->getParameter(XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME));
-        }
+        $itemId = intval($request->getParameter('item_id'));
+        $uid = XoopsUtils::getUid();
 
-        global $xoopsUser;
-        $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
+        $bean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
+        if (0 == $itemId) {
+            $itemId = intval($bean->getItemIdBydoi($request->getParameter(XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME)));
+        }
 
         // login in user can view item check
         $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
@@ -37,7 +39,7 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
         $viewData['token_ticket'] = $token_ticket;
 
         $buttonVisible = [];
-        if (is_object($xoopsUser)) {
+        if (XoopsUtils::UID_GUEST != $uid) {
             $buttonVisible = $this->setButtonVisible($itemId, $uid);
         } else {
             $buttonVisible['item_edit'] = false;
@@ -61,10 +63,9 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
 
     protected function doPrint(&$request, &$response)
     {
-        $itemId = $request->getParameter('item_id');
+        $itemId = intval($request->getParameter('item_id'));
 
-        global $xoopsUser;
-        $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
+        $uid = XoopsUtils::getUid();
 
         // login in user can view item check
         $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
@@ -89,6 +90,24 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
         $response->setForward('init_success');
 
         return true;
+    }
+
+    protected function doExport(&$request, &$response)
+    {
+        // get requests
+        $items = [];
+        $items[] = intval($request->getParameter('item_id'));
+
+        // access check
+        $uid = XoopsUtils::getUid();
+        $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
+        if (!$itemBean->canItemExport($itemId, $uid)) {
+            CacheUtils::errorExit(403);
+        }
+
+        // do export
+        $xmlexport = new XmlItemExport();
+        $xmlexport->export_zip($items);
     }
 
     private function getCommonViewData($itemId, $uid, &$viewData)
@@ -150,8 +169,7 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
         if ($result) {
             foreach ($result as $link) {
                 if (XOONIPS_CERTIFY_REQUIRED == $link['certify_state'] || XOONIPS_WITHDRAW_REQUIRED == $link['certify_state']) {
-                    $message = sprintf(_MD_XOONIPS_WARNING_CANNOT_EDIT_LOCKED_ITEM,
-                    _MD_XOONIPS_LOCK_TYPE_STRING_CERTIFY_OR_WITHDRAW_REQUEST);
+                    $message = sprintf(_MD_XOONIPS_WARNING_CANNOT_EDIT_LOCKED_ITEM, _MD_XOONIPS_LOCK_TYPE_STRING_CERTIFY_OR_WITHDRAW_REQUEST);
                 }
             }
         }
@@ -168,41 +186,10 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
         $buttonVisible['users_edit'] = $itemBean->canItemUsersEdit($itemId, $uid);
         $buttonVisible['index_edit'] = $itemBean->canItemIndexEdit($itemId, $uid);
         $buttonVisible['item_delete'] = $itemBean->canItemDelete($itemId, $uid);
-        $buttonVisible['accept_certify'] = $this->getAcceptCertifyVisible($itemId, $uid);
+        $buttonVisible['accept_certify'] = $this->isCertifyRequiredItem($itemId, $uid);
         $buttonVisible['item_export'] = $itemBean->canItemExport($itemId, $uid);
 
         return $buttonVisible;
-    }
-
-    // get accept certify visible
-    private function getAcceptCertifyVisible($itemId, $uid)
-    {
-        global $xoopsDB;
-        $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
-        $isModerator = $userBean->isModerator($uid);
-        $bean = Xoonips_BeanFactory::getBean('IndexItemLinkBean', $this->dirname, $this->trustDirname);
-        $result = $bean->getPublicIndexItemLinkInfo($itemId);
-        if ($result) {
-            foreach ($result as $link) {
-                if ((XOONIPS_CERTIFY_REQUIRED == $link['certify_state'] || XOONIPS_WITHDRAW_REQUIRED == $link['certify_state']) && $isModerator) {
-                    return true;
-                }
-            }
-        }
-        $indexTable = $xoopsDB->prefix($this->modulePrefix('index'));
-        $linkTable = $xoopsDB->prefix($this->modulePrefix('index_item_link'));
-        $sql = "SELECT it.groupid FROM $linkTable lt, $indexTable it WHERE lt.index_id=it.index_id ";
-        $sql .= "AND lt.item_id=$itemId AND it.open_level=2 AND (lt.certify_state=1 OR lt.certify_state=3)";
-        $ret = $xoopsDB->queryF($sql);
-        if ($ret) {
-            while ($row = $xoopsDB->fetchArray($ret)) {
-                if ($userBean->isGroupManager($row['groupid'], $uid)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 
     private function getDownloadConfirmation($item_id, $itemtypeId, $guestUser)
@@ -234,32 +221,13 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
         }
 
         $files = $this->getFileInfo($item_id);
-        if (false == $files || 0 == count($files)) {
+        if (empty($files)) {
             return '';
-        }
-
-        $ar = [];
-        foreach ($files as $file) {
-            list($fileID, $fileName, $fileSize, $mimeType, $timestamp) = $file;
-            if ($fileSize >= 1024 * 1024) {
-                $fileSizeStr = sprintf('%01.1f MB', $fileSize / (1024 * 1024));
-            } elseif ($fileSize >= 1024) {
-                $fileSizeStr = sprintf('%01.1f KB', $fileSize / 1024);
-            } else {
-                $fileSizeStr = sprintf('%d bytes', $fileSize);
-            }
-            $ar[] = [
-                'fileID' => $fileID,
-                'fileName' => $fileName,
-                'fileSizeStr' => $fileSizeStr,
-                'mimeType' => $mimeType,
-                'lastUpdated' => $timestamp,
-            ];
         }
 
         global $xoopsTpl;
         $xoopsTpl->assign('dirname', $this->dirname);
-        $xoopsTpl->assign('files', $ar);
+        $xoopsTpl->assign('files', $files);
         $xoopsTpl->assign('use_license', $use_license);
         $xoopsTpl->assign('attachment_dl_notify', $attachment_dl_notify);
         $xoopsTpl->assign('use_cc', $use_cc);
@@ -271,31 +239,85 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
         return $xoopsTpl->fetch('db:'.$this->dirname.'_detail_download_confirm.html');
     }
 
-    private function getFileInfo($item_id)
+    /**
+     * get file information by item id.
+     *
+     * @param int $itemId
+     * @param int $uid
+     *
+     * @return bool
+     */
+    private function isCertifyRequiredItem($itemId, $uid)
     {
-        global $xoopsDB;
-        $sql = 'select file_id, original_file_name, file_size, mime_type, timestamp from '
-        .$xoopsDB->prefix($this->modulePrefix('item_file'))." where item_id = $item_id ";
-        $result = $xoopsDB->query($sql);
-        if (false == $result) {
+        $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
+        $isModerator = $userBean->isModerator($uid);
+
+        $groupsBean = Xoonips_BeanFactory::getBean('GroupsBean', $this->dirname, $this->trustDirname);
+        $adminGids = $groupsBean->getAdminGroupIds($uid);
+
+        if (!$isModerator && empty($adminGids)) {
             return false;
         }
+
+        $indexHandler = Functions::getXoonipsHandler('IndexObject', $this->dirname);
+        $indexItemLinkHandler = Functions::getXoonipsHandler('IndexItemLinkObject', $this->dirname);
+        $indexTable = $indexHandler->getTable();
+        $indexItemLinkTable = $indexItemLinkHandler->getTable();
+        $join = new JoinCriteria('INNER', $indexItemLinkTable, 'index_id', $indexTable, 'index_id');
+        $criteria = new CriteriaCompo();
+        $criteria->add(new Criteria('item_id', $itemId, '=', $indexItemLinkTable));
+        $criteria->add(new Criteria('certify_state', [$indexItemLinkHandler::CERTIFY_STATE_CERTIFY_REQUIRED, $indexItemLinkHandler::CERTIFY_STATE_WITHDRAW_REQUIRED], 'IN', $indexItemLinkTable));
+        $criteriaIndexType = new CriteriaCompo();
+        if ($isModerator) {
+            $criteriaModerator = new CriteriaCompo();
+            $criteriaModerator->add(new Criteria('open_level', $indexHandler::OPEN_LEVEL_PUBLIC, '=', $indexTable));
+            $criteriaIndexType->add($criteriaModerator);
+        }
+        if (!empty($adminGids)) {
+            $criteriaGroup = new CriteriaCompo();
+            $criteriaGroup->add(new Criteria('open_level', $indexHandler::OPEN_LEVEL_GROUP, '=', $indexTable));
+            $criteriaGroup->add(new Criteria('groupid', $adminGids, 'IN', $indexTable));
+            $criteriaIndexType->add($criteriaGroup, 'OR');
+        }
+        $criteria->add($criteriaIndexType);
+
+        return $indexHandler->getCount($criteria, $join) > 0;
+    }
+
+    /**
+     * get file information by item id.
+     *
+     * @param int $itemId
+     *
+     * @return array
+     */
+    private function getFileInfo($itemId)
+    {
         $files = [];
-        while (false != ($row = $xoopsDB->fetchRow($result))) {
-            $files[] = $row;
+
+        $itemFileHandler = Functions::getXoonipsHandler('ItemFileObject', $this->dirname);
+        $criteria = new Criteria('item_id', $itemId);
+        if ($res = $itemFileHandler->open($criteria)) {
+            while ($obj = $itemFileHandler->getNext($res)) {
+                $fileSize = $obj->get('file_size');
+                if ($fileSize >= 1024 * 1024) {
+                    $fileSizeStr = sprintf('%01.1f MB', $fileSize / (1024 * 1024));
+                } elseif ($fileSize >= 1024) {
+                    $fileSizeStr = sprintf('%01.1f KB', $fileSize / 1024);
+                } else {
+                    $fileSizeStr = sprintf('%d bytes', $fileSize);
+                }
+                $files[] = [
+                    'fileID' => $obj->get('file_id'),
+                    'fileName' => $obj->get('original_file_name'),
+                    'fileSizeStr' => $fileSizeStr,
+                    'mimeType' => $obj->get('mime_type'),
+                    'lastUpdated' => $obj->get('timestamp'),
+                ];
+            }
+            $itemFileHandler->close($res);
         }
 
         return $files;
-    }
-
-    protected function doExport(&$request, &$response)
-    {
-        // get requests
-        $items = [];
-        $items[] = $request->getParameter('item_id');
-
-        // do export
-        $xmlexport = new XmlItemExport();
-        $xmlexport->export_zip($items);
     }
 }
