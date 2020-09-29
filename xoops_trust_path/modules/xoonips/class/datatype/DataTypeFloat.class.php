@@ -58,8 +58,7 @@ class Xoonips_DataTypeFloat extends Xoonips_DataType
             $parameters[] = constant('_AM_'.strtoupper($this->trustDirname).'_LABEL_ITEMTYPE_DATA_LENGTH2');
             $errors->addError('_MD_'.strtoupper($this->trustDirname).'_CHECK_INPUT_ERROR_MSG', '', $parameters);
         } else {
-            if ('' != $field->getDefault() && (!is_numeric($field->getDefault()) ||
-            strlen($field->getDefault()) > $field->getLen() + $field->getDecimalPlaces() + 1)) {
+            if ('' != $field->getDefault() && (!is_numeric($field->getDefault()) || strlen($field->getDefault()) > $field->getLen() + $field->getDecimalPlaces() + 1)) {
                 $parameters = [];
                 $parameters[] = constant('_AM_'.strtoupper($this->trustDirname).'_LABEL_ITEMTYPE_DEFAULT_VALUE');
                 $errors->addError('_MD_'.strtoupper($this->trustDirname).'_CHECK_INPUT_ERROR_MSG', '', $parameters);

@@ -37,7 +37,7 @@ class Xoonips_DataTypeChar extends Xoonips_DataType
         $defaultValue = $field->getDefault();
         $default = ' default NULL';
         if ('' != $defaultValue) {
-            $default = " default '$defaultValue'";
+            $default = ' default '.Xoonips_Utils::convertSQLStr($defaultValue);
         } else {
             if (1 == $field->getEssential()) {
                 $default = '';
