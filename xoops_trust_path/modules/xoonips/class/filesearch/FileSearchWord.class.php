@@ -64,7 +64,7 @@ class Xoonips_FileSearchWord extends Xoonips_FileSearchBase
         if ($this->use_antiword) {
             // for antiword
             putenv('ANTIWORDHOME='.$this->antiwordhome);
-            parent::openImpl(sprintf('antiword -t -m UTF-8.txt %s', $filename));
+            parent::openImpl(sprintf('antiword -t -m UTF-8.txt %s', escapeshellarg($filename)));
         } else {
             // for wv
             $this->tmpfile = tempnam(sys_get_temp_dir(), 'FileSearchWord');
