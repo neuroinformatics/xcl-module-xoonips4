@@ -13,7 +13,7 @@ class Xoonips_ViewTypeUrl extends Xoonips_ViewTypeText
     {
         $this->xoopsTpl->assign('viewType', 'detail');
         $this->xoopsTpl->assign('fieldId', $field->getId());
-        $this->xoopsTpl->xoopsTpl->assign('groupId', $field->getFieldGroupId());
+        $this->xoopsTpl->assign('groupId', $field->getFieldGroupId());
         $this->xoopsTpl->assign('value', $value);
         $this->xoopsTpl->assign('xoops_dirname', $this->dirname);
 
