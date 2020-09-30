@@ -11,14 +11,20 @@ class Xoonips_GroupEditAction extends Xoonips_UserActionBase
     protected function doInit(&$request, &$response)
     {
         global $xoopsUser;
-        $uid = $xoopsUser->getVar('uid');
-        $groupId = $request->getParameter('groupid');
+        $uid = $xoopsUser->get('uid');
+        $groupId = intval($request->getParameter('groupid'));
         $viewData = [];
 
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
         $groupBean = Xoonips_BeanFactory::getBean('GroupsBean', $this->dirname, $this->trustDirname);
 
         $group = $groupBean->getGroup($groupId);
+        if (empty($group)) {
+            $response->setSystemError(_MD_XOONIPS_MESSAGE_GROUP_EMPTY);
+
+            return false;
+        }
+
         $group['item_storage_limit'] = $group['item_storage_limit'] / 1024 / 1024;
         $managers = $userBean->getUsersGroups($groupId, true);
         $isModerator = $userBean->isModerator($uid);
@@ -116,19 +122,25 @@ class Xoonips_GroupEditAction extends Xoonips_UserActionBase
         $groupBean = Xoonips_BeanFactory::getBean('GroupsBean', $this->dirname, $this->trustDirname);
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
 
-        //get hidden parameter
-        $uids = $request->getParameter('uid');
+        // get hidden parameter
+        $uids = intval($request->getParameter('uid'));
         $gname = $request->getParameter('gname');
-        $groupId = $request->getParameter('groupid');
+        $groupId = intval($request->getParameter('groupid'));
         $warning = $request->getParameter('warning');
-        $gentry = $request->getParameter('groupentry');
+        $gentry = intval($request->getParameter('groupentry'));
         $gpublic = $request->getParameter('grouppublic');
         $ghidden = $request->getParameter('grouphidden');
         $moderator = $request->getParameter('moderator');
-        $showThumbnail = $request->getParameter('showThumbnail');
+        $showThumbnail = intval($request->getParameter('showThumbnail'));
 
-        //get group parameter
+        // get group parameter
         $group = $groupBean->getGroup($groupId);
+        if (empty($group)) {
+            $response->setSystemError(_MD_XOONIPS_MESSAGE_GROUP_EMPTY);
+
+            return false;
+        }
+
         $groupPublic = $group['is_public'];
         $this->setGroup($request, $group);
         if ('' == $group['is_public']) {
@@ -141,10 +153,10 @@ class Xoonips_GroupEditAction extends Xoonips_UserActionBase
             $group['is_hidden'] = $ghidden;
         }
 
-        //get uploaded icon
+        // get uploaded icon
         $thumbnail = sprintf('%s/modules/%s/image.php/group/%u/%s', XOOPS_URL, $this->dirname, $groupId, $group['icon']);
 
-        //get upload icon information
+        // get upload icon information
         $file = $request->getFile('filepath');
         if (!empty($file)) {
             $group['icon'] = $file['name'];
@@ -154,7 +166,7 @@ class Xoonips_GroupEditAction extends Xoonips_UserActionBase
             $group['mime_type'] = null;
         }
 
-        //get group manager
+        // get group manager
         $admins = [];
         if (!empty($uids)) {
             foreach ($uids as $uid) {
@@ -163,7 +175,7 @@ class Xoonips_GroupEditAction extends Xoonips_UserActionBase
             }
         }
 
-        //input check
+        // input check
         if ($this->inputCheck($group, $gname, $admins, $file, $errors)) {
             $viewData['xoops_breadcrumbs'] = $breadcrumbs;
             $viewData['token_ticket'] = $token_ticket;
@@ -288,8 +300,14 @@ class Xoonips_GroupEditAction extends Xoonips_UserActionBase
         }
 
         //get parameter and group information
-        $groupId = $request->getParameter('groupid');
+        $groupId = intval($request->getParameter('groupid'));
         $group = $groupBean->getGroup($groupId);
+        if (empty($group)) {
+            $response->setSystemError(_MD_XOONIPS_MESSAGE_GROUP_EMPTY);
+
+            return false;
+        }
+
         $this->setGroup($request, $group);
 
         $thumbnail = sprintf('%s/modules/%s/image.php/group/%u/%s', XOOPS_URL, $this->dirname, $groupId, $group['icon']);

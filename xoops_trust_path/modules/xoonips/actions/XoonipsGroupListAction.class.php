@@ -53,8 +53,13 @@ class Xoonips_GroupListAction extends Xoonips_UserActionBase
         }
 
         $groupbean = Xoonips_BeanFactory::getBean('GroupsBean', $this->dirname, $this->trustDirname);
-        $groupId = $request->getParameter('groupid');
+        $groupId = intval($request->getParameter('groupid'));
         $group = $groupbean->getGroup($groupId);
+        if (empty($group)) {
+            $response->setSystemError(_MD_XOONIPS_MESSAGE_GROUP_EMPTY);
+
+            return false;
+        }
 
         // start transaction
         $this->startTransaction();
@@ -97,8 +102,13 @@ class Xoonips_GroupListAction extends Xoonips_UserActionBase
         }
 
         $groupbean = Xoonips_BeanFactory::getBean('GroupsBean', $this->dirname, $this->trustDirname);
-        $groupId = $request->getParameter('groupid');
+        $groupId = intval($request->getParameter('groupid'));
         $group = $groupbean->getGroup($groupId);
+        if (empty($group)) {
+            $response->setSystemError(_MD_XOONIPS_MESSAGE_GROUP_EMPTY);
+
+            return false;
+        }
 
         // start transaction
         $this->startTransaction();
@@ -139,8 +149,13 @@ class Xoonips_GroupListAction extends Xoonips_UserActionBase
         }
 
         $groupbean = Xoonips_BeanFactory::getBean('GroupsBean', $this->dirname, $this->trustDirname);
-        $groupId = $request->getParameter('groupid');
+        $groupId = intval($request->getParameter('groupid'));
         $group = $groupbean->getGroup($groupId);
+        if (empty($group)) {
+            $response->setSystemError(_MD_XOONIPS_MESSAGE_GROUP_EMPTY);
+
+            return false;
+        }
 
         // start transaction
         $this->startTransaction();

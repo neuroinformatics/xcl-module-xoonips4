@@ -10,7 +10,7 @@ class Xoonips_GroupInfoAction extends Xoonips_UserActionBase
         $groupbean = Xoonips_BeanFactory::getBean('GroupsBean', $this->dirname, $this->trustDirname);
         $userbean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
         $groupuserlinkbean = Xoonips_BeanFactory::getBean('GroupsUsersLinkBean', $this->dirname, $this->trustDirname);
-        $groupId = $request->getParameter('groupid');
+        $groupId = intval($request->getParameter('groupid'));
         $group = $groupbean->getGroup($groupId);
         $file_path = XOOPS_ROOT_PATH.'/uploads/xoonips/group/'.$groupId;
         $showThumbnail = false;

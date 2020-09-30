@@ -9,7 +9,7 @@ class Xoonips_GroupMemberAction extends Xoonips_UserActionBase
     {
         global $xoopsUser;
         $uid = $xoopsUser->getVar('uid');
-        $groupId = $request->getParameter('groupid');
+        $groupId = intval($request->getParameter('groupid'));
         $viewData = [];
 
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
@@ -17,6 +17,12 @@ class Xoonips_GroupMemberAction extends Xoonips_UserActionBase
         $groupUserLinkBean = Xoonips_BeanFactory::getBean('GroupsUsersLinkBean', $this->dirname, $this->trustDirname);
 
         $group = $groupBean->getGroup($groupId);
+        if (empty($group)) {
+            $response->setSystemError(_MD_XOONIPS_MESSAGE_GROUP_EMPTY);
+
+            return false;
+        }
+
         $managers = $userBean->getUsersGroups($groupId, true);
         $users = $userBean->getUsersGroups($groupId, false);
         $members = [];
@@ -88,9 +94,17 @@ class Xoonips_GroupMemberAction extends Xoonips_UserActionBase
         ];
 
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
+        $groupBean = Xoonips_BeanFactory::getBean('GroupsBean', $this->dirname, $this->trustDirname);
 
         //get parameter
-        $groupId = $request->getParameter('groupid');
+        $groupId = intval($request->getParameter('groupid'));
+        $group = $groupBean->getGroup($groupId);
+        if (empty($group)) {
+            $response->setSystemError(_MD_XOONIPS_MESSAGE_GROUP_EMPTY);
+
+            return false;
+        }
+
         $memberIds = $request->getParameter('memberid');
         $members = $userBean->getUsersGroups($groupId, false);
 
@@ -135,7 +149,13 @@ class Xoonips_GroupMemberAction extends Xoonips_UserActionBase
         $memberValue = $request->getParameter('membervalue');
         $memberIds = $request->getParameter('memberid');
         $adminIds = $request->getParameter('adminid');
-        $groupId = $request->getParameter('groupid');
+        $groupId = intval($request->getParameter('groupid'));
+        $group = $groupBean->getGroup($groupId);
+        if (empty($group)) {
+            $response->setSystemError(_MD_XOONIPS_MESSAGE_GROUP_EMPTY);
+
+            return false;
+        }
 
         //get group members
         $uids = [];
@@ -179,7 +199,6 @@ class Xoonips_GroupMemberAction extends Xoonips_UserActionBase
         }
 
         //get group infomation
-        $group = $groupBean->getGroup($groupId);
 
         $token_ticket = $this->createToken('user_group_member');
         $breadcrumbs = [

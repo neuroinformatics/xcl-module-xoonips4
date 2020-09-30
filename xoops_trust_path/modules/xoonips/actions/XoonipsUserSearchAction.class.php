@@ -187,8 +187,8 @@ class Xoonips_UserSearchAction extends Xoonips_UserActionBase
         } else {
             $order = $_POST['newOrder'];
         }
-        $page = $request->getParameter('page');
-        if ('' == $page) {
+        $page = intval($request->getParameter('page'));
+        if (0 < $page) {
             $page = 1;
         }
         if (0 != count($errors->getErrors())) {
