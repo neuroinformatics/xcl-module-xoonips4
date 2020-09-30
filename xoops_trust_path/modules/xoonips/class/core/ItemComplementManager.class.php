@@ -1,32 +1,61 @@
 <?php
 
+use Xoonips\Core\Functions;
+use Xoonips\Core\JoinCriteria;
+use Xoonips\Core\TableFieldCriteria;
+
 class Xoonips_ItemComplementManager
 {
-    private $dirname;
+    private $mDirname;
 
     public function __construct($dirname)
     {
-        $this->dirname = $dirname;
+        $this->mDirname = $dirname;
     }
 
-    public function getItemComplement($relId, $itId, $baseId, $base_gId)
+    /**
+     * get item complement.
+     *
+     * @param int $complementId
+     * @param int $itemTypeId
+     * @param int $baseFieldDetailId
+     * @param int $baseFieldGroupId
+     *
+     * @return array|false
+     */
+    public function getItemComplement($complementId, $itemTypeId, $baseFieldDetailId, $baseFieldGroupId)
     {
-        global $xoopsDB;
-        $tabRd = $xoopsDB->prefix($this->dirname.'_complement_detail');
-        $tabItdr = $xoopsDB->prefix($this->dirname.'_item_field_detail_complement_link');
-        $sql = 'SELECT t1.code, t2.item_field_detail_id, t2.group_id FROM '.$tabRd.' t1, '.$tabItdr.
-        ' t2 WHERE t1.complement_id=t2.complement_id AND t1.complement_detail_id=t2.complement_detail_id 
-		AND t1.complement_id='.$relId.' AND t2.item_type_id='.$itId
-        .' AND t2.base_item_field_detail_id='.$baseId.' AND t2.base_group_id='.$base_gId;
-        $result = $xoopsDB->queryF($sql);
-        if (!$result) {
+        $complementDetailHandler = Functions::getXoonipsHandler('ComplementDetailObject', $this->mDirname);
+        $itemFieldDetailComplementLinkHandler = Functions::getXoonipsHandler('ItemFieldDetailComplementLinkObject', $this->mDirname);
+        $complementDetailTable = $complementDetailHandler->getTable();
+        $itemFieldDetailComplementLinkTable = $itemFieldDetailComplementLinkHandler->getTable();
+        $fields = [
+            [$complementDetailTable, 'code'],
+            [$itemFieldDetailComplementLinkTable, 'group_id'],
+            [$itemFieldDetailComplementLinkTable, 'item_field_detail_id'],
+        ];
+        $fieldlist = implode(', ', array_map(function ($field) {
+            return sprintf('`%s`.`%s`', $field[0], $field[1]);
+        }, $fields));
+        $join = new JoinCriteria('INNER', $itemFieldDetailComplementLinkTable, 'complement_detail_id', $complementDetailTable, 'complement_detail_id');
+        $criteria = new CriteriaCompo();
+        $criteria->add(new TableFieldCriteria($complementDetailTable, 'complement_id', $itemFieldDetailComplementLinkTable, 'complement_id'));
+        $criteria->add(new Criteria('complement_id', $complementId, '=', $complementDetailTable));
+        $criteria->add(new Criteria('item_type_id', $itemTypeId, '=', $itemFieldDetailComplementLinkTable));
+        $criteria->add(new Criteria('base_item_field_detail_id', $baseFieldDetailId, '=', $itemFieldDetailComplementLinkTable));
+        $criteria->add(new Criteria('base_group_id', $baseFieldGroupId, '=', $itemFieldDetailComplementLinkTable));
+        if (!$res = $complementDetailHandler->open($criteria, $fieldlist, false, $join)) {
             return false;
         }
         $ret = [];
-        while ($row = $xoopsDB->fetchArray($result)) {
-            $ret[] = $row;
+        while ($obj = $complementDetailHandler->getNext($res)) {
+            $ret[] = [
+                'code' => $obj->get('code'),
+                'group_id' => $obj->getExtra('group_id'),
+                'item_field_detail_id' => $obj->getExtra('item_field_detail_id'),
+            ];
         }
-        $xoopsDB->freeRecordSet($result);
+        $complementDetailHandler->close($res);
 
         return $ret;
     }
