@@ -142,7 +142,8 @@ class XmlIndexExport
                 }
             }
 
-            return ['current' => $grpindex,
+            return [
+                'current' => $grpindex,
                 'items' => $item_ids,
                 'children' => $children,
             ];
@@ -247,6 +248,7 @@ class XmlIndexExport
      */
     public function getDom($indexpath, $uid, $user)
     {
+        // FIXME: d3 support
         $dirname = $trustDirname = 'xoonips';
         $this->indexBean = Xoonips_BeanFactory::getBean('IndexBean', $dirname, $trustDirname);
 

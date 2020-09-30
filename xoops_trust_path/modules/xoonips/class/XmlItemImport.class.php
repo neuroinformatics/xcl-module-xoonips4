@@ -48,44 +48,19 @@ abstract class XmlItemImportUpdate_Base
         $this->create_item_id = -1;
         $this->new_indexes = [];
 
-        $this->item_title_bean = Xoonips_BeanFactory::getBean('ItemTitleBean',
-                                                    $this->dirname,
-                                                    $this->trustDirname);
-        $this->item_keyword_bean = Xoonips_BeanFactory::getBean('ItemKeywordBean',
-                                                      $this->dirname,
-                                                      $this->trustDirname);
-        $this->item_extend_bean = Xoonips_BeanFactory::getBean('ItemExtendBean',
-                                                      $this->dirname,
-                                                      $this->trustDirname);
-        $this->related_to_bean = Xoonips_BeanFactory::getBean('ItemRelatedToBean',
-                                                      $this->dirname,
-                                                      $this->trustDirname);
-        $this->item_link_bean = Xoonips_BeanFactory::getBean('IndexItemLinkBean',
-                                                      $this->dirname,
-                                                      $this->trustDirname);
-        $this->item_file_bean = Xoonips_BeanFactory::getBean('ItemFileBean',
-                                                      $this->dirname,
-                                                      $this->trustDirname);
-        $this->index_change_log_bean = Xoonips_BeanFactory::getBean('ItemChangeLogBean',
-                                                      $this->dirname,
-                                                      $this->trustDirname);
-        $this->item_user_link_bean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean',
-                                                      $this->dirname,
-                                                      $this->trustDirname);
-        $this->item_virtual_bean = Xoonips_BeanFactory::getBean('ItemVirtualBean',
-                                                      $this->dirname,
-                                                      $this->trustDirname);
-        $this->item_bean = Xoonips_BeanFactory::getBean('ItemBean',
-                                                $this->dirname,
-                                                $this->trustDirname);
-        $this->item_group_bean = Xoonips_BeanFactory::getBean('ItemFieldGroupBean',
-                                                $this->dirname,
-                                                $this->trustDirname);
-        $this->index_bean = Xoonips_BeanFactory::getBean('IndexBean',
-                                                $this->dirname,
-                                                $this->trustDirname);
-        $this->users_bean = Xoonips_BeanFactory::getBean('UsersBean',
-                                                $this->dirname);
+        $this->item_title_bean = Xoonips_BeanFactory::getBean('ItemTitleBean', $this->dirname, $this->trustDirname);
+        $this->item_keyword_bean = Xoonips_BeanFactory::getBean('ItemKeywordBean', $this->dirname, $this->trustDirname);
+        $this->item_extend_bean = Xoonips_BeanFactory::getBean('ItemExtendBean', $this->dirname, $this->trustDirname);
+        $this->related_to_bean = Xoonips_BeanFactory::getBean('ItemRelatedToBean', $this->dirname, $this->trustDirname);
+        $this->item_link_bean = Xoonips_BeanFactory::getBean('IndexItemLinkBean', $this->dirname, $this->trustDirname);
+        $this->item_file_bean = Xoonips_BeanFactory::getBean('ItemFileBean', $this->dirname, $this->trustDirname);
+        $this->index_change_log_bean = Xoonips_BeanFactory::getBean('ItemChangeLogBean', $this->dirname, $this->trustDirname);
+        $this->item_user_link_bean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $this->dirname, $this->trustDirname);
+        $this->item_virtual_bean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
+        $this->item_bean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
+        $this->item_group_bean = Xoonips_BeanFactory::getBean('ItemFieldGroupBean', $this->dirname, $this->trustDirname);
+        $this->index_bean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
+        $this->users_bean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
     }
 
     public function get_err_msg()
@@ -213,9 +188,7 @@ abstract class XmlItemImportUpdate_Base
             return $this->set_err_msg(400, 'Incorrect group tag name: '.$item_group_arr['group_tag_name'].'.', __LINE__);
         }
 
-        $item_field_detail_bean = Xoonips_BeanFactory::getBean('ItemFieldDetailBean',
-                                                      $this->dirname,
-                                                      $this->trustDirname);
+        $item_field_detail_bean = Xoonips_BeanFactory::getBean('ItemFieldDetailBean', $this->dirname, $this->trustDirname);
         $item_field_detail_ids = $this->item_group_bean->getDetailIdbyXml($item_group_arr['group_tag_name']);
         $item_field_details = [];
         // Get item_field_detail info
@@ -227,22 +200,10 @@ abstract class XmlItemImportUpdate_Base
         foreach ($item_field_details as $db_detail) {
             if (0 == strcmp($db_detail['xml'], $xml_item_detail['item_tag_name'])) {
                 $occurence_number = $xml_item_detail['attribute']['occurrence_number'];
-                $rc = true;
-                if (0 == strcmp($db_detail['table_name'], 'xoonips_item_extend95')) {
-                    $rc = $this->db_extend2($item_id,
-                    $group_id,
-                    $db_detail['table_name'],
-                    $occurence_number);
-                } else {
-                    $val = $this->convert_str($xml_item_detail['value']);
-                    $rc = $this->db_extend($item_id,
-                    $group_id,
-                    $db_detail['table_name'],
-                    Xoonips_Utils::convertSQLStr($val),
-                    $occurence_number);
-                }
+                $val = $this->convert_str($xml_item_detail['value']);
+                $rc = $this->db_extend($item_id, $group_id, $db_detail['table_name'], Xoonips_Utils::convertSQLStr($val), $occurence_number);
                 if (false === $rc) {
-                    return $this->set_err_msg(400, "To insert or update extend fail. item_id=${item_id},table_name=".$db_detail['table_name'].'value='.$xml_item_detail['value'], __LINE__);
+                    return $this->set_err_msg(400, 'To insert or update extend fail. item_id='.$item_id.',table_name='.$db_detail['table_name'].'value='.$xml_item_detail['value'], __LINE__);
                 }
             }
         }
@@ -265,12 +226,12 @@ abstract class XmlItemImportUpdate_Base
         $keyword_id = $this->convert_str($item_detail['attribute']['keyword_id']);
         $keyword_arr = [
             'item_id' => $item_id,
-            'keyword' => "${keyword}",
+            'keyword' => "$keyword", // __toString()
             'keyword_id' => $keyword_id,
         ];
         $rc = $this->db_keyword($keyword_arr);
         if (false === $rc) {
-            return $this->set_err_msg(400, "To insert key fail.item_id=${item_id},keyword=${keyword},keyword_id=${keyword_id}", __LINE__);
+            return $this->set_err_msg(400, 'To insert key fail.item_id='.$item_id.',keyword='.$keyword.',keyword_id='.$keyword_id, __LINE__);
         }
 
         return 200;
@@ -304,12 +265,9 @@ abstract class XmlItemImportUpdate_Base
         $item_field_detail_id = $ret[0];
         $title_value = $item_detail['child_xml_obj'];
         $title_id = $item_detail['attribute']['title_id'];
-        $rc = $this->db_title($item_id,
-                          $item_field_detail_id,
-                          $this->convert_str($title_value),
-                          $title_id);
+        $rc = $this->db_title($item_id, $item_field_detail_id, $this->convert_str($title_value), $title_id);
         if (false === $rc) {
-            return $this->set_err_msg(400, "Insert or update title fail title_value=${title_value},title_id=${title_id},item_field_detail_id=${item_field_detail_id}.", __LINE__);
+            return $this->set_err_msg(400, 'Insert or update title fail title_value='.$title_value.',title_id='.$title_id.',item_field_detail_id='.$item_field_detail_id, __LINE__);
         }
 
         return 200;
@@ -386,28 +344,25 @@ abstract class XmlItemImportUpdate_Base
         if (is_null($group_id)) {
             return $this->set_err_msg(400, 'Incorrect group tag name: '.$item_group_arr['group_tag_name'].'.', __LINE__);
         }
-        $item_field_detail_bean = Xoonips_BeanFactory::getBean('ItemFieldDetailBean',
-                                                      $this->dirname,
-                                                      $this->trustDirname);
+        $item_field_detail_bean = Xoonips_BeanFactory::getBean('ItemFieldDetailBean', $this->dirname, $this->trustDirname);
         $item_field_details = [];
         // Get item_field_detail info
         $item_field_detail_id_arr = $this->item_group_bean->getDetailIdbyXml($item_group_arr['group_tag_name']);
         foreach ($item_field_detail_id_arr as $item_field_detail_id) {
             $db_item_field_detail = $item_field_detail_bean->getItemTypeDetailById($item_field_detail_id);
             if (false === $db_item_field_detail) {
-                return $this->set_err_msg(400, "item_field_detail_id = ${$item_field_detail_id} not exist.", __LINE__);
+                return $this->set_err_msg(400, 'item_field_detail_id = '.$$item_field_detail_id.' not exist.', __LINE__);
             }
 
             // Compare xml
             if (0 == strcmp($db_item_field_detail['xml'], $xml_item_detail['item_tag_name'])) {
                 $xml_file_id = intval($xml_item_detail['child_xml_obj']->children(self::itemns)->file_id);
-                $file = $this->create_file_array($item_id, $xml_file_id,
-                          $db_item_field_detail['item_field_detail_id'], $group_id);
+                $file = $this->create_file_array($item_id, $xml_file_id, $db_item_field_detail['item_field_detail_id'], $group_id);
                 if (empty($file)) {
-                    return $this->set_err_msg(400, 'file_id does not exist or xoonips_item_file in xml.'.print_r($file, true)."item_id=${item_id}", __LINE__);
+                    return $this->set_err_msg(400, 'file_id does not exist or xoonips_item_file in xml.'.print_r($file, true).'item_id='.$item_id, __LINE__);
                 }
                 foreach ($xml_item_detail['child_xml_obj']->children(self::itemns) as $k => $v) {
-                    $file[$k] = $this->convert_str("${v}");
+                    $file[$k] = $this->convert_str("$v"); // __toString()
                 }
                 if (false == $this->check_file_array($file, $illegalname, $xml_file_id)) {
                     return $this->set_err_msg(400, 'XML file tag does not set '.$illegalname.' '.print_r($file, true), __LINE__);
@@ -420,8 +375,7 @@ abstract class XmlItemImportUpdate_Base
                 if (false === $rc) {
                     return $this->set_err_msg(400, 'To insert file info fail.file ='.print_r($file, true), __LINE__);
                 }
-                if ($this->exist_attach_file($xml_file_id) &&
-          false == $this->fileUpload($xml_file_id, $file_id, $item_id)) {
+                if ($this->exist_attach_file($xml_file_id) && false == $this->fileUpload($xml_file_id, $file_id, $item_id)) {
                     return $this->set_err_msg(500, 'File upload fail ='.print_r($file, true), __LINE__);
                 }
             }
@@ -453,8 +407,7 @@ abstract class XmlItemImportUpdate_Base
      */
     protected function index_item_link(&$item_group_arr, &$item_detail, $item_id)
     {
-        $index_bean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname,
-                                                      $this->trustDirname);
+        $index_bean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         $indexId = 0;
         $certify_state = 0;
         $item_link_id = 0;
@@ -462,32 +415,18 @@ abstract class XmlItemImportUpdate_Base
 
         foreach ($item_detail['child_xml_obj']->children(self::itemns) as $k => $v) {
             if (0 == strcmp($k, 'index_id')) {
-                $indexId = "${v}";
+                $indexId = "$v"; // __toString()
             } elseif (0 == strcmp($k, 'index_item_link_id')) {
-                $item_link_id = "${v}";
+                $item_link_id = "$v"; // __toString()
             } elseif (0 == strcmp($k, 'certify_state')) {
-                $certify_state = "${v}";
+                $certify_state = "$v"; // __toString()
             } elseif (0 == strcmp($k, 'index_title')) {
-                $index_title = "${v}";
+                $index_title = "$v"; // __toString()
             }
         }
-        /*
-        $index_ids = $this->correct_my_accesible_indexes();
-        $index_found = false;
-        foreach ($index_ids as $index_id) {
-          if($index_id == $indexId){
-            $index_found = true;
-            break;
-          }
-        }
-        if($index_found == false){
-          return $this->set_err_msg(403, "index_id ${indexId} cannot access.",__LINE__);
-        }
-         *
-         */
 
         if (null == $index_title || '' == $index_title) {
-            return $this->set_err_msg(400, "Attribute type index_title don't specify.", __LINE__);
+            return $this->set_err_msg(400, 'Attribute type index_title don\'t specify.', __LINE__);
         }
         if (0 !== strpos($index_title, '/') || 1 == strlen($index_title)) {
             return $this->set_err_msg(400, 'Attribute type index_title must start with /', __LINE__);
@@ -532,18 +471,9 @@ abstract class XmlItemImportUpdate_Base
         } else {
             $indexId = $root_index['index_id'];
         }
-        // Correct Index?
-        /*     $indexes = $index_bean->getIndex("${indexId}");
-            if($indexes === false){
-              if($indexId==0){
-                return $this->set_err_msg(400, "Attribute type index_item_link don't specify.",__LINE__);
-              }else{
-                return $this->set_err_msg(400, "Attribute type index_item_link=${indexId} not found.",__LINE__);
-              }
-            } */
 
         if (empty($indexId)) {
-            return $this->set_err_msg(400, "Attribute type index_title=${index_title} can not create.", __LINE__);
+            return $this->set_err_msg(400, 'Attribute type index_title='.$index_title.' can not create.', __LINE__);
         }
 
         // Correct certify_state?
@@ -553,7 +483,7 @@ abstract class XmlItemImportUpdate_Base
 
         $rc = $this->db_index_item_link($indexId, $item_id, $certify_state, $item_link_id);
         if (false == $rc) {
-            return $this->set_err_msg(403, "Illegal item_link parameter in xml.indexId=${indexId},item_id=${item_id},item_link_id=${item_link_id}", __LINE__);
+            return $this->set_err_msg(403, 'Illegal item_link parameter in xml.indexId='.$indexId.',item_id='.$item_id.',item_link_id='.$item_link_id, __LINE__);
         }
 
         if (1 == $indexType) { //Public
@@ -633,11 +563,11 @@ abstract class XmlItemImportUpdate_Base
             $log = '';
             foreach ($log_info as $k => $v) {
                 if (0 == strcmp($k, 'log')) {
-                    $changelog['log'] = "${v}";
+                    $changelog['log'] = "$v"; // __toString()
                 } elseif (0 == strcmp($k, 'log_date')) {
-                    $changelog['log_date'] = "${v}";
+                    $changelog['log_date'] = "$v"; // __toString()
                 } elseif (0 == strcmp($k, 'uid')) {
-                    $changelog['uid'] = "${v}";
+                    $changelog['uid'] = "$v"; // __toString()
                 }
             }
             $rc = $this->db_changelog($changelog);
@@ -796,13 +726,13 @@ abstract class XmlItemImportUpdate_Base
                     continue;
                 }
                 if (false == $this->exist_detail_xml($item_detail['item_tag_name'], $detail_item_id_arr)) {
-                    return $this->set_err_msg(400, "tag ${item_detail['item_tag_name']} illegal.xoonips_item_field_detail don't exist.", __LINE__);
+                    return $this->set_err_msg(400, 'tag '.$item_detail['item_tag_name'].' illegal.xoonips_item_field_detail don\'t exist.', __LINE__);
                 }
                 $type = $item_detail['attribute']['type'];
                 if (method_exists($this, $type)) {
                     $item_group_arr = $this->get_group_info($item_sxml);
                     if (empty($item_group_arr)) {
-                        return $this->set_err_msg(400, "type='group' attribute don't exist.", __LINE__);
+                        return $this->set_err_msg(400, 'type=\'group\' attribute don\'t exist.', __LINE__);
                     }
                     $rc = $this->$type($item_group_arr, $item_detail, $item_id);
                     switch ($rc) {
@@ -869,8 +799,7 @@ abstract class XmlItemImportUpdate_Base
             foreach ($xml_item_infos as $xml_item_info) {
                 if (0 == strcmp($xml_item_info['attribute']['type'], 'item')) {
                     if (!empty($xml_item_info['value'])) {
-                        if (0 == strcmp($xml_item_info['attribute']['column_name'], 'doi') &&
-                   false == $this->is_doi($xml_item_info['value'])) {
+                        if (0 == strcmp($xml_item_info['attribute']['column_name'], 'doi') && false == $this->is_doi($xml_item_info['value'])) {
                             return -1;
                         }
                         $db_item_info[$xml_item_info['attribute']['column_name']] = $xml_item_info['value'];
@@ -906,7 +835,7 @@ abstract class XmlItemImportUpdate_Base
             if (0 != strcmp($att, 'type') || 0 != strcmp($atval, 'group')) {
                 continue;
             }
-            $ret['attribute'][$att] = "${atval}";
+            $ret['attribute'][$att] = "$atval"; // __toString()
         }
         if (empty($ret['attribute']['type'])) {
             return [];
@@ -939,9 +868,9 @@ abstract class XmlItemImportUpdate_Base
             $ret_item = [];
             $ret_item['item_tag_name'] = $c->getName();
             foreach ($c->attributes(self::itemns)  as $catt => $cval) {
-                $ret_item['attribute'][$catt] = "${cval}";
+                $ret_item['attribute'][$catt] = "$cval"; // __toString()
             }
-            $ret_item['value'] = "${c}";
+            $ret_item['value'] = "$c"; // __toString()
             $ret_item['child_xml_obj'] = $c;
             $ret[] = $ret_item;
         }
@@ -988,7 +917,7 @@ abstract class XmlItemImportUpdate_Base
                 if ('contributor' == $xml_item_info['item_tag_name']) {
                     foreach ($xml_item_info['child_xml_obj']->children(self::itemns) as $k => $v) {
                         if ('uname' == $k) {
-                            $users[] = $this->convert_str("${v}");
+                            $users[] = $this->convert_str("$v"); // __toString()
                         }
                     }
                 }
@@ -1014,7 +943,7 @@ abstract class XmlItemImportUpdate_Base
                 if ('index' == $xml_item_info['item_tag_name']) {
                     foreach ($xml_item_info['child_xml_obj']->children(self::itemns) as $k => $v) {
                         if ('index_title' == $k) {
-                            $indexes[] = $this->convert_str("${v}");
+                            $indexes[] = $this->convert_str("$v"); // __toString()
                         }
                     }
                 }
@@ -1114,10 +1043,10 @@ abstract class XmlItemImportUpdate_Base
             $item_id = -1;
             $item_type_name = $this->get_Item_type_name_item_id($sxml, $item_id);
             if (is_null($item_type_name)) {
-                return $this->set_err_msg(400, "item_type_name don't appear XML attribute.", __LINE__);
+                return $this->set_err_msg(400, 'item_type_name don\'t appear XML attribute.', __LINE__);
             }
             if (false == $this->is_set_xml_item_id($item_id)) {
-                return $this->set_err_msg(400, "item_id don't exist DB.", __LINE__);
+                return $this->set_err_msg(400, 'item_id don\'t exist DB.', __LINE__);
             }
 
             // Get All Group
@@ -1346,9 +1275,7 @@ class XmlItemImport extends XmlItemImportUpdate_Base
      */
     protected function check_file_array(&$file, &$illegalname, $file_id)
     {
-        $chk_arr = [
-            'original_file_name', 'mime_type', 'search_module_name', 'search_module_version',
-        ];
+        $chk_arr = ['original_file_name', 'mime_type', 'search_module_name', 'search_module_version'];
         foreach ($chk_arr as $key) {
             if (is_null($file[$key])) {
                 $illegalname = $key;
@@ -1432,21 +1359,6 @@ class XmlItemImport extends XmlItemImportUpdate_Base
     }
 
     /**
-     * function for xoonips_item_extend2.
-     *
-     * @param int    $item_id
-     * @param int    $group_id
-     * @param string $tableName
-     * @param int    $occurence_number
-     *
-     * @return bool true:success,false:failed
-     */
-    protected function db_extend2($item_id, $group_id, $tableName, $occurence_number)
-    {
-        return $this->item_extend_bean->insert2($item_id, $tableName, $occurence_number, $group_id);
-    }
-
-    /**
      * abstruct method db_keyword.
      *
      * @param array $keyword_arr
@@ -1461,22 +1373,16 @@ class XmlItemImport extends XmlItemImportUpdate_Base
     /**
      * abstruct function.
      *
-     * @param int $item_id
-     * @param int $item_field_detail_id
-     * @param string  $title_value
-     * @param int     $title_id
+     * @param int    $item_id
+     * @param int    $item_field_detail_id
+     * @param string $title_value
+     * @param int    $title_id
      *
      * @return bool true:Success,false:Fail
      */
-    protected function db_title($item_id,
-                                $item_field_detail_id,
-                                $title_value,
-                                $title_id)
+    protected function db_title($item_id, $item_field_detail_id, $title_value, $title_id)
     {
-        return $this->item_title_bean->insertTitle($item_id,
-                                        $item_field_detail_id,
-                                        $title_value,
-                                        $title_id);
+        return $this->item_title_bean->insertTitle($item_id, $item_field_detail_id, $title_value, $title_id);
     }
 
     /**
@@ -1493,15 +1399,14 @@ class XmlItemImport extends XmlItemImportUpdate_Base
         $table = $xoopsDB->prefix($this->dirname.'_item');
         $doi = $this->convert_str($item_column['doi']);
 
-        $sql = "INSERT INTO ${table} (".implode(',', array_keys($item_column)).') ';
-        $sql .= 'VALUES(';
-        $sql .= Xoonips_Utils::convertSQLNum($item_column['item_type_id']);
-        $sql .= ','.Xoonips_Utils::convertSQLStr($doi);
-        $sql .= ','.Xoonips_Utils::convertSQLNum($item_column['view_count']);
-        $sql .= ','.Xoonips_Utils::convertSQLNum($item_column['last_update_date']);
-        $sql .= ','.Xoonips_Utils::convertSQLNum($item_column['creation_date']);
-        $sql .= ')';
-        if (!$xoopsDB->queryF($sql)) {
+        $sql = 'INSERT INTO `'.$table.'` ('.implode(',', array_keys($item_column)).')'.
+            ' VALUES('.Xoonips_Utils::convertSQLNum($item_column['item_type_id']).
+            ', '.Xoonips_Utils::convertSQLStr($doi).
+            ', '.Xoonips_Utils::convertSQLNum($item_column['view_count']).
+            ', '.Xoonips_Utils::convertSQLNum($item_column['last_update_date']).
+            ', '.Xoonips_Utils::convertSQLNum($item_column['creation_date']).
+            ')';
+        if (!$xoopsDB->query($sql)) {
             return false;
         } else {
             $item_id = $xoopsDB->getInsertId();
@@ -1638,8 +1543,7 @@ class XmlItemUpdate extends XmlItemImportUpdate_Base
         $item_files = $this->item_file_bean->getFilesByItemId($item_id, $group_id);
         if (false !== $item_files) {
             foreach ($item_files as $item_file) {
-                if ($item_file['item_field_detail_id'] == $item_field_detail_id &&
-        $item_file['file_id'] == $file_id) {
+                if ($item_file['item_field_detail_id'] == $item_field_detail_id && $item_file['file_id'] == $file_id) {
                     return $item_file;
                 }
             }
@@ -1757,8 +1661,7 @@ class XmlItemUpdate extends XmlItemImportUpdate_Base
     {
         $db_extend_array = $this->item_extend_bean->getItemExtendInfo($item_id, $tableName, $group_id);
         foreach ($db_extend_array as $extend) {
-            if ($extend['occurrence_number'] == $occurrence_number &&
-         $extend['group_id'] == $group_id) {
+            if ($extend['occurrence_number'] == $occurrence_number && $extend['group_id'] == $group_id) {
                 return $this->item_extend_bean->updateVal($item_id, $tableName, $value, $occurrence_number, $group_id);
             }
         }
@@ -1778,9 +1681,7 @@ class XmlItemUpdate extends XmlItemImportUpdate_Base
         $db_keyword_arr = $this->item_keyword_bean->getKeywords($keyword_arr['item_id']);
         foreach ($db_keyword_arr as $keyword) {
             if ($keyword['keyword_id'] == $keyword_arr['keyword_id']) {
-                return $this->item_keyword_bean->updateKeywords2($keyword_arr['item_id'],
-                                                    $keyword_arr['keyword_id'],
-                                                    $keyword_arr['keyword']);
+                return $this->item_keyword_bean->updateKeywords2($keyword_arr['item_id'], $keyword_arr['keyword_id'], $keyword_arr['keyword']);
             }
         }
 
@@ -1790,33 +1691,23 @@ class XmlItemUpdate extends XmlItemImportUpdate_Base
     /**
      * db_title function.
      *
-     * @param int $item_id
-     * @param int $item_field_detail_id
-     * @param string  $title
-     * @param int     $title_id
+     * @param int    $item_id
+     * @param int    $item_field_detail_id
+     * @param string $title
+     * @param int    $title_id
      *
      * @return bool true:Success,false:Fail
      */
-    protected function db_title($item_id,
-                                $item_field_detail_id,
-                                $title,
-                                $title_id)
+    protected function db_title($item_id, $item_field_detail_id, $title, $title_id)
     {
         $db_title_array = $this->item_title_bean->getItemTitleInfo($item_id);
         foreach ($db_title_array as $title1) {
-            if ($title1['item_field_detail_id'] == $item_field_detail_id &&
-          $title1['title_id'] == $title_id) {
-                return $this->item_title_bean->updateTitle($item_id,
-                                              $item_field_detail_id,
-                                              $title,
-                                              $title_id);
+            if ($title1['item_field_detail_id'] == $item_field_detail_id && $title1['title_id'] == $title_id) {
+                return $this->item_title_bean->updateTitle($item_id, $item_field_detail_id, $title, $title_id);
             }
         }
 
-        return $this->item_title_bean->insertTitle($item_id,
-                                              $item_field_detail_id,
-                                              $title,
-                                              $title_id);
+        return $this->item_title_bean->insertTitle($item_id, $item_field_detail_id, $title, $title_id);
     }
 
     private function update_item(&$item_column, $item_id)
@@ -1824,12 +1715,13 @@ class XmlItemUpdate extends XmlItemImportUpdate_Base
         global $xoopsDB;
         $table = $xoopsDB->prefix($this->dirname.'_item');
 
-        $sql = "UPDATE ${table} SET doi=".Xoonips_Utils::convertSQLStr($item_column['doi']).
-            ',view_count='.Xoonips_Utils::convertSQLNum($item_column['view_count']).
-            ',creation_date='.Xoonips_Utils::convertSQLNum($item_column['creation_date']).
-            ',last_update_date='.Xoonips_Utils::convertSQLNum($item_column['last_update_date']).
-            " where item_id=${item_id}";
-        if (!$xoopsDB->queryF($sql)) {
+        $sql = 'UPDATE `'.$table.'`'.
+            ' SET `doi`='.Xoonips_Utils::convertSQLStr($item_column['doi']).
+            ', `view_count`='.Xoonips_Utils::convertSQLNum($item_column['view_count']).
+            ', `creation_date`='.Xoonips_Utils::convertSQLNum($item_column['creation_date']).
+            ', `last_update_date`='.Xoonips_Utils::convertSQLNum($item_column['last_update_date']).
+            ' WHERE `item_id`='.intval($item_id);
+        if (!$xoopsDB->query($sql)) {
             return false;
         }
 
@@ -1887,7 +1779,7 @@ class XmlItemUpdate extends XmlItemImportUpdate_Base
             return 200;
         }
 
-        return $this->set_err_msg(400, "type='users_link' create fail. ", __LINE__);
+        return $this->set_err_msg(400, 'type=\'users_link\' create fail.', __LINE__);
     }
 
     /**

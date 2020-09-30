@@ -4,6 +4,7 @@ use Xoonips\Core\CacheUtils;
 use Xoonips\Core\FileUtils;
 use Xoonips\Core\Functions;
 use Xoonips\Core\StringUtils;
+use Xoonips\Core\XoopsUtils;
 use Xoonips\Core\ZipFile;
 
 /*
@@ -80,9 +81,7 @@ class XmlItemExport
      *
      * @return type
      */
-    private function xoonips_item_extend(&$ids,
-                                          &$item_field_detail_element,
-                                          &$grp_dom)
+    private function xoonips_item_extend(&$ids, &$item_field_detail_element, &$grp_dom)
     {
         $xml = $item_field_detail_element['xml'];
         $table_name = $item_field_detail_element['table_name'];
@@ -117,8 +116,7 @@ class XmlItemExport
 
         if (count($keyword_arr) > 0) {
             foreach ($keyword_arr as $key_value) {
-                $ele = $this->dom->createElementNS(contentsURI,
-                contetsPrefix.$xml, $this->convert_utf8($key_value['keyword']));
+                $ele = $this->dom->createElementNS(contentsURI, contetsPrefix.$xml, $this->convert_utf8($key_value['keyword']));
                 $ele->setAttributeNS(contentsURI, contetsPrefix.'type', 'keyword');
                 $ele->setAttributeNS(contentsURI, contetsPrefix.'keyword_id', $key_value['keyword_id']);
                 $grp_dom->appendChild($ele);
@@ -175,8 +173,7 @@ class XmlItemExport
         if (count($title_arr) > 0) {
             foreach ($title_arr as $val) {
                 if ($val['item_field_detail_id'] == $item_field_detail_id) {
-                    $ele = $this->dom->createElementNS(contentsURI,
-                  contetsPrefix.$xml, $this->convert_utf8($val['title']));
+                    $ele = $this->dom->createElementNS(contentsURI, contetsPrefix.$xml, $this->convert_utf8($val['title']));
                     $ele->setAttributeNS(contentsURI, contetsPrefix.'type', 'title');
                     $ele->setAttributeNS(contentsURI, contetsPrefix.'title_id', $val['title_id']);
                     $ele->setAttributeNS(contentsURI, contetsPrefix.'item_field_detail_id', $val['item_field_detail_id']);
@@ -240,7 +237,8 @@ class XmlItemExport
             $ele = $this->dom->createElementNS(contentsURI, contetsPrefix.$xml);
             $ele->setAttributeNS(contentsURI, contetsPrefix.'type', 'file');
             $ele->setAttributeNS(contentsURI, contetsPrefix.'column_name', $column);
-            $pack_arr = ['original_file_name',
+            $pack_arr = [
+                'original_file_name',
                 'file_id',
                 'item_field_detail_id',
                 'mime_type',
@@ -251,7 +249,8 @@ class XmlItemExport
                 'search_module_name',
                 'search_module_version',
                 'download_count',
-                'occurrence_number', ];
+                'occurrence_number',
+            ];
 
             foreach ($pack_arr as $xoonips_item_file_tagname) {
                 if (true == array_key_exists($xoonips_item_file_tagname, $item_file)) {
@@ -274,8 +273,7 @@ class XmlItemExport
      */
     private function xoonips_index_item_link(&$ids, &$item_field_detail_element, &$grp_dom)
     {
-        global $xoopsUser;
-        $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
+        XoopsUtils::getUid();
         $xml = $item_field_detail_element['xml'];
         $item_id = $ids['item_id'];
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
@@ -309,9 +307,6 @@ class XmlItemExport
             $grp_dom->appendChild($ele);
             $index_title = $indexBean->getFullPathStr($item_link_ele['index_id']);
             $ele->appendChild($this->dom->createElementNS(contentsURI, contetsPrefix.'index_title', $index_title));
-            /*       $ele->appendChild($this->dom->createElementNS(contentsURI, contetsPrefix.'index_id',$item_link_ele['index_id']));
-                  $ele->appendChild($this->dom->createElementNS(contentsURI, contetsPrefix.'index_item_link_id', $item_link_ele['index_item_link_id']));
-                  $ele->appendChild($this->dom->createElementNS(contentsURI, contetsPrefix.'certify_state', $item_link_ele['certify_state'])); */
         }
     }
 
@@ -334,8 +329,7 @@ class XmlItemExport
         foreach ($change_log as $change_log_ele) {
             $ele = $this->dom->createElementNS(contentsURI, contetsPrefix.'log');
             $type_ele->appendChild($ele);
-            $ele->appendChild($this->dom->createElementNS(contentsURI, contetsPrefix.'log',
-                                  $this->convert_utf8($change_log_ele['log'])));
+            $ele->appendChild($this->dom->createElementNS(contentsURI, contetsPrefix.'log', $this->convert_utf8($change_log_ele['log'])));
             $ele->appendChild($this->dom->createElementNS(contentsURI, contetsPrefix.'log_date', $change_log_ele['log_date']));
             $ele->appendChild($this->dom->createElementNS(contentsURI, contetsPrefix.'log_id', $change_log_ele['log_id']));
             $ele->appendChild($this->dom->createElementNS(contentsURI, contetsPrefix.'uid', $change_log_ele['uid']));
@@ -495,8 +489,7 @@ class XmlItemExport
      */
     public function export_zip($items, $index_id = 0)
     {
-        global $xoopsUser;
-        $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
+        XoopsUtils::getUid();
 
         $upload_dir = Functions::getXoonipsConfig($this->dirname, 'upload_dir');
         $tmpitem = $upload_dir.'/item';
@@ -504,13 +497,13 @@ class XmlItemExport
         // create temporary directry
         $tmp = '/tmp';
         $time = date('YmdHis');
-        $tmpdir1 = "${tmp}/${time}-ex1";
+        $tmpdir1 = $tmp.'/'.$time.'-ex1';
         if (!mkdir($tmpdir1, 0755)) {
-            die("can't create directry '${tmpdir1}'.");
+            die('can\'t create temporary working directry 1.');
         }
-        $tmpdir2 = "${tmp}/${time}-ex2";
+        $tmpdir2 = $tmp.'/'.$time.'-ex2';
         if (!mkdir($tmpdir2, 0755)) {
-            die("can't create directry '${tmpdir2}'.");
+            die('can\'t create temporary working directry 2.');
         }
 
         // export zip file ready
@@ -527,11 +520,11 @@ class XmlItemExport
                     $ctitle = $index['title'];
                     $itemIds = $indexBean->getCanViewItemIds($cid, $uid);
                     $id_path = $indexBean->getIndexIDPath($cid, $index_id);
-                    $tmpdir3 = "${tmpdir2}/${id_path}";
+                    $tmpdir3 = $tmpdir2.'/'.$id_path;
 
                     if (!is_dir($tmpdir3)) {
                         if (!mkdir($tmpdir3, 0755, true)) {
-                            die("can't create directry '${tmpdir3}'.");
+                            die('can\'t create temporary directry 3.');
                         }
                     }
                     $this->export_zip_ready($itemIds, $tmpdir1, $tmpdir3, $tmpitem);
@@ -541,7 +534,7 @@ class XmlItemExport
 
         // all item zip
         $zip = $time.'.zip';
-        $zipfile = "${tmp}/${zip}";
+        $zipfile = $tmp.'/'.$zip;
         $zipClass = new ZipFile();
         if ($zipClass->open($zipfile)) {
             foreach ($items as $item_id) {
@@ -549,7 +542,7 @@ class XmlItemExport
             }
             $zipClass->close();
         } else {
-            die("can't create zip file ".$zipfile);
+            die('can\'t create output zip file');
         }
 
         FileUtils::deleteDirectory($tmpdir1);
@@ -575,15 +568,15 @@ class XmlItemExport
             $xml = $this->get_xml($item_id);
 
             // create xml file
-            $xmlname = "${item_id}.xml";
-            $tmpfile = "${tmpdir1}/${xmlname}";
+            $xmlname = $item_id.'.xml';
+            $tmpfile = $tmpdir1.'/'.$xmlname;
             $zippedFiles[] = $xmlname;
             $fhdl = fopen($tmpfile, 'aw');
             if (!$fhdl) {
-                die("can't open file '${tmpfile}' for write.");
+                die('can\'t open temporary xml file.');
             }
             if (!fwrite($fhdl, $xml)) {
-                die("can't write '${tmpfile}'.");
+                die('can\'t write temporary xml file.');
             }
             fclose($fhdl);
 
@@ -591,8 +584,8 @@ class XmlItemExport
             $files = $fileBean->getFilesByItemId($item_id);
             foreach ($files as $file) {
                 $fileid = $file['file_id'];
-                // FIXME!! take care filesystem encoding
-                $filename = mb_convert_encoding($file['original_file_name'], 'SJIS', 'UTF-8');
+                // take care filesystem encoding - for Japanese
+                $filename = StringUtils::convertEncoding($file['original_file_name'], 'CP932', 'UTF-8', 'u');
                 mkdir("${tmpdir1}/${fileid}");
                 $src = $tmpitem.'/'.$item_id.'/'.$fileid;
                 $dst = $tmpdir1.'/'.$fileid.'/'.$filename;
@@ -608,7 +601,7 @@ class XmlItemExport
                 }
                 $zipClass->close();
             } else {
-                die("can't create zip file ".$tmpdir2.'/'.$itemzip);
+                die('can\'t create temporary zip file.');
             }
 
             $tmpdir_chk = explode('/', $tmpdir1);
