@@ -1,6 +1,7 @@
 <?php
 
 use Xoonips\Core\Functions;
+use Xoonips\Core\XoopsUtils;
 
 require_once dirname(__DIR__).'/core/ActionBase.class.php';
 
@@ -10,22 +11,15 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
 
     protected function doInit(&$request, &$response)
     {
-        global $xoopsUser;
+        $uid = XoopsUtils::getUid();
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-        $viewData = [];
-        $indexId = $request->getParameter('index_id');
-        $uid = $xoopsUser->getVar('uid');
-        if (null == $indexId) {
-            $index = $indexBean->getPrivateIndex($uid);
-            $indexId = $index['index_id'];
-        } else {
-            $index = $indexBean->getIndex($indexId);
-            if (!$indexBean->checkWriteRight($indexId, $uid)) {
-                // User doesn't have the right to write.
-                $response->setSystemError(_NOPERM);
+        $indexId = intval($request->getParameter('index_id'));
+        $index = $indexBean->getIndex($indexId);
+        if (empty($index) || !$indexBean->checkWriteRight($indexId, $uid)) {
+            // User doesn't have the right to write.
+            $response->setSystemError(_NOPERM);
 
-                return false;
-            }
+            return false;
         }
 
         $breadcrumbs = [
@@ -37,11 +31,11 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
         // get index full path
         $fullpathInfo = $indexBean->getFullPathIndexes($indexId);
         $fullPathIndexes = [];
-        foreach ($fullpathInfo as $index) {
-            if (1 == $index['parent_index_id'] && XOONIPS_OL_PRIVATE == $index['open_level']) {
+        foreach ($fullpathInfo as $index2) {
+            if (1 == $index2['parent_index_id'] && XOONIPS_OL_PRIVATE == $index2['open_level']) {
                 $index['html_title'] = 'Private';
             }
-            $fullPathIndexes[] = $index;
+            $fullPathIndexes[] = $index2;
         }
 
         // get icon
@@ -64,13 +58,14 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
         }
 
         // back
-        $back = $request->getParameter('back');
-        if (empty($back)) {
+        $back = intval($request->getParameter('back'));
+        if (0 != $back) {
             $back = Functions::getItemListUrl($this->dirname).'?index_id='.$indexId;
         } else {
             $back = 'editindex.php?index_id='.$back;
         }
 
+        $viewData = [];
         $viewData['index_id'] = $indexId;
         $viewData['root_dir'] = $root_dir;
         $viewData['title'] = $index['title'];
@@ -95,7 +90,16 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
 
     protected function doUpdate(&$request, &$response)
     {
-        $viewData = [];
+        $uid = XoopsUtils::getUid();
+        $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
+        $indexId = intval($request->getParameter('index_id'));
+        $index = $indexBean->getIndex($indexId);
+        if (empty($index) || !$indexBean->checkWriteRight($indexId, $uid)) {
+            // User doesn't have the right to write.
+            $response->setSystemError(_NOPERM);
+
+            return false;
+        }
 
         if (!$this->validateToken(($this->modulePrefix('index_description')))) {
             $response->setSystemError('Ticket error');
@@ -103,14 +107,11 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
             return false;
         }
 
-        $index_id = $request->getParameter('index_id');
         $title = $request->getParameter('title');
         $show_thumbnail = $request->getParameter('show_thumbnail');
         $detailed_title = $request->getParameter('detailed_title');
         $detailed_description = $request->getParameter('detailed_description');
 
-        $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-        $index = $indexBean->getIndex($index_id);
         $oldTitle = $index['title'];
 
         $index_upload_dir = Functions::getXoonipsConfig($this->dirname, 'index_upload_dir');
@@ -129,13 +130,11 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
         // start transaction
         $this->startTransaction();
 
+        $viewData = [];
         if (XOONIPS_IID_ROOT != $index['parent_index_id']) {
             if (empty($title)) {
-                $viewData = [];
-                if (empty($viewData['redirect_msg'])) {
-                    $viewData['redirect_msg'] = _MD_XOONIPS_MESSAGE_INDEX_DESCRIPTION_TITLE_ERROR;
-                }
-                $viewData['url'] = 'indexdescription.php?index_id='.$index_id;
+                $viewData['redirect_msg'] = _MD_XOONIPS_MESSAGE_INDEX_DESCRIPTION_TITLE_ERROR;
+                $viewData['url'] = 'indexdescription.php?index_id='.$indexId;
                 $response->setForward('update_error');
                 $response->setViewData($viewData);
                 $this->rollbackTransaction();
@@ -159,11 +158,8 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
         }
 
         if (!$indexBean->updateIndexDetailed($index)) {
-            $viewData = [];
-            if (empty($viewData['redirect_msg'])) {
-                $viewData['redirect_msg'] = _MD_XOONIPS_MESSAGE_INDEX_DESCRIPTION_UPDATE_ERROR;
-            }
-            $viewData['url'] = 'indexdescription.php?index_id='.$index_id;
+            $viewData['redirect_msg'] = _MD_XOONIPS_MESSAGE_INDEX_DESCRIPTION_UPDATE_ERROR;
+            $viewData['url'] = 'indexdescription.php?index_id='.$indexId;
             $response->setForward('update_error');
             $response->setViewData($viewData);
             $this->rollbackTransaction();
@@ -172,16 +168,16 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
         }
 
         if (2 == $show_thumbnail) {
-            $uploadfile = $upload_path.'/'.$index_id;
-            unlink($uploadfile);
+            $uploadfile = $upload_path.'/'.$indexId;
+            @unlink($uploadfile);
         }
 
         //upload index icon
         if (!empty($file)) {
             if (!file_exists($upload_path)) {
-                mkdir($upload_path, 0777, true);
+                @mkdir($upload_path, 0777, true);
             }
-            $uploadfile = $upload_path.'/'.$index_id;
+            $uploadfile = $upload_path.'/'.$indexId;
             if (!move_uploaded_file($file['tmp_name'], $uploadfile)) {
                 $response->setSystemError(_MD_XOONIPS_ERROR_INDEX_ICON_UPLOAD);
 
@@ -191,15 +187,15 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
 
         if ($oldTitle != $title) {
             // write log
-            $this->log->recordUpdateIndexEvent($index_id);
+            $this->log->recordUpdateIndexEvent($indexId);
             // event
-            $this->notification->afterUserIndexRenamed($this->notification->beforeUserIndexRenamed($index_id));
+            $this->notification->afterUserIndexRenamed($this->notification->beforeUserIndexRenamed($indexId));
         }
 
         if (empty($viewData['redirect_msg'])) {
             $viewData['redirect_msg'] = _MD_XOONIPS_MESSAGE_INDEX_DESCRIPTION_UPDATE_SUCCESS;
         }
-        $viewData['url'] = Functions::getItemListUrl($this->dirname).'?index_id='.$index_id;
+        $viewData['url'] = Functions::getItemListUrl($this->dirname).'?index_id='.$indexId;
         $response->setViewData($viewData);
         $response->setForward('update_success');
 
@@ -208,11 +204,16 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
 
     protected function doDelete(&$request, &$response)
     {
-        $viewData = [];
-
-        $index_id = $request->getParameter('index_id');
+        $uid = XoopsUtils::getUid();
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-        $index = $indexBean->getIndex($index_id);
+        $indexId = intval($request->getParameter('index_id'));
+        $index = $indexBean->getIndex($indexId);
+        if (empty($index) || !$indexBean->checkWriteRight($indexId, $uid)) {
+            // User doesn't have the right to write.
+            $response->setSystemError(_NOPERM);
+
+            return false;
+        }
 
         $index['detailed_title'] = null;
         $index['icon'] = null;
@@ -222,12 +223,10 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
         // start transaction
         $this->startTransaction();
 
+        $viewData = [];
         if (!$indexBean->updateIndexDetailed($index)) {
-            $viewData = [];
-            if (empty($viewData['redirect_msg'])) {
-                $viewData['redirect_msg'] = _MD_XOONIPS_MESSAGE_INDEX_DESCRIPTION_DELETE_ERROR;
-            }
-            $viewData['url'] = 'indexdescription.php?index_id='.$index_id;
+            $viewData['redirect_msg'] = _MD_XOONIPS_MESSAGE_INDEX_DESCRIPTION_DELETE_ERROR;
+            $viewData['url'] = 'indexdescription.php?index_id='.$indexId;
             $response->setForward('delete_error');
             $response->setViewData($viewData);
             $this->rollbackTransaction();
@@ -236,15 +235,13 @@ class Xoonips_IndexDescriptionAction extends Xoonips_ActionBase
         }
 
         $index_upload_dir = Functions::getXoonipsConfig($this->dirname, 'index_upload_dir');
-        $uploadfile = $index_upload_dir.'/index/'.$index_id;
+        $uploadfile = $index_upload_dir.'/index/'.$indexId;
         if (file_exists($uploadfile)) {
-            unlink($uploadfile);
+            @unlink($uploadfile);
         }
 
-        if (empty($viewData['redirect_msg'])) {
-            $viewData['redirect_msg'] = _MD_XOONIPS_MESSAGE_INDEX_DESCRIPTION_DELETE_SUCCESS;
-        }
-        $viewData['url'] = Functions::getItemListUrl($this->dirname).'?index_id='.$index_id;
+        $viewData['redirect_msg'] = _MD_XOONIPS_MESSAGE_INDEX_DESCRIPTION_DELETE_SUCCESS;
+        $viewData['url'] = Functions::getItemListUrl($this->dirname).'?index_id='.$indexId;
         $response->setViewData($viewData);
         $response->setForward('delete_success');
 

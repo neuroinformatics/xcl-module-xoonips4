@@ -1,6 +1,7 @@
 <?php
 
 use Xoonips\Core\Functions;
+use Xoonips\Core\XoopsUtils;
 
 require_once dirname(__DIR__).'/core/ActionBase.class.php';
 
@@ -8,22 +9,21 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
 {
     protected function doInit(&$request, &$response)
     {
-        global $xoopsUser;
+        // index list
+        $uid = XoopsUtils::getUid();
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-        $viewData = [];
-        $indexId = $request->getParameter('index_id');
-        $uid = $xoopsUser->getVar('uid');
-        if (null == $indexId) {
+        $indexId = intval($request->getParameter('index_id'));
+        if (0 == $indexId) {
             $index = $indexBean->getPrivateIndex($uid);
             $indexId = $index['index_id'];
         } else {
             $index = $indexBean->getIndex($indexId);
-            if (!$indexBean->checkWriteRight($indexId, $uid)) {
-                // User doesn't have the right to write.
-                $response->setSystemError(_NOPERM);
+        }
+        if (empty($index) || !$indexBean->checkWriteRight($indexId, $uid)) {
+            // User doesn't have the right to write.
+            $response->setSystemError(_NOPERM);
 
-                return false;
-            }
+            return false;
         }
 
         //if private index
@@ -44,11 +44,14 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
         } else {
             $breadcrumbsName = _MD_XOONIPS_INDEX_PANKUZU_EDIT_PUBLIC_INDEX_KEYWORD;
         }
+
         $breadcrumbs = [
             [
                 'name' => $breadcrumbsName,
             ],
         ];
+
+        $viewData = [];
         $viewData['xoops_breadcrumbs'] = $breadcrumbs;
         // if not public index
         if (XOONIPS_OL_PUBLIC != $index['open_level']) {
@@ -85,12 +88,23 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
 
     protected function doSave(&$request, &$response)
     {
+        // change order of child indexes
+        $uid = XoopsUtils::getUid();
+        $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
+        $indexId = intval($request->getParameter('index_id'));
+        $index = $indexBean->getIndex($indexId);
+        if (empty($index) || !$indexBean->checkWriteRight($indexId, $uid)) {
+            // User doesn't have the right to write.
+            $response->setSystemError(_NOPERM);
+
+            return false;
+        }
+
         if (!$this->validateToken($this->modulePrefix('edit_index'))) {
             $response->setSystemError('Ticket error');
 
             return false;
         }
-        $indexId = $request->getParameter('index_id');
         $indexIds = $request->getParameter('indexIds');
         $weights = $request->getParameter('weights');
         $this->startTransaction();
@@ -119,53 +133,31 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
 
     protected function doIndexEdit(&$request, &$response)
     {
-        global $xoopsUser;
+        // now index edit mode is implemented into indexdescription.php
+        // this action is only used for new creation
+        $uid = XoopsUtils::getUid();
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-        $viewData = [];
-        $indexId = $request->getParameter('index_id');
-        $parentIndexId = $request->getParameter('parent_index_id');
-        $uid = $xoopsUser->getVar('uid');
+        $parentIndexId = intval($request->getParameter('parent_index_id'));
+        $parentIndex = $indexBean->getIndex($parentIndexId);
+        if (empty($parentIndex) || !$indexBean->checkWriteRight($parentIndexId, $uid)) {
+            // User doesn't have the right to write.
+            $response->setSystemError(_NOPERM);
 
-        // if update mode
-        if (null != $indexId) {
-            // check write right
-            if (!$indexBean->checkWriteRight($indexId, $uid)) {
-                // User doesn't have the right to write.
-                $response->setSystemError(_NOPERM);
-
-                return false;
-            }
-            $index = $indexBean->getIndex($indexId);
-            if (false == $index) {
-                $response->setSystemError(_MD_XOONIPS_ERROR_DELETE_NOTEXIST_INDEX);
-
-                return false;
-            }
-
-            if ($indexBean->isLocked($indexId)) {
-                $response->setSystemError(_MD_XOONIPS_ERROR_CANNOT_EDIT_LOCKED_INDEX);
-
-                return false;
-            }
-            // if registry mode
-        } else {
-            // check write right
-            if (!$indexBean->checkWriteRight($parentIndexId, $uid)) {
-                // User doesn't have the right to write.
-                $response->setSystemError(_NOPERM);
-
-                return false;
-            }
-            $index = false;
-            if (!$this->checkIndexLimit($response, $parentIndexId)) {
-                return false;
-            }
-            if ($indexBean->isLocked($parentIndexId)) {
-                $response->setSystemError(_MD_XOONIPS_ERROR_CANNOT_EDIT_LOCKED_INDEX);
-
-                return false;
-            }
+            return false;
         }
+        if (!$this->checkIndexLimit($response, $parentIndexId)) {
+            return false;
+        }
+        if ($indexBean->isLocked($parentIndexId)) {
+            $response->setSystemError(_MD_XOONIPS_ERROR_CANNOT_EDIT_LOCKED_INDEX);
+
+            return false;
+        }
+        $index = [
+            'index_id' => 0,
+            'title' => '',
+        ];
+        $viewData = [];
         $viewData['index'] = $index;
         $viewData['parent_index_id'] = $parentIndexId;
         $token_ticket = $this->createToken($this->modulePrefix('update_index'));
@@ -180,31 +172,50 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
 
     protected function doUpdate(&$request, $response)
     {
-        global $xoopsUser;
-        global $xoopsDB;
+        // now index edit mode is implemented into indexdescription.php
+        // this action is only used for new creation
+        $uid = XoopsUtils::getUid();
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-        $errors = new Xoonips_Errors();
-        $viewData = [];
-        $index = [];
-        $indexId = $request->getParameter('index_id');
-        $parentIndexId = $request->getParameter('parent_index_id');
-        $title = $request->getParameter('title');
-        if (_CHARSET != 'UTF-8') {
-            $title = mb_convert_encoding($title, _CHARSET, 'utf-8');
+        $parentIndexId = intval($request->getParameter('parent_index_id'));
+        $parentIndex = $indexBean->getIndex($parentIndexId);
+        if (empty($parentIndex) || !$indexBean->checkWriteRight($parentIndexId, $uid)) {
+            // User doesn't have the right to write.
+            $response->setSystemError(_NOPERM);
+
+            return false;
         }
+        if (!$this->checkIndexLimit($response, $parentIndexId)) {
+            return false;
+        }
+        if ($indexBean->isLocked($parentIndexId)) {
+            $response->setSystemError(_MD_XOONIPS_ERROR_CANNOT_EDIT_LOCKED_INDEX);
+
+            return false;
+        }
+
         if (!$this->validateToken($this->modulePrefix('update_index'))) {
             $response->setSystemError('Ticket error');
 
             return false;
         }
 
+        global $xoopsDB;
+        $errors = new Xoonips_Errors();
+        $index = [
+            'index_id' => 0,
+            'parent_index_id' => $parentIndexId,
+            'uid' => $parentIndexId['uid'],
+            'group_id' => $parentIndex['group_id'],
+            'open_level' => $parentIndex['open_level'],
+            'title' => trim($request->getParameter('title')),
+        ];
+
+        $viewData = [];
         // if not input
-        if ('' == trim($title)) {
+        if ('' == $index['title']) {
             $errors = new Xoonips_Errors();
             $parameters[] = _MD_XOONIPS_INDEX_TITLE;
             $errors->addError('_MD_XOONIPS_ERROR_REQUIRED', 'title', $parameters);
-            $index['index_id'] = $indexId;
-            $index['title'] = $title;
             $viewData['index'] = $index;
             $viewData['parent_index_id'] = $parentIndexId;
             $viewData['errors'] = $errors->getView($this->dirname);
@@ -216,61 +227,17 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
             return true;
         }
 
-        // if update mode
-        if (null != $indexId) {
-            $index = $indexBean->getIndex($indexId);
-            if (false == $index) {
-                $response->setSystemError(_MD_XOONIPS_ERROR_DELETE_NOTEXIST_INDEX);
-
-                return false;
-            }
-            if (XOONIPS_OL_PRIVATE != $index['open_level'] && $index['title'] != $title && $indexBean->isLocked($indexId)) {
-                $response->setSystemError(_MD_XOONIPS_ERROR_CANNOT_EDIT_LOCKED_INDEX);
-
-                return false;
-            }
-            // if same title index
-            if ($indexBean->hasSameNameIndex($index['parent_index_id'], $title, $indexId)) {
-                $viewData['warnings'] = sprintf(_MD_XOONIPS_INDEX_TITLE_CONFLICT, $title);
-            }
-            $oldTitle = $index['title'];
-            $index['title'] = $title;
-            $notification_context = $this->notification->beforeUserIndexRenamed($indexId);
-            $indexBean->updateIndex($index);
-            if ($oldTitle != $title) {
-                // write log
-                $this->log->recordUpdateIndexEvent($indexId);
-
-                // event
-                $this->notification->afterUserIndexRenamed($notification_context);
-            }
-            $viewData['callbackvalue'] = _MD_XOONIPS_MSG_DBUPDATED;
-        // if registry mode
-        } else {
-            $index = $indexBean->getIndex($parentIndexId);
-            if (false == $index) {
-                $response->setSystemError(_MD_XOONIPS_ERROR_DELETE_NOTEXIST_INDEX);
-
-                return false;
-            }
-
-            if (!$this->checkIndexLimit($response, $parentIndexId)) {
-                return false;
-            }
-
-            // if same title index
-            if ($indexBean->hasSameNameIndex($parentIndexId, $title)) {
-                $viewData['warnings'] = sprintf(_MD_XOONIPS_INDEX_TITLE_CONFLICT, $title);
-            }
-            $index['title'] = $title;
-            $index['parent_index_id'] = $parentIndexId;
-            $indexBean->insertIndex($index);
-            $newIndexId = $xoopsDB->getInsertId();
-            // write log
-            $this->log->recordInsertIndexEvent($newIndexId);
-            $viewData['callbackvalue'] = _MD_XOONIPS_MSG_DBREGISTERED;
+        // if same title index
+        if ($indexBean->hasSameNameIndex($parentIndexId, $title)) {
+            $viewData['warnings'] = sprintf(_MD_XOONIPS_INDEX_TITLE_CONFLICT, $title);
         }
-        $viewData['callbackid'] = "editindex.php?index_id=$parentIndexId";
+        $indexBean->insertIndex($index);
+        $newIndexId = $xoopsDB->getInsertId();
+        // write log
+        $this->log->recordInsertIndexEvent($newIndexId);
+        $viewData['callbackvalue'] = _MD_XOONIPS_MSG_DBREGISTERED;
+
+        $viewData['callbackid'] = 'editindex.php?index_id='.$parentIndexId;
         $viewData['dirname'] = $this->dirname;
         $viewData['mytrustdirname'] = $this->trustDirname;
         $response->setViewData($viewData);
@@ -281,27 +248,17 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
 
     protected function doIndexMove(&$request, &$response)
     {
-        global $xoopsUser;
+        // edit form for index move
+        $uid = XoopsUtils::getUid();
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-        $errors = new Xoonips_Errors();
-        $viewData = [];
-        $indexId = $request->getParameter('index_id');
-        $uid = $xoopsUser->getVar('uid');
-
+        $indexId = intval($request->getParameter('index_id'));
         $index = $indexBean->getIndex($indexId);
-        if (!$index) {
-            $response->setSystemError(_MD_XOONIPS_ERROR_DELETE_NOTEXIST_INDEX);
-
-            return false;
-        }
-
-        if (!$indexBean->checkWriteRight($indexId, $uid)) {
+        if (empty($index) || !$indexBean->checkWriteRight($indexId, $uid)) {
             // User doesn't have the right to write.
             $response->setSystemError(_NOPERM);
 
             return false;
         }
-
         if ($indexBean->isLocked($indexId)) {
             $response->setSystemError(_MD_XOONIPS_ERROR_CANNOT_EDIT_LOCKED_INDEX);
 
@@ -318,9 +275,10 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
         } else {
             $rootIndex = $indexBean->getPublicIndex();
         }
-        $indexPath = $indexBean->getIndexPath($rootIndex['index_id'], $indexId);
+
+        $viewData = [];
         $viewData['index'] = $index;
-        $viewData['index_path'] = $indexPath;
+        $viewData['index_path'] = $indexBean->getIndexPath($rootIndex['index_id'], $indexId);
         $token_ticket = $this->createToken($this->modulePrefix('move_index'));
         $viewData['token_ticket'] = $token_ticket;
         $viewData['dirname'] = $this->dirname;
@@ -333,11 +291,42 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
 
     protected function doMove(&$request, &$response)
     {
-        global $xoopsUser;
-        $indexId = $request->getParameter('index_id');
-        $moveto = $request->getParameter('moveto');
-        $uid = $xoopsUser->getVar('uid');
+        // move index to new parent index
+        $uid = XoopsUtils::getUid();
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
+        $indexId = intval($request->getParameter('index_id'));
+        $index = $indexBean->getIndex($indexId);
+        if (empty($index) || !$indexBean->checkWriteRight($indexId, $uid)) {
+            // User doesn't have the right to write.
+            $response->setSystemError(_NOPERM);
+
+            return false;
+        }
+        if ($indexBean->isLocked($indexId)) {
+            $response->setSystemError(_MD_XOONIPS_ERROR_CANNOT_EDIT_LOCKED_INDEX);
+
+            return false;
+        }
+        $parentIndexId = intval($request->getParameter('moveto'));
+        $parentIndex = $indexBean->getIndex($parentIndexId);
+        if (empty($parentIndex) || !$indexBean->checkWriteRight($parentIndexId, $uid)) {
+            // User doesn't have the right to write.
+            $response->setSystemError(_NOPERM);
+
+            return false;
+        }
+        if ($indexBean->isChild($indexId, $parentIndexId)) {
+            // deny to move to child index
+            $response->setSystemError(_MD_XOONIPS_INDEX_BAD_MOVE);
+
+            return false;
+        }
+        if ($index['open_level'] != $parentIndex['open_level'] || $index['uid'] != $parentIndex['uid'] || $index['groupid'] != $parentIndex['groupid']) {
+            // deny to move to deferent index of index type
+            $response->setSystemError(_NOPERM);
+
+            return false;
+        }
 
         if (!$this->validateToken($this->modulePrefix('move_index'))) {
             $response->setSystemError('Ticket error');
@@ -345,25 +334,9 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
             return false;
         }
 
-        // if locked
-        if ($indexBean->isLocked($indexId)) {
-            $response->setSystemError(_MD_XOONIPS_ERROR_CANNOT_EDIT_LOCKED_INDEX);
-
-            return false;
-        }
-
-        $index = $indexBean->getIndex($indexId);
-        $parentIndexId = $index['parent_index_id'];
-
-        // if move to child index
-        if ($indexBean->isChild($indexId, $moveto)) {
-            $response->setSystemError(_MD_XOONIPS_INDEX_BAD_MOVE);
-
-            return false;
-        }
-
+        $prevParentIndexId = $index['parent_index_id'];
         $notification_context = $this->notification->beforeUserIndexMoved($indexId);
-        if (!$indexBean->moveto($indexId, $moveto)) {
+        if (!$indexBean->moveto($indexId, $parentIndexId)) {
             return false;
         }
 
@@ -373,7 +346,7 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
         // notificate move to item's owner
         $this->notification->afterUserIndexMoved($notification_context);
 
-        $viewData['callbackid'] = "editindex.php?index_id=$parentIndexId";
+        $viewData['callbackid'] = 'editindex.php?index_id='.$prevParentIndexId;
         $viewData['callbackvalue'] = _MD_XOONIPS_MSG_DBUPDATED;
         $viewData['dirname'] = $this->dirname;
         $viewData['mytrustdirname'] = $this->trustDirname;
@@ -385,32 +358,30 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
 
     protected function doIndexDelete(&$request, &$response)
     {
-        global $xoopsUser;
+        // index delete form
+        $uid = XoopsUtils::getUid();
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-        $errors = new Xoonips_Errors();
-        $viewData = [];
-        $indexId = $request->getParameter('index_id');
-        $uid = $xoopsUser->getVar('uid');
+        $indexId = intval($request->getParameter('index_id'));
         $index = $indexBean->getIndex($indexId);
-        if (!$index) {
-            $response->setSystemError(_MD_XOONIPS_ERROR_DELETE_NOTEXIST_INDEX);
-
-            return false;
-        }
-
-        if (!$indexBean->checkWriteRight($indexId, $uid)) {
+        if (empty($index) || !$indexBean->checkWriteRight($indexId, $uid)) {
             // User doesn't have the right to write.
             $response->setSystemError(_NOPERM);
 
             return false;
         }
-
         if ($indexBean->isLocked($indexId)) {
             $response->setSystemError(_MD_XOONIPS_ERROR_CANNOT_EDIT_LOCKED_INDEX);
 
             return false;
         }
+        if (1 == $index['parent_index_id']) {
+            // deny delete to root index
+            $response->setSystemError(_NOPERM);
 
+            return false;
+        }
+
+        $viewData = [];
         $viewData['index'] = $index;
         $token_ticket = $this->createToken($this->modulePrefix('delete_index'));
         $viewData['token_ticket'] = $token_ticket;
@@ -424,26 +395,31 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
 
     protected function doDelete(&$request, &$response)
     {
-        global $xoopsUser;
-        $viewData = [];
+        // delete index
+        $uid = XoopsUtils::getUid();
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-        $uid = $xoopsUser->getVar('uid');
-        $indexId = $request->getParameter('index_id');
-
-        if (!$this->validateToken($this->modulePrefix('delete_index'))) {
-            $response->setSystemError('Ticket error');
-
-            return false;
-        }
-
+        $indexId = intval($request->getParameter('index_id'));
         $index = $indexBean->getIndex($indexId);
-        if (!$index) {
-            $response->setSystemError(_MD_XOONIPS_ERROR_DELETE_NOTEXIST_INDEX);
+        if (empty($index) || !$indexBean->checkWriteRight($indexId, $uid)) {
+            // User doesn't have the right to write.
+            $response->setSystemError(_NOPERM);
 
             return false;
         }
         if ($indexBean->isLocked($indexId)) {
             $response->setSystemError(_MD_XOONIPS_ERROR_CANNOT_EDIT_LOCKED_INDEX);
+
+            return false;
+        }
+        if (1 == $index['parent_index_id']) {
+            // deny delete of root index
+            $response->setSystemError(_NOPERM);
+
+            return false;
+        }
+
+        if (!$this->validateToken($this->modulePrefix('delete_index'))) {
+            $response->setSystemError('Ticket error');
 
             return false;
         }
@@ -510,6 +486,8 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
             $this->log->recordDeleteIndexEvent($xid);
             $this->notification->afterUserIndexDeleted($notification_contexts[$xid], $parentIndexId);
         }
+
+        $viewData = [];
         $viewData['callbackid'] = "editindex.php?index_id=$parentIndexId";
         $viewData['callbackvalue'] = _MD_XOONIPS_MSG_DBDELETED;
         $viewData['dirname'] = $this->dirname;
@@ -534,8 +512,7 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
 
     private function checkIndexLimit(&$response, $parentIndexId)
     {
-        global $xoopsUser;
-        $uid = $xoopsUser->getVar('uid');
+        $uid = XoopsUtils::getUid();
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         $rootIndex = $indexBean->getRootIndex($parentIndexId);
         if (XOONIPS_OL_PUBLIC == $rootIndex['open_level']) {
