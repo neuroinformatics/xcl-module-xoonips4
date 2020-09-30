@@ -7,295 +7,18 @@ require_once dirname(dirname(dirname(__DIR__))).'/class/core/Transaction.class.p
 
 class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
 {
-    protected function doRegister(&$request, &$response)
-    {
-        // get requests
-        $changeop = $request->getParameter('changeop');
-        $name = $request->getParameter('name');
-        $xml = $request->getParameter('xml');
-        $view_type = $request->getParameter('view_type');
-        $data_type = $request->getParameter('data_type');
-        $list = $request->getParameter('list');
-        $data_length = $request->getParameter('data_length');
-        $data_decimal_places = $request->getParameter('data_decimal_places');
-        $default_value = $request->getParameter('default_value');
-        $essential = $request->getParameter('essential');
-        $detail_display = (0 === $request->getParameter('detail_display')) ? 0 : 1;
-        $detail_target = $request->getParameter('detail_target');
-        $scope_search = $request->getParameter('scope_search');
-        $scope_search_arr = $request->getParameter('scope_search_arr');
-
-        //title
-        $title = _AM_XOONIPS_POLICY_ITEMTYPE_DETAIL_REGIST_TITLE;
-        $description = _AM_XOONIPS_POLICY_ITEMTYPE_DETAIL_REGIST_DESC;
-
-        // breadcrumbs
-        $breadcrumbs = $this->setBreadcrumbs($title);
-
-        // get viewtype info
-        $viewtypelist = $this->getViewTypeList($view_type);
-
-        // do view_type change
-        if ('vtchange' == $changeop) {
-            $data_type = '';
-            $data_length = '';
-            $data_decimal_places = '';
-            $list = '';
-            $default_value = '';
-        }
-
-        // do list change
-        if ('listchange' == $changeop) {
-            $default_value = '';
-        }
-
-        // get list block
-        $list_block = $this->getDetailregisterListBlock($view_type, $list);
-
-        // get default block
-        $default_block = $this->getDetailregisterDefaultValutBlock($view_type, $list, $default_value);
-
-        // get datatype info
-        $selected_datatype_name = '';
-        $datatypelist = $this->getDataTypeList($view_type, $data_type, $selected_datatype_name, $scope_search, $scope_search_arr);
-
-        // token ticket
-        $token_ticket = $this->createToken($this->modulePrefix('admin_policy_itemfield_add'));
-
-        $viewData['breadcrumbs'] = $breadcrumbs;
-        $viewData['token_ticket'] = $token_ticket;
-        $viewData['viewtypelist'] = $viewtypelist;
-        $viewData['datatypelist'] = $datatypelist;
-        $viewData['selected_datatype_name'] = $selected_datatype_name;
-        $viewData['name'] = $name;
-        $viewData['xml'] = $xml;
-        $viewData['data_length'] = $data_length;
-        $viewData['data_decimal_places'] = $data_decimal_places;
-        $viewData['default_value'] = $default_value;
-        $viewData['essential'] = $essential;
-        $viewData['detail_display'] = $detail_display;
-        $viewData['detail_target'] = $detail_target;
-        $viewData['scope_search'] = $scope_search;
-        $viewData['scope_search_arr'] = $scope_search_arr;
-        $viewData['list_block'] = $list_block;
-        $viewData['default_block'] = $default_block;
-        $viewData['title'] = $title;
-        $viewData['description'] = $description;
-        $viewData['dirname'] = $this->dirname;
-        $viewData['mytrustdirname'] = $this->mytrustdirname;
-
-        $response->setViewData($viewData);
-        $response->setForward('register_success');
-
-        return true;
-    }
-
-    protected function doRegistersave(&$request, &$response)
-    {
-        // get requests
-        $changeop = $request->getParameter('changeop');
-        $name = $request->getParameter('name');
-        $xml = $request->getParameter('xml');
-        $view_type = $request->getParameter('view_type');
-        $data_type = $request->getParameter('data_type');
-        $list = $request->getParameter('list');
-        $data_length = $request->getParameter('data_length');
-        $data_decimal_places = $request->getParameter('data_decimal_places');
-        $default_value = $request->getParameter('default_value');
-        $essential = $request->getParameter('essential');
-        $detail_display = $request->getParameter('detail_display');
-        $detail_target = $request->getParameter('detail_target');
-        $scope_search = $request->getParameter('scope_search');
-        $scope_search_arr = $request->getParameter('scope_search_arr');
-        $mode = $request->getParameter('mode');
-
-        //title
-        $title = _AM_XOONIPS_POLICY_ITEMTYPE_DETAIL_REGIST_TITLE;
-        $description = _AM_XOONIPS_POLICY_ITEMTYPE_DETAIL_REGIST_DESC;
-
-        // breadcrumbs
-        $breadcrumbs = $this->setBreadcrumbs($title);
-
-        // get viewtype info
-        $viewtypelist = $this->getViewTypeList($view_type);
-
-        // do view_type change
-        if ('vtchange' == $changeop) {
-            $data_type = '';
-            $data_length = '';
-            $data_decimal_places = '';
-            $list = '';
-            $default_value = '';
-        }
-
-        // do list change
-        if ('listchange' == $changeop) {
-            $default_value = '';
-        }
-
-        // get list block
-        $list_block = $this->getDetailregisterListBlock($view_type, $list);
-
-        // get default block
-        $default_block = $this->getDetailregisterDefaultValutBlock($view_type, $list, $default_value);
-
-        // get datatype info
-        $selected_datatype_name = '';
-        $datatypelist = $this->getDataTypeList($view_type, $data_type, $selected_datatype_name, $scope_search, $scope_search_arr);
-
-        // do check
-        $errors = new Xoonips_Errors();
-        $inputData = [];
-        $inputData['name'] = $name;
-        $inputData['xml'] = $xml;
-        $inputData['view_type'] = $view_type;
-        $inputData['data_type'] = $data_type;
-        $inputData['list'] = $list;
-        $inputData['length'] = $data_length;
-        $inputData['length2'] = $data_decimal_places;
-        $inputData['default'] = $default_value;
-
-        if (!$this->doDetailregistersaveInputCheck($inputData, $errors)) {
-            // token ticket
-            $token_ticket = $this->createToken($this->modulePrefix('admin_policy_itemfield_add'));
-            $viewData['breadcrumbs'] = $breadcrumbs;
-            $viewData['token_ticket'] = $token_ticket;
-            $viewData['viewtypelist'] = $viewtypelist;
-            $viewData['datatypelist'] = $datatypelist;
-            $viewData['errors'] = $errors->getView($this->dirname);
-            $viewData['name'] = $name;
-            $viewData['xml'] = $xml;
-            $viewData['data_length'] = $data_length;
-            $viewData['data_decimal_places'] = $data_decimal_places;
-            $viewData['default_value'] = $default_value;
-            $viewData['essential'] = $essential;
-            $viewData['detail_display'] = $detail_display;
-            $viewData['detail_target'] = $detail_target;
-            $viewData['scope_search'] = $scope_search;
-            $viewData['scope_search_arr'] = $scope_search_arr;
-            $viewData['list_block'] = $list_block;
-            $viewData['default_block'] = $default_block;
-            $viewData['title'] = $title;
-            $viewData['description'] = $description;
-            $viewData['dirname'] = $this->dirname;
-
-            $response->setViewData($viewData);
-            $response->setForward('register_success');
-
-            return true;
-        }
-
-        // check token ticket
-        if (!$this->validateToken($this->modulePrefix('admin_policy_itemfield_add'))) {
-            return false;
-        }
-
-        // insert itemtype detail
-        $detailBean = Xoonips_BeanFactory::getBean('ItemFieldDetailBean', $this->dirname, $this->trustDirname);
-
-        $detail_info = [];
-        $detail_info['released'] = 0;
-        $detail_info['preselect'] = 0;
-        $detail_info['table_name'] = 'xoonips_item_extend';
-        $detail_info['column_name'] = 'value';
-        $detail_info['item_type_id'] = 0;
-        $detail_info['group_id'] = 0;
-        $detail_info['weight'] = 1;
-        $detail_info['name'] = $name;
-        $detail_info['xml'] = $xml;
-        $detail_info['view_type_id'] = $view_type;
-        $detail_info['data_type_id'] = $data_type;
-        $detail_info['data_length'] = ('' == $data_length) ? -1 : $data_length;
-        $detail_info['data_decimal_places'] = ('' == $data_decimal_places) ? -1 : $data_decimal_places;
-        $detail_info['default_value'] = ('' == $default_value) ? null : $default_value;
-        $detail_info['list'] = ('' == $list) ? null : $list;
-        $detail_info['essential'] = empty($essential) ? 0 : $essential;
-        $detail_info['detail_display'] = empty($detail_display) ? 0 : $detail_display;
-        $detail_info['detail_target'] = empty($detail_target) ? 0 : $detail_target;
-        $detail_info['scope_search'] = empty($scope_search) ? 0 : $scope_search;
-        $detail_info['nondisplay'] = 0;
-        $detail_info['update_id'] = null;
-
-        // transaction
-        $transaction = Xoonips_Transaction::getInstance();
-        $transaction->start();
-
-        $new_detail_id = 0;
-        if (!$detailBean->insert($detail_info, $new_detail_id)) {
-            $transaction->rollback();
-
-            $viewData['url'] = XOOPS_URL.'/modules/'.$this->dirname.'/admin/policy_itemfield.php?op=register';
-            $viewData['redirect_msg'] = _AM_XOONIPS_POLICY_ITEMTYPE_DETAIL_REGIST_MSG_FAILURE;
-            $response->setViewData($viewData);
-            $response->setForward('registersave_success');
-
-            return true;
-        }
-
-        if (!$detailBean->updateTableName($new_detail_id)) {
-            $transaction->rollback();
-
-            $viewData['url'] = XOOPS_URL.'/modules/'.$this->dirname.'/admin/policy_itemfield.php?op=register';
-            $viewData['redirect_msg'] = _AM_XOONIPS_POLICY_ITEMTYPE_DETAIL_REGIST_MSG_FAILURE;
-            $response->setViewData($viewData);
-            $response->setForward('registersave_success');
-
-            return true;
-        }
-
-        // release mode
-        if (1 == $mode) {
-            if (!$detailBean->release($new_detail_id, $new_detail_id)) {
-                $transaction->rollback();
-
-                $viewData['url'] = XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php?action=PolicyItemField';
-                $viewData['redirect_msg'] = _AM_XOONIPS_POLICY_ITEMTYPE_DETAIL_RELEASE_MSG_FAILURE;
-                $response->setViewData($viewData);
-                $response->setForward('registersave_success');
-
-                return true;
-            }
-
-            // Quick Search Setting
-            if (!$this->installItemSearch($new_detail_id)) {
-                $transaction->rollback();
-
-                $viewData['url'] = XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php?action=PolicyItemField';
-                $viewData['redirect_msg'] = _AM_XOONIPS_POLICY_ITEMTYPE_DETAIL_RELEASE_MSG_FAILURE;
-                $response->setViewData($viewData);
-                $response->setForward('registersave_success');
-
-                return true;
-            }
-        }
-
-        // success
-        $transaction->commit();
-
-        $viewData['url'] = XOOPS_URL.'/modules/'.$this->dirname.'/admin/index.php?action=PolicyItemField';
-        if (1 == $mode) {
-            $viewData['redirect_msg'] = _AM_XOONIPS_POLICY_ITEMTYPE_DETAIL_RELEASE_MSG_SUCCESS;
-        } else {
-            $viewData['redirect_msg'] = _AM_XOONIPS_POLICY_ITEMTYPE_DETAIL_REGIST_MSG_SUCCESS;
-        }
-        $response->setViewData($viewData);
-        $response->setForward('registersave_success');
-
-        return true;
-    }
-
     protected function doEdit(&$request, &$response)
     {
         // get requests
-        $base_detailid = $request->getParameter('detailid');
-        $detailid = $request->getParameter('detailid');
+        $base_detailid = intval($request->getParameter('detailid'));
+        $detailid = intval($request->getParameter('detailid'));
         $changeop = $request->getParameter('changeop');
         $name = $request->getParameter('name');
         $xml = $request->getParameter('xml');
-        $view_type = $request->getParameter('view_type');
-        $data_type = $request->getParameter('data_type');
+        $view_type = intval($request->getParameter('view_type'));
+        $data_type = intval($request->getParameter('data_type'));
         $list = $request->getParameter('list');
-        $data_length = $request->getParameter('data_length');
+        $data_length = intval($request->getParameter('data_length'));
         $data_decimal_places = $request->getParameter('data_decimal_places');
         $default_value = $request->getParameter('default_value');
         $essential = $request->getParameter('essential');
@@ -304,8 +27,7 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         $scope_search = $request->getParameter('scope_search');
         $nondisplay = $request->getParameter('nondisplay');
         $scope_search_arr = $request->getParameter('scope_search_arr');
-        $perpage = $request->getParameter('perpage');
-        $startpage = $request->getParameter('start');
+        //var_dump($_REQUEST);exit();
 
         //title
         $title = _AM_XOONIPS_POLICY_ITEMTYPE_DETAIL_EDIT_TITLE;
@@ -428,8 +150,6 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         $viewData['title'] = $title;
         $viewData['description'] = $description;
         $viewData['dirname'] = $this->dirname;
-        $viewData['perpage'] = $perpage;
-        $viewData['startpage'] = $startpage;
         $viewData['disedi'] = $disedi;
 
         $response->setViewData($viewData);
@@ -458,7 +178,7 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         $scope_search = $request->getParameter('scope_search');
         $nondisplay = $request->getParameter('nondisplay');
         $scope_search_arr = $request->getParameter('scope_search_arr');
-        $mode = $request->getParameter('mode');
+        $mode = intval($request->getParameter('mode'));
 
         //title
         $title = _AM_XOONIPS_POLICY_ITEMTYPE_DETAIL_EDIT_TITLE;
@@ -640,8 +360,8 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         $breadcrumbs = $this->setBreadcrumbs($title);
 
         // get requests
-        $base_detailid = $request->getParameter('base_detailid');
-        $detailid = $request->getParameter('detailid');
+        $base_detailid = intval($request->getParameter('base_detailid'));
+        $detailid = intval($request->getParameter('detailid'));
 
         // do release
         $detailBean = Xoonips_BeanFactory::getBean('ItemFieldDetailBean', $this->dirname, $this->trustDirname);
@@ -786,146 +506,6 @@ class Xoonips_PolicyItemFieldAction extends Xoonips_ActionBase
         }
 
         return $datatypelist;
-    }
-
-    private function doDetailregistersaveInputCheck($inputData, &$errors)
-    {
-        // detail name
-        $parameters = [];
-        $parameters[] = _AM_XOONIPS_LABEL_ITEMTYPE_DETAIL_NAME;
-        $viewTypeBean = Xoonips_BeanFactory::getBean('ViewTypeBean', $this->dirname, $this->trustDirname);
-        $dataTypeBean = Xoonips_BeanFactory::getBean('DataTypeBean', $this->dirname, $this->trustDirname);
-
-        if ('' == $inputData['name']) {
-            $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
-        } else {
-            // name double check except preview & file upload
-            if ($inputData['view_type'] != $viewTypeBean->selectByName('preview') && $inputData['view_type'] != $viewTypeBean->selectByName('file upload')) {
-                /*  allow duplicate item detail name
-                $detailBean = Xoonips_BeanFactory::getBean('ItemFieldDetailBean', $this->dirname, $this->trustDirname);
-                if ($detailBean->existDetailName(0, $inputData['name'], 0)) {
-                    $errors->addError("_AM_XOONIPS_ERROR_DUPLICATE_MSG", "", $parameters);
-                }
-                */
-            }
-        }
-
-        // detail xml
-        $parameters = [];
-        $parameters[] = _AM_XOONIPS_POLICY_ITEMFIELD_ID;
-        if ('' == $inputData['xml']) {
-            $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
-        } else {
-            // xml double check except preview & file upload
-            if ($inputData['view_type'] != $viewTypeBean->selectByName('preview') && $inputData['view_type'] != $viewTypeBean->selectByName('file upload')) {
-                $detailBean = Xoonips_BeanFactory::getBean('ItemFieldDetailBean', $this->dirname, $this->trustDirname);
-                if ($detailBean->existDetailXml(0, $inputData['xml'], 0)) {
-                    $errors->addError('_AM_XOONIPS_ERROR_DUPLICATE_MSG', '', $parameters);
-                }
-            }
-        }
-
-        // view_type
-        if ('0' == $inputData['view_type']) {
-            $parameters = [];
-            $parameters[] = _AM_XOONIPS_LABEL_ITEMTYPE_VIEW_TYPE;
-            $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
-        } else {
-            $detailBean = Xoonips_BeanFactory::getBean('ItemFieldDetailBean', $this->dirname, $this->trustDirname);
-            $viewtypeObj = Xoonips_ViewTypeFactory::getInstance($this->dirname, $this->trustDirname)->getViewType($inputData['view_type']);
-            if (false == $viewtypeObj->isMulti() && $detailBean->existViewtype(0, $inputData['view_type'])) {
-                $parameters = [];
-                $parameters[] = '';
-                $errors->addError('_AM_XOONIPS_POLICY_ITEMTYPE_VIEWTYPE_DUPLICATE_MSG', '', $parameters);
-            }
-        }
-
-        // data_type
-        if ('0' == $inputData['data_type']) {
-            $parameters = [];
-            $parameters[] = _AM_XOONIPS_LABEL_ITEMTYPE_DATA_TYPE;
-            $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
-        }
-
-        // list required when view_type is radio & select
-        if (($inputData['view_type'] == $viewTypeBean->selectByName('radio') || $inputData['view_type'] == $viewTypeBean->selectByName('checkbox')) && '' == $inputData['list']) {
-            $parameters = [];
-            $parameters[] = _AM_XOONIPS_LABEL_ITEMTYPE_SUBTYPES;
-            $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
-        }
-
-        // length
-        if ('' == $inputData['length']) {
-            if ($inputData['data_type'] == $dataTypeBean->selectByName('int')) {
-                $inputData['length'] = 11;
-            } elseif ($inputData['data_type'] == $dataTypeBean->selectByName('float')) {
-                $inputData['length'] = 24;
-            } elseif ($inputData['data_type'] == $dataTypeBean->selectByName('double')) {
-                $inputData['length'] = 53;
-            } elseif ($inputData['data_type'] == $dataTypeBean->selectByName('varchar')) {
-                $inputData['length'] = 255;
-            } elseif ($inputData['data_type'] != $dataTypeBean->selectByName('char')) {
-                $inputData['length'] = -1;
-            }
-        }
-        if ('' != $inputData['length'] && !is_numeric($inputData['length'])) {
-            $parameters = [];
-            $parameters[] = _AM_XOONIPS_LABEL_ITEMTYPE_DATA_LENGTH;
-            $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
-        }
-
-        // length2
-        if ('' == $inputData['length2']) {
-            if ($inputData['data_type'] == $dataTypeBean->selectByName('float') || $inputData['data_type'] == $dataTypeBean->selectByName('double')) {
-                $inputData['length2'] = 0;
-            } else {
-                $inputData['length2'] = -1;
-            }
-        }
-        if ('' != $inputData['length2'] && !is_numeric($inputData['length2'])) {
-            $parameters = [];
-            $parameters[] = _AM_XOONIPS_LABEL_ITEMTYPE_DATA_LENGTH2;
-            $errors->addError('_AM_XOONIPS_ERROR_REQUIRED', '', $parameters);
-        }
-
-        if (count($errors->getErrors()) > 0) {
-            return false;
-        } else {
-            // 'value' colmun attribute check
-            $item = new Xoonips_ItemField();
-            $item->setLen($inputData['length']);
-            $item->setDecimalPlaces($inputData['length2']);
-            $item->setDefault($inputData['default']);
-            $datatypeObj = Xoonips_DataTypeFactory::getInstance($this->dirname, $this->trustDirname)->getDataType($inputData['data_type']);
-            $datatypeObj->valueAttrCheck($item, $errors);
-            if (count($errors->getErrors()) > 0) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    // get list block view
-    private function getDetailregisterListBlock($view_type, $list)
-    {
-        if (empty($view_type)) {
-            return $this->getListBlockHtml($view_type);
-        }
-        $viewTypeManage = Xoonips_ViewTypeFactory::getInstance($this->dirname, $this->trustDirname)->getViewType($view_type);
-
-        return $viewTypeManage->getListBlockView($list);
-    }
-
-    // get default value block view
-    private function getDetailregisterDefaultValutBlock($view_type, $list, $default_value)
-    {
-        if (empty($view_type)) {
-            return $this->getDefaultListBlockHtml($default_value);
-        }
-        $viewTypeManage = Xoonips_ViewTypeFactory::getInstance($this->dirname, $this->trustDirname)->getViewType($view_type);
-
-        return $viewTypeManage->getDefaultValueBlockView($list, $default_value);
     }
 
     private function doDetaileditsaveInputCheck($detailid, $inputData, &$errors, $base_detailid)

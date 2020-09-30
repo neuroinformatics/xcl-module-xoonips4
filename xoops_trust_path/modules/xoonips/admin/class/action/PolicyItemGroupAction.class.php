@@ -165,7 +165,7 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
         $name = $request->getParameter('name');
         $xml = $request->getParameter('xml');
         $occurrence = $request->getParameter('occurrence');
-        $mode = $request->getParameter('mode');
+        $mode = intval($request->getParameter('mode'));
 
         // get fields info
         $itemfields = [];
@@ -292,10 +292,10 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
     protected function doEdit(&$request, &$response)
     {
         // get requests
-        $base_groupid = $request->getParameter('groupid');
-        $groupid = $request->getParameter('groupid');
-        $perpage = $request->getParameter('perpage');
-        $startpage = $request->getParameter('start');
+        $base_groupid = intval($request->getParameter('groupid'));
+        $groupid = intval($request->getParameter('groupid'));
+        $perpage = intval($request->getParameter('perpage'));
+        $startpage = intval($request->getParameter('start'));
 
         //title
         $title = _AM_XOONIPS_POLICY_ITEMTYPE_GROUP_EDIT_TITLE;
@@ -384,9 +384,9 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
     protected function doEditsave(&$request, &$response)
     {
         // get requests
-        $base_groupid = $request->getParameter('base_groupid');
-        $groupid = $request->getParameter('groupid');
-        $mode = $request->getParameter('mode');
+        $base_groupid = intval($request->getParameter('base_groupid'));
+        $groupid = intval($request->getParameter('groupid'));
+        $mode = intval($request->getParameter('mode'));
 
         //title
         $title = _AM_XOONIPS_POLICY_ITEMTYPE_GROUP_EDIT_TITLE;
@@ -511,8 +511,8 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
     protected function doSorteditsave(&$request, &$response)
     {
         // get requests
-        $base_groupid = $request->getParameter('base_groupid');
-        $groupid = $request->getParameter('groupid');
+        $base_groupid = intval($request->getParameter('base_groupid'));
+        $groupid = intval($request->getParameter('groupid'));
 
         //title
         $title = _AM_XOONIPS_POLICY_ITEMTYPE_GROUP_EDIT_TITLE;
@@ -574,8 +574,8 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
         $breadcrumbs = $this->setBreadcrumbs($title);
 
         // get requests
-        $base_groupid = $request->getParameter('base_groupid');
-        $groupid = $request->getParameter('groupid');
+        $base_groupid = intval($request->getParameter('base_groupid'));
+        $groupid = intval($request->getParameter('groupid'));
 
         // do release
         $groupBean = Xoonips_BeanFactory::getBean('ItemFieldGroupBean', $this->dirname, $this->trustDirname);
@@ -599,7 +599,7 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
     protected function doDelete(&$request, &$response)
     {
         // get requests
-        $groupid = $request->getParameter('groupid');
+        $groupid = intval($request->getParameter('groupid'));
 
         // check token ticket
         if (!$this->validateToken($this->modulePrefix('admin_policy_itemgroup'))) {
@@ -648,7 +648,7 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
     protected function doDetailregister(&$request, &$response)
     {
         // get requests
-        $groupid = $request->getParameter('base_groupid');
+        $groupid = intval($request->getParameter('base_groupid'));
         $changeop = $request->getParameter('changeop');
 
         //title
@@ -689,7 +689,7 @@ class Xoonips_PolicyItemGroupAction extends Xoonips_ActionBase
     protected function doDetailregistersave(&$request, &$response)
     {
         // get requests
-        $groupid = $request->getParameter('groupid');
+        $groupid = intval($request->getParameter('groupid'));
         $changeop = $request->getParameter('changeop');
 
         //title

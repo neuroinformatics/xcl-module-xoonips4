@@ -170,14 +170,10 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         // get requests
         $name = $request->getParameter('name');
         $descrip = $request->getParameter('descrip');
-        $weight = $request->getParameter('weight');
+        $weight = intval($request->getParameter('weight'));
         $template = $request->getParameter('template');
         $icon_file = $request->getFile('icon_file');
-        $mode = $request->getParameter('mode');
-
-        if ('' == $weight) {
-            $weight = '0';
-        }
+        $mode = intval($request->getParameter('mode'));
 
         // get groups info
         $groups = [];
@@ -334,9 +330,9 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         $breadcrumbs = $this->setBreadcrumbs($title);
 
         // get requests
-        $base_itemtypeid = $request->getParameter('itemtypeid');
-        $perpage = $request->getParameter('perpage');
-        $startpage = $request->getParameter('start');
+        $base_itemtypeid = intval($request->getParameter('itemtypeid'));
+        $perpage = intval($request->getParameter('perpage'));
+        $startpage = intval($request->getParameter('start'));
 
         // get base itemtype info
         $itemtypeBean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
@@ -408,8 +404,8 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         $breadcrumbs = $this->setBreadcrumbs($title);
 
         // get requests
-        $base_itemtypeid = $request->getParameter('itemtypeid');
-        $mode = $request->getParameter('mode');
+        $base_itemtypeid = intval($request->getParameter('itemtypeid'));
+        $mode = intval($request->getParameter('mode'));
 
         // get base itemtype info
         $itemtypeBean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
@@ -444,7 +440,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         $errors = new Xoonips_Errors();
         $name = $request->getParameter('name');
         $description = $request->getParameter('description');
-        $weight = $request->getParameter('weight');
+        $weight = intval($request->getParameter('weight'));
         $template = $request->getParameter('template');
         $icon_file = $request->getFile('icon_file');
         $group_ids = $request->getParameter('group_ids');
@@ -561,8 +557,8 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         $breadcrumbs = $this->setBreadcrumbs($title);
 
         // get requests
-        $base_itemtypeid = $request->getParameter('itemtypeid');
-        $mode = $request->getParameter('mode');
+        $base_itemtypeid = intval($request->getParameter('itemtypeid'));
+        $mode = intval($request->getParameter('mode'));
         $group_ids = $request->getParameter('group_ids');
         $weights = $request->getParameter('weights');
 
@@ -711,7 +707,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
     protected function doCopy(&$request, &$response)
     {
         // get requests
-        $itemtypeid = $request->getParameter('itemtypeid');
+        $itemtypeid = intval($request->getParameter('itemtypeid'));
 
         // itemtype name double check
         $itemtypeBean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
@@ -781,7 +777,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
     protected function doImportsave(&$request, &$response)
     {
         $import_file = $request->getFile('import_file');
-        $mode = $request->getParameter('mode');
+        $mode = intval($request->getParameter('mode'));
 
         //error
         $errors = new Xoonips_Errors();
@@ -994,7 +990,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
     protected function doDelete(&$request, &$response)
     {
         // get requests
-        $itemtypeid = $request->getParameter('itemtypeid');
+        $itemtypeid = intval($request->getParameter('itemtypeid'));
 
         // check token ticket
         if (!$this->validateToken($this->modulePrefix('admin_policy_itemtype_default'))) {
@@ -1027,7 +1023,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         $breadcrumbs = $this->setBreadcrumbs($title);
 
         // get requests
-        $base_itemtypeid = $request->getParameter('itemtypeid');
+        $base_itemtypeid = intval($request->getParameter('itemtypeid'));
 
         // get base itemtype info
         $itemtypeBean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
@@ -1062,7 +1058,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
         $errors = new Xoonips_Errors();
         $name = $request->getParameter('name');
         $description = $request->getParameter('description');
-        $weight = $request->getParameter('weight');
+        $weight = intval($request->getParameter('weight'));
         $template = $request->getParameter('template');
         $icon_file = $request->getFile('icon_file');
         $group_ids = $request->getParameter('group_ids');
@@ -1168,7 +1164,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
     protected function doBreak(&$request, &$response)
     {
         // get requests
-        $itemtypeid = $request->getParameter('upd_itemtypeid');
+        $itemtypeid = intval($request->getParameter('upd_itemtypeid'));
 
         // check token ticket
         if (!$this->validateToken($this->modulePrefix('admin_policy_itemtype_edit'))) {
@@ -1194,7 +1190,7 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
     protected function doExport(&$request, &$response)
     {
         // get requests
-        $itemtypeid = $request->getParameter('itemtypeid');
+        $itemtypeid = intval($request->getParameter('itemtypeid'));
 
         //get Export aItemType XML Elment Data
         //item type
@@ -1697,8 +1693,8 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
     protected function doComplement(&$request, &$response)
     {
         // get requests
-        $itemtypeid = $request->getParameter('itemtypeid');
-        $base_itemtypeid = $request->getParameter('base_itemtypeid');
+        $itemtypeid = intval($request->getParameter('itemtypeid'));
+        $base_itemtypeid = intval($request->getParameter('base_itemtypeid'));
         $select = $request->getParameter('select');
 
         //title
@@ -1841,8 +1837,8 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
 
         // get requests
         $request = new Xoonips_Request();
-        $itemtypeid = $request->getParameter('itemtypeid');
-        $base_itemtypeid = $request->getParameter('base_itemtypeid');
+        $itemtypeid = intval($request->getParameter('itemtypeid'));
+        $base_itemtypeid = intval($request->getParameter('base_itemtypeid'));
         $selectid = $request->getParameter('selectid');
         $selectdetailids = $request->getParameter('selectdetailid');
 
@@ -2401,8 +2397,8 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
     protected function doGroupregister(&$request, &$response)
     {
         // get requests
-        $itemtypeid = $request->getParameter('itemtypeid');
-        $base_itemtypeid = $request->getParameter('base_itemtypeid');
+        $itemtypeid = intval($request->getParameter('itemtypeid'));
+        $base_itemtypeid = intval($request->getParameter('base_itemtypeid'));
 
         //title
         $title = _AM_XOONIPS_POLICY_ITEMTYPE_GROUP_SELECT_TITLE;
@@ -2444,8 +2440,8 @@ class Xoonips_PolicyItemTypeAction extends Xoonips_ActionBase
     protected function doGroupregistersave(&$request, &$response)
     {
         // get requests
-        $itemtypeid = $request->getParameter('itemtypeid');
-        $base_itemtypeid = $request->getParameter('base_itemtypeid');
+        $itemtypeid = intval($request->getParameter('itemtypeid'));
+        $base_itemtypeid = intval($request->getParameter('base_itemtypeid'));
 
         //title
         $title = _AM_XOONIPS_POLICY_ITEMTYPE_GROUP_SELECT_TITLE;
