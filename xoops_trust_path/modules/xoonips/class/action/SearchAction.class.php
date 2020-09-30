@@ -1,6 +1,7 @@
 <?php
 
 use Xoonips\Core\Functions;
+use Xoonips\Core\XoopsUtils;
 
 require_once dirname(__DIR__).'/core/ActionBase.class.php';
 require_once dirname(__DIR__).'/core/Item.class.php';
@@ -87,8 +88,8 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
             ['name' => _MD_XOONIPS_QUICK_SEARCH_TITLE],
         ];
 
+        $viewData = [];
         $viewData['user_tab_chk'] = 1;
-
         $viewData['xoops_breadcrumbs'] = $breadcrumbs;
         $viewData['select_tab'] = 2;
         $viewData['lang_search'] = _MD_XOONIPS_QUICK_SEARCH_BUTTON_LABEL;
@@ -189,8 +190,7 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
 
     private function getItemsOfCurrentPage($iids, &$response, &$request)
     {
-        global $xoopsUser;
-        $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
+        $uid = XoopsUtils::getUid();
 
         // get order by select
         $default_orderby = '0';
@@ -207,12 +207,8 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
             'print' => ['s', ''],
             'page' => ['i', 1],
             'itemcount' => ['i', 20],
-            'orderby' => ['s', $sess_orderby],
+            'orderby' => ['i', $sess_orderby],
             'order_dir' => ['i', $sess_orderdir],
-            'search_itemtype' => ['i', ''],
-            'search_subtype' => ['s', ''],
-            'keyword' => ['s', ''],
-            'search_condition' => ['i', ''],
         ];
         foreach ($request_vars as $key => $meta) {
             list($type, $default) = $meta;
@@ -220,13 +216,11 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
             if ('' == $$key) {
                 $$key = $default;
             }
+            'i' == $type && $$key = intval($$key);
         }
         $_SESSION[$this->dirname.'_order_by'] = $orderby;
         $_SESSION[$this->dirname.'_order_dir'] = $order_dir;
-        $cri = ['start' => ($page - 1) * $itemcount,
-            'rows' => $itemcount,
-            'orderby' => $orderby,
-            'orderdir' => $order_dir, ];
+        $cri = ['start' => ($page - 1) * $itemcount, 'rows' => $itemcount, 'orderby' => $orderby, 'orderdir' => $order_dir];
         $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
         $itemBean->filterCanViewItem($iids, $uid);
         $num_of_items = count($iids);
@@ -435,7 +429,7 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
                 $searchSqlArr[] = $item->doSearch(Xoonips_Enum::OP_TYPE_SEARCH);
             }
             $searchSqlStr = implode(' UNION ALL ', $searchSqlArr);
-            $sql = "SELECT DISTINCT item_id FROM ( $searchSqlStr ) AS temp";
+            $sql = 'SELECT DISTINCT `item_id` FROM ( '.$searchSqlStr.' ) AS `temp`';
             global $xoopsDB;
             $result = $xoopsDB->query($sql);
             if ($result) {
@@ -475,7 +469,7 @@ class Xoonips_SearchAction extends Xoonips_ActionBase
                     $searchSqlArr[] = $item->doSearch(Xoonips_Enum::OP_TYPE_QUICKSEARCH);
                 }
                 $searchSqlStr = implode(' UNION ALL ', $searchSqlArr);
-                $sql = "SELECT DISTINCT item_id FROM ( $searchSqlStr ) AS temp";
+                $sql = 'SELECT DISTINCT `item_id` FROM ( '.$searchSqlStr.' ) AS `temp`';
                 global $xoopsDB;
                 $result = $xoopsDB->query($sql);
                 if ($result) {

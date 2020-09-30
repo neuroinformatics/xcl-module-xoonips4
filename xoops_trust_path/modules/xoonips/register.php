@@ -1,5 +1,7 @@
 <?php
 
+use Xoonips\Core\XoopsUtils;
+
 XCube_DelegateUtils::call('Xoonips.Register.Access');
 
 $xoopsOption['pagetype'] = 'user';
@@ -9,6 +11,14 @@ require_once __DIR__.'/class/action/RegisterAction.class.php';
 
 // access check
 Xoonips_Utils::denyGuestAccess();
+
+// deny access by uncertified user.
+$uid = XoopsUtils::getUid();
+$userBean = Xoonips_BeanFactory::getBean('UsersBean', $mydirname);
+if (!$userBean->isCertified($uid)) {
+    redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_MODERATOR_NOT_ACTIVATED);
+    exit();
+}
 
 $request = new Xoonips_Request();
 $response = new Xoonips_Response();

@@ -1,6 +1,7 @@
 <?php
 
 use Xoonips\Core\Functions;
+use Xoonips\Core\XoopsUtils;
 
 require_once dirname(__DIR__).'/core/ActionBase.class.php';
 require_once dirname(dirname(__DIR__)).'/include/itemtypetemplate.inc.php';
@@ -9,6 +10,7 @@ class Xoonips_ItemSelectSubAction extends Xoonips_ActionBase
 {
     protected function doInit(&$request, &$response)
     {
+        // this action is called from ajax ItemSelect
         $callbackId = $request->getParameter('callbackid');
         $this->createIndexTree($request, $response);
         $response->setViewDataByKey('callbackid', $callbackId);
@@ -20,20 +22,16 @@ class Xoonips_ItemSelectSubAction extends Xoonips_ActionBase
 
     protected function doSearch(&$request, &$response)
     {
-        global $xoopsUser;
+        $uid = XoopsUtils::getUid();
         $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         $itemTitleBean = Xoonips_BeanFactory::getBean('ItemTitleBean', $this->dirname, $this->trustDirname);
         $indexItemLinkBean = Xoonips_BeanFactory::getBean('IndexItemLinkBean', $this->dirname, $this->trustDirname);
-        $uid = $xoopsUser->getVar('uid');
         $this->createIndexTree($request, $response);
         $title = $request->getParameter('title');
-        $indexId = $request->getParameter('indexId');
-        if (_CHARSET != 'UTF-8') {
-            $title = mb_convert_encoding($title, _CHARSET, 'utf-8');
-        }
+        $indexId = intval($request->getParameter('indexId'));
 
-        if ('' != $indexId) {
+        if (0 != $indexId) {
             $itemIds = $indexBean->getCanViewItemIds($indexId, $uid);
         } else {
             $itemIds = $itemTitleBean->searchItemIdByTitle(trim($title));
@@ -106,9 +104,8 @@ class Xoonips_ItemSelectSubAction extends Xoonips_ActionBase
 
     private function createIndexTree(&$request, &$response)
     {
-        global $xoopsUser;
+        $uid = XoopsUtils::getUid();
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-        $uid = $xoopsUser->getVar('uid');
         $groupIndexes = [];
         $privateIndex = false;
         $publicIndex = $indexBean->getPublicIndex();

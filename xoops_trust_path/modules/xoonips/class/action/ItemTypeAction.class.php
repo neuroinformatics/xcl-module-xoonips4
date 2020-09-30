@@ -6,6 +6,7 @@ class Xoonips_ItemTypeAction extends Xoonips_ActionBase
 {
     protected function doInit(&$request, &$response)
     {
+        // this action is called from blocks itemtypes_show
         $itemtypebean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
         $itemtypelist = $itemtypebean->getItemTypeList();
 

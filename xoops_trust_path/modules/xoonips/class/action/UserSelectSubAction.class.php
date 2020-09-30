@@ -7,11 +7,13 @@ class Xoonips_UserSelectSubAction extends Xoonips_AbstractActionBase
 {
     protected function doInit(&$request, &$response)
     {
+        // this action is called from ajax UsesSelect
         $callbackID = $request->getParameter('callbackid');
         $mode = $request->getParameter('mode');
         if ('single' != $mode) {
             $mode = 'mult';
         }
+        $viewData = [];
         $viewData['callbackid'] = $callbackID;
         $viewData['mode'] = $mode;
         $this->setCommon($viewData);
@@ -44,10 +46,6 @@ class Xoonips_UserSelectSubAction extends Xoonips_AbstractActionBase
             $sortkey = $request->getParameter('hidkey');
             $order = $request->getParameter('hidorder');
         }
-        if (_CHARSET != 'UTF-8') {
-            $uname = mb_convert_encoding($uname, _CHARSET, 'utf-8');
-            $name = mb_convert_encoding($name, _CHARSET, 'utf-8');
-        }
 
         //set user limit
         $limit = 5;
@@ -55,6 +53,7 @@ class Xoonips_UserSelectSubAction extends Xoonips_AbstractActionBase
         $userlist = $userBean->getUserBasicInfoByName(trim($uname), trim($name));
         $counts = count($userlist);
         $pageNavi = $this->naviList($counts, $limit, $page);
+        $viewData = [];
         if ('' != $sortkey || '' != $order) {
             $sortlist = $this->getSortList($userlist, $sortkey);
 
@@ -94,10 +93,6 @@ class Xoonips_UserSelectSubAction extends Xoonips_AbstractActionBase
         if ('single' != $mode) {
             $mode = 'mult';
         }
-        if (_CHARSET != 'UTF-8') {
-            $uname = mb_convert_encoding($uname, _CHARSET, 'utf-8');
-            $name = mb_convert_encoding($name, _CHARSET, 'utf-8');
-        }
 
         //set page,user limit
         $page = 1;
@@ -114,6 +109,7 @@ class Xoonips_UserSelectSubAction extends Xoonips_AbstractActionBase
             array_multisort($sortlist, $userlist);
         }
         $userlist = $this->pageList($userlist, $page, $limit);
+        $viewData = [];
         $viewData['userlist'] = $userlist;
         $viewData['pageNavi'] = $pageNavi;
         $viewData['sortkey'] = $sortkey;

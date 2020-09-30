@@ -1,5 +1,8 @@
 <?php
 
+use Xoonips\Core\Functions;
+use Xoonips\Core\XoopsUtils;
+
 require_once dirname(__DIR__).'/core/Item.class.php';
 require_once dirname(__DIR__).'/core/ActionBase.class.php';
 
@@ -12,16 +15,8 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
                 'name' => _MD_XOONIPS_ITEM_REGISTER_ITEM_TITLE,
             ],
         ];
-        global $xoopsUser;
-        $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
 
-        // Uncertified user can't access.
-        $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
-        if (!$userBean->isCertified($uid)) {
-            redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_MODERATOR_NOT_ACTIVATED);
-            exit();
-        }
-
+        $viewData = [];
         $viewData['xoops_breadcrumbs'] = $breadcrumbs;
         $viewData['dirname'] = $this->dirname;
         $viewData['mytrustdirname'] = $this->trustDirname;
@@ -36,10 +31,12 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
         $itemtypeBean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
         $itemtypelist = $itemtypeBean->getItemTypeList();
         if (!$itemtypelist) {
-            $response->setSystemError('item type is not found');
+            $response->setSystemError('no item types found');
 
             return false;
         }
+
+        $viewData = [];
         $viewData['next_url'] = 'register.php';
         $viewData['itemtypelist'] = $itemtypelist;
         $viewData['dirname'] = $this->dirname;
@@ -52,10 +49,16 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
 
     protected function doRegister(&$request, &$response)
     {
-        $itemtypeId = $request->getParameter('itemtype_id');
+        $itemTypeId = intval($request->getParameter('itemtype_id'));
+        if (!$this->existsReleasedItemType($itemTypeId)) {
+            $response->setSystemError('no item type found');
+
+            return false;
+        }
+
         $viewData = [];
-        $this->setCommonViewData($viewData, $itemtypeId, $request, $response);
-        $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
+        $this->setCommonViewData($viewData, $itemTypeId, $request, $response);
+        $item = new Xoonips_Item($itemTypeId, $this->dirname, $this->trustDirname);
         $viewData['registryView'] = $item->getRegistryView();
         $response->setViewData($viewData);
         $response->setForward('register_success');
@@ -74,10 +77,17 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
 
     protected function doComplete(&$request, &$response)
     {
-        $itemtypeId = $request->getParameter('itemtype_id');
+        $itemTypeId = intval($request->getParameter('itemtype_id'));
+        if (!$this->existsReleasedItemType($itemTypeId)) {
+            $response->setSystemError('no item type found');
+
+            return false;
+        }
+
         $viewData = [];
-        $this->setCommonViewData($viewData, $itemtypeId, $request, $response);
-        $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
+        $this->setCommonViewData($viewData, $itemTypeId, $request, $response);
+        $item = new Xoonips_Item($itemTypeId, $this->dirname, $this->trustDirname);
+        // targetItemId is editing item group annd field id. ex. '10:1:11'
         $targetItemId = $request->getParameter('targetItemId');
         $item->setData($_POST, true);
         if (false === $item->complete($targetItemId)) {
@@ -92,10 +102,17 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
 
     protected function doAddFieldGroup(&$request, &$response)
     {
-        $itemtypeId = $request->getParameter('itemtype_id');
+        $itemTypeId = intval($request->getParameter('itemtype_id'));
+        if (!$this->existsReleasedItemType($itemTypeId)) {
+            $response->setSystemError('no item type found');
+
+            return false;
+        }
+
         $viewData = [];
-        $this->setCommonViewData($viewData, $itemtypeId, $request, $response);
-        $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
+        $this->setCommonViewData($viewData, $itemTypeId, $request, $response);
+        $item = new Xoonips_Item($itemTypeId, $this->dirname, $this->trustDirname);
+        // targetItemId is editing item group annd field id. ex. '10:1:11'
         $targetItemId = $request->getParameter('targetItemId');
         $item->setData($_POST, true);
         $item->addFieldGroup($targetItemId);
@@ -108,10 +125,17 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
 
     protected function doDeleteFieldGroup(&$request, &$response)
     {
-        $itemtypeId = $request->getParameter('itemtype_id');
+        $itemTypeId = intval($request->getParameter('itemtype_id'));
+        if (!$this->existsReleasedItemType($itemTypeId)) {
+            $response->setSystemError('no item type found');
+
+            return false;
+        }
+
         $viewData = [];
-        $this->setCommonViewData($viewData, $itemtypeId, $request, $response);
-        $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
+        $this->setCommonViewData($viewData, $itemTypeId, $request, $response);
+        $item = new Xoonips_Item($itemTypeId, $this->dirname, $this->trustDirname);
+        // targetItemId is editing item group annd field id. ex. '10:1:11'
         $targetItemId = $request->getParameter('targetItemId');
         $item->setData($_POST, true);
         $item->deleteFieldGroup($targetItemId);
@@ -124,8 +148,14 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
 
     protected function doUploadFile(&$request, &$response)
     {
-        $itemtypeId = $request->getParameter('itemtype_id');
-        $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
+        $itemTypeId = intval($request->getParameter('itemtype_id'));
+        if (!$this->existsReleasedItemType($itemTypeId)) {
+            $response->setSystemError('item type is not found');
+
+            return false;
+        }
+
+        $item = new Xoonips_Item($itemTypeId, $this->dirname, $this->trustDirname);
         $item->setData($_POST);
         $viewData['fileUpload'] = $item->fileUpload();
         $response->setViewData($viewData);
@@ -136,10 +166,17 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
 
     protected function doDeleteFile(&$request, &$response)
     {
-        $itemtypeId = $request->getParameter('itemtype_id');
+        $itemTypeId = intval($request->getParameter('itemtype_id'));
+        if (!$this->existsReleasedItemType($itemTypeId)) {
+            $response->setSystemError('no item type found');
+
+            return false;
+        }
+
         $viewData = [];
-        $this->setCommonViewData($viewData, $itemtypeId, $request, $response);
-        $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
+        $this->setCommonViewData($viewData, $itemTypeId, $request, $response);
+        $item = new Xoonips_Item($itemTypeId, $this->dirname, $this->trustDirname);
+        // targetItemId is editing item group annd field id. ex. '10:1:11'
         $targetItemId = $request->getParameter('targetItemId');
         $item->setData($_POST, true);
         $item->delFile($targetItemId, $request->getParameter('fileId'));
@@ -192,10 +229,17 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
 
     protected function doConfirm(&$request, &$response)
     {
-        $itemtypeId = $request->getParameter('itemtype_id');
+        $uid = XoopsUtils::getUid();
+        $itemTypeId = intval($request->getParameter('itemtype_id'));
+        if (!$this->existsReleasedItemType($itemTypeId)) {
+            $response->setSystemError('no item type found');
+
+            return false;
+        }
+
         $viewData = [];
-        $this->setCommonViewData($viewData, $itemtypeId, $request, $response);
-        $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
+        $this->setCommonViewData($viewData, $itemTypeId, $request, $response);
+        $item = new Xoonips_Item($itemTypeId, $this->dirname, $this->trustDirname);
         $errors = new Xoonips_Errors();
         $item->setData($_POST, true);
         $item->inputCheck($errors);
@@ -208,8 +252,6 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
             $response->setForward('confirm_error');
         } else {
             // item limit check
-            global $xoopsUser;
-            $uid = $xoopsUser->getVar('uid');
             $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
             $itemUsed = $itemBean->countUserItems($uid);
             $privateItemLimit = $itemBean->getPrivateItemLimit($uid);
@@ -227,14 +269,14 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
             } else {
                 // item type name
                 $itemtypeBean = Xoonips_BeanFactory::getBean('ItemTypeBean', $this->dirname, $this->trustDirname);
-                $itemtypeName = $itemtypeBean->getItemTypeName($itemtypeId);
+                $itemtypeName = $itemtypeBean->getItemTypeName($itemTypeId);
 
                 // ticket
                 $token_ticket = $this->createToken($this->modulePrefix('confirm_register'));
 
                 // view data
                 $viewData = [];
-                $viewData['itemtype_id'] = $itemtypeId;
+                $viewData['itemtype_id'] = $itemTypeId;
                 $viewData['itemtype_name'] = $itemtypeName;
                 $viewData['token_titcket'] = $token_ticket;
                 $item->setData($_POST, true);
@@ -251,13 +293,20 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
 
     protected function doSave(&$request, &$response)
     {
+        $itemTypeId = intval($request->getParameter('itemtype_id'));
+        if (!$this->existsReleasedItemType($itemTypeId)) {
+            $response->setSystemError('no item type found');
+
+            return false;
+        }
+
         if (!$this->validateToken($this->modulePrefix('confirm_register'))) {
             $response->setSystemError('Ticket error');
 
             return false;
         }
-        $itemtypeId = $request->getParameter('itemtype_id');
-        $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
+
+        $item = new Xoonips_Item($itemTypeId, $this->dirname, $this->trustDirname);
         $item->setData($_POST, true);
         $this->startTransaction();
         $certify_msg = '';
@@ -300,24 +349,29 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
 
     private function doCommon(&$request, &$response)
     {
-        $itemtypeId = $request->getParameter('itemtype_id');
+        $itemTypeId = intval($request->getParameter('itemtype_id'));
+        if (!$this->existsReleasedItemType($itemTypeId)) {
+            $response->setSystemError('no item type found');
+
+            return false;
+        }
+
         $viewData = [];
-        $this->setCommonViewData($viewData, $itemtypeId, $request, $response);
-        $item = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
+        $this->setCommonViewData($viewData, $itemTypeId, $request, $response);
+        $item = new Xoonips_Item($itemTypeId, $this->dirname, $this->trustDirname);
         $item->setData($_POST, true);
         $viewData['registryView'] = $item->getRegistryViewWithData();
         $response->setViewData($viewData);
     }
 
-    private function setCommonViewData(&$viewData, $itemtypeId, &$request, &$response)
+    private function setCommonViewData(&$viewData, $itemTypeId, &$request, &$response)
     {
-        $viewData['itemtype_id'] = $itemtypeId;
+        $uid = XoopsUtils::getUid();
+
+        $viewData['itemtype_id'] = $itemTypeId;
         $viewData['next_url'] = 'register.php?op=confirm';
         $viewData['dirname'] = $this->dirname;
         $viewData['mytrustdirname'] = $this->trustDirname;
-
-        global $xoopsUser;
-        $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
 
         // item_limit, storage_limit
         $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
@@ -376,5 +430,21 @@ class Xoonips_RegisterAction extends Xoonips_ActionBase
 
         $viewData['indexes'] = $indexes;
         $viewData['trees'] = $trees;
+    }
+
+    /**
+     * check whether released item type exists.
+     *
+     * @param int $itemTypeId
+     *
+     * @return bool
+     */
+    private function existsReleasedItemType($itemTypeId)
+    {
+        $ItemTypeHandler = Functions::getXoonipsHandler('ItemTypeObject', $this->dirname);
+        $criteria = new CriteriaCompo(new Criteria('item_type_id', $itemTypeId));
+        $criteria->add(new Criteria('released', 1));
+
+        return 1 == $ItemTypeHandler->getCount($criteria);
     }
 }

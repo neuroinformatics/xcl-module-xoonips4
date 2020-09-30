@@ -3,6 +3,7 @@
 use Xoonips\Core\FileUtils;
 use Xoonips\Core\Functions;
 use Xoonips\Core\UnzipFile;
+use Xoonips\Core\XoopsUtils;
 
 require_once dirname(__DIR__).'/core/ActionBase.class.php';
 require_once dirname(__DIR__).'/XmlItemImport.class.php';
@@ -22,8 +23,8 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
     protected function doLog(&$request, &$response)
     {
         // select order
-        $import_id = $request->getParameter('import_id');
-        if ($import_id) {
+        $import_id = intval($request->getParameter('import_id'));
+        if (0 < $import_id) {
             // import log detail
             $this->doLogdetail($request, $response);
             $response->setForward('logdetail_success');
@@ -40,6 +41,8 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
 
     private function doImport(&$request, &$response)
     {
+        $uid = XoopsUtils::getUid();
+
         // token ticket
         $token_ticket = $this->createToken($this->modulePrefix('do_item_import'));
 
@@ -63,8 +66,6 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
         $index_select_arr[] = $is;
 
         // index tree
-        global $xoopsUser;
-        $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
         $is_admin = $userBean->isModerator($uid);
@@ -123,6 +124,8 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
 
     protected function doImportsave(&$request, &$response)
     {
+        $uid = XoopsUtils::getUid();
+
         // check token ticket
         if (!$this->validateToken($this->modulePrefix('do_item_import'))) {
             $my_indexes = null;
@@ -132,10 +135,6 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
 
         // get parameter
         $index_select = $request->getParameter('index_select');
-
-        // user info
-        global $xoopsUser;
-        $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
 
         // for self index
         $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
@@ -176,7 +175,7 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
 
         $importfile = $request->getFile('import_file');
 
-        if (empty($importfile['name']) || 0 == $importfile['size']) {
+        if (empty($importfile) || empty($importfile['name']) || 0 == $importfile['size']) {
             $viewData['url'] = XOOPS_URL.'/modules/'.$this->dirname.'/itemimport.php';
             $viewData['redirect_msg'] = _MD_XOONIPS_ITEM_IMPORT_FILE_NONE;
             $response->setViewData($viewData);
@@ -416,14 +415,12 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
 
     private function doLogInit(&$request, &$response)
     {
+        $uid = XoopsUtils::getUid();
+
         // breadcrumbs
         $breadcrumbs = [
             ['name' => _MI_XOONIPS_USER_IMPORT_ITEM],
         ];
-
-        // user info
-        global $xoopsUser;
-        $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
 
         // get item import log
         $logBean = Xoonips_BeanFactory::getBean('ItemImportLogBean', $this->dirname, $this->trustDirname);
@@ -446,7 +443,7 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
     private function doLogdetail(&$request, &$response)
     {
         // get parameter
-        $import_id = $request->getParameter('import_id');
+        $import_id = intval($request->getParameter('import_id'));
 
         // breadcrumbs
         $breadcrumbs = [
@@ -462,6 +459,11 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
         // get item import log
         $logBean = Xoonips_BeanFactory::getBean('ItemImportLogBean', $this->dirname, $this->trustDirname);
         $import = $logBean->getImportLogInfo($import_id);
+        if (empty($import) || $import['uid' != $uid]) {
+            $response->setSystemError(_NOPERM);
+
+            return false;
+        }
 
         $import['display_time'] = date('Y-m-d H:i:s', $import['timestamp']);
 

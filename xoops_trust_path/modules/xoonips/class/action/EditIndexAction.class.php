@@ -121,6 +121,8 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
                 }
             }
         }
+
+        $viewData = [];
         $viewData['url'] = "editindex.php?index_id=$indexId";
         $viewData['redirect_msg'] = _MD_XOONIPS_MSG_DBUPDATED;
         $viewData['dirname'] = $this->dirname;
@@ -157,6 +159,7 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
             'index_id' => 0,
             'title' => '',
         ];
+
         $viewData = [];
         $viewData['index'] = $index;
         $viewData['parent_index_id'] = $parentIndexId;
@@ -346,6 +349,7 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
         // notificate move to item's owner
         $this->notification->afterUserIndexMoved($notification_context);
 
+        $viewData = [];
         $viewData['callbackid'] = 'editindex.php?index_id='.$prevParentIndexId;
         $viewData['callbackvalue'] = _MD_XOONIPS_MSG_DBUPDATED;
         $viewData['dirname'] = $this->dirname;
@@ -500,6 +504,7 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
 
     protected function doFinish(&$request, &$response)
     {
+        $viewData = [];
         $viewData['url'] = $request->getParameter('url');
         $viewData['redirect_msg'] = $request->getParameter('redirect_msg');
         $viewData['dirname'] = $this->dirname;

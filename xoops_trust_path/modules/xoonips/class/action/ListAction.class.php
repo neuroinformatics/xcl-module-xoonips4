@@ -1,6 +1,7 @@
 <?php
 
 use Xoonips\Core\Functions;
+use Xoonips\Core\XoopsUtils;
 
 require_once dirname(__DIR__).'/core/ActionBase.class.php';
 require_once dirname(__DIR__).'/core/Item.class.php';
@@ -11,11 +12,8 @@ class Xoonips_ListAction extends Xoonips_ActionBase
 {
     protected function doInit(&$request, &$response)
     {
-        $root = &XCube_Root::getSingleton();
-        $textFilter = &$root->getTextFilter();
-
-        global $xoopsUser;
-        $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
+        $uid = XoopsUtils::getUid();
+        $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
 
         // get order by select
         $defalut_orderby = '0';
@@ -31,12 +29,10 @@ class Xoonips_ListAction extends Xoonips_ActionBase
             'op' => ['s', ''],
             'isPrint' => ['s', ''],
             'page' => ['i', 1],
-            'orderby' => ['s', $sess_orderby],
+            'orderby' => ['i', $sess_orderby],
             'order_dir' => ['i', $sess_orderdir],
             'itemcount' => ['i', 20],
-            'selected' => ['i', []],
-            'num_of_items' => ['i', null],
-            'index_id' => ['i', null],
+            'index_id' => ['i', 0],
         ];
         foreach ($request_vars as $key => $meta) {
             list($type, $default) = $meta;
@@ -44,11 +40,11 @@ class Xoonips_ListAction extends Xoonips_ActionBase
             if ('' == $$key) {
                 $$key = $default;
             }
+            'i' == $type && $$key = intval($$key);
         }
 
         // if has not index id then set public index id
-        $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-        if (!isset($index_id)) {
+        if (0 == $index_id) {
             $public_idx = $indexBean->getPublicIndex();
             $index_id = $public_idx['index_id'];
         }
@@ -83,6 +79,8 @@ class Xoonips_ListAction extends Xoonips_ActionBase
             }
 
             $detailed_title = $indexInfo['detailed_title'];
+            $root = &XCube_Root::getSingleton();
+            $textFilter = &$root->getTextFilter();
             $detailed_description = $textFilter->toShowTarea($indexInfo['detailed_description'], 0, 1, 1, 1, 1);
             $icon = sprintf('%s/modules/%s/image.php/index/%u/%s', XOOPS_URL, $this->dirname, $index_id, $indexInfo['icon']);
             $index_upload_dir = Functions::getXoonipsConfig($this->dirname, 'index_upload_dir');
@@ -216,21 +214,20 @@ class Xoonips_ListAction extends Xoonips_ActionBase
 
     protected function doExport(&$request, &$response)
     {
-        global $xoopsUser;
-        $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : XOONIPS_UID_GUEST;
+        $uid = XoopsUtils::getUid();
+        $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
 
         // get request
-        $index_id = $request->getParameter('index_id');
+        $index_id = intval($request->getParameter('index_id'));
         $subindex = $request->getParameter('subindex') ? 1 : 0;
 
         // if has not index id
-        if (!$index_id) {
-            redirect_header(XOOPS_URL.'/', 3, 'ERROR ');
+        if (0 == $index_id) {
+            redirect_header(XOOPS_URL.'/', 3, 'ERROR');
             exit();
         }
 
         // check can view index id
-        $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
         if (!$indexBean->canView($index_id, $uid)) {
             redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_ITEM_FORBIDDEN);
             exit();
@@ -249,12 +246,21 @@ class Xoonips_ListAction extends Xoonips_ActionBase
 
     protected function doExportselect(&$request, &$response)
     {
+        $uid = XoopsUtils::getUid();
+        $indexBean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
+
         // get request
-        $index_id = $request->getParameter('index_id');
+        $index_id = intval($request->getParameter('index_id'));
 
         // if has not index id
-        if (!isset($index_id)) {
-            redirect_header(XOOPS_URL.'/', 3, 'ERROR ');
+        if (0 == $index_id) {
+            redirect_header(XOOPS_URL.'/', 3, 'ERROR');
+            exit();
+        }
+
+        // check can view index id
+        if (!$indexBean->canView($index_id, $uid)) {
+            redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_ITEM_FORBIDDEN);
             exit();
         }
 

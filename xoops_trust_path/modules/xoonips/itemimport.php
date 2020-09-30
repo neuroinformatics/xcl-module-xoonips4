@@ -4,6 +4,8 @@ require_once __DIR__.'/class/core/Request.class.php';
 require_once __DIR__.'/class/core/Response.class.php';
 require_once __DIR__.'/class/action/ItemImportAction.class.php';
 
+Xoonips_Utils::denyGuestAccess();
+
 $request = new Xoonips_Request();
 $response = new Xoonips_Response();
 $op = $request->getParameter('op');
