@@ -74,7 +74,7 @@ class Xoonips_UserNotification extends XoopsNotificationHandler
         if (!empty($user_list)) {
             $user_criteria = new CriteriaCompo();
             foreach ($user_list as $user) {
-                $user_criteria->add(new Criteria('not_uid', $user), 'OR');
+                $user_criteria->add(new Criteria('not_uid', intval($user)), 'OR');
             }
             $criteria->add($user_criteria);
             $notifications = &$this->getObjects($criteria);
@@ -159,6 +159,7 @@ class Xoonips_UserNotification extends XoopsNotificationHandler
         if (is_array($user_id)) {
             $userInfo = $user_id;
         } else {
+            $user_id = intval($user_id);
             $userInfo = $userBean->getUserBasicInfo($user_id);
         }
         $tags = [
@@ -186,6 +187,7 @@ class Xoonips_UserNotification extends XoopsNotificationHandler
             $groupInfo = $group_id;
             $group_id = $groupInfo['groupid'];
         } else {
+            $group_id = intval($group_id);
             $groupsBean = Xoonips_BeanFactory::getBean('GroupsBean', $this->dirname, $this->trustDirname);
             $groupInfo = $groupsBean->getGroup($group_id);
         }
@@ -213,8 +215,9 @@ class Xoonips_UserNotification extends XoopsNotificationHandler
 
     private function accountCertify($user_id, $sendToUsers, $subject, $template_name, $comment = '')
     {
+        $user_id = intval($user_id);
         $tags = $this->getUserTags($user_id);
-        $tags['COMMENT'] = $comment;
+        $tags['COMMENT'] = $this->db->quoteString($comment);
         $this->triggerEvent2('administrator', 0, 'account_certify', $subject, $template_name, $tags, $sendToUsers);
     }
 
@@ -266,8 +269,9 @@ class Xoonips_UserNotification extends XoopsNotificationHandler
 
     private function groupCertify($group_id, $sendToUsers, $subject, $template_name, $comment = '')
     {
+        $group_id = intval($group_id);
         $tags = $this->getGroupTags($group_id);
-        $tags['COMMENT'] = $comment;
+        $tags['COMMENT'] = $this->db->quoteString($comment);
         $this->triggerEvent2('common', 0, 'group', $subject, $template_name, $tags, $sendToUsers);
     }
 
@@ -335,12 +339,14 @@ class Xoonips_UserNotification extends XoopsNotificationHandler
 
     private function groupMember($group_id, $user_id, $sendToUsers, $subject, $template_name, $comment = '')
     {
+        $group_id = intval($group_id);
+        $user_id = intval($user_id);
         $tags = $this->getGroupTags($group_id);
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
         $userInfo = $userBean->getUserBasicInfo($user_id);
-        $tags['COMMENT'] = $comment;
+        $tags['COMMENT'] = $this->db->quoteString($comment);
         $tags['USER_UNAME'] = $userInfo['uname'];
-        $tags['USER_DETAIL_URL'] = XOOPS_URL.'/userinfo.php?uid='.$user_id;
+        $tags['USER_DETAIL_URL'] = XOOPS_URL.'/userinfo.php?uid='.intval($user_id);
         $this->triggerEvent2('common', 0, 'group', $subject, $template_name, $tags, $sendToUsers);
     }
 
