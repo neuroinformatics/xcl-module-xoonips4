@@ -22,9 +22,9 @@ function xoonips_search($keywords, $andor, $limit, $offset, $userid)
         $pos = 0;
         foreach ($keywords as $val) {
             if (0 == $pos) {
-                $keyword .= $val;
+                $keyword .= $xoopsDB->quoteString($val);
             } else {
-                $keyword .= ' '.$andor.' '.$val;
+                $keyword .= ' '.$andor.' '.$xoopsDB->quoteString($val);
             }
             $pos = $pos + 1;
         }
@@ -58,7 +58,7 @@ function xoonips_search($keywords, $andor, $limit, $offset, $userid)
     }
     $searchSqlStr = implode(' UNION ALL ', $searchSqlArr);
     $sql = "SELECT DISTINCT item_id FROM ( $searchSqlStr ) AS temp ORDER BY item_id";
-    $result = $xoopsDB->queryF($sql, $limit, $offset);
+    $result = $xoopsDB->query($sql, $limit, $offset);
     if (!$result) {
         return $ret;
     }
