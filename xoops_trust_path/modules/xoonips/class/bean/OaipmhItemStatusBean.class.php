@@ -23,8 +23,8 @@ class Xoonips_OaipmhItemStatusBean extends Xoonips_BeanBase
      */
     public function insert($itemId)
     {
-        $sql = "INSERT INTO $this->table (item_id,timestamp,created_timestamp,is_deleted)"
-            ." VALUES ($itemId,".time().','.time().',0)';
+        $sql  = 'INSERT INTO `'.$this->table.'` (`item_id`, `timestamp`, `created_timestamp`, `is_deleted`)';
+        $sql .= ' VALUES ('.intval($itemId).', '.time().', '.time().', 0)';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -39,18 +39,19 @@ class Xoonips_OaipmhItemStatusBean extends Xoonips_BeanBase
         $tblLink = $this->prefix($this->modulePrefix('index_item_link'));
         $tblGroup = $this->prefix('groups');
         $time = time();
-        $sql = 'INSERT INTO '.$this->table.' (item_id,timestamp,created_timestamp,is_deleted)'
-            ." select distinct b.item_id,$time,$time,0 from $tblIndex a,$tblLink b"
-            ." where a.groupid=$groupId and a.open_level=".XOONIPS_OL_GROUP_ONLY
-            .' and a.index_id=b.index_id and b.certify_state>='.XOONIPS_CERTIFIED
-            ." and b.item_id not in (select d.item_id from $tblIndex c,$tblLink d"
-            .' where (c.open_level='.XOONIPS_OL_PUBLIC.' and c.index_id=d.index_id'
-            .' and d.certify_state>='.XOONIPS_CERTIFIED.') or '
-            .' (c.open_level='.XOONIPS_OL_GROUP_ONLY.' and c.index_id=d.index_id'
-            .' and d.certify_state>='.XOONIPS_CERTIFIED.' and c.groupid in'
-            ." (select e.groupid from $tblGroup e where (e.activate=".Xoonips_Enum::GRP_PUBLIC
-            .' or e.activate='.Xoonips_Enum::GRP_CLOSE_REQUIRED.") and e.groupid!=$groupId)))"
-            .' and b.item_id not in (select f.item_id from'.$this->table.' f)';
+        $sql  = 'INSERT INTO `'.$this->table.'` (`item_id`, `timestamp`, `created_timestamp`, `is_deleted`) ';
+        $sql .= ' SELECT DISTINCT `b`.`item_id`, '.$time.', '.$time.', 0 FROM `'.$tblIndex.'` `a`, `'.$tblLink.'` `b` ';
+        $sql .= ' WHERE `a`.`groupid`='.intval($groupId).' AND `a`.`open_level`='.XOONIPS_OL_GROUP_ONLY;
+        $sql .= ' AND `a`.`index_id`=`b`.`index_id` AND `b`.`certify_state`>='.XOONIPS_CERTIFIED;
+        $sql .= ' AND `b`.`item_id` NOT IN ';
+        $sql .= ' ( SELECT `d`.`item_id` FROM `'.$tblIndex.'` `c`, `'.$tblLink.'` `d`';
+        $sql .= ' WHERE (`c`.`open_level`='.XOONIPS_OL_PUBLIC.' AND `c`.`index_id`=`d`.`index_id`';
+        $sql .= ' AND `d`.`certify_state`>='.XOONIPS_CERTIFIED.') OR ';
+        $sql .= ' (`c`.`open_level`='.XOONIPS_OL_GROUP_ONLY.' AND `c`.`index_id`=`d`.`index_id`';
+        $sql .= ' AND `d`.`certify_state`>='.XOONIPS_CERTIFIED.' AND `c`.`groupid` IN ';
+        $sql .= ' (SELECT `e`.`groupid` FROM `'.$tblGroup.'` `e` WHERE (`e`.`activate`='.Xoonips_Enum::GRP_PUBLIC;
+        $sql .= ' OR `e`.`activate`='.Xoonips_Enum::GRP_CLOSE_REQUIRED.') AND `e`.`groupid`!='.intval($groupId);
+        $sql .= ' ))) AND `b`.`item_id` NOT IN (SELECT `f`.`item_id` FROM `'.$this->table.'` `f`)';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -65,24 +66,26 @@ class Xoonips_OaipmhItemStatusBean extends Xoonips_BeanBase
         $tblLink = $this->prefix($this->modulePrefix('index_item_link'));
         $tblGroup = $this->prefix('groups');
         $tblTemp = $this->table.'_tmp';
-        $sql = "CREATE TEMPORARY TABLE $tblTemp select b.item_id from $tblIndex a,$tblLink b"
-            ." where a.groupid=$groupId and a.open_level=".XOONIPS_OL_GROUP_ONLY
-            .' and a.index_id=b.index_id and b.certify_state>='.XOONIPS_CERTIFIED
-            ." and b.item_id not in (select d.item_id from $tblIndex c,$tblLink d"
-            .' where (c.open_level='.XOONIPS_OL_PUBLIC.' and c.index_id=d.index_id'
-            .' and d.certify_state>='.XOONIPS_CERTIFIED.') or'
-            .' (c.open_level='.XOONIPS_OL_GROUP_ONLY.' and c.index_id=d.index_id'
-            .' and d.certify_state>='.XOONIPS_CERTIFIED.' and c.groupid in'
-            ." (select e.groupid from $tblGroup e where (e.activate=".Xoonips_Enum::GRP_PUBLIC
-            .' or e.activate='.Xoonips_Enum::GRP_CLOSE_REQUIRED.") and e.groupid!=$groupId)))"
-            .' and b.item_id in (select f.item_id from '.$this->table.' f)';
-        $result = $this->execute($sql);
+        $sql1  = 'CREATE TEMPORARY TABLE `'.$tblTemp.'`';
+        $sql1 .= ' SELECT `b`.`item_id` FROM `'.$tblIndex.'` `a`, `'.$tblLink.'` `b`';
+        $sql1 .= ' WHERE `a`.`groupid`='.$groupId.' AND `a`.`open_level`='.XOONIPS_OL_GROUP_ONLY;
+        $sql1 .= ' AND `a`.`index_id`=`b`.`index_id` AND `b`.`certify_state`>='.XOONIPS_CERTIFIED;
+        $sql1 .= ' AND `b`.`item_id` NOT IN ';
+        $sql1 .= ' ( SELECT `d`.`item_id` FROM `'.$tblIndex.'` `c`, `'.$tblLink.'` `d`';
+        $sql1 .= ' WHERE (`c`.`open_level`='.XOONIPS_OL_PUBLIC.' AND `c`.`index_id`=`d`.`index_id`';
+        $sql1 .= ' AND `d`.`certify_state`>='.XOONIPS_CERTIFIED.') ';
+        $sql1 .= ' OR (`c`.`open_level`='.XOONIPS_OL_GROUP_ONLY.' AND `c`.`index_id`=`d`.`index_id`';
+        $sql1 .= ' AND `d`.`certify_state`>='.XOONIPS_CERTIFIED.' AND `c`.`groupid` IN ';
+        $sql1 .= ' ( SELECT `e`.`groupid` FROM `'.$tblGroup.'` `e` WHERE ( `e`.`activate`='.Xoonips_Enum::GRP_PUBLIC;
+        $sql1 .= ' OR `e`.`activate`='.Xoonips_Enum::GRP_CLOSE_REQUIRED.') AND `e`.`groupid`!='.$groupId;
+        $sql1 .= ' ))) AND `b`.`item_id` IN ( SELECT `f`.`item_id` FROM `'.$this->table.'` `f`)';
+        $result = $this->execute($sql1);
         if (!$result) {
             return false;
         }
-        $sql = "UPDATE $this->table SET timestamp=".time().',is_deleted=0,modified_timestamp='.time()
-            ." WHERE item_id in (select item_id from $tblTemp)";
-        $result = $this->execute($sql);
+        $sql2  = 'UPDATE `'.$this->table.'` SET `timestamp`='.time().', `is_deleted`=0, `modified_timestamp`='.time();
+        $sql2 .= ' WHERE `item_id` IN ( SELECT `item_id` FROM `'.$tblTemp.'`)';
+        $result = $this->execute($sql2);
         if (!$result) {
             return false;
         }
@@ -99,8 +102,8 @@ class Xoonips_OaipmhItemStatusBean extends Xoonips_BeanBase
      */
     public function delete($itemId)
     {
-        $sql = "UPDATE $this->table SET timestamp=".time().',deleted_timestamp='.time()
-            .',is_deleted=1,modified_timestamp='.time()." WHERE item_id=$itemId";
+        $sql  = 'UPDATE `'.$this->table.'` SET `timestamp`='.time().', `deleted_timestamp`='.time();
+        $sql .= ', `is_deleted`=1, `modified_timestamp`='.time().' WHERE `item_id`='.intval($itemId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -115,18 +118,20 @@ class Xoonips_OaipmhItemStatusBean extends Xoonips_BeanBase
         $tblLink = $this->prefix($this->modulePrefix('index_item_link'));
         $tblGroup = $this->prefix('groups');
         $time = time();
-        $sql = "UPDATE $this->table SET timestamp=".time().',deleted_timestamp='.time()
-            .',is_deleted=1,modified_timestamp='.time().' WHERE item_id in'
-            ." (select b.item_id from $tblIndex a,$tblLink b"
-            ." where a.groupid=$groupId and a.open_level=".XOONIPS_OL_GROUP_ONLY
-            .' and a.index_id=b.index_id and b.certify_state>='.XOONIPS_CERTIFIED
-            ." and b.item_id not in (select item_id from $tblIndex c,$tblLink d"
-            .' where (c.open_level='.XOONIPS_OL_PUBLIC.' and c.index_id=d.index_id'
-            .' and d.certify_state>='.XOONIPS_CERTIFIED.') or'
-            .' (c.open_level='.XOONIPS_OL_GROUP_ONLY.' and c.index_id=d.index_id'
-            .' and d.certify_state>='.XOONIPS_CERTIFIED.' and c.groupid in'
-            ." (select e.groupid from $tblGroup e where (e.activate=".Xoonips_Enum::GRP_PUBLIC
-            .' or e.activate='.Xoonips_Enum::GRP_CLOSE_REQUIRED.") and e.groupid!=$groupId))))";
+        $sql  = 'UPDATE `'.$this->table.'` SET `timestamp`='.time().', `deleted_timestamp`='.time();
+        $sql .= ', `is_deleted`=1, `modified_timestamp`='.time().' WHERE `item_id` IN ';
+        $sql .= ' ( SELECT `b`.`item_id` FROM `'.$tblIndex.'` `a`, `'.$tblLink.'` `b`';
+        $sql .= ' WHERE `a`.`groupid`='.intval($groupId).' AND `a`.`open_level`='.XOONIPS_OL_GROUP_ONLY;
+        $sql .= ' AND `a`.`index_id`=`b`.`index_id` AND `b`.`certify_state`>='.XOONIPS_CERTIFIED;
+        $sql .= ' AND `b`.`item_id` NOT IN ';
+        $sql .= ' ( SELECT `item_id` FROM `'.$tblIndex.'` `c`, `'.$tblLink.'` `d`';
+        $sql .= ' WHERE ( `c`.`open_level`='.XOONIPS_OL_PUBLIC.' AND `c`.`index_id`=`d`.`index_id`';
+        $sql .= ' AND `d`.`certify_state`>='.XOONIPS_CERTIFIED.') OR';
+        $sql .= ' ( `c`.`open_level`='.XOONIPS_OL_GROUP_ONLY.' AND `c`.`index_id`=`d`.`index_id`';
+        $sql .= ' AND `d`.`certify_state`>='.XOONIPS_CERTIFIED.' AND `c`.`groupid` IN';
+        $sql .= ' ( SELECT `e`.`groupid` FROM `'.$tblGroup.'` `e` WHERE ( `e`.`activate`='.Xoonips_Enum::GRP_PUBLIC;
+        $sql .= ' OR `e`.`activate`='.Xoonips_Enum::GRP_CLOSE_REQUIRED.') AND `e`.`groupid`!='.intval($groupId);
+        $sql .= ' ))))';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -145,7 +150,7 @@ class Xoonips_OaipmhItemStatusBean extends Xoonips_BeanBase
     public function select($itemId)
     {
         $ret = [];
-        $sql = "SELECT * FROM $this->table WHERE item_id=$itemId";
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `item_id`='.intval($itemId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -167,8 +172,8 @@ class Xoonips_OaipmhItemStatusBean extends Xoonips_BeanBase
      */
     public function update($itemId)
     {
-        $sql = "UPDATE $this->table SET timestamp=".time().', is_deleted=0, ';
-        $sql = $sql.'deleted_timestamp=NULL, modified_timestamp='.time()." WHERE item_id=$itemId";
+        $sql  = 'UPDATE `'.$this->table.'` SET `timestamp`='.time().', `is_deleted`=0, ';
+        $sql .= ' `deleted_timestamp`=NULL, `modified_timestamp`='.time().' WHERE `item_id`='.intval($itemId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -232,7 +237,7 @@ class Xoonips_OaipmhItemStatusBean extends Xoonips_BeanBase
      */
     public function isOpen($itemId)
     {
-        $sql = "SELECT * FROM $this->table WHERE item_id=$itemId AND is_deleted=0";
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `item_id`='.intval($itemId).' AND `is_deleted`=0';
         $result = $this->execute($sql);
         if ($result && $this->fetchArray($result)) {
             return true;
@@ -288,7 +293,7 @@ class Xoonips_OaipmhItemStatusBean extends Xoonips_BeanBase
             if (!$itemTypeInfo) {
                 return false;
             }
-            $where .= ' itemtype.item_type_id='.$itemTypeInfo['item_type_id'].' AND ';
+            $where .= ' `itemtype`.`item_type_id`='.intval($itemTypeInfo['item_type_id']).' AND ';
         } elseif ($set && 'index' == substr($set, 0, 5)) {  // index number mode
             $set_indexes = explode(':', $set);
             if (count($set_indexes) > 0) {
@@ -298,7 +303,12 @@ class Xoonips_OaipmhItemStatusBean extends Xoonips_BeanBase
                 if (!$child_xids) {
                     return false;
                 }
-                $where .= ' link.index_id in('.implode(',', $child_xids).') AND ';
+                $imploded_ids = '';
+                for ($i = 0 ; $i < count($child_xids); $i++){
+                    $imploded_ids .= intval($child_xids[$i]);
+                    if($i < count($child_xids)-1) $imploded_ids .= ',';
+                }
+                $where .= ' `link`.`index_id` IN ('.$imploded_ids.') AND ';
                 $sql_from .= ' LEFT JOIN '.$this->prefix($this->modulePrefix('index_item_link')).' AS link on basic.item_id=link.item_id '
                        .' LEFT JOIN '.$this->prefix($this->modulePrefix('index')).' AS idx on link.index_id=idx.index_id ';
             }
@@ -309,17 +319,18 @@ class Xoonips_OaipmhItemStatusBean extends Xoonips_BeanBase
             .' item.item_type_id=itemtype.item_type_id AND '
             .$where;
         if (0 != $from) {
-            $sql .= "$from <= stat.timestamp AND ";
+            $sql .= intval($from).'<=`stat`.`timestamp` AND ';
         }
         if (0 != $until) {
-            $sql .= " stat.timestamp <= $until AND ";
+            $sql .= ' `stat`.`timestamp`<='.intval($until).' AND ';
         }
-        $sql .= " stat.item_id >= $startIID ";
-        $sql .= ' AND (stat.is_deleted=0 OR (stat.is_deleted=1 && deleted_timestamp>';
+        $deletion_track = intval($deletion_track);
+        $sql .= ' `stat`.`item_id`>='.intval($startIID);
+        $sql .= ' AND (`stat`.`is_deleted`=0 OR (`stat`.`is_deleted`=1 && `deleted_timestamp`>';
         $sql .= (time() - 60 * 60 * 24 * $deletion_track).'))';
-        $sql .= ' order by stat.item_id ';
+        $sql .= ' ORDER BY `stat`.`item_id` ';
         if ($limit > 0) {
-            $sql .= " limit $limit";
+            $sql .= ' LIMIT '.intval($limit);
         }
         if ($result = $this->execute($sql)) {
             while ($row = $this->fetchArray($result)) {

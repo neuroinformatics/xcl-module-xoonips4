@@ -23,7 +23,7 @@ class Xoonips_SearchTextBean extends Xoonips_BeanBase
      */
     public function delete($fileId)
     {
-        $sql = "DELETE FROM $this->table WHERE file_id=$fileId";
+        $sql = 'DELETE FROM `'.$this->table.'` WHERE `file_id`='.intval($fileId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -41,10 +41,10 @@ class Xoonips_SearchTextBean extends Xoonips_BeanBase
      */
     public function insert($tmpfile)
     {
-        $sql = "LOAD DATA INFILE '$tmpfile' INTO TABLE ".$this->table.' ( file_id, search_text )';
+        $sql = 'LOAD DATA INFILE '.Xoonips_Utils::convertSQLStr($tmpfile).' INTO TABLE `'.$this->table.'` ( `file_id`, `search_text` )';
         $result = $this->execute($sql);
         if (false === $result) {
-            $sql = "LOAD DATA LOCAL INFILE '$tmpfile' INTO TABLE ".$this->table.'( file_id, search_text )';
+            $sql = 'LOAD DATA LOCAL INFILE '.Xoonips_Utils::convertSQLStr($tmpfile).' INTO TABLE `'.$this->table.'` ( `file_id`, `search_text` )';
             $result = $this->execute($sql);
         }
 

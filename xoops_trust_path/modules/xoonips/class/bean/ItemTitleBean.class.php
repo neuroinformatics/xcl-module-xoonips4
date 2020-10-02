@@ -23,7 +23,7 @@ class Xoonips_ItemTitleBean extends Xoonips_BeanBase
      */
     public function getItemTitleInfo($id)
     {
-        $sql = 'SELECT * FROM '.$this->table.' WHERE item_id='.$id;
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `item_id`='.intval($id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -48,7 +48,7 @@ class Xoonips_ItemTitleBean extends Xoonips_BeanBase
     {
         $ret = [];
         $title = Xoonips_Utils::convertSQLStrLike($title);
-        $sql = 'SELECT distinct item_id FROM '.$this->table." WHERE title LIKE '%$title%'";
+        $sql = 'SELECT DISTINCT `item_id` FROM `'.$this->table."` WHERE `title` LIKE '%".$title."%'";
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -70,7 +70,7 @@ class Xoonips_ItemTitleBean extends Xoonips_BeanBase
      */
     public function delete($id)
     {
-        $sql = "DELETE FROM $this->table WHERE item_id=$id";
+        $sql = 'DELETE FROM `'.$this->table.'` WHERE `item_id`='.intval($id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -81,7 +81,7 @@ class Xoonips_ItemTitleBean extends Xoonips_BeanBase
 
     public function getItemTitle($itemId)
     {
-        $sql = 'SELECT * FROM '.$this->table.' WHERE item_id='.$itemId;
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `item_id`='.intval($itemId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -107,7 +107,7 @@ class Xoonips_ItemTitleBean extends Xoonips_BeanBase
      */
     public function insertTitle($item_id, $item_field_detail_id, $title, $title_id)
     {
-        $sql = 'INSERT INTO '.$this->table.' (item_id,item_field_detail_id,title,title_id)';
+        $sql  = 'INSERT INTO `'.$this->table.'` (`item_id`,`item_field_detail_id`,`title`,`title_id`)';
         $sql .= ' VALUES(';
         $sql .= Xoonips_Utils::convertSQLNum($item_id);
         $sql .= ','.Xoonips_Utils::convertSQLNum($item_field_detail_id);
@@ -134,10 +134,9 @@ class Xoonips_ItemTitleBean extends Xoonips_BeanBase
      */
     public function updateTitle($item_id, $item_field_detail_id, $title, $title_id)
     {
-        $sql = 'UPDATE '.$this->table." SET title=\"${title}\" where ".
-    'item_id='.Xoonips_Utils::convertSQLNum($item_id).
-    ' and item_field_detail_id = '.Xoonips_Utils::convertSQLNum($item_field_detail_id).
-    ' and title_id = '.Xoonips_Utils::convertSQLNum($title_id);
+        $sql  = 'UPDATE `'.$this->table.'` SET `title`='.Xoonips_Utils::convertSQLStr($title);
+        $sql .= ' WHERE `item_id`='.intval($item_id).' AND `item_field_detail_id`='.intval($item_field_detail_id);
+        $sql .= ' AND `title_id`='.intval($title_id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;

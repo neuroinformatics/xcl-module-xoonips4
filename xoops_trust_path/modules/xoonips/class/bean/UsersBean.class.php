@@ -35,7 +35,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
         if (isset(self::$userCache[$id])) {
             return self::$userCache[$id];
         }
-        $sql = 'SELECT * FROM '.$this->table.' WHERE uid='.$id;
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `uid`='.intval($id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -61,7 +61,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
         if (isset(self::$userNameCache[$uname])) {
             return self::$userNameCache[$uname];
         }
-        $sql = 'SELECT * FROM '.$this->table.' WHERE uname='.Xoonips_Utils::convertSQLStr($uname);
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `uname`='.Xoonips_Utils::convertSQLStr($uname);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -88,7 +88,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
         $ret = [];
         $uname = Xoonips_Utils::convertSQLStrLike($uname);
         $name = Xoonips_Utils::convertSQLStrLike($name);
-        $sql = 'SELECT * FROM '.$this->table." WHERE uname LIKE '%$uname%' AND name LIKE '%$name%' ORDER BY uname";
+        $sql = 'SELECT * FROM `'.$this->table."` WHERE `uname` LIKE '%$uname%' AND `name` LIKE '%$name%' ORDER BY `uname`";
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -133,9 +133,9 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
     public function isGroupManager($groupId, $uid)
     {
         $ret = false;
-        $sql = 'SELECT * FROM '.$this->linkTable." WHERE groupid=$groupId"
-            ." AND uid=${uid} AND is_admin=".Xoonips_Enum::GRP_ADMINISTRATOR
-            .' AND activate<>'.Xoonips_Enum::GRP_US_JOIN_REQUIRED;
+        $sql = 'SELECT * FROM `'.$this->linkTable. '` WHERE `groupid`=' .intval($groupId)
+            .' AND `uid`='.intval(${uid}). ' AND `is_admin`='.Xoonips_Enum::GRP_ADMINISTRATOR
+            .' AND `activate`<>'.Xoonips_Enum::GRP_US_JOIN_REQUIRED;
         if (($result = $this->execute($sql))
             && $this->getRowsNum($result) > 0) {
             $ret = true;
@@ -158,10 +158,10 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
     public function isGroupMember($groupId, $uid)
     {
         $ret = false;
-        $sql = 'SELECT * FROM '.$this->linkTable
-            ." WHERE groupid=$groupId"
-            ." AND uid=${uid} AND is_admin=".Xoonips_Enum::GRP_USER
-            .' AND activate<>'.Xoonips_Enum::GRP_US_JOIN_REQUIRED;
+        $sql = 'SELECT * FROM `'.$this->linkTable.'`'
+            .' WHERE `groupid`=' .intval($groupId)
+            .' AND `uid`='.intval(${uid}). ' AND `is_admin`='.Xoonips_Enum::GRP_USER
+            .' AND `activate`<>'.Xoonips_Enum::GRP_US_JOIN_REQUIRED;
         if (($result = $this->execute($sql))
             && $this->getRowsNum($result) > 0) {
             $ret = true;
@@ -183,7 +183,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
     public function getAllUsers()
     {
         $ret = [];
-        $sql = "SELECT * FROM $this->table";
+        $sql = 'SELECT * FROM `' .$this->table. '`';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -214,7 +214,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
             }
         }
         //execute sql
-        $sql = "INSERT INTO $this->table ($columns) VALUES ($values)";
+        $sql = 'INSERT INTO `' .$this->table. '` (' .$columns. ') VALUES (' .$values. ')';
         if (!$this->execute($sql)) {
             return false;
         } else {
@@ -238,9 +238,9 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
             return true;
         }
 
-        $sql = 'UPDATE '.$this->table
-                .' SET level = '.Xoonips_Enum::USER_NOT_CERTIFIED
-                ." WHERE uid = $uid";
+        $sql = 'UPDATE `'.$this->table. '`'
+                .' SET `level` = '.Xoonips_Enum::USER_NOT_CERTIFIED
+                .' WHERE `uid` =' .intval($uid);
 
         $result = $this->execute($sql);
         if (!$result) {
@@ -264,9 +264,9 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
             return true;
         }
 
-        $sql = 'UPDATE '.$this->table
-            .' SET level = '.Xoonips_Enum::USER_NOT_ACTIVATE
-            ." WHERE uid = $uid";
+        $sql = 'UPDATE `'.$this->table. '`'
+            .' SET `level` = '.Xoonips_Enum::USER_NOT_ACTIVATE
+            .' WHERE `uid` =' .intval($uid);
 
         $result = $this->execute($sql);
         if (!$result) {
@@ -285,7 +285,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
     */
     public function getCountActivateUsers($isActivate)
     {
-        $sql = 'SELECT COUNT(uid) AS cnt FROM '.$this->table.' WHERE level';
+        $sql = 'SELECT COUNT(`uid`) AS `cnt` FROM `'.$this->table.'` WHERE `level`';
         if ($isActivate) {
             $sql .= '>='.Xoonips_Enum::USER_CERTIFIED;
         } else {
@@ -312,7 +312,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
      */
     public function getCountUsedFieldValue($table, $column, $value)
     {
-        $sql = 'SELECT COUNT(uid) AS cnt FROM '.$this->prefix($table).' WHERE value='.Xoonips_Utils::convertSQLStr($value);
+        $sql = 'SELECT COUNT(`uid`) AS `cnt` FROM `'.$this->prefix($table).'` WHERE `value`='.Xoonips_Utils::convertSQLStr($value);
 
         $result = $this->execute($sql);
         if (!$result) {
@@ -330,7 +330,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
     {
         $ret = [];
         $table = $this->prefix($tableName);
-        $sql = "SELECT * FROM $table WHERE uid=$uid ORDER BY occurrence_number";
+        $sql = 'SELECT * FROM `' .$table. '` WHERE `uid`=' .intval($uid). ' ORDER BY `occurrence_number`';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -370,10 +370,10 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
     public function isGroupAdmin($uid)
     {
         $ret = false;
-        $sql = 'SELECT COUNT(a.uid) AS count '
-            ."FROM $this->linkTable a "
-            ."WHERE a.uid=$uid "
-            .'AND a.is_admin='.Xoonips_Enum::GRP_ADMINISTRATOR;
+        $sql = 'SELECT COUNT(`a`.`uid`) AS `count` '
+            .'FROM `' .$this->linkTable. '` `a` '
+            .'WHERE `a`.`uid`=' .intval($uid)
+            .'AND `a`.`is_admin`='.Xoonips_Enum::GRP_ADMINISTRATOR;
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -398,8 +398,8 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
     public function getGroupsUsers($uid, $activate)
     {
         $ret = [];
-        $sql = "SELECT groupid FROM $this->linkTable "
-                ."WHERE uid=$uid AND activate=$activate";
+        $sql = 'SELECT `groupid` FROM `' .$this->linkTable. '`'
+                .' WHERE `uid`=' .intval($uid). ' AND `activate`=' .intval($activate);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -422,7 +422,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
      */
     public function deleteGroupsUsers($uid, $activate)
     {
-        $sql = "DELETE FROM $this->linkTable WHERE uid=$uid AND activate=$activate";
+        $sql = 'DELETE FROM `' .$this->linkTable. '` WHERE `uid`=' .intval($uid). ' AND `activate`=' .intval($activate);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -440,7 +440,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
      */
     public function deleteGroupsUsersByUid($uid)
     {
-        $sql = "DELETE FROM $this->linkTable WHERE uid=$uid";
+        $sql = 'DELETE FROM `' .$this->linkTable. '` WHERE `uid`=' .intval($uid);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -458,7 +458,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
      */
     public function deleteUsers($uid)
     {
-        $sql = "DELETE FROM $this->table WHERE uid=$uid";
+        $sql = 'DELETE FROM `' .$this->table. '` WHERE `uid`=' .intval($uid);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -470,7 +470,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
     public function getGroupsUsersLinkByUid($uid)
     {
         $ret = [];
-        $sql = "SELECT * FROM $this->linkTable WHERE uid=$uid";
+        $sql = 'SELECT * FROM `' .$this->linkTable. '` WHERE `uid`=' .intval($uid);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -488,9 +488,9 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
         $ret = [];
         $tblUser = $this->prefix('users');
         if ($is_admin) {
-            $sql = "SELECT b.* FROM $this->linkTable a INNER JOIN $tblUser b ON a.uid=b.uid WHERE a.groupid=$groupId AND a.is_admin=".Xoonips_Enum::GRP_ADMINISTRATOR;
+            $sql = 'SELECT `b`.* FROM `' .$this->linkTable. '` `a` INNER JOIN `' .$tblUser. '` `b` ON `a`.`uid`=`b`.`uid` WHERE `a`.`groupid`=' .intval($groupId). ' AND `a`.`is_admin`='.Xoonips_Enum::GRP_ADMINISTRATOR;
         } else {
-            $sql = "SELECT b.* FROM $this->linkTable a INNER JOIN $tblUser b ON a.uid=b.uid WHERE a.groupid=$groupId AND a.is_admin=".Xoonips_Enum::GRP_USER;
+            $sql = 'SELECT `b`.* FROM `' .$this->linkTable. '` `a` INNER JOIN `' .$tblUser. '` `b` ON `a`.`uid`=`b`.`uid` WHERE `a`.`groupid`=' .intval($groupId). ' AND `a`.`is_admin`='.Xoonips_Enum::GRP_USER;
         }
         $result = $this->execute($sql);
         if (!$result) {
@@ -508,7 +508,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
     {
         $ret = [];
         $tblUser = $this->prefix('users');
-        $sql = "SELECT b.* FROM $this->linkTable a INNER JOIN $tblUser b ON a.uid=b.uid WHERE a.groupid=$groupId";
+        $sql = 'SELECT `b`.* FROM `' .$this->linkTable. '` `a` INNER JOIN `' .$tblUser. '` `b` ON `a`.`uid`=`b`.`uid` WHERE `a`.`groupid`=' .intval($groupId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -572,7 +572,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
             return true;
         }
 
-        $sql = 'UPDATE '.$this->table.' SET level='.Xoonips_Enum::USER_CERTIFIED." WHERE uid = $uid";
+        $sql = 'UPDATE `'.$this->table.'` SET `level`='.Xoonips_Enum::USER_CERTIFIED. ' WHERE `uid` =' .intval($uid);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -592,9 +592,9 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
     public function recountPost($posts, $xoopsUser)
     {
         $uid = $xoopsUser->get('uid');
-        $sql = 'UPDATE '.$this->table
-                ." SET posts = $posts"
-                ." WHERE uid = $uid";
+        $sql = 'UPDATE `'.$this->table. '`'
+                .' SET `posts` =' .intval($posts)
+                .' WHERE `uid` =' .intval($uid);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -612,9 +612,9 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
      */
     public function addPost($uid)
     {
-        $sql = 'UPDATE '.$this->table
-                .' SET posts = posts + 1'
-                ." WHERE uid = $uid";
+        $sql = 'UPDATE `'.$this->table. '`'
+                .' SET `posts` = `posts` + 1'
+                .' WHERE `uid` =' .intval($uid);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -632,9 +632,9 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
      */
     public function subtractPost($uid)
     {
-        $sql = 'UPDATE '.$this->table
-                .' SET posts = posts - 1'
-            ." WHERE uid = $uid";
+        $sql = 'UPDATE `'.$this->table. '`'
+                .' SET `posts` = `posts` - 1'
+            .' WHERE `uid` =' .intval($uid);
         $result = $this->execute($sql);
         if (!$result) {
             return false;

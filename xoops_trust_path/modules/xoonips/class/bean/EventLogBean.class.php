@@ -96,18 +96,21 @@ class Xoonips_EventLogBean extends Xoonips_BeanBase
     private function insert($obj)
     {
         $ret = true;
-        $sql = "INSERT INTO $this->table (event_type_id,timestamp,exec_uid,remote_host,";
-        $sql = $sql.'index_id,item_id,file_id,uid,groupid,search_keyword,additional_info)';
+        $sql  = 'INSERT INTO `'.$this->table.'` (`event_type_id`,`timestamp`,`exec_uid`,`remote_host`,';
+        $sql .= '`index_id`,`item_id`,`file_id`,`uid`,`groupid`,`search_keyword`,`additional_info`) ';
 
-        $sql = $sql.' VALUES('.$obj['event_type_id'].','.$obj['timestamp'].',';
-        $sql = $sql.$obj['exec_uid'].','.Xoonips_Utils::convertSQLStr($obj['remote_host']).',';
-        $sql = $sql.Xoonips_Utils::convertSQLNum($obj['index_id']).',';
-        $sql = $sql.Xoonips_Utils::convertSQLNum($obj['item_id']).',';
-        $sql = $sql.Xoonips_Utils::convertSQLNum($obj['file_id']).',';
-        $sql = $sql.Xoonips_Utils::convertSQLNum($obj['uid']).',';
-        $sql = $sql.Xoonips_Utils::convertSQLNum($obj['groupid']).',';
-        $sql = $sql.Xoonips_Utils::convertSQLStr($obj['search_keyword']).',';
-        $sql = $sql.Xoonips_Utils::convertSQLStr($obj['additional_info']).')';
+        $sql .= ' VALUES(';
+        $sql .= intval($obj['event_type_id']).',';
+        $sql .= intval($obj['timestamp']).',';
+        $sql .= intval($obj['exec_uid']).',';
+        $sql .= Xoonips_Utils::convertSQLStr($obj['remote_host']).',';
+        $sql .= intval($obj['index_id']).',';
+        $sql .= intval($obj['item_id']).',';
+        $sql .= intval($obj['file_id']).',';
+        $sql .= intval($obj['uid']).',';
+        $sql .= intval($obj['groupid']).',';
+        $sql .= Xoonips_Utils::convertSQLStr($obj['search_keyword']).',';
+        $sql .= Xoonips_Utils::convertSQLStr($obj['additional_info']).')';
         $result = $this->execute($sql);
         if (!$result) {
             return false;

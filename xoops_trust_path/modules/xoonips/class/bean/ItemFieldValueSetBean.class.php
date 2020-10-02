@@ -21,8 +21,7 @@ class Xoonips_ItemFieldValueSetBean extends Xoonips_BeanBase
      */
     public function getSelectNames()
     {
-        $sql = "SELECT DISTINCT select_name FROM $this->table ";
-        $sql .= ' ORDER BY select_name';
+        $sql  = 'SELECT DISTINCT `select_name` FROM `'.$this->table.'` ORDER BY `select_name`';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -50,9 +49,9 @@ class Xoonips_ItemFieldValueSetBean extends Xoonips_BeanBase
         $title_id = Xoonips_Utils::convertSQLStr($title_id);
         $select_name = Xoonips_Utils::convertSQLStr($select_name);
         $weight = Xoonips_Utils::convertSQLNum($weight);
-        $sql = "UPDATE $this->table SET weight=$weight";
-        $sql .= " WHERE title_id=$title_id";
-        $sql .= " AND select_name=$select_name";
+        $sql  = 'UPDATE `'.$this->table.'` SET `weight`='.intval($weight);
+        $sql .= ' WHERE `title_id`='.$title_id;
+        $sql .= ' AND `select_name`='.$select_name;
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -73,8 +72,8 @@ class Xoonips_ItemFieldValueSetBean extends Xoonips_BeanBase
     {
         $oldname = Xoonips_Utils::convertSQLStr($oldname);
         $newname = Xoonips_Utils::convertSQLStr($newname);
-        $sql = "UPDATE $this->table SET select_name=$newname";
-        $sql .= " WHERE select_name=$oldname";
+        $sql  = 'UPDATE `'.$this->table.'` SET `select_name`='.$newname;
+        $sql .= ' WHERE `select_name`='.$oldname;
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -93,9 +92,8 @@ class Xoonips_ItemFieldValueSetBean extends Xoonips_BeanBase
     public function getValueDetail($select_name)
     {
         $select_name = Xoonips_Utils::convertSQLStr($select_name);
-        $sql = "SELECT * FROM $this->table";
-        $sql .= " WHERE select_name=$select_name";
-        $sql .= ' ORDER BY weight';
+        $sql  = 'SELECT * FROM `'.$this->table.'` WHERE `select_name`='.$select_name;
+        $sql .= ' ORDER BY `weight`';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -121,9 +119,8 @@ class Xoonips_ItemFieldValueSetBean extends Xoonips_BeanBase
     {
         $title_id = Xoonips_Utils::convertSQLStr($title_id);
         $select_name = Xoonips_Utils::convertSQLStr($select_name);
-        $sql = "DELETE FROM $this->table";
-        $sql .= " WHERE title_id =$title_id";
-        $sql .= " AND select_name =$select_name";
+        $sql  = 'DELETE FROM `'.$this->table.'` WHERE `title_id`='.$title_id;
+        $sql .= ' AND `select_name`='.$select_name;
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -142,8 +139,7 @@ class Xoonips_ItemFieldValueSetBean extends Xoonips_BeanBase
     public function getItemTypeValueCount($select_name)
     {
         $select_name = Xoonips_Utils::convertSQLStr($select_name);
-        $sql = "SELECT title FROM $this->table";
-        $sql .= " WHERE select_name=$select_name";
+        $sql  = 'SELECT `title` FROM `'.$this->table.'` WHERE `select_name`='.$select_name;
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -167,8 +163,7 @@ class Xoonips_ItemFieldValueSetBean extends Xoonips_BeanBase
     public function checkSelectNames($newname)
     {
         $newname = Xoonips_Utils::convertSQLStr($newname);
-        $sql = "SELECT select_name FROM $this->table";
-        $sql .= " WHERE select_name=$newname";
+        $sql  = 'SELECT `select_name` FROM `'.$this->table.'` WHERE `select_name`='.$newname;
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -194,9 +189,8 @@ class Xoonips_ItemFieldValueSetBean extends Xoonips_BeanBase
     {
         $title_id = Xoonips_Utils::convertSQLStr($title_id);
         $select_name = Xoonips_Utils::convertSQLStr($select_name);
-        $sql = "SELECT * FROM $this->table";
-        $sql .= " WHERE title_id=$title_id";
-        $sql .= " AND select_name=$select_name";
+        $sql  = 'SELECT * FROM `'.$this->table.'` WHERE `title_id`='.$title_id;
+        $sql .= ' AND `select_name`='.$select_name;
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -218,8 +212,7 @@ class Xoonips_ItemFieldValueSetBean extends Xoonips_BeanBase
     public function getValue($select_name)
     {
         $select_name = Xoonips_Utils::convertSQLStr($select_name);
-        $sql = "SELECT * FROM $this->table";
-        $sql .= " WHERE select_name=$select_name";
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `select_name`='.$select_name;
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -243,9 +236,8 @@ class Xoonips_ItemFieldValueSetBean extends Xoonips_BeanBase
     {
         $select_name = Xoonips_Utils::convertSQLStr($select_name);
         $title = Xoonips_Utils::convertSQLStr($title);
-        $sql = "SELECT count(select_name) AS cnt FROM $this->table";
-        $sql .= " WHERE select_name=$select_name";
-        $sql .= " AND title=$title";
+        $sql  = 'SELECT COUNT(`select_name`) AS `cnt` FROM `'.$this->table.'`';
+        $sql .= ' WHERE `select_name`='.$select_name.' AND `title`='.$title;
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -269,9 +261,8 @@ class Xoonips_ItemFieldValueSetBean extends Xoonips_BeanBase
     {
         $select_name = Xoonips_Utils::convertSQLStr($select_name);
         $title_id = Xoonips_Utils::convertSQLStr($title_id);
-        $sql = "SELECT count(select_name) AS cnt FROM $this->table";
-        $sql .= " WHERE select_name=$select_name";
-        $sql .= " AND title_id=$title_id";
+        $sql  = 'SELECT COUNT(`select_name`) AS `cnt` FROM `'.$this->table.'`';
+        $sql .= ' WHERE `select_name`='.$select_name.' AND `title_id`='.$title_id;
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -320,8 +311,7 @@ class Xoonips_ItemFieldValueSetBean extends Xoonips_BeanBase
     public function getMax($select_name, $col)
     {
         $select_name = Xoonips_Utils::convertSQLStr($select_name);
-        $sql = "SELECT MAX(CONVERT($col, UNSIGNED)) FROM $this->table"
-        ." WHERE select_name=$select_name";
+        $sql = 'SELECT MAX(CONVERT('.$col.', UNSIGNED)) FROM `'.$this->table.'` WHERE `select_name`='.$select_name;
         $result = $this->execute($sql);
         $max = $this->fetchRow($result);
         if ($max[0] > 0) {
@@ -344,8 +334,8 @@ class Xoonips_ItemFieldValueSetBean extends Xoonips_BeanBase
         $title_id = Xoonips_Utils::convertSQLStr($value['title_id']);
         $title = Xoonips_Utils::convertSQLStr($value['title']);
         $weight = Xoonips_Utils::convertSQLNum($value['weight']);
-        $sql = "INSERT INTO $this->table (select_name, title_id, title, weight)";
-        $sql .= " VALUES( $select_name , $title_id , $title , $weight )";
+        $sql  = 'INSERT INTO `'.$this->table.'` (`select_name`, `title_id`, `title, weight`)';
+        $sql .= ' VALUES ( '.$select_name.', '.$title_id.', '.$title.', '.intval($weight).' )';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -367,9 +357,9 @@ class Xoonips_ItemFieldValueSetBean extends Xoonips_BeanBase
         $title_id = Xoonips_Utils::convertSQLStr($value['title_id']);
         $title_id_db = Xoonips_Utils::convertSQLStr($value['title_id_db']);
         $title = Xoonips_Utils::convertSQLStr($value['title']);
-        $sql = "UPDATE $this->table SET title=$title , title_id=$title_id";
-        $sql .= " WHERE title_id=$title_id_db";
-        $sql .= " AND select_name=$select_name";
+        $sql  = 'UPDATE `'.$this->table.'` SET `title`='.$title.', `title_id`='.$title_id;
+        $sql .= ' WHERE `title_id`='.$title_id_db;
+        $sql .= ' AND `select_name`='.$select_name;
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -390,9 +380,9 @@ class Xoonips_ItemFieldValueSetBean extends Xoonips_BeanBase
     {
         $select_name = Xoonips_Utils::convertSQLStr($select_name);
         $title_id = Xoonips_Utils::convertSQLStr($title_id);
-        $sql = "SELECT title FROM $this->table";
-        $sql .= " WHERE select_name=$select_name";
-        $sql .= " AND title_id=$title_id";
+        $sql  = 'SELECT `title` FROM `'.$this->table.'`';
+        $sql .= ' WHERE `select_name`='.$select_name;
+        $sql .= ' AND `title_id`='.$title_id;
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -413,8 +403,7 @@ class Xoonips_ItemFieldValueSetBean extends Xoonips_BeanBase
      **/
     public function getExportItemTypeValueSet()
     {
-        $sql = "SELECT * FROM $this->table ";
-        $sql .= ' ORDER BY select_name';
+        $sql = 'SELECT * FROM `'.$this->table.'` ORDER BY `select_name`';
         $result = $this->execute($sql);
         if (!$result) {
             return false;

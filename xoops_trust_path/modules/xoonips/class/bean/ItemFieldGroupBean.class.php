@@ -26,7 +26,7 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function getItemTypeGroups($itemtypeId)
     {
-        $sql = 'SELECT * FROM '.$this->table." WHERE item_type_id=$itemtypeId ORDER BY group_id";
+        $sql = 'SELECT * FROM `'.$this->table. '` WHERE `item_type_id`=' .intval($itemtypeId). ' ORDER BY `group_id`';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -49,13 +49,13 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function getExportItemTypeGroup($itemtypeId)
     {
-        $sql = 'SELECT '.$this->prefix($this->modulePrefix('item_type_field_group_link')).'.group_id, ';
-        $sql .= $this->table.'.name, ';
-        $sql .= $this->table.'.xml, ';
-        $sql .= $this->table.'.occurrence ';
-        $sql .= 'FROM '.$this->prefix($this->modulePrefix('item_type_field_group_link')).', '.$this->table.' ';
-        $sql .= 'WHERE '.$this->prefix($this->modulePrefix('item_type_field_group_link')).'.item_type_id='.$itemtypeId.' ';
-        $sql .= 'AND '.$this->prefix($this->modulePrefix('item_type_field_group_link')).'.group_id='.$this->table.'.group_id';
+        $sql = 'SELECT `'.$this->prefix($this->modulePrefix('item_type_field_group_link')).'`.`group_id`, ';
+        $sql .= '`' .$this->table.'`.`name`, ';
+        $sql .= '`' .$this->table.'`.`xml`, ';
+        $sql .= '`' .$this->table.'`.`occurrence` ';
+        $sql .= 'FROM `'.$this->prefix($this->modulePrefix('item_type_field_group_link')).'`, `'.$this->table.'` ';
+        $sql .= 'WHERE `'.$this->prefix($this->modulePrefix('item_type_field_group_link')).'`.`item_type_id`='.intval($itemtypeId).' ';
+        $sql .= 'AND `'.$this->prefix($this->modulePrefix('item_type_field_group_link')).'`.`group_id`=`'.$this->table.'`.`group_id`';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -79,11 +79,11 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
     public function getDefaultItemTypeGroup($preselect_flg = true)
     {
         $ret = [];
-        $sql = 'SELECT * FROM '.$this->table;
+        $sql = 'SELECT * FROM `'.$this->table. '` ';
         if ($preselect_flg) {
-            $sql .= ' WHERE preselect=1';
+            $sql .= ' WHERE `preselect`=1';
         }
-        $sql .= ' ORDER BY weight';
+        $sql .= ' ORDER BY `weight`';
         $result = $this->execute($sql);
         if (!$result) {
             return $ret;
@@ -105,7 +105,7 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function insert($info, &$insertId)
     {
-        $sql = "INSERT INTO $this->table (released, preselect, item_type_id, name, xml, weight, occurrence, update_id)";
+        $sql = 'INSERT INTO `' .$this->table. '` (`released`, `preselect`, `item_type_id`, `name`, `xml`, `weight`, `occurrence`, `update_id`)';
         $sql .= ' VALUES ('.Xoonips_Utils::convertSQLNum($info['released']).','
             .Xoonips_Utils::convertSQLNum($info['preselect']).','
             .Xoonips_Utils::convertSQLNum($info['item_type_id']).','
@@ -133,7 +133,7 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
     public function insertDefault($info, &$insertId)
     {
         $table = $this->prefix($this->modulePrefix('default_item_field_group'));
-        $sql = "INSERT INTO $table (name, xml, weight, occurrence)";
+        $sql = 'INSERT INTO `' .$table. '` (`name`, `xml`, `weight`, `occurrence`)';
         $sql .= ' VALUES ('.Xoonips_Utils::convertSQLStr($info['name']).','
             .Xoonips_Utils::convertSQLStr($info['xml']).','
             .Xoonips_Utils::convertSQLNum($info['weight']).','
@@ -157,7 +157,7 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
     public function getItemtypeGroupEditInfo($itemtypeId)
     {
         $ret = [];
-        $sql = "SELECT a.* FROM $this->table a LEFT JOIN $this->table b ON a.update_id=b.group_id WHERE a.item_type_id=$itemtypeId ORDER BY a.weight";
+        $sql = 'SELECT `a`.* FROM `' .$this->table. '` `a` LEFT JOIN `' .$this->table. '` `b` ON `a`.`update_id`=`b`.`group_id` WHERE `a`.`item_type_id`='.intval($itemtypeId). ' ORDER BY `a`.`weight`';
         $result = $this->execute($sql);
         if (!$result) {
             return $ret;
@@ -179,7 +179,7 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function updateWeight($groupId, $weight)
     {
-        $sql = "UPDATE $this->table SET weight=$weight WHERE group_id=$groupId";
+        $sql = 'UPDATE `' .$this->table. '` SET `weight`=' .intval($weight). ' WHERE `group_id`=' .intval($groupId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -197,13 +197,13 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function delete($groupId)
     {
-        $sql = "DELETE FROM $this->table WHERE group_id=$groupId";
+        $sql = 'DELETE FROM `' .$this->table. '` WHERE `group_id`=' .intval($groupId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
         }
 
-        $sql = "DELETE FROM $this->table WHERE update_id=$groupId";
+        $sql = 'DELETE FROM `' .$this->table. '` WHERE `update_id`=' .intval($groupId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -221,7 +221,7 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function deleteByItemtypeId($itemtypeid)
     {
-        $sql = "DELETE FROM $this->table WHERE item_type_id=$itemtypeid";
+        $sql = 'DELETE FROM `' .$this->table. '` WHERE `item_type_id`=' .intval($itemtypeid);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -239,10 +239,10 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function updateNewGroup($base_itemtypeid, $copy_itemtypeid)
     {
-        $sql = "UPDATE $this->table SET "
-            .' released = 1 '
-            .", item_type_id = $base_itemtypeid ";
-        $sql .= " WHERE item_type_id=$copy_itemtypeid AND released=0 AND update_id IS NULL";
+        $sql = 'UPDATE `' .$this->table. '` SET '
+            .' `released` = 1 '
+            .', `item_type_id` =' .intval($base_itemtypeid);
+        $sql .= ' WHERE `item_type_id`=' .intval($copy_itemtypeid). ' AND `released`=0 AND `update_id` IS NULL';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -260,12 +260,12 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function updateCopyToBaseGroup($itemtypeId)
     {
-        $sql = "UPDATE $this->table t1, $this->table t2 SET "
-            .' t1.weight = t2.weight '
-            .', t1.name = t2.name '
-            .', t1.xml = t2.xml '
-            .', t1.occurrence = t2.occurrence ';
-        $sql .= " WHERE t1.group_id=t2.update_id AND t2.item_type_id=$itemtypeId";
+        $sql = 'UPDATE `' .$this->table. '` `t1`, `' .$this->table. '` `t2` SET '
+            .' `t1`.`weight` = `t2`.`weight` '
+            .', `t1`.`name` = `t2`.`name` '
+            .', `t1`.`xml` = `t2`.`xml` '
+            .', `t1`.`occurrence` = `t2`.`occurrence` ';
+        $sql .= ' WHERE `t1`.`group_id`=`t2`.`update_id` AND `t2`.`item_type_id`=' .intval($itemtypeId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -283,7 +283,7 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function deleteCopyItemtypeGroup($itemtypeId)
     {
-        $sql = "DELETE FROM $this->table WHERE item_type_id=$itemtypeId AND update_id IS NOT NULL";
+        $sql = 'DELETE FROM `' .$this->table. '` WHERE `item_type_id`=' .intval($itemtypeId). ' AND `update_id` IS NOT NULL';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -301,7 +301,7 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function getMaxGroupWeight($itid)
     {
-        $sql = 'SELECT MAX(weight) AS maxWeight FROM '.$this->table." WHERE item_type_id=$itid";
+        $sql = 'SELECT MAX(`weight`) AS `maxWeight` FROM `'.$this->table. '` WHERE `item_type_id`=' .intval($itid);
         $result = $this->execute($sql);
         if (!$result) {
             return 0;
@@ -322,11 +322,11 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function update($info, $gid)
     {
-        $sql = "UPDATE $this->table SET "
-            .'  name = '.Xoonips_Utils::convertSQLStr($info['name'])
-            .', xml = '.Xoonips_Utils::convertSQLStr($info['xml'])
-            .', occurrence = '.Xoonips_Utils::convertSQLNum($info['occurrence']);
-        $sql .= " WHERE group_id=$gid";
+        $sql = 'UPDATE `' .$this->table. '` SET '
+            .'  `name` = '.Xoonips_Utils::convertSQLStr($info['name'])
+            .', `xml` = '.Xoonips_Utils::convertSQLStr($info['xml'])
+            .', `occurrence` = '.Xoonips_Utils::convertSQLNum($info['occurrence']);
+        $sql .= ' WHERE `group_id`=' .intval($gid);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -346,20 +346,20 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
 
         $sql_group = '';
         if ($groupId > 0) {
-            $sql_group = " AND lg.group_id=$groupId";
+            $sql_group = ' AND `lg`.`group_id`='.intval($groupId);
         }
 
-        $sql = 'SELECT dt.item_field_detail_id, dt.name as detail_name, gt.name as group_name'
-        .", lg.group_id FROM $detailTable dt"
-        ." LEFT JOIN $glinkTable lg"
-        .' ON  dt.item_field_detail_id=lg.item_field_detail_id'
-        ." LEFT JOIN $groupTable gt"
-        .' ON lg.group_id=gt.group_id'
-        ." LEFT JOIN $tlinkTable lt"
-        .' ON  lg.group_id=lt.group_id'
-        ." WHERE lt.item_type_id=${itemtypeid} AND dt.nondisplay=0"
-        .$sql_group
-        ." AND dt.item_field_detail_id<>${baseId} ORDER BY dt.weight";
+        $sql  = 'SELECT `dt`.`item_field_detail_id`, `dt`.`name` AS `detail_name`, `gt`.`name` AS `group_name`';
+        $sql .= ', `lg`.`group_id` FROM `'.$detailTable.'` `dt`';
+        $sql .= ' LEFT JOIN `'.$glinkTable.'` `lg`';
+        $sql .= ' ON  `dt`.`item_field_detail_id`=`lg`.`item_field_detail_id`';
+        $sql .= ' LEFT JOIN `'.$groupTable.'` `gt`';
+        $sql .= ' ON `lg`.`group_id`=`gt`.`group_id`';
+        $sql .= ' LEFT JOIN `'.$tlinkTable.'` `lt`';
+        $sql .= ' ON `lg`.`group_id`=`lt`.`group_id`';
+        $sql .= ' WHERE `lt`.`item_type_id`='.intval($itemtypeid).' AND `dt`.`nondisplay`=0';
+        $sql .= $sql_group;
+        $sql .= ' AND `dt`.`item_field_detail_id`<>'.intval($baseId).' ORDER BY `dt`.`weight`';
 
         $result = $this->execute($sql);
         $ret = [];
@@ -377,7 +377,7 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
     // get countItemgroups
     public function countItemgroups()
     {
-        $sql = 'SELECT group_id FROM '.$this->table.' WHERE update_id IS NULL';
+        $sql = 'SELECT `group_id` FROM `'.$this->table.'` WHERE `update_id` IS NULL';
         $result = $this->execute($sql);
         $ret = 0;
         if (!$result) {
@@ -393,8 +393,8 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
     public function getItemgrouplist($limit = 0, $start = 0)
     {
         $ret = [];
-        $sql = 'SELECT at.*, bt.update_id as upid FROM '.$this->table.' at LEFT JOIN '.$this->table.' bt'
-        .' ON at.group_id=bt.update_id WHERE at.update_id IS NULL '
+        $sql = 'SELECT `at`.*, `bt`.`update_id` as `upid` FROM `'.$this->table.'` `at` LEFT JOIN `'.$this->table.'` `bt`'
+        .' ON `at`.`group_id`=`bt`.`update_id` WHERE `at`.`update_id` IS NULL '
         .' LIMIT '.(int) $start.', '.(int) $limit;
 
         $result = $this->execute($sql);
@@ -418,8 +418,8 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function existGroupName($gid, $gname, $base_gid = 0)
     {
-        $sql = 'SELECT name FROM '.$this->table." WHERE group_id<>$gid AND group_id<>$base_gid"
-        .' AND name='.Xoonips_Utils::convertSQLStr($gname);
+        $sql = 'SELECT `name` FROM `'.$this->table. '` WHERE `group_id`<>' .intval($gid). ' AND `group_id`<>' .intval($base_gid)
+        .' AND `name`='.Xoonips_Utils::convertSQLStr($gname);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -440,8 +440,8 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function existGroupXml($gid, $gxml, $base_gid = 0)
     {
-        $sql = 'SELECT xml FROM '.$this->table." WHERE group_id<>$gid AND group_id<>$base_gid"
-        .' AND xml='.Xoonips_Utils::convertSQLStr($gxml);
+        $sql = 'SELECT `xml` FROM `'.$this->table. '` WHERE `group_id`<>' .intval($gid). ' AND `group_id`<>' .intval($base_gid)
+        .' AND `xml`='.Xoonips_Utils::convertSQLStr($gxml);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -512,7 +512,7 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function getItemGroup($itemgroupId)
     {
-        $sql = 'SELECT * FROM '.$this->table." WHERE group_id=$itemgroupId";
+        $sql = 'SELECT * FROM `'.$this->table. '` WHERE `group_id`=' .intval($itemgroupId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -536,18 +536,18 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function getGroupEditInfo($gid, $type_flg = false)
     {
-        $sql = 'SELECT a.preselect as a_preselect, b.preselect as b_preselect, '
-            .' a.released as a_released, b.released as b_released, '
-            .' a.name as a_name, b.name as b_name, '
-            .' a.xml as a_xml, b.xml as b_xml, '
-            .' a.occurrence as a_occurrence, b.occurrence as b_occurrence, '
-            .' a.weight as a_weight, b.weight as b_weight, '
-            .' a.update_id as a_update_id, b.update_id as b_update_id, '
-            .' a.group_id as a_group_id, b.group_id as b_group_id ';
+        $sql = 'SELECT `a`.`preselect` as `a_preselect`, `b`.`preselect` as `b_preselect`, '
+            .' `a`.`released` as `a_released`, `b`.`released` as `b_released`, '
+            .' `a`.`name` as `a_name`, `b`.`name` as `b_name`, '
+            .' `a`.`xml` as `a_xml`, `b`.`xml` as `b_xml`, '
+            .' `a`.`occurrence` as `a_occurrence`, `b`.`occurrence` as `b_occurrence`, '
+            .' `a`.`weight` as `a_weight`, `b`.`weight` as `b_weight`, '
+            .' `a`.`update_id` as `a_update_id`, `b`.`update_id` as `b_update_id`, '
+            .' `a`.`group_id` as `a_group_id`, `b`.`group_id` as `b_group_id` ';
         if ($type_flg) {
-            $sql .= " FROM $this->table a LEFT JOIN $this->table b ON a.update_id=b.group_id WHERE a.group_id=$gid";
+            $sql .= ' FROM `' .$this->table. '` `a` LEFT JOIN `' .$this->table. '` `b` ON `a`.`update_id`=`b`.`group_id` WHERE `a`.`group_id`=' .intval($gid);
         } else {
-            $sql .= " FROM $this->table a LEFT JOIN $this->table b ON a.group_id=b.update_id WHERE a.group_id=$gid";
+            $sql .= ' FROM `' .$this->table. '` `a` LEFT JOIN `' .$this->table. '` `b` ON `a`.`group_id`=`b`.`update_id` WHERE `a`.`group_id`=' .intval($gid);
         }
         $result = $this->execute($sql);
         if (!$result) {
@@ -569,14 +569,14 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
     public function release($group_id, $base_groupid)
     {
         if ($group_id == $base_groupid) {
-            $sql = "UPDATE $this->table SET released = 1 WHERE group_id=$group_id";
+            $sql = 'UPDATE `' .$this->table. '` SET `released` = 1 WHERE `group_id`=' .intval($group_id);
         } else {
-            $sql = "UPDATE $this->table t1, $this->table t2 SET "
-            .' t1.weight = t2.weight '
-            .', t1.name = t2.name '
-            .', t1.xml = t2.xml '
-            .', t1.occurrence = t2.occurrence ';
-            $sql .= " WHERE t1.group_id=t2.update_id AND t2.group_id=$group_id";
+            $sql = 'UPDATE `' .$this->table. '` `t1`,`' .$this->table. '` `t2` SET '
+            .' `t1`.`weight` = `t2`.`weight` '
+            .', `t1`.`name` = `t2`.`name` '
+            .', `t1`.`xml` = `t2`.`xml` '
+            .', `t1`.`occurrence` = `t2`.`occurrence` ';
+            $sql .= ' WHERE `t1`.`group_id`=`t2`.`update_id` AND `t2`.`group_id`=' .intval($group_id);
         }
         $result = $this->execute($sql);
         if (!$result) {
@@ -601,10 +601,10 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
     public function getGroupDetails($groupId)
     {
         $ret = [];
-        $sql = 'SELECT d.item_field_detail_id,d.name,d.xml,g.weight,g.edit_weight'
-        .' ,g.edit,g.released as link_release FROM '.$this->detailtable.' AS d'
-        .' LEFT JOIN '.$this->grouplinktable.' AS g ON d.item_field_detail_id=g.item_field_detail_id'
-        ." WHERE g.group_id=$groupId ORDER BY g.edit_weight";
+        $sql = 'SELECT `d`.`item_field_detail_id`,`d`.`name`,`d`.`xml`,`g`.`weight`,`g`.`edit_weight`'
+        .' ,`g`.`edit`,`g`.`released` as `link_release` FROM `'.$this->detailtable.'` AS `d`'
+        .' LEFT JOIN `'.$this->grouplinktable.'` AS `g` ON `d`.`item_field_detail_id`=`g`.`item_field_detail_id`'
+        .' WHERE `g`.`group_id`=' .intval($groupId). ' ORDER BY `g`.`edit_weight`';
         $result = $this->execute($sql);
         if (!$result) {
             return $ret;
@@ -626,9 +626,9 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function insertLink($info, &$insertId)
     {
-        $sql = "INSERT INTO $this->grouplinktable (group_id, item_field_detail_id, weight, edit, edit_weight, released)"
-            .' VALUES ('.Xoonips_Utils::convertSQLStr($info['group_id']).','
-            .Xoonips_Utils::convertSQLStr($info['item_field_detail_id']).','
+        $sql = 'INSERT INTO `' .$this->grouplinktable. '` (`group_id`, `item_field_detail_id`, `weight`, `edit`, `edit_weight`, `released`)'
+            .' VALUES ('.Xoonips_Utils::convertSQLNum($info['group_id']).','
+            .Xoonips_Utils::convertSQLNum($info['item_field_detail_id']).','
             .Xoonips_Utils::convertSQLNum($info['weight']).','
             .Xoonips_Utils::convertSQLNum($info['edit']).','
             .Xoonips_Utils::convertSQLNum($info['edit_weight']).','
@@ -651,8 +651,8 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function updateWeightForLink($groupid, $detailId, $weight)
     {
-        $sql = "UPDATE $this->grouplinktable SET edit_weight=$weight"
-        ." WHERE group_id=$groupid AND item_field_detail_id=$detailId";
+        $sql = 'UPDATE `' .$this->grouplinktable. '` SET `edit_weight`=' .intval($weight)
+        .' WHERE `group_id`=' .intval($groupid). ' AND `item_field_detail_id`=' .intval($detailId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -670,8 +670,8 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function updateLinkRelease($groupid, $release = 0)
     {
-        $sql = "UPDATE $this->grouplinktable SET released=$release"
-        ." WHERE group_id=$groupid";
+        $sql = 'UPDATE `' .$this->grouplinktable. '` SET `released`=' .intval($release)
+        .' WHERE `group_id`=' .intval($groupid);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -689,8 +689,8 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function updateLinkEdit($groupid, $detailId, $edit = 0)
     {
-        $sql = "UPDATE $this->grouplinktable SET edit=$edit"
-        ." WHERE group_id=$groupid AND item_field_detail_id=$detailId";
+        $sql = 'UPDATE `' .$this->grouplinktable. '` SET `edit`=' .intval($edit)
+        .' WHERE `group_id`=' .intval($groupid). ' AND `item_field_detail_id`=' .intval($detailId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -708,12 +708,12 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function updateLinkSync($groupid, $release = false)
     {
-        $sql2 = 'edit=released,edit_weight=weight';
+        $sql2 = '`edit`=`released`,`edit_weight`=`weight`';
         if ($release) {
-            $sql2 = 'released=edit,weight=edit_weight';
+            $sql2 = '`released`=`edit`,`weight`=`edit_weight`';
         }
-        $sql = "UPDATE $this->grouplinktable SET $sql2"
-        ." WHERE group_id=$groupid";
+        $sql = 'UPDATE `' .$this->grouplinktable. '` SET ' .$sql2
+        .' WHERE `group_id`=' .intval($groupid);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -731,7 +731,7 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
      */
     public function deleteLink($groupid)
     {
-        $sql = "DELETE FROM $this->grouplinktable WHERE group_id=$groupid";
+        $sql = 'DELETE FROM `' .$this->grouplinktable. '` WHERE `group_id`=' .intval($groupid);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -750,9 +750,9 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
     public function getGroupByDetailId($detailid)
     {
         $ret = [];
-        $sql = "SELECT g.* FROM $this->table AS g"
-        ." LEFT JOIN $this->grouplinktable AS l ON g.group_id=l.group_id"
-        ." WHERE l.item_field_detail_id=$detailid AND l.edit=1";
+        $sql = 'SELECT `g`.* FROM `' .$this->table. '` AS `g`'
+        .' LEFT JOIN `' .$this->grouplinktable. '` AS `l` ON `g`.`group_id`=`l`.`group_id`'
+        .' WHERE `l`.`item_field_detail_id`=' .intval($detailid). ' AND `l`.`edit`=1';
         $result = $this->execute($sql);
         if (!$result) {
             return $ret;
@@ -768,10 +768,10 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
     public function getDetailIdbyXml($xml)
     {
         $ret = [];
-        $sql = 'select item_field_detail_id from '.$this->table.' AS g,';
-        $sql .= $this->grouplinktable.' AS l where ';
-        $sql .= ' g.released = 1 and l.released = 1 and';
-        $sql .= ' g.group_id = l.group_id and xml='.Xoonips_Utils::convertSQLStr($xml);
+        $sql = 'SELECT `item_field_detail_id` FROM `'.$this->table.'` AS `g`,';
+        $sql .= '`' .$this->grouplinktable.'` AS `l` WHERE ';
+        $sql .= ' `g`.`released` = 1 AND `l`.`released` = 1 AND';
+        $sql .= ' `g`.`group_id` = `l`.`group_id` AND `xml`='.Xoonips_Utils::convertSQLStr($xml);
         $result = $this->execute($sql);
         if (!$result) {
             return $ret;
@@ -794,8 +794,8 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
     public function getGroupByXml($xml)
     {
         $ret = [];
-        $sql = 'SELECT * FROM '.$this->table
-        .' WHERE xml='.Xoonips_Utils::convertSQLStr($xml).' AND update_id IS NULL';
+        $sql = 'SELECT * FROM `'.$this->table. '`'
+        .' WHERE `xml`='.Xoonips_Utils::convertSQLStr($xml).' AND `update_id` IS NULL';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -817,8 +817,8 @@ class Xoonips_ItemFieldGroupBean extends Xoonips_BeanBase
     public function getGroupDetailById($groupId, $detailId)
     {
         $ret = [];
-        $sql = 'SELECT * FROM '.$this->grouplinktable
-        ." WHERE group_id=$groupId AND item_field_detail_id=$detailId";
+        $sql = 'SELECT * FROM `'.$this->grouplinktable. '`'
+        .' WHERE `group_id`=' .intval($groupId). ' AND `item_field_detail_id`=' .intval($detailId);
         $result = $this->execute($sql);
         if (!$result) {
             return $ret;

@@ -24,7 +24,7 @@ class Xoonips_ViewTypeBean extends Xoonips_BeanBase
     public function getViewtypeList()
     {
         $ret = [];
-        $sql = 'SELECT * FROM '.$this->table.' ORDER BY view_type_id';
+        $sql = 'SELECT * FROM `'.$this->table.'` ORDER BY `view_type_id`';
         $result = $this->execute($sql);
         if (!$result) {
             return $ret;
@@ -47,7 +47,7 @@ class Xoonips_ViewTypeBean extends Xoonips_BeanBase
     public function getViewtypeById($viewId)
     {
         $ret = null;
-        $sql = 'SELECT * FROM '.$this->table.' where view_type_id='.$viewId;
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `view_type_id`='.intval($viewId);
         $result = $this->execute($sql);
         if (!$result) {
             return $ret;
@@ -70,7 +70,7 @@ class Xoonips_ViewTypeBean extends Xoonips_BeanBase
     public function selectByName($name)
     {
         $ret = '';
-        $sql = "SELECT * FROM $this->table WHERE name=".Xoonips_Utils::convertSQLStr($name);
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `name`='.Xoonips_Utils::convertSQLStr($name);
         $result = $this->execute($sql);
         if (!$result) {
             return $ret;
@@ -93,8 +93,8 @@ class Xoonips_ViewTypeBean extends Xoonips_BeanBase
      */
     public function insert($viewtype, &$insertId)
     {
-        $sql = "INSERT INTO $this->table (preselect,multi,name,module)";
-        $sql .= ' VALUES('.Xoonips_Utils::convertSQLNum($viewtype['preselect']).','.Xoonips_Utils::convertSQLNum($viewtype['multi']);
+        $sql  = 'INSERT INTO `'.$this->table.'` (`preselect`,`multi`,`name`,`module`)';
+        $sql .= ' VALUES('.intval($viewtype['preselect']).','.intval($viewtype['multi']);
         $sql .= ','.Xoonips_Utils::convertSQLStr($viewtype['name']).','.Xoonips_Utils::convertSQLStr($viewtype['module']).')';
         $result = $this->execute($sql);
         if (!$result) {

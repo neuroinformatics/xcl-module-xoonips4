@@ -25,7 +25,7 @@ class Xoonips_ItemUsersLinkBean extends Xoonips_BeanBase
      */
     public function getItemUsersInfo($id)
     {
-        $sql = 'SELECT * FROM '.$this->table.' WHERE item_id='.$id;
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `item_id`='.intval($id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -42,7 +42,7 @@ class Xoonips_ItemUsersLinkBean extends Xoonips_BeanBase
     public function getLinkItemIds($uid)
     {
         $ret = [];
-        $sql = "SELECT item_id FROM $this->table WHERE uid=$uid";
+        $sql = 'SELECT `item_id` FROM `'.$this->table.'` WHERE `uid`='.intval($uid);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -85,7 +85,7 @@ class Xoonips_ItemUsersLinkBean extends Xoonips_BeanBase
      */
     public function delete($id)
     {
-        $sql = "DELETE FROM $this->table WHERE item_id=$id";
+        $sql = 'DELETE FROM `'.$this->table.'` WHERE `item_id`='.intval($id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -108,7 +108,7 @@ class Xoonips_ItemUsersLinkBean extends Xoonips_BeanBase
     public function getUserChangeInfo($item_id, $selectedUids)
     {
         $ret = [];
-        $sql = "SELECT uid FROM $this->table WHERE item_id=$item_id";
+        $sql = 'SELECT `uid` FROM `'.$this->table.'` WHERE `item_id`='.intval($item_id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -157,9 +157,9 @@ class Xoonips_ItemUsersLinkBean extends Xoonips_BeanBase
         $linkBean = Xoonips_BeanFactory::getBean('IndexItemLinkBean', $this->dirname, $this->trustDirname);
         foreach ($groupIndexes as $index) {
             if (0 != count($linkBean->getInfo($item_id, $index['index_id']))) {
-                $sql = "SELECT a.uid FROM $this->table a,$tblGroupLink b";
-                $sql = $sql."WHERE a.item_id=$item_id AND b.groupid=".$index['groupid'];
-                $sql = $sql." AND a.uid=b.uid AND b.activate<>1 AND a.uid<>$uid";
+                $sql  = 'SELECT `a`.`uid` FROM `'.$this->table.'` `a`,`'.$tblGroupLink.'` `b`';
+                $sql .= ' WHERE `a`.`item_id`='.intval($item_id).' AND `b`.`groupid`='.$index['groupid'];
+                $sql .= ' AND `a`.`uid`=`b`.`uid` AND `b`.`activate`<>1 AND `a`.`uid`<>'.intval($uid);
                 $result = $this->execute($sql);
                 if ($result && $this->fetchArray($result)) {
                     return false;
@@ -180,11 +180,11 @@ class Xoonips_ItemUsersLinkBean extends Xoonips_BeanBase
     public function getItemsWithOwner($uid)
     {
         $ret = [];
-        $sql = 'SELECT a.item_id,COUNT(a.item_id) AS cnt '
-            ."FROM $this->table a "
-            ."WHERE a.item_id in (SELECT item_id FROM $this->table where uid=$uid) "
-            .'GROUP BY a.item_id HAVING cnt=1 '
-            .'ORDER BY a.item_id';
+        $sql  = 'SELECT `a`.`item_id`,COUNT(`a`.`item_id`) AS `cnt` ';
+        $sql .= ' FROM `'.$this->table.'` `a` ';
+        $sql .= ' WHERE `a`.`item_id` IN (SELECT `item_id` FROM `'.$this->table.'` WHERE `uid`='.intval($uid).')';
+        $sql .= ' GROUP BY `a`.`item_id` HAVING `cnt`=1 ';
+        $sql .= ' ORDER BY `a`.`item_id`';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -207,11 +207,11 @@ class Xoonips_ItemUsersLinkBean extends Xoonips_BeanBase
     public function getItemsWithOwners($uid)
     {
         $ret = [];
-        $sql = 'SELECT a.item_id,COUNT(a.item_id) AS cnt '
-            ."FROM $this->table a "
-            ."WHERE a.item_id in (SELECT item_id FROM $this->table where uid=$uid) "
-            .'GROUP BY a.item_id HAVING cnt>1 '
-            .'ORDER BY a.item_id';
+        $sql  = 'SELECT `a`.`item_id`,COUNT(`a`.`item_id`) AS `cnt` ';
+        $sql .= ' FROM `'.$this->table.'` `a` ';
+        $sql .= ' WHERE `a`.`item_id` IN (SELECT `item_id` FROM `'.$this->table.'` WHERE `uid`='.intval($uid).')';
+        $sql .= ' GROUP BY `a`.`item_id` HAVING `cnt`>1 ';
+        $sql .= ' ORDER BY `a`.`item_id`';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -236,14 +236,9 @@ class Xoonips_ItemUsersLinkBean extends Xoonips_BeanBase
         $ret = false;
         $tblindex = $this->prefix($this->modulePrefix('index'));
         $tbllink = $this->prefix($this->modulePrefix('index_item_link'));
-        $sql = "SELECT COUNT(a.uid) AS count
-    		FROM $this->table a,
-    		$tbllink b,
-    		$tblindex c 
-    		WHERE a.uid=$uid 
-    		AND a.item_id=b.item_id
-    		AND b.index_id=c.index_id
-    		AND (c.open_level=1 or c.open_level=2)";
+        $sql  = 'SELECT COUNT(`a`.`uid`) AS `count` FROM `'.$this->table.'` `a`, `'.$tbllink.'` `b`, `'.$tblindex.'` `c`'; 
+    	$sql .= ' WHERE `a`.`uid`='.intval($uid); 
+    	$sql .= ' AND `a`.`item_id`=`b`.`item_id` AND `b`.`index_id`=`c`.`index_id` AND (`c`.`open_level`=1 OR `c`.`open_level`=2)';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -266,7 +261,7 @@ class Xoonips_ItemUsersLinkBean extends Xoonips_BeanBase
      */
     public function deleteAllByUid($uid)
     {
-        $sql = "DELETE FROM $this->table WHERE uid=$uid";
+        $sql = 'DELETE FROM `'.$this->table.'` WHERE `uid`='.intval($uid);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -284,7 +279,7 @@ class Xoonips_ItemUsersLinkBean extends Xoonips_BeanBase
      */
     public function deleteByUid($itemId, $uid)
     {
-        $sql = "DELETE FROM $this->table WHERE item_id=$itemId AND uid=$uid";
+        $sql = 'DELETE FROM `'.$this->table.'` WHERE `item_id`='.intval($itemId).' AND `uid`='.intval($uid);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -302,10 +297,9 @@ class Xoonips_ItemUsersLinkBean extends Xoonips_BeanBase
      */
     public function insert($info)
     {
-        $sql = "INSERT INTO $this->table (item_id, uid, weight)";
-        $sql .= ' VALUES ('.Xoonips_Utils::convertSQLNum($info['item_id']).','
-            .Xoonips_Utils::convertSQLNum($info['uid']).','
-            .Xoonips_Utils::convertSQLNum($info['weight']).')';
+        $sql  = 'INSERT INTO `'.$this->table.'` (`item_id`, `uid`, `weight`)';
+        $sql .= ' VALUES ('.intval($info['item_id']).',';
+        $sql .= intval($info['uid']).','.intval($info['weight']).')';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -323,7 +317,7 @@ class Xoonips_ItemUsersLinkBean extends Xoonips_BeanBase
      */
     public function getMaxWeight($itemId)
     {
-        $sql = 'SELECT MAX(weight) AS maxWeight FROM '.$this->table." WHERE item_id=$itemId";
+        $sql = 'SELECT MAX(`weight`) AS `maxWeight` FROM `'.$this->table.'` WHERE `item_id`='.intval($itemId);
         $result = $this->execute($sql);
         if (!$result) {
             return 0;

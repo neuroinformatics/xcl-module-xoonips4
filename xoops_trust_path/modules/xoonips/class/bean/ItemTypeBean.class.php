@@ -28,7 +28,7 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
     {
         $ret = [];
         $id = Xoonips_Utils::convertSQLNum($id);
-        $sql = "SELECT * FROM $this->table WHERE item_type_id=$id";
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `item_type_id`='.intval($id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -52,7 +52,7 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
     {
         $ret = [];
         $name = Xoonips_Utils::convertSQLStr($name);
-        $sql = "SELECT * FROM $this->table WHERE name=".$name;
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `name`='.$name;
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -76,7 +76,7 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
     {
         $ret = [];
         $id = Xoonips_Utils::convertSQLNum($id);
-        $sql = "SELECT * FROM $this->table WHERE released='1' AND item_type_id=$id";
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `released`=1 AND `item_type_id`='.intval($id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -98,7 +98,7 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
      */
     public function getItemTypeList()
     {
-        $sql = "SELECT * FROM $this->table WHERE released='1' ORDER BY weight";
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `released`=1 ORDER BY `weight`';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -122,7 +122,7 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
     public function getItemTypeName($id)
     {
         $id = Xoonips_Utils::convertSQLNum($id);
-        $sql = "SELECT name FROM $this->table WHERE item_type_id=$id";
+        $sql = 'SELECT `name` FROM `'.$this->table.'` WHERE `item_type_id`='.intval($id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -145,7 +145,7 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
      */
     public function getItemTypeDisplayList()
     {
-        $sql = "SELECT * FROM $this->table WHERE update_id is null order by weight";
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `update_id` IS NULL ORDER BY `weight`';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -170,7 +170,7 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
     {
         $id = Xoonips_Utils::convertSQLNum($id);
         $weight = Xoonips_Utils::convertSQLNum($weight);
-        $sql = "UPDATE $this->table set weight =$weight WHERE item_type_id=$id";
+        $sql = 'UPDATE `'.$this->table.'` SET `weight`='.intval($weight).' WHERE `item_type_id`='.intval($id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -191,7 +191,7 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
         $ret = false;
         $id = Xoonips_Utils::convertSQLNum($id);
         $name = Xoonips_Utils::convertSQLStr($name);
-        $sql = "SELECT name FROM $this->table WHERE item_type_id<>$id AND name=".$name;
+        $sql = 'SELECT `name` FROM `'.$this->table.'` WHERE `item_type_id`<>'.intval($id).' AND `name`='.$name;
         if (0 != $id) {
             $itemtypeInfo = $this->getItemType($id);
             $update_id = Xoonips_Utils::convertSQLNum($itemtypeInfo['update_id']);
@@ -220,17 +220,15 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
      */
     public function insert($info, &$insertId)
     {
-        $sql = "INSERT INTO $this->table (preselect, released, weight, name, description, icon, mime_type, template, update_id)";
-        $sql .= ' VALUES ('
-            .Xoonips_Utils::convertSQLNum($info['preselect']).','
-            .Xoonips_Utils::convertSQLNum($info['released']).','
-            .Xoonips_Utils::convertSQLNum($info['weight']).','
-            .Xoonips_Utils::convertSQLStr($info['name']).','
-            .Xoonips_Utils::convertSQLStr($info['description']).','
-            .Xoonips_Utils::convertSQLStr($info['icon']).','
-            .Xoonips_Utils::convertSQLStr($info['mime_type']).','
-            .Xoonips_Utils::convertSQLStr($info['template']).','
-            .Xoonips_Utils::convertSQLNum($info['update_id']).')';
+        $sql  = 'INSERT INTO `'.$this->table.'` (`preselect`, `released`, `weight`, `name`, ';
+        $sql .= ' `description`, `icon`, `mime_type`, `template`, `update_id`) VALUES (';
+        $sql .= intval($info['preselect']).', '.intval($info['released']).', '.intval($info['weight']).', ';
+        $sql .= Xoonips_Utils::convertSQLStr($info['name']).', ';
+        $sql .= Xoonips_Utils::convertSQLStr($info['description']).', ';
+        $sql .= Xoonips_Utils::convertSQLStr($info['icon']).', ';
+        $sql .= Xoonips_Utils::convertSQLStr($info['mime_type']).', ';
+        $sql .= Xoonips_Utils::convertSQLStr($info['template']).', ';
+        $sql .= intval($info['update_id']).')';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -250,17 +248,17 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
     public function update($info, $itemtypeId, $hasIcon = true)
     {
         $itemtypeId = Xoonips_Utils::convertSQLNum($itemtypeId);
-        $sql = "UPDATE $this->table SET "
-            .'  weight = '.Xoonips_Utils::convertSQLNum($info['weight'])
-            .', name = '.Xoonips_Utils::convertSQLStr($info['name'])
-            .', released = '.Xoonips_Utils::convertSQLStr($info['released'])
-            .', description = '.Xoonips_Utils::convertSQLStr($info['description'])
-            .', template = '.Xoonips_Utils::convertSQLStr($info['template']);
+        $sql  = 'UPDATE `'.$this->table.'` SET ';
+        $sql .= ' `weight`='.intval($info['weight']);
+        $sql .= ', `name`='.Xoonips_Utils::convertSQLStr($info['name']);
+        $sql .= ', `released`='.Xoonips_Utils::convertSQLStr($info['released']);
+        $sql .= ', `description`='.Xoonips_Utils::convertSQLStr($info['description']);
+        $sql .= ', `template`='.Xoonips_Utils::convertSQLStr($info['template']);
         if ($hasIcon) {
-            $sql .= ', icon = '.Xoonips_Utils::convertSQLStr($info['icon'])
-                .', mime_type = '.Xoonips_Utils::convertSQLStr($info['mime_type']);
+            $sql .= ', `icon`='.Xoonips_Utils::convertSQLStr($info['icon']);
+            $sql .= ', `mime_type`='.Xoonips_Utils::convertSQLStr($info['mime_type']);
         }
-        $sql .= " WHERE item_type_id=$itemtypeId";
+        $sql .= ' WHERE `item_type_id`='.intval($itemtypeId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -279,19 +277,19 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
     public function getItemtypeEditInfo($itemtypeId)
     {
         $itemtypeId = Xoonips_Utils::convertSQLNum($itemtypeId);
-        $sql = 'SELECT a.preselect as a_preselect, b.preselect as b_preselect, '
-            .' a.released as a_released, b.released as b_released, '
-            .' a.weight as a_weight, b.weight as b_weight, '
-            .' a.name as a_name, b.name as b_name, '
-            .' a.description as a_description, b.description as b_description, '
-            .' a.icon as a_icon, b.icon as b_icon, '
-            .' a.mime_type as a_mime_type, b.mime_type as b_mime_type, '
-            .' a.template as a_template, b.template as b_template, '
-            .' a.update_id as a_update_id, b.update_id as b_update_id, '
-            .' a.item_type_id as a_item_type_id, b.item_type_id as b_item_type_id '
-            ." FROM $this->table a LEFT JOIN $this->table b ON a.item_type_id=b.update_id "
-            ." WHERE a.item_type_id=$itemtypeId "
-            .' and a.update_id IS NULL ';
+        $sql  = 'SELECT `a`.`preselect` AS `a_preselect`, `b`.`preselect` AS `b_preselect`, ';
+        $sql .= ' `a`.`released` AS `a_released`, `b`.`released` AS `b_released`, ';
+        $sql .= ' `a`.`weight` AS `a_weight`, `b`.`weight` AS `b_weight`, ';
+        $sql .= ' `a`.`name` AS `a_name`, `b`.`name` AS `b_name`, ';
+        $sql .= ' `a`.`description` AS `a_description`, `b`.`description` AS `b_description`, ';
+        $sql .= ' `a`.`icon` AS `a_icon`, `b`.`icon` AS `b_icon`, ';
+        $sql .= ' `a`.`mime_type` AS `a_mime_type`, `b`.`mime_type` AS `b_mime_type`, ';
+        $sql .= ' `a`.`template` AS `a_template`, `b`.`template` AS `b_template`, ';
+        $sql .= ' `a`.`update_id` AS `a_update_id`, `b`.`update_id` AS `b_update_id`, ';
+        $sql .= ' `a`.`item_type_id` AS `a_item_type_id`, `b`.`item_type_id` AS `b_item_type_id` ';
+        $sql .= ' FROM `'.$this->table.'` `a` LEFT JOIN `'.$this->table.'` `b` ON `a`.`item_type_id`=`b`.`update_id` ';
+        $sql .= ' WHERE `a`.`item_type_id`='.intval($itemtypeId);
+        $sql .= ' AND `a`.`update_id` IS NULL';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -312,14 +310,14 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
     public function updateCopyToBase($itemtypeId)
     {
         $itemtypeId = Xoonips_Utils::convertSQLNum($itemtypeId);
-        $sql = "UPDATE $this->table t1, $this->table t2 SET "
-            .' t1.weight = t2.weight '
-            .', t1.name = t2.name '
-            .', t1.description = t2.description '
-            .', t1.icon = t2.icon '
-            .', t1.mime_type = t2.mime_type '
-            .', t1.template = t2.template ';
-        $sql .= " WHERE t1.item_type_id=t2.update_id AND t2.item_type_id=$itemtypeId";
+        $sql  = 'UPDATE `'.$this->table.'` `t1`, `'.$this->table.'` `t2` ';
+        $sql .= ' SET `t1`.`weight`=`t2`.`weight`, ';
+        $sql .= ' `t1`.`name`=`t2`.`name`, ';
+        $sql .= ' `t1`.`description`=`t2`.`description`, ';
+        $sql .= ' `t1`.`icon`=`t2`.`icon`, ';
+        $sql .= ' `t1`.`mime_type`=`t2`.`mime_type`, ';
+        $sql .= ' `t1`.`template`=`t2`.`template` ';
+        $sql .= ' WHERE `t1`.`item_type_id`=`t2`.`update_id` AND `t2`.`item_type_id`='.$itemtypeId;
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -338,13 +336,13 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
     public function deleteCopyItemtype($itemtypeId)
     {
         $itemtypeId = Xoonips_Utils::convertSQLNum($itemtypeId);
-        $sql = "DELETE FROM $this->table WHERE item_type_id=$itemtypeId AND update_id IS NOT NULL";
+        $sql = 'DELETE FROM `'.$this->table.'` WHERE `item_type_id`='.$itemtypeId.' AND `update_id` IS NOT NULL';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
         }
 
-        $sql = "DELETE FROM $this->table WHERE update_id=$itemtypeId";
+        $sql = "DELETE FROM `' .$this->table. '` WHERE `update_id`=' .$itemtypeId";
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -400,7 +398,7 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
     public function delete($itemtypeId)
     {
         $itemtypeId = Xoonips_Utils::convertSQLNum($itemtypeId);
-        $sql = "delete from $this->table where item_type_id=$itemtypeId";
+        $sql = 'DELETE FROM `'.$this->table.'` WHERE `item_type_id`='.$itemtypeId;
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -415,9 +413,9 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
         $ret = [];
         $limit = Xoonips_Utils::convertSQLNum($limit);
         $start = Xoonips_Utils::convertSQLNum($start);
-        $sql = "SELECT at.*, bt.update_id as upid FROM $this->table at LEFT JOIN $this->table bt "
-            .' ON at.item_type_id=bt.update_id WHERE at.update_id IS NULL ORDER BY at.weight '
-            ." LIMIT $start, $limit";
+        $sql  = 'SELECT `at`.*, `bt`.`update_id` AS `upid` FROM `'.$this->table.'` `at` LEFT JOIN `'.$this->table.'` `bt` ';
+        $sql .= ' ON `at`.`item_type_id`=`bt`.`update_id` WHERE `at`.`update_id` IS NULL ORDER BY `at`.`weight`';
+        $sql .= ' LIMIT '.intval($start).', '.intval($limit);
         $result = $this->execute($sql);
         if (!$result) {
             return $ret;
@@ -433,8 +431,8 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
     // get count itemtypes
     public function countItemtypes()
     {
-        $sql = 'SELECT at.item_type_id FROM '.$this->table.' at LEFT JOIN '.$this->table.' bt '
-            .' ON at.item_type_id=bt.update_id WHERE at.update_id IS NULL ';
+        $sql  = 'SELECT `at`.`item_type_id` FROM `'.$this->table.'` `at` LEFT JOIN `'.$this->table.'` `bt` ';
+        $sql .= ' ON `at`.`item_type_id`=`bt`.`update_id` WHERE `at`.`update_id` IS NULL';
         $result = $this->execute($sql);
         $ret = 0;
         if (!$result) {
@@ -457,10 +455,10 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
     {
         $ret = [];
         $typeId = Xoonips_Utils::convertSQLNum($typeId);
-        $sql = 'SELECT g.group_id,g.name,g.xml,t.weight,t.edit_weight '
-        ." ,t.edit,t.released as link_release FROM $this->grouptable AS g "
-        ." LEFT JOIN $this->typelinktable AS t ON g.group_id=t.group_id "
-        ." WHERE t.item_type_id=$typeId ORDER BY t.edit_weight";
+        $sql  = 'SELECT `g`.`group_id`,`g`.`name`,`g`.`xml`,`t`.`weight`,`t`.`edit_weight` ';
+        $sql .= ' ,`t`.`edit`,`t`.`released` AS `link_release` FROM `'.$this->grouptable.'` AS `g` ';
+        $sql .= ' LEFT JOIN `'.$this->typelinktable.'` AS `t` ON `g`.`group_id`=`t`.`group_id` ';
+        $sql .= ' WHERE `t`.`item_type_id`='.$typeId.' ORDER BY `t`.`edit_weight`';
         $result = $this->execute($sql);
         if (!$result) {
             return $ret;
@@ -484,9 +482,9 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
     {
         $ret = [];
         $groupId = Xoonips_Utils::convertSQLNum($groupId);
-        $sql = "SELECT t.* FROM $this->table AS t"
-        ." LEFT JOIN $this->typelinktable AS l ON t.item_type_id=l.item_type_id"
-        ." WHERE l.group_id=$groupId AND l.edit=1";
+        $sql  = 'SELECT `t`.* FROM `'.$this->table.'` AS `t`';
+        $sql .= ' LEFT JOIN `'.$this->typelinktable.'` AS `l` ON `t`.`item_type_id`=`l`.`item_type_id`';
+        $sql .= ' WHERE `l`.`group_id`='.$groupId.' AND `l`.`edit`=1';
         $result = $this->execute($sql);
         if (!$result) {
             return $ret;
@@ -508,13 +506,12 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
      */
     public function insertLink($info, &$insertId)
     {
-        $sql = "INSERT INTO $this->typelinktable (item_type_id, group_id,  weight, edit, edit_weight, released)"
-            .' VALUES ('.Xoonips_Utils::convertSQLStr($info['item_type_id']).','
-            .Xoonips_Utils::convertSQLStr($info['group_id']).','
-            .Xoonips_Utils::convertSQLNum($info['weight']).','
-            .Xoonips_Utils::convertSQLNum($info['edit']).','
-            .Xoonips_Utils::convertSQLNum($info['edit_weight']).','
-            .Xoonips_Utils::convertSQLNum($info['released']).')';
+        $sql  = 'INSERT INTO `'.$this->typelinktable.'`';
+        $sql .= ' (`item_type_id`, `group_id`, `weight`, `edit`, `edit_weight`, `released`)';
+        $sql .= ' VALUES ('.Xoonips_Utils::convertSQLStr($info['item_type_id']).',';
+        $sql .= Xoonips_Utils::convertSQLStr($info['group_id']).',';
+        $sql .= intval($info['weight']).','.intval($info['edit']).',';
+        $sql .= intval($info['edit_weight']).','.intval($info['released']).')';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -536,8 +533,8 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
         $typeId = Xoonips_Utils::convertSQLNum($typeId);
         $groupId = Xoonips_Utils::convertSQLNum($groupId);
         $weight = Xoonips_Utils::convertSQLNum($weight);
-        $sql = "UPDATE $this->typelinktable SET edit_weight=$weight"
-        ." WHERE item_type_id=$typeId AND group_id=$groupId";
+        $sql  = 'UPDATE `'.$this->typelinktable.'` SET `edit_weight`='.intval($weight);
+        $sql .= ' WHERE `item_type_id`='.intval($typeId).' AND `group_id`='.intval($groupId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -558,8 +555,8 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
         $typeId = Xoonips_Utils::convertSQLNum($typeId);
         $groupId = Xoonips_Utils::convertSQLNum($groupId);
         $edit = Xoonips_Utils::convertSQLNum($edit);
-        $sql = "UPDATE $this->typelinktable SET edit=$edit"
-        ." WHERE item_type_id=$typeId AND group_id=$groupId";
+        $sql  = 'UPDATE `'.$this->typelinktable.'` SET `edit`='.intval($edit);
+        $sql .= ' WHERE `item_type_id`='.intval($typeId).' AND `group_id`='.intval($groupId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -578,12 +575,11 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
     public function updateLinkSync($typeId, $release = false)
     {
         $typeId = Xoonips_Utils::convertSQLNum($typeId);
-        $sql2 = 'edit=released,edit_weight=weight';
+        $sql2 = '`edit`=`released`,`edit_weight`=`weight`';
         if ($release) {
-            $sql2 = 'released=edit,weight=edit_weight';
+            $sql2 = '`released`=`edit`,`weight`=`edit_weight`';
         }
-        $sql = "UPDATE $this->typelinktable SET $sql2"
-        ." WHERE item_type_id=$typeId";
+        $sql = 'UPDATE `'.$this->typelinktable.'` SET '.$sql2.' WHERE `item_type_id`='.intval($typeId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -636,7 +632,7 @@ class Xoonips_ItemTypeBean extends Xoonips_BeanBase
      **/
     public function getAllItemTypeId()
     {
-        $sql = "SELECT item_type_id FROM $this->table";
+        $sql = 'SELECT `item_type_id` FROM `'.$this->table.'`';
         $result = $this->execute($sql);
         if (!$result) {
             return false;

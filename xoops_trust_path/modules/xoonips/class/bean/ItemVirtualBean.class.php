@@ -250,7 +250,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
         $itemBean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
         $sql = '';
         if ('0' == $criteria['orderby']) {
-            $sql = "SELECT DISTINCT item_id FROM $itemTable WHERE item_id IN ( ".$this->getCsvStr($item_ids).' )';
+            $sql = 'SELECT DISTINCT `item_id` FROM `' .$itemTable. '` WHERE `item_id` IN ( '.$this->getCsvStr($item_ids).' )';
             $criteria['order'] = ' item_id ';
         } else {
             $sortHandler = Functions::getXoonipsHandler('ItemSort', $this->dirname);
@@ -270,7 +270,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
                 }
                 $sql = '';
                 if (empty($fId)) {
-                    $sql = "SELECT item_id , NULL as orderColumn FROM $itemTable a WHERE";
+                    $sql = 'SELECT `item_id` , NULL as `orderColumn` FROM `' .$itemTable. '` `a` WHERE';
                 } else {
                     $itemtypeDetail = $itemtypeDetailBean->getItemTypeDetailById($fId);
                     if (!$itemtypeDetail) {
@@ -280,25 +280,25 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
                     $columnNm = $itemtypeDetail['column_name'];
                     $tableName = $this->prefix($tableNm);
                     if ($tableNm == $this->modulePrefix('item_users_link')) {
-                        $sql = "SELECT a.item_id, b.name as orderColumn FROM $tableName a, $tableUsers b WHERE a.uid=b.uid AND";
+                        $sql = 'SELECT `a`.`item_id`, `b`.`name` as `orderColumn` FROM `' .$tableName. '` `a`, `' .$tableUsers. '` `b` WHERE `a`.`uid`=`b`.`uid` AND';
                     } elseif ($tableNm == $this->modulePrefix('item_file')) {
-                        $sql = "SELECT a.item_id, b.original_file_name as orderColumn FROM $itemTable a LEFT JOIN $tableName b ON(a.item_id=b.item_id AND b.item_field_detail_id=$fId) WHERE";
+                        $sql = 'SELECT `a`.`item_id`, `b`.`original_file_name` as `orderColumn` FROM `' .$itemTable. '` `a` LEFT JOIN `' .$tableName. '` `b` ON(`a`.`item_id`=`b`.`item_id` AND `b`.`item_field_detail_id`=' .intval($fId). ') WHERE';
                     } elseif ($tableNm == $this->modulePrefix('item')) {
-                        $sql = "SELECT item_id , $columnNm as orderColumn FROM $itemTable a WHERE";
+                        $sql = 'SELECT `item_id` , `' .$columnNm. '` as `orderColumn` FROM `' .$itemTable. '` `a` WHERE';
                     } elseif ($tableNm == $this->modulePrefix('item_related_to')) {
-                        $sql = "SELECT a.item_id , b.$columnNm as orderColumn FROM $itemTable a LEFT JOIN $tableName b ON(a.item_id=b.item_id) WHERE";
+                        $sql = 'SELECT `a`.`item_id` , `b`.`' .$columnNm. '` as `orderColumn` FROM `' .$itemTable. '` `a` LEFT JOIN `' .$tableName. '` `b` ON(`a`.`item_id`=`b`.`item_id`) WHERE';
                     } else {
-                        $sql = "SELECT a.item_id , b.$columnNm as orderColumn FROM $itemTable a LEFT JOIN $tableName b ON(a.item_id=b.item_id) WHERE";
+                        $sql = 'SELECT `a`.`item_id` , `b`.`' .$columnNm. '` as `orderColumn` FROM `' .$itemTable. '` `a` LEFT JOIN `' .$tableName. '` `b` ON(`a`.`item_id`=`b`.`item_id`) WHERE';
                     }
                 }
-                $unionSql[] = $sql.' a.item_id IN('.implode(',', $target_item_ids).')';
+                $unionSql[] = $sql.' `a`.`item_id` IN('.implode(',', $target_item_ids).')';
             }
             foreach ($groupby_item_ids as $item_ids) {
-                $sql = "SELECT item_id , NULL as orderColumn FROM $itemTable a WHERE a.item_id IN(".implode(',', $item_ids).')';
+                $sql = 'SELECT `item_id` , NULL as `orderColumn` FROM `' .$itemTable. '` `a` WHERE `a`.`item_id` IN('.implode(',', $item_ids).')';
                 $unionSql[] = $sql;
             }
             $unionSqlStr = implode(' UNION ALL ', $unionSql);
-            $sql = "SELECT DISTINCT temp.item_id FROM ( $unionSqlStr ) AS temp";
+            $sql = 'SELECT DISTINCT `temp`.`item_id` FROM (' .$unionSqlStr. ') AS `temp`';
             $criteria['order'] = ' temp.orderColumn ';
         }
         $sql .= $this->getCriteriaStr($criteria);
@@ -376,11 +376,11 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
         $ret = false;
         $tblItemUser = $this->prefix($this->modulePrefix('item_users_link'));
         $tblIndex = $this->prefix($this->modulePrefix('index'));
-        $sql = "SELECT COUNT($tblItemUser.item_id) AS count"
-            ." FROM ($tblItemUser inner join $this->table on $tblItemUser.item_id=$this->table.item_id)"
-            ." inner join $tblIndex on $tblIndex.index_id=$this->table.index_id"
-            ." WHERE $tblItemUser.uid=$uid AND $tblIndex.open_level=".XOONIPS_OL_GROUP_ONLY
-            ." AND $tblIndex.groupid=$groupId";
+        $sql = 'SELECT COUNT(`'.$tblItemUser.'`.`item_id`) AS `count`'
+            .' FROM (`'.$tblItemUser.'` INNER JOIN `'.$this->table.'` ON `'.$tblItemUser.'`.`item_id`=`'.$this->table.'`.`item_id`)'
+            .' INNER JOIN `'.$tblIndex.'` ON `'.$tblIndex.'`.`index_id`=`'.$this->table.'`.`index_id`'
+            .' WHERE `'.$tblItemUser.'`.`uid`='.intval($uid). ' AND `' .$tblIndex. '`.`open_level` ='.XOONIPS_OL_GROUP_ONLY
+            .' AND `'.$tblIndex.'`.`groupid`='.intval($groupId);
 
         $result = $this->execute($sql);
         if (!$result) {
@@ -407,7 +407,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
     {
         $ret = [];
         $table = $this->prefix($this->modulePrefix('item_field_detail'));
-        $sql = "SELECT DISTINCT table_name FROM $table WHERE released=1 AND item_type_id=0";
+        $sql = 'SELECT DISTINCT `table_name` FROM `' .$table. '` WHERE `released`=1 AND `item_type_id`=0';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -432,7 +432,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
     public function deleteItemExtend($tableName, $itemId)
     {
         $table = $this->prefix($tableName);
-        $sql = "DELETE FROM $table WHERE item_id=$itemId";
+        $sql = 'DELETE FROM `' .$table. '` WHERE `item_id`=' .intval($itemId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -452,12 +452,12 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
     {
         $ret = 0;
         $tblIndex = $this->prefix($this->modulePrefix('index'));
-        $sql = "select count(distinct b.item_id) AS count from $tblIndex a,$this->table b"
-            ." where a.groupid=$groupId and a.open_level=".XOONIPS_OL_GROUP_ONLY
-            .' and a.index_id=b.index_id and b.certify_state>='.XOONIPS_CERTIFIED
-            ." and b.item_id not in (select item_id from $tblIndex c,$this->table d"
-            .' where c.open_level='.XOONIPS_OL_PUBLIC.' and c.index_id=d.index_id'
-            .' and d.certify_state>='.XOONIPS_CERTIFIED.')';
+        $sql = 'SELECT count(distinct `b`.`item_id`) AS `count` FROM `'.$tblIndex.'` `a`, `'.$this->table.'` `b`'
+            .' WHERE `a`.`groupid`='.intval($groupId). ' AND `a`.`open_level`='.XOONIPS_OL_GROUP_ONLY
+            .' AND `a`.`index_id`=`b`.`index_id` AND `b`.`certify_state`>='.XOONIPS_CERTIFIED
+            .' AND `b`.`item_id` NOT IN (SELECT `item_id` FROM `'.$tblIndex.'` `c`, `'.$this->table.'` `d`'
+            .' WHERE `c`.`open_level`='.XOONIPS_OL_PUBLIC.' AND `c`.`index_id`=`d`.`index_id`'
+            .' AND `d`.`certify_state`>='.XOONIPS_CERTIFIED.')';
         $result = $this->execute($sql);
         if (!$result) {
             return 0;
@@ -484,8 +484,8 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
         $ret = [];
         $table = $this->prefix($this->modulePrefix('item_field_detail'));
         $viewTypeBean = Xoonips_BeanFactory::getBean('ViewTypeBean', $this->dirname, $this->trustDirname);
-        $sql = "SELECT DISTINCT table_name FROM $table where view_type_id=";
-        $sql .= $viewTypeBean->selectByName('download notify').' and item_type_id=0';
+        $sql = 'SELECT DISTINCT `table_name` FROM `' .$table. '` WHERE `view_type_id`=';
+        $sql .= $viewTypeBean->selectByName('download notify').' AND `item_type_id`=0';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -493,7 +493,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
         while ($row = $this->fetchArray($result)) {
             if (false !== strpos($row['table_name'], 'item_extend')) {
                 $extendTable = $this->prefix($row['table_name']);
-                $extendSql = "SELECT DISTINCT value FROM $extendTable WHERE item_id=$itemId";
+                $extendSql = 'SELECT DISTINCT `value` FROM `' .$extendTable. '` WHERE `item_id`='.intval($itemId);
                 $extendRet = $this->execute($extendSql);
                 if (!$extendRet) {
                     return false;
@@ -521,8 +521,8 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
         $ret = [];
         $table = $this->prefix($this->modulePrefix('item_field_detail'));
         $viewTypeBean = Xoonips_BeanFactory::getBean('ViewTypeBean', $this->dirname, $this->trustDirname);
-        $sql = "SELECT DISTINCT table_name FROM $table where view_type_id=";
-        $sql .= $viewTypeBean->selectByName('rights').' and item_type_id=0';
+        $sql = 'SELECT DISTINCT `table_name` FROM `' .$table. '` WHERE `view_type_id`=';
+        $sql .= $viewTypeBean->selectByName('rights').' AND `item_type_id`=0';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -530,7 +530,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
         while ($row = $this->fetchArray($result)) {
             if (false !== strpos($row['table_name'], 'item_extend')) {
                 $extendTable = $this->prefix($row['table_name']);
-                $extendSql = "SELECT DISTINCT value FROM $extendTable WHERE item_id=$itemId";
+                $extendSql = 'SELECT DISTINCT `value` FROM `' .$extendTable. '` WHERE `item_id`='.intval($itemId);
                 $entendRet = $this->execute($extendSql);
                 if (!$entendRet) {
                     return false;
@@ -558,8 +558,8 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
         $ret = [];
         $table = $this->prefix($this->modulePrefix('item_field_detail'));
         $viewTypeBean = Xoonips_BeanFactory::getBean('ViewTypeBean', $this->dirname, $this->trustDirname);
-        $sql = "SELECT DISTINCT table_name FROM $table where view_type_id=";
-        $sql .= $viewTypeBean->selectByName('download limit').' and item_type_id=0';
+        $sql = 'SELECT DISTINCT `table_name` FROM `' .$table. '` WHERE `view_type_id`=';
+        $sql .= $viewTypeBean->selectByName('download limit').' AND `item_type_id`=0';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -567,7 +567,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
         while ($row = $this->fetchArray($result)) {
             if (false !== strpos($row['table_name'], 'item_extend')) {
                 $extendTable = $this->prefix($row['table_name']);
-                $extendSql = "SELECT DISTINCT value FROM $extendTable WHERE item_id=$itemId";
+                $extendSql = 'SELECT DISTINCT `value` FROM `' .$extendTable. '` WHERE `item_id`='.intval($itemId);
                 $entendRet = $this->execute($extendSql);
                 if (!$entendRet) {
                     return false;
@@ -593,7 +593,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
     public function getPosts($uid, &$posts)
     {
         $userTable = $this->prefix($this->modulePrefix('item_users_link'));
-        $sql = 'SELECT count(item_id) as items FROM '.$userTable.' WHERE uid='.$uid;
+        $sql = 'SELECT COUNT(`item_id`) AS `items` FROM `'.$userTable.'` WHERE `uid`='.intval($uid);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -629,9 +629,9 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
     public function countUserItems($uid)
     {
         $userTable = $this->prefix($this->modulePrefix('item_users_link'));
-        $sql = 'SELECT count(item_id) as items FROM '.$userTable.' WHERE uid='.$uid
-            .' AND item_id NOT IN (SELECT item_id FROM '.$this->table
-            .' WHERE certify_state>='.XOONIPS_CERTIFIED.')';
+        $sql = 'SELECT count(`item_id`) as `items` FROM `'.$userTable.'` WHERE `uid`='.intval($uid)
+            .' AND `item_id` NOT IN (SELECT `item_id` FROM `'.$this->table. '`'
+            .' WHERE `certify_state`>='.XOONIPS_CERTIFIED.')';
         $result = $this->execute($sql);
         if (!$result) {
             return 0;
@@ -652,10 +652,10 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
     {
         $fileTable = $this->prefix($this->modulePrefix('item_file'));
         $userTable = $this->prefix($this->modulePrefix('item_users_link'));
-        $sql = 'SELECT sum(a.file_size) as sizes FROM '.$fileTable.' a, '.$userTable.' b'
-            .' WHERE a.item_id=b.item_id AND b.uid='.$uid
-            .' AND b.item_id NOT IN (SELECT item_id FROM '.$this->table
-            .' WHERE certify_state>='.XOONIPS_CERTIFIED.')';
+        $sql = 'SELECT sum(`a`.`file_size`) as `sizes` FROM `'.$fileTable.'` `a`, `'.$userTable.'` `b`'
+            .' WHERE `a`.`item_id`=`b`.`item_id` AND `b`.`uid`='.intval($uid)
+            .' AND `b`.`item_id` NOT IN (SELECT `item_id` FROM `'.$this->table. '`'
+            .' WHERE `certify_state`>='.XOONIPS_CERTIFIED.')';
         $result = $this->execute($sql);
         if (!$result) {
             return 0;
@@ -675,8 +675,8 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
     public function getFilesizePrivateByFileId($file_id)
     {
         $fileTable = $this->prefix($this->modulePrefix('item_file'));
-        $sql = 'SELECT sum(file_size) as sizes FROM '.$fileTable
-            .' WHERE file_id='.$file_id;
+        $sql = 'SELECT sum(`file_size`) as `sizes` FROM `'.$fileTable. '`'
+            .' WHERE `file_id`='.intval($file_id);
         $result = $this->execute($sql);
         if (!$result) {
             return 0;
@@ -697,7 +697,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
     {
         $items = [];
         $itemTable = $this->prefix($this->modulePrefix('item'));
-        $sql = "SELECT item_id FROM $itemTable WHERE item_type_id=$itemtype_id";
+        $sql = 'SELECT `item_id` FROM `' .$itemTable. '` WHERE `item_type_id`='.intval($itemtype_id);
         $result = $this->execute($sql);
         if (!$result) {
             return $items;
@@ -735,7 +735,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
         }
 
         $table = $this->prefix($tableName);
-        $sql = "SELECT DISTINCT item_id FROM $table WHERE $columnName='$itemsubtype'";
+        $sql = 'SELECT DISTINCT `item_id` FROM `' .$table. '` WHERE `'.$columnName.'` =' .Xoonips_Utils::convertSQLStr($itemsubtype);
         $result = $this->execute($sql);
         if (!$result) {
             return $items;
@@ -842,7 +842,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
      */
     public function getCountUsedFieldValue($table, $column, $value)
     {
-        $sql = 'select count(item_id) as cnt from '.$this->prefix($table).' WHERE value='.Xoonips_Utils::convertSQLStr($value);
+        $sql = 'SELECT count(`item_id`) as `cnt` FROM `'.$this->prefix($table).'` WHERE `value`='.Xoonips_Utils::convertSQLStr($value);
 
         $result = $this->execute($sql);
         if (!$result) {
@@ -1387,7 +1387,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
         }
 
         $linkTable = $this->prefix($this->modulePrefix('index_item_link'));
-        $sql = "SELECT index_id FROM $linkTable WHERE item_id=$itemId AND certify_state>".XOONIPS_NOT_CERTIFIED;
+        $sql = 'SELECT `index_id` FROM `' .$linkTable. '` WHERE `item_id`='.intval($itemId). ' AND `certify_state`>'.XOONIPS_NOT_CERTIFIED;
         $result = $this->execute($sql);
         if ($result && $this->getRowsNum($result) > 0) {
             return false;

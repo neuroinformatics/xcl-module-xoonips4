@@ -36,7 +36,7 @@ class Xoonips_ItemImportLogBean extends Xoonips_BeanBase
     public function getImportLogByUID($uid)
     {
         $ret = [];
-        $sql = 'SELECT * FROM '.$this->table.' WHERE uid='.$uid.' ORDER BY timestamp DESC';
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `uid`='.intval($uid).' ORDER BY `timestamp` DESC';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -58,7 +58,7 @@ class Xoonips_ItemImportLogBean extends Xoonips_BeanBase
      */
     public function getImportLogInfo($id)
     {
-        $sql = 'SELECT * FROM '.$this->table.' WHERE item_import_log_id='.$id;
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `item_import_log_id`='.intval($id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -84,7 +84,7 @@ class Xoonips_ItemImportLogBean extends Xoonips_BeanBase
         ." LEFT JOIN ".$this->linktable." AS l ON i.item_id=l.item_id"
         ." WHERE l.item_import_log_id=$id";
         */
-        $sql = 'SELECT * FROM '.$this->linktable." WHERE item_import_log_id=$id";
+        $sql = 'SELECT * FROM `'.$this->linktable.'` WHERE `item_import_log_id`='.intval($id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -124,10 +124,8 @@ class Xoonips_ItemImportLogBean extends Xoonips_BeanBase
      */
     public function insertLink($id, $item_id)
     {
-        $sql = 'INSERT INTO '.$this->linktable.' (item_import_log_id,item_id)'
-        .' VALUES('.Xoonips_Utils::convertSQLNum($id)
-        .','.Xoonips_Utils::convertSQLNum($item_id)
-        .')';
+        $sql  = 'INSERT INTO `'.$this->linktable.'` (`item_import_log_id`,`item_id`) VALUES';
+        $sql .= '('.Xoonips_Utils::convertSQLNum($id).','.Xoonips_Utils::convertSQLNum($item_id).')';
         $result = $this->execute($sql);
         if (!$result) {
             return false;

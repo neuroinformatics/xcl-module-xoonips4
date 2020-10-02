@@ -23,7 +23,7 @@ class Xoonips_ItemChangeLogBean extends Xoonips_BeanBase
      */
     public function getChangeLogInfo($id)
     {
-        $sql = 'SELECT * FROM '.$this->table.' WHERE log_id='.$id;
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `log_id`='.intval($id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -44,7 +44,7 @@ class Xoonips_ItemChangeLogBean extends Xoonips_BeanBase
     public function getChangeLogs($item_id)
     {
         $ret = [];
-        $sql = "SELECT * FROM $this->table WHERE item_id=$item_id ORDER BY log_date";
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `item_id`='.intval($item_id).' ORDER BY `log_date`';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -66,9 +66,9 @@ class Xoonips_ItemChangeLogBean extends Xoonips_BeanBase
      */
     public function insert($changelog)
     {
-        $sql = "INSERT INTO $this->table (uid,item_id,log_date,log)";
-        $sql = $sql.' VALUES('.Xoonips_Utils::convertSQLNum($changelog['uid']).','.Xoonips_Utils::convertSQLNum($changelog['item_id']);
-        $sql = $sql.','.Xoonips_Utils::convertSQLNum($changelog['log_date']).','.Xoonips_Utils::convertSQLStr($changelog['log']).')';
+        $sql  = 'INSERT INTO `'.$this->table.'` (`uid`,`item_id`,`log_date`,`log`)';
+        $sql .= ' VALUES('.intval($changelog['uid']).', '.intval($changelog['item_id']);
+        $sql .= ', '.intval($changelog['log_date']).', '.Xoonips_Utils::convertSQLStr($changelog['log']).')';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -87,7 +87,7 @@ class Xoonips_ItemChangeLogBean extends Xoonips_BeanBase
     public function delete($itemId)
     {
         $ret = true;
-        $sql = "DELETE FROM $this->table WHERE item_id=".$itemId;
+        $sql = 'DELETE FROM `'.$this->table.'` WHERE `item_id`='.intval($itemId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -107,7 +107,8 @@ class Xoonips_ItemChangeLogBean extends Xoonips_BeanBase
     {
         $fragment = '';
         if (0 != $changelog['log_date']) {
-            $fragment = 'log_date = '.Xoonips_Utils::convertSQLNum($changelog['log_date']);
+            //$fragment = 'log_date = '.Xoonips_Utils::convertSQLNum($changelog['log_date']);
+            $fragment = '`log_date`='.intval($changelog['log_date']);
         }
         if (!is_null($changelog['log'])) {
             if (strlen($fragment) > 0) {
@@ -116,8 +117,7 @@ class Xoonips_ItemChangeLogBean extends Xoonips_BeanBase
             $fragment .= 'log='.Xoonips_Utils::convertSQLStr($changelog['log']);
         }
 
-        $sql = 'UPDATE '.$this->table." SET ${fragment}".
-    ' where log_id ='.Xoonips_Utils::convertSQLNum($changelog['log_id']);
+        $sql = 'UPDATE `'.$this->table.'` SET '.${fragment}.' WHERE `log_id`='.intval($changelog['log_id']);
 
         $result = $this->execute($sql);
         if (!$result) {

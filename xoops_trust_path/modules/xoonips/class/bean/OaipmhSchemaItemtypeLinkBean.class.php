@@ -26,9 +26,9 @@ class Xoonips_OaipmhSchemaItemtypeLinkBean extends Xoonips_BeanBase
     {
         $ret = [];
         $schemaTable = $this->prefix($this->modulePrefix('oaipmh_schema'));
-        $sql = "SELECT a.* FROM $this->table a WHERE a.item_type_id=$itemType AND a.schema_id IN ";
-        $sql = $sql." (SELECT schema_id FROM $schemaTable b WHERE metadata_prefix='$metadataPrefix')";
-        $sql = $sql.' ORDER BY a.schema_id';
+        $sql  = 'SELECT `a`.* FROM `'.$this->table.'` `a` WHERE `a`.`item_type_id`='.intval($itemType).' AND `a`.`schema_id` IN ';
+        $sql .= ' (SELECT `schema_id` FROM `'.$schemaTable.'` `b` WHERE `metadata_prefix`='.Xoonips_Utils::convertSQLStr($metadataPrefix).')';
+        $sql .= ' ORDER BY `a`.`schema_id`';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -53,9 +53,9 @@ class Xoonips_OaipmhSchemaItemtypeLinkBean extends Xoonips_BeanBase
     {
         $ret = true;
         $schemaTable = $this->prefix($this->modulePrefix('oaipmh_schema'));
-        $sql = "DELETE FROM $this->table WHERE item_type_id=$itemType";
+        $sql = 'DELETE FROM `'.$this->table.'` WHERE `item_type_id`='.intval($itemType);
         if (!is_null($metadataPrefix)) {
-            $sql .= " AND schema_id IN (SELECT schema_id FROM $schemaTable WHERE metadata_prefix='$metadataPrefix')";
+            $sql .= ' AND `schema_id` IN (SELECT `schema_id` FROM `'.$schemaTable.'` WHERE `metadata_prefix`='.Xoonips_Utils::convertSQLStr($metadataPrefix).')';
         }
         $result = $this->execute($sql);
         if (!$result) {
@@ -75,9 +75,9 @@ class Xoonips_OaipmhSchemaItemtypeLinkBean extends Xoonips_BeanBase
     public function insert($link)
     {
         $ret = true;
-        $sql = "INSERT INTO $this->table (schema_id,item_type_id,group_id,item_field_detail_id,value)";
-        $sql = $sql.' VALUES('.$link['schema_id'].','.$link['item_type_id'];
-        $sql = $sql.','.Xoonips_Utils::convertSQLStr($link['group_id']).','.Xoonips_Utils::convertSQLStr($link['item_field_detail_id']).','.Xoonips_Utils::convertSQLStr($link['value']).')';
+        $sql  = 'INSERT INTO `'.$this->table.'` (`schema_id`,`item_type_id`,`group_id`,`item_field_detail_id`,`value`) ';
+        $sql .= ' VALUES ('.intval($link['schema_id']).', '.intval($link['item_type_id']);
+        $sql .= ', '.Xoonips_Utils::convertSQLStr($link['group_id']).', '.Xoonips_Utils::convertSQLStr($link['item_field_detail_id']).', '.Xoonips_Utils::convertSQLStr($link['value']).')';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -101,10 +101,10 @@ class Xoonips_OaipmhSchemaItemtypeLinkBean extends Xoonips_BeanBase
     public function autoCreate($itemType)
     {
         $schemaLinkTable = $this->prefix($this->modulePrefix('oaipmh_schema_link'));
-        $sql = 'SELECT a.schema_id1, a.schema_id2, a.number, b.item_field_detail_id, b.value, group_id ';
-        $sql = $sql."FROM $schemaLinkTable a,$this->table b ";
-        $sql = $sql."WHERE a.schema_id1=b.schema_id AND b.item_type_id=$itemType ";
-        $sql = $sql.'ORDER BY a.schema_id2, a.number';
+        $sql  = 'SELECT `a`.`schema_id1`, `a`.`schema_id2`, `a`.`number`, `b`.`item_field_detail_id`, `b`.`value`, `group_id` ';
+        $sql .= ' FROM `'.$schemaLinkTable.'` `a`, `'.$this->table.'` `b` ';
+        $sql .= ' WHERE `a`.`schema_id1`=`b`.`schema_id` AND `b`.`item_type_id`='.intval($itemType);
+        $sql .= ' ORDER BY `a`.`schema_id2`, `a`.`number`';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -171,16 +171,12 @@ class Xoonips_OaipmhSchemaItemtypeLinkBean extends Xoonips_BeanBase
     public function getExportItemTypeOaipmh($item_type_id)
     {
         $schemaTable = $this->prefix($this->modulePrefix('oaipmh_schema'));
-        $sql = 'SELECT ';
-        $sql .= $schemaTable.'.metadata_prefix, ';
-        $sql .= $schemaTable.'.name, ';
-        $sql .= $this->table.'.group_id, ';
-        $sql .= $this->table.'.item_field_detail_id, ';
-        $sql .= $this->table.'.value ';
-        $sql .= 'FROM ';
-        $sql .= $this->table.', '.$schemaTable.' ';
-        $sql .= 'WHERE '.$this->table.'.schema_id='.$schemaTable.'.schema_id ';
-        $sql .= 'AND '.$this->table.'.item_type_id='.$item_type_id;
+        $sql  = 'SELECT `'.$schemaTable.'`.`metadata_prefix`, `'.$schemaTable.'`.`name`, ';
+        $sql .= '`'.$this->table.'`.`group_id`, `'.$this->table.'`.`item_field_detail_id`, ';
+        $sql .= '`'.$this->table.'`.`value` ';
+        $sql .= ' FROM `'.$this->table.'`, `'.$schemaTable.'` ';
+        $sql .= ' WHERE `'.$this->table.'`.`schema_id`='.$schemaTable.'`.`schema_id` ';
+        $sql .= ' AND `'.$this->table.'`.`item_type_id`='.intval($item_type_id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -262,7 +258,7 @@ class Xoonips_OaipmhSchemaItemtypeLinkBean extends Xoonips_BeanBase
     private function getValueBySeqId($item_field_detail_id)
     {
         $valueTable = $this->prefix($this->modulePrefix('oaipmh_schema_value_set'));
-        $sql = 'SELECT value FROM '.$valueTable.' WHERE seq_id='.$item_field_detail_id;
+        $sql = 'SELECT `value` FROM `'.$valueTable.'` WHERE `seq_id`='.intval($item_field_detail_id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -286,7 +282,7 @@ class Xoonips_OaipmhSchemaItemtypeLinkBean extends Xoonips_BeanBase
     private function getXmlByGroupId($group_id)
     {
         $groupTable = $this->prefix($this->modulePrefix('item_field_group'));
-        $sql = 'SELECT xml FROM '.$groupTable.' WHERE group_id='.$group_id;
+        $sql = 'SELECT `xml` FROM `'.$groupTable.'` WHERE `group_id`='.intval($group_id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -310,7 +306,7 @@ class Xoonips_OaipmhSchemaItemtypeLinkBean extends Xoonips_BeanBase
     private function getXmlByItemFieldDetailId($item_field_detail_id)
     {
         $detailTable = $this->prefix($this->modulePrefix('item_field_detail'));
-        $sql = 'SELECT xml FROM '.$detailTable.' WHERE item_field_detail_id='.$item_field_detail_id;
+        $sql = 'SELECT `xml` FROM `'.$detailTable.'` WHERE `item_field_detail_id`='.intval($item_field_detail_id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;

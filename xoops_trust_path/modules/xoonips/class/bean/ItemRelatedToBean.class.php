@@ -23,8 +23,7 @@ class Xoonips_ItemRelatedToBean extends Xoonips_BeanBase
      */
     public function getRelatedToInfo($id)
     {
-        $id = Xoonips_Utils::convertSQLNum($id);
-        $sql = "SELECT * FROM $this->table WHERE item_id=$id";
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `item_id`='.intval($id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -47,8 +46,7 @@ class Xoonips_ItemRelatedToBean extends Xoonips_BeanBase
      */
     public function deleteBoth($id)
     {
-        $id = Xoonips_Utils::convertSQLNum($id);
-        $sql = "DELETE FROM $this->table WHERE item_id=$id OR child_item_id=$id";
+        $sql = 'DELETE FROM `'.$this->table.'` WHERE `item_id`='.intval($id).' OR `child_item_id`='.intval($id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -68,9 +66,8 @@ class Xoonips_ItemRelatedToBean extends Xoonips_BeanBase
     {
         $item_id = Xoonips_Utils::convertSQLNum($related['item_id']);
         $child_item_id = Xoonips_Utils::convertSQLNum($related['child_item_id']);
-        $sql = "DELETE FROM $this->table"
-            ." WHERE item_id=$item_id"
-            ." AND child_item_id=$child_item_id";
+        $sql  = 'DELETE FROM `'.$this->table.'` WHERE `item_id`='.intval($item_id);
+        $sql .= ' AND `child_item_id`='.intval($child_item_id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -90,8 +87,8 @@ class Xoonips_ItemRelatedToBean extends Xoonips_BeanBase
     {
         $item_id = Xoonips_Utils::convertSQLNum($related['item_id']);
         $child_item_id = Xoonips_Utils::convertSQLNum($related['child_item_id']);
-        $sql = "INSERT INTO $this->table (item_id,child_item_id)"
-        ." VALUES( $item_id , $child_item_id )";
+        $sql  = 'INSERT INTO `'.$this->table.'` (`item_id`,`child_item_id`)';
+        $sql .= ' VALUES('.intval($item_id).', '.intval($child_item_id).')';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -112,9 +109,9 @@ class Xoonips_ItemRelatedToBean extends Xoonips_BeanBase
         $item_id = Xoonips_Utils::convertSQLNum($related['item_id']);
         $child_item_id = Xoonips_Utils::convertSQLNum($related['child_item_id']);
         $original_related_id = Xoonips_Utils::convertSQLNum($related['related_to']);
-        $sql = "UPDATE $this->table SET child_item_id = $child_item_id"
-        ." WHERE item_id = $item_id"
-        ." AND child_item_id = $original_related_id";
+        $sql  = 'UPDATE `'.$this->table.'` SET `child_item_id`='.intval($child_item_id);
+        $sql .= ' WHERE `item_id`='.intval($item_id);
+        $sql .= ' AND `child_item_id`='.intval($original_related_id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;

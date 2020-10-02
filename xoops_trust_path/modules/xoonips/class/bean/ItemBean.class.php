@@ -27,7 +27,7 @@ class Xoonips_ItemBean extends Xoonips_BeanBase
      **/
     public function getItemBasicInfo($id)
     {
-        $sql = "SELECT * FROM $this->table WHERE item_id=".$id;
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `item_id`='.intval($id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -47,7 +47,7 @@ class Xoonips_ItemBean extends Xoonips_BeanBase
      **/
     public function getBydoi($doi)
     {
-        $sql = "SELECT * FROM $this->table WHERE doi=".Xoonips_Utils::convertSQLStr($doi);
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `doi`='.Xoonips_Utils::convertSQLStr($doi);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -69,7 +69,7 @@ class Xoonips_ItemBean extends Xoonips_BeanBase
      */
     public function getBydoi2($doi)
     {
-        $sql = "SELECT * FROM $this->table WHERE doi=".Xoonips_Utils::convertSQLStr($doi);
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `doi`='.Xoonips_Utils::convertSQLStr($doi);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -109,7 +109,7 @@ class Xoonips_ItemBean extends Xoonips_BeanBase
      **/
     public function checkExistdoi($itemid, $doi)
     {
-        $sql = "SELECT * FROM $this->table WHERE item_id<>$itemid AND doi=".Xoonips_Utils::convertSQLStr($doi);
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `item_id`<>'.intval($itemid).' AND `doi`='.Xoonips_Utils::convertSQLStr($doi);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -132,7 +132,7 @@ class Xoonips_ItemBean extends Xoonips_BeanBase
      */
     public function updateViewCount($id)
     {
-        $sql = "UPDATE $this->table SET view_count=view_count+1 WHERE item_id=".$id;
+        $sql = 'UPDATE `'.$this->table.'` SET `view_count`=`view_count`+1 WHERE `item_id`='.intval($id);
         $result = $this->execute($sql);
 
         if (!$result) {
@@ -151,7 +151,7 @@ class Xoonips_ItemBean extends Xoonips_BeanBase
      */
     public function delete($id)
     {
-        $sql = "DELETE FROM $this->table WHERE item_id=$id";
+        $sql = 'DELETE FROM `'.$this->table.'` WHERE `item_id`='.intval($id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -163,7 +163,12 @@ class Xoonips_ItemBean extends Xoonips_BeanBase
     public function groupby($item_ids)
     {
         $ret = [];
-        $sql = "SELECT * FROM $this->table WHERE item_id IN(".implode(',', $item_ids).')';
+        $imploded_ids = '';
+        for ($i = 0 ; $i < count($item_ids); $i++){
+          $imploded_ids .= intval($item_ids[$i]);
+          if($i < count($item_ids)-1) $imploded_ids .= ',';
+        }
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `item_id` IN('.$imploded_ids.')';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -186,7 +191,7 @@ class Xoonips_ItemBean extends Xoonips_BeanBase
      */
     public function checkItemtype($itemtypeid)
     {
-        $sql = 'SELECT COUNT(item_id) AS cnt FROM '.$this->table.' WHERE item_type_id='.$itemtypeid;
+        $sql = 'SELECT COUNT(`item_id`) AS `cnt` FROM `'.$this->table.'` WHERE `item_type_id`='.intval($itemtypeid);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -207,10 +212,10 @@ class Xoonips_ItemBean extends Xoonips_BeanBase
      */
     public function checkItemfield($itemfieldid)
     {
-        $sql = 'SELECT count(i.item_id) as cnt FROM '.$this->table.' AS i'
-    .' LEFT JOIN '.$this->typelinktable.' AS g ON i.item_type_id=g.item_type_id'
-    .' LEFT JOIN '.$this->grouplinktable.' AS d ON g.group_id=d.group_id'
-    .' WHERE d.item_field_detail_id='.$itemfieldid;
+        $sql  = 'SELECT COUNT(`i`.`item_id`) AS `cnt` FROM `'.$this->table.'` AS `i`';
+        $sql .= ' LEFT JOIN `'.$this->typelinktable .'` AS `g` ON `i`.`item_type_id`=`g`.`item_type_id`';
+        $sql .= ' LEFT JOIN `'.$this->grouplinktable.'` AS `d` ON `g`.`group_id`=`d`.`group_id`';
+        $sql .= ' WHERE `d`.`item_field_detail_id`='.intval($itemfieldid);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -232,9 +237,9 @@ class Xoonips_ItemBean extends Xoonips_BeanBase
      */
     public function checkItemgroup($itemgroupid)
     {
-        $sql = 'SELECT count(i.item_id) as cnt FROM '.$this->table.' AS i'
-    .' LEFT JOIN '.$this->typelinktable.' AS g ON i.item_type_id=g.item_type_id'
-    .' WHERE g.group_id='.$itemgroupid;
+        $sql  = 'SELECT COUNT(`i`.`item_id`) AS `cnt` FROM `'.$this->table.'` AS `i`';
+        $sql .= ' LEFT JOIN `'.$this->typelinktable.'` AS `g` ON `i`.`item_type_id`=`g`.`item_type_id`';
+        $sql .= ' WHERE `g`.`group_id`='.intval($itemgroupid);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -255,14 +260,13 @@ class Xoonips_ItemBean extends Xoonips_BeanBase
      */
     public function getItemTypeDetails($item_id)
     {
-        $sql = 'select detail.* from '.$this->typelinktable.' as link, '.
-    $this->table.' as item, '.
-    $this->grouplinktable.' as grp, '.
-    $this->detailtable.' as detail where '.
-    'item.item_type_id = link.item_type_id and '.
-    'link.group_id = grp.group_id and '.
-    'detail.item_field_detail_id =grp.item_field_detail_id and '.
-    'item_id ='.$item_id;
+        $sql  = 'SELECT `detail`.* FROM `'.$this->typelinktable.'` AS `link`,';
+        $sql .= '`'.$this->table.'` AS `item`,`'.$this->grouplinktable.'` AS `grp`,';
+        $sql .= '`'.$this->detailtable.'` AS `detail`';
+        $sql .= ' WHERE `item`.`item_type_id`=`link`.`item_type_id`';
+        $sql .= ' AND `link`.`group_id`=`grp`.`group_id`';
+        $sql .= ' AND `detail`.`item_field_detail_id`=`grp`.`item_field_detail_id`';
+        $sql .= ' AND `item_id`='.intval($item_id);
 
         $result = $this->execute($sql);
         $ret = [];
@@ -286,17 +290,12 @@ class Xoonips_ItemBean extends Xoonips_BeanBase
      */
     public function getItemFieldGroup($item_id)
     {
-        $sql = 'select grp.*,item_field_detail_id from '.$this->typelinktable.' as link, '.
-    $this->table.' as item, '.
-    $this->grouplinktable.' as grplnk, '.
-    $this->grouptable.' as grp where '.
-    'item.item_type_id = link.item_type_id and '.
-    'link.group_id = grp.group_id and '.
-    'link.group_id = grplnk.group_id and '.
-    'grplnk.released = 1 and '.
-    'grp.released = 1 and '.
-    'link.released = 1 and '.
-    'item_id ='.$item_id;
+        $sql  = 'SELECT `grp`.*,`item_field_detail_id`';
+        $sql .= ' FROM `'.$this->typelinktable.'` AS `link`,`'.$this->table.'` AS `item`,';
+        $sql .= '`'.$this->grouplinktable.'` AS `grplnk`,`'.$this->grouptable.'` AS `grp`';
+        $sql .= ' WHERE `item`.`item_type_id`=`link`.`item_type_id` AND `link`.`group_id`=`grp`.`group_id`';
+        $sql .= ' AND `link`.`group_id`=`grplnk`.`group_id` AND `grplnk`.`released`=1 AND `grp`.`released`=1';
+        $sql .= ' AND `link`.`released`=1 AND `item_id`='.intval($item_id);
         $result = $this->execute($sql);
         $ret = [];
         if (!$result) {

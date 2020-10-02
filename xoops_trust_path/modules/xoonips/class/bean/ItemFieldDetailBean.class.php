@@ -30,7 +30,7 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
      */
     public function getItemTypeDetails($itemTypeId)
     {
-        $sql = 'SELECT * FROM '.$this->table.' WHERE item_type_id='.$itemTypeId.' ORDER BY item_field_detail_id';
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `item_type_id`='.intval($itemTypeId).' ORDER BY `item_field_detail_id`';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -56,9 +56,9 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
     {
         $sql_release = '';
         if ($release) {
-            $sql_release = ' and released=1';
+            $sql_release = ' AND `released`=1';
         }
-        $sql = 'SELECT * FROM '.$this->table.' WHERE item_field_detail_id='.$id.$sql_release;
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `item_field_detail_id`='.intval($id).$sql_release;
 
         $result = $this->execute($sql);
         if (!$result) {
@@ -79,7 +79,7 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
      */
     public function getCreateUserDetail($itemtypeId)
     {
-        $sql = 'SELECT * FROM '.$this->table." WHERE released='1' AND item_type_id=0 AND view_type_id='12'";
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `released`=1 AND `item_type_id`='.intval($itemtypeId).' AND `view_type_id`=12';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -102,13 +102,13 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
         $viewTypeBean = Xoonips_BeanFactory::getBean('ViewTypeBean', $this->dirname, $this->trustDirname);
         $tv = $this->prefix($this->modulePrefix('item_field_value_set'));
 
-        $sql = 'SELECT tv.title_id, tv.title FROM '.$this->table.' td'
-            .' LEFT JOIN '.$tv.' AS tv ON td.list=tv.select_name'
-            .' LEFT JOIN '.$this->grouplinktable.' AS lg ON td.item_field_detail_id=lg.item_field_detail_id'
-            .' LEFT JOIN '.$this->typelinktable.' AS lt ON lg.group_id=lt.group_id'
-            .' WHERE td.view_type_id='.$viewTypeBean->selectByName('file type')
-            ." AND lt.released='1'"
-            .' AND lt.item_type_id='.$id;
+        $sql  = 'SELECT `tv`.`title_id`, `tv`.`title` FROM `'.$this->table.'` `td`';
+        $sql .= ' LEFT JOIN `'.$tv.'` AS `tv` ON `td`.`list`=`tv`.`select_name`';
+        $sql .= ' LEFT JOIN `'.$this->grouplinktable.'` AS `lg` ON `td`.`item_field_detail_id`=`lg`.`item_field_detail_id`';
+        $sql .= ' LEFT JOIN `'.$this->typelinktable.'` AS `lt` ON `lg`.`group_id`=`lt`.`group_id`';
+        $sql .= ' WHERE `td`.`view_type_id`='.intval($viewTypeBean->selectByName('file type'));
+        $sql .= ' AND `lt`.`released`=1';
+        $sql .= ' AND `lt`.`item_type_id`='.intval($id);
 
         $result = $this->execute($sql);
         if (!$result) {
@@ -134,7 +134,7 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
     {
         $ret = [];
         $table = $this->prefix($this->modulePrefix('default_item_field_detail'));
-        $sql = 'SELECT * FROM '.$table." WHERE group_id=$groupId ORDER BY weight";
+        $sql = 'SELECT * FROM `'.$table.'` WHERE `group_id`='.intval($groupId).' ORDER BY `weight`';
         $result = $this->execute($sql);
         if (!$result) {
             return $ret;
@@ -157,7 +157,7 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
     public function getItemTypeGroupDetail($groupId)
     {
         $ret = [];
-        $sql = 'SELECT * FROM '.$this->table." WHERE group_id=$groupId ORDER BY item_field_detail_id";
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `group_id`='.intval($groupId).' ORDER BY `item_field_detail_id`';
         $result = $this->execute($sql);
         if (!$result) {
             return $ret;
@@ -179,30 +179,30 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
      */
     public function insert($info, &$insertId)
     {
-        $sql = "INSERT INTO $this->table (released, preselect, table_name, column_name, item_type_id, group_id, weight, name, "
-            .' xml, view_type_id, data_type_id, data_length, data_decimal_places, default_value, list, essential, '
-            .' detail_display, detail_target, scope_search, nondisplay, update_id)';
-        $sql .= ' VALUES ('.Xoonips_Utils::convertSQLNum($info['released']).','
-            .Xoonips_Utils::convertSQLNum($info['preselect']).','
-            .Xoonips_Utils::convertSQLStr($info['table_name']).','
-            .Xoonips_Utils::convertSQLStr($info['column_name']).','
-            .Xoonips_Utils::convertSQLNum($info['item_type_id']).','
-            .Xoonips_Utils::convertSQLNum($info['group_id']).','
-            .Xoonips_Utils::convertSQLNum($info['weight']).','
-            .Xoonips_Utils::convertSQLStr($info['name']).','
-            .Xoonips_Utils::convertSQLStr($info['xml']).','
-            .Xoonips_Utils::convertSQLNum($info['view_type_id']).','
-            .Xoonips_Utils::convertSQLNum($info['data_type_id']).','
-            .Xoonips_Utils::convertSQLNum($info['data_length']).','
-            .Xoonips_Utils::convertSQLNum($info['data_decimal_places']).','
-            .Xoonips_Utils::convertSQLStr($info['default_value']).','
-            .Xoonips_Utils::convertSQLStr($info['list']).','
-            .Xoonips_Utils::convertSQLNum($info['essential']).','
-            .Xoonips_Utils::convertSQLNum($info['detail_display']).','
-            .Xoonips_Utils::convertSQLNum($info['detail_target']).','
-            .Xoonips_Utils::convertSQLNum($info['scope_search']).','
-            .Xoonips_Utils::convertSQLNum($info['nondisplay']).','
-            .Xoonips_Utils::convertSQLNum($info['update_id']).')';
+        $sql  = 'INSERT INTO `'.$this->table.'` (`released`, `preselect`, `table_name`, `column_name`, `item_type_id`, `group_id`, `weight`, `name`, ';
+        $sql .= '`xml`, `view_type_id`, `data_type_id`, `data_length`, `data_decimal_places`, `default_value`, `list`, `essential`, ';
+        $sql .= '`detail_display`, `detail_target`, `scope_search`, `nondisplay`, `update_id`) VALUES (';
+        $sql .= Xoonips_Utils::convertSQLNum($info['released']);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($info['preselect']);
+        $sql .= ','.Xoonips_Utils::convertSQLStr($info['table_name']);
+        $sql .= ','.Xoonips_Utils::convertSQLStr($info['column_name']);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($info['item_type_id']);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($info['group_id']);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($info['weight']);
+        $sql .= ','.Xoonips_Utils::convertSQLStr($info['name']);
+        $sql .= ','.Xoonips_Utils::convertSQLStr($info['xml']);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($info['view_type_id']);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($info['data_type_id']);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($info['data_length']);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($info['data_decimal_places']);
+        $sql .= ','.Xoonips_Utils::convertSQLStr($info['default_value']);
+        $sql .= ','.Xoonips_Utils::convertSQLStr($info['list']);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($info['essential']);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($info['detail_display']);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($info['detail_target']);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($info['scope_search']);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($info['nondisplay']);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($info['update_id']).')';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -222,26 +222,27 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
     public function insertDefault($info, &$insertId)
     {
         $table = $this->prefix($this->modulePrefix('default_item_field_detail'));
-        $sql = "INSERT INTO $table (table_name, column_name, group_id, weight, name, xml, view_type_id, "
-            .' data_type_id, data_length, data_decimal_places, default_value, list, essential, '
-            .' detail_display, detail_target, scope_search, nondisplay)';
-        $sql .= ' VALUES ('.Xoonips_Utils::convertSQLStr($info['table_name']).','
-            .Xoonips_Utils::convertSQLStr($info['column_name']).','
-            .Xoonips_Utils::convertSQLNum($info['group_id']).','
-            .Xoonips_Utils::convertSQLNum($info['weight']).','
-            .Xoonips_Utils::convertSQLStr($info['name']).','
-            .Xoonips_Utils::convertSQLStr($info['xml']).','
-            .Xoonips_Utils::convertSQLNum($info['view_type_id']).','
-            .Xoonips_Utils::convertSQLNum($info['data_type_id']).','
-            .Xoonips_Utils::convertSQLNum($info['data_length']).','
-            .Xoonips_Utils::convertSQLNum($info['data_decimal_places']).','
-            .Xoonips_Utils::convertSQLStr($info['default_value']).','
-            .Xoonips_Utils::convertSQLStr($info['list']).','
-            .Xoonips_Utils::convertSQLNum($info['essential']).','
-            .Xoonips_Utils::convertSQLNum($info['detail_display']).','
-            .Xoonips_Utils::convertSQLNum($info['detail_target']).','
-            .Xoonips_Utils::convertSQLNum($info['scope_search']).','
-            .Xoonips_Utils::convertSQLNum($info['nondisplay']).')';
+        $sql  = 'INSERT INTO `'.$table.'` (`table_name`, `column_name`, `group_id`, `weight`, `name`, `xml`, `view_type_id`, ';
+        $sql .= '`data_type_id`, `data_length`, `data_decimal_places`, `default_value`, `list`, `essential`, ';
+        $sql .= '`detail_display`, `detail_target`, `scope_search`, `nondisplay`) VALUES (';
+        $sql .= Xoonips_Utils::convertSQLStr($info['table_name']);
+        $sql .= ','.Xoonips_Utils::convertSQLStr($info['column_name']);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($info['group_id']);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($info['weight']);
+        $sql .= ','.Xoonips_Utils::convertSQLStr($info['name']);
+        $sql .= ','.Xoonips_Utils::convertSQLStr($info['xml']);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($info['view_type_id']);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($info['data_type_id']);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($info['data_length']);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($info['data_decimal_places']);
+        $sql .= ','.Xoonips_Utils::convertSQLStr($info['default_value']);
+        $sql .= ','.Xoonips_Utils::convertSQLStr($info['list']);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($info['essential']);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($info['detail_display']);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($info['detail_target']);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($info['scope_search']);
+        $sql .= ','.Xoonips_Utils::convertSQLNum($info['nondisplay']).')';
+
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -261,10 +262,9 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
     public function updateNewDetail($base_itemtypeid, $copy_itemtypeid)
     {
         $gt = $this->prefix($this->modulePrefix('item_field_group'));
-        $sql = "UPDATE $this->table t1, (SELECT if (update_id IS NULL, group_id, update_id) as upd_group_id, group_id FROM $gt) t2 SET "
-            .' t1.released = 1 '.", t1.item_type_id = $base_itemtypeid "
-            .', t1.group_id = t2.upd_group_id ';
-        $sql .= " WHERE t1.group_id=t2.group_id AND t1.item_type_id=$copy_itemtypeid AND t1.released=0 AND t1.update_id IS NULL";
+        $sql  = 'UPDATE `'.$this->table.'` `t1`, (SELECT IF(`update_id` IS NULL, `group_id`, `update_id`) AS `upd_group_id`, `group_id` FROM `'.$gt.'`) `t2`';
+        $sql .= ' SET `t1`.`released`=1, `t1`.`item_type_id`='.intval($base_itemtypeid).', `t1`.`group_id`=`t2`.`upd_group_id`';
+        $sql .= ' WHERE `t1`.`group_id`=`t2`.`group_id` AND `t1`.`item_type_id`='.intval($copy_itemtypeid).' AND `t1`.`released`=0 AND `t1`.`update_id` IS NULL';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -282,24 +282,25 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
      */
     public function updateCopyToBaseDetail($itemtypeId)
     {
-        $sql = "UPDATE $this->table t1, $this->table t2 SET "
-            .' t1.table_name = t2.table_name '
-            .', t1.column_name = t2.column_name '
-            .', t1.weight = t2.weight '
-            .', t1.name = t2.name '
-            .', t1.xml = t2.xml '
-            .', t1.view_type_id = t2.view_type_id '
-            .', t1.data_type_id = t2.data_type_id '
-            .', t1.data_length = t2.data_length '
-            .', t1.data_decimal_places = t2.data_decimal_places '
-            .', t1.default_value = t2.default_value '
-            .', t1.list = t2.list '
-            .', t1.essential = t2.essential '
-            .', t1.detail_display = t2.detail_display '
-            .', t1.detail_target = t2.detail_target '
-            .', t1.scope_search = t2.scope_search '
-            .', t1.nondisplay = t2.nondisplay ';
-        $sql .= " WHERE t1.item_field_detail_id=t2.update_id AND t2.item_type_id=$itemtypeId";
+        $sql  = 'UPDATE `'.$this->table.'` `t1`,`'.$this->table.'` `t2` SET ';
+        $sql .= '`t1`.`table_name` = `t2`.`table_name` ';
+        $sql .= ', `t1`.`column_name` = `t2`.`column_name` ';
+        $sql .= ', `t1`.`weight` = `t2`.`weight` ';
+        $sql .= ', `t1`.`name` = `t2`.`name` ';
+        $sql .= ', `t1`.`xml` = `t2`.`xml` ';
+        $sql .= ', `t1`.`view_type_id` = `t2`.`view_type_id` ';
+        $sql .= ', `t1`.`data_type_id` = `t2`.`data_type_id` ';
+        $sql .= ', `t1`.`data_length` = `t2`.`data_length` ';
+        $sql .= ', `t1`.`data_decimal_places` = `t2`.`data_decimal_places` ';
+        $sql .= ', `t1`.`default_value` = `t2`.`default_value` ';
+        $sql .= ', `t1`.`list` = `t2`.`list` ';
+        $sql .= ', `t1`.`essential` = `t2`.`essential` ';
+        $sql .= ', `t1`.`detail_display` = `t2`.`detail_display` ';
+        $sql .= ', `t1`.`detail_target` = `t2`.`detail_target` ';
+        $sql .= ', `t1`.`scope_search` = `t2`.`scope_search` ';
+        $sql .= ', `t1`.`nondisplay` = `t2`.`nondisplay` ';
+        $sql .= ' WHERE `t1`.`item_field_detail_id`=`t2`.`update_id` AND `t2`.`item_type_id`='.intval($itemtypeId);
+
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -317,7 +318,7 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
      */
     public function deleteCopyItemtypeDetail($itemtypeId)
     {
-        $sql = "DELETE FROM $this->table WHERE item_type_id=$itemtypeId AND update_id IS NOT NULL";
+        $sql = 'DELETE FROM `'.$this->table.'` WHERE `item_type_id`='.intval($itemtypeId).' AND `update_id` IS NOT NULL';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -335,7 +336,7 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
      */
     public function deleteByGroupId($groupId)
     {
-        $sql = "DELETE FROM $this->table WHERE group_id=$groupId";
+        $sql = 'DELETE FROM `'.$this->table.'` WHERE `group_id`='.intval($groupId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -353,7 +354,7 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
      */
     public function deleteByItemtypeId($itemtypeid)
     {
-        $sql = "DELETE FROM $this->table WHERE item_type_id=$itemtypeid";
+        $sql = 'DELETE FROM `'.$this->table.'` WHERE `item_type_id`='.intval($itemtypeid);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -372,7 +373,7 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
     public function getNewItemTypeDetail($itemtypeId)
     {
         $ret = [];
-        $sql = 'SELECT * FROM '.$this->table." WHERE update_id IS NULL AND released='0' AND item_type_id=$itemtypeId";
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `update_id` IS NULL AND `released`=0 AND `item_type_id`='.intval($itemtypeId);
         $result = $this->execute($sql);
         if (!$result) {
             return $ret;
@@ -395,10 +396,10 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
     public function getReleasedDetail($itemtypeId)
     {
         $ret = [];
-        $sql = 'SELECT d.* FROM '.$this->table.' AS d'
-        .' LEFT JOIN '.$this->grouplinktable.' AS lg ON d.item_field_detail_id=lg.item_field_detail_id'
-        .' LEFT JOIN '.$this->typelinktable.' AS lt ON lg.group_id=lt.group_id'
-        ." WHERE d.update_id IS NULL AND d.released='1' AND lt.item_type_id=$itemtypeId";
+        $sql  = 'SELECT `d`.* FROM `'.$this->table.'` AS `d`';
+        $sql .= ' LEFT JOIN `'.$this->grouplinktable.'` AS `lg` ON `d`.`item_field_detail_id`=`lg`.`item_field_detail_id`';
+        $sql .= ' LEFT JOIN `'.$this->typelinktable.'` AS `lt` ON `lg`.`group_id`=`lt`.`group_id`';
+        $sql .= ' WHERE `d`.`update_id` IS NULL AND `d`.`released`=1 AND `lt`.`item_type_id`='.intval($itemtypeId);
 
         $result = $this->execute($sql);
         if (!$result) {
@@ -432,7 +433,7 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
     public function getReleasedDetailByDetailId($detailid)
     {
         $ret = [];
-        $sql = 'SELECT * FROM '.$this->table." WHERE update_id IS NULL AND item_field_detail_id=$detailid";
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `update_id` IS NULL AND `item_field_detail_id`='.intval($detailid);
         $result = $this->execute($sql);
         if (!$result) {
             return $ret;
@@ -455,9 +456,9 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
     public function getGroupDetails($groupId)
     {
         $ret = [];
-        $sql = 'SELECT d.* FROM '.$this->table.' AS d'
-        .' INNER JOIN '.$this->grouplinktable.' AS l ON d.item_field_detail_id=l.item_field_detail_id'
-        ." WHERE l.group_id=$groupId ORDER BY weight";
+        $sql  = 'SELECT `d`.* FROM `'.$this->table.'` AS `d`';
+        $sql .= ' INNER JOIN `'.$this->grouplinktable.'` AS `l` ON `d`.`item_field_detail_id`=`l`.`item_field_detail_id`';
+        $sql .= ' WHERE `l`.`group_id`='.intval($groupId).' ORDER BY `weight`';
         $result = $this->execute($sql);
         if (!$result) {
             return $ret;
@@ -479,7 +480,7 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
      */
     public function updateWeight($detailId, $weight)
     {
-        $sql = "UPDATE $this->table SET weight=$weight WHERE item_field_detail_id=$detailId";
+        $sql = 'UPDATE `'.$this->table.'` SET `weight`='.intval($weight).' WHERE `item_field_detail_id`='.intval($detailId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -497,7 +498,7 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
      */
     public function getMaxDetailWeight($gid)
     {
-        $sql = 'SELECT MAX(weight) AS maxWeight FROM '.$this->table." WHERE group_id=$gid";
+        $sql = 'SELECT MAX(`weight`) AS `maxWeight` FROM `'.$this->table.'` WHERE `group_id`='.intval($gid);
         $result = $this->execute($sql);
         if (!$result) {
             return 0;
@@ -519,8 +520,8 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
     public function updateTableName($detailId)
     {
         $table_name = $this->modulePrefix('item_extend').$detailId;
-        $sql = "UPDATE $this->table SET table_name='$table_name' WHERE item_field_detail_id=$detailId"
-            ." AND table_name LIKE '$this->dirname"."_item_extend%' ";
+        $sql  = 'UPDATE `'.$this->table.'` SET `table_name`='.Xoonips_Utils::convertSQLStr($table_name).' WHERE `item_field_detail_id`='.intval($detailId);
+        $sql .= ' AND `table_name` LIKE '.$this->dirname.'_item_extend%';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -538,13 +539,13 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
      */
     public function delete($detailId)
     {
-        $sql = "DELETE FROM $this->table WHERE item_field_detail_id=$detailId";
+        $sql = 'DELETE FROM `'.$this->table.'` WHERE `item_field_detail_id`='.intval($detailId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
         }
 
-        $sql = "DELETE FROM $this->table WHERE update_id=$detailId";
+        $sql = 'DELETE FROM `'.$this->table.'` WHERE `update_id`='.intval($detailId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -562,21 +563,21 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
      */
     public function update($detail_info, $detail_id)
     {
-        $sql = "UPDATE $this->table SET "
-            .'  name = '.Xoonips_Utils::convertSQLStr($detail_info['name'])
-            .', xml = '.Xoonips_Utils::convertSQLStr($detail_info['xml'])
-            .', view_type_id = '.Xoonips_Utils::convertSQLNum($detail_info['view_type_id'])
-            .', data_type_id = '.Xoonips_Utils::convertSQLNum($detail_info['data_type_id'])
-            .', data_length = '.Xoonips_Utils::convertSQLNum($detail_info['data_length'])
-            .', data_decimal_places = '.Xoonips_Utils::convertSQLNum($detail_info['data_decimal_places'])
-            .', default_value = '.Xoonips_Utils::convertSQLStr($detail_info['default_value'])
-            .', list = '.Xoonips_Utils::convertSQLStr($detail_info['list'])
-            .', essential = '.Xoonips_Utils::convertSQLNum($detail_info['essential'])
-            .', detail_display = '.Xoonips_Utils::convertSQLNum($detail_info['detail_display'])
-            .', detail_target = '.Xoonips_Utils::convertSQLNum($detail_info['detail_target'])
-            .', scope_search = '.Xoonips_Utils::convertSQLNum($detail_info['scope_search'])
-            .', nondisplay = '.Xoonips_Utils::convertSQLNum($detail_info['nondisplay']);
-        $sql .= " WHERE item_field_detail_id=$detail_id";
+        $sql  = 'UPDATE `'.$this->table.'` SET';
+        $sql .= ' `name`='.Xoonips_Utils::convertSQLStr($detail_info['name']);
+        $sql .= ',`xml`='.Xoonips_Utils::convertSQLStr($detail_info['xml']);
+        $sql .= ',`view_type_id`='.Xoonips_Utils::convertSQLNum($detail_info['view_type_id']);
+        $sql .= ',`data_type_id`='.Xoonips_Utils::convertSQLNum($detail_info['data_type_id']);
+        $sql .= ',`data_length`='.Xoonips_Utils::convertSQLNum($detail_info['data_length']);
+        $sql .= ',`data_decimal_places`='.Xoonips_Utils::convertSQLNum($detail_info['data_decimal_places']);
+        $sql .= ',`default_value`='.Xoonips_Utils::convertSQLStr($detail_info['default_value']);
+        $sql .= ',`list`='.Xoonips_Utils::convertSQLStr($detail_info['list']);
+        $sql .= ',`essential`='.Xoonips_Utils::convertSQLNum($detail_info['essential']);
+        $sql .= ',`detail_display`='.Xoonips_Utils::convertSQLNum($detail_info['detail_display']);
+        $sql .= ',`detail_target`='.Xoonips_Utils::convertSQLNum($detail_info['detail_target']);
+        $sql .= ',`scope_search`='.Xoonips_Utils::convertSQLNum($detail_info['scope_search']);
+        $sql .= ',`nondisplay`='.Xoonips_Utils::convertSQLNum($detail_info['nondisplay']);
+        $sql .= ' WHERE `item_field_detail_id`='.intval($detail_id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -644,7 +645,7 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
     // get count itemfields
     public function countItemfields()
     {
-        $sql = 'SELECT item_field_detail_id FROM '.$this->table.' WHERE update_id IS NULL';
+        $sql = 'SELECT `item_field_detail_id` FROM `'.$this->table.'` WHERE `update_id` IS NULL';
         $result = $this->execute($sql);
         $ret = 0;
         if (!$result) {
@@ -660,9 +661,9 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
     public function getItemfieldlist($limit = 0, $start = 0)
     {
         $ret = [];
-        $sql = 'SELECT at.*, bt.update_id as upid FROM '.$this->table.' at LEFT JOIN '.$this->table.' bt'
-        .' ON at.item_field_detail_id=bt.update_id WHERE at.update_id IS NULL '
-        .' LIMIT '.(int) $start.', '.(int) $limit;
+        $sql  = 'SELECT `at`.*, `bt`.`update_id` AS `upid` FROM `'.$this->table.'` `at` LEFT JOIN `'.$this->table.'` `bt`';
+        $sql .= ' ON `at`.`item_field_detail_id`=`bt`.`update_id` WHERE `at`.`update_id` IS NULL ';
+        $sql .= ' LIMIT '.intval($start).', '.intval($limit);
 
         $result = $this->execute($sql);
         if (!$result) {
@@ -685,9 +686,9 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
      */
     public function existDetailName($did, $name, $base_did)
     {
-        $sql = 'SELECT name FROM '.$this->table
-            ." WHERE item_field_detail_id<>$did AND item_field_detail_id<>$base_did"
-            .' AND name='.Xoonips_Utils::convertSQLStr($name);
+        $sql  = 'SELECT `name` FROM `'.$this->table.'`';
+        $sql .= ' WHERE `item_field_detail_id`<>'.intval($did).' AND `item_field_detail_id`<>'.intval($base_did);
+        $sql .= ' AND `name`='.Xoonips_Utils::convertSQLStr($name);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -708,9 +709,9 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
      */
     public function existDetailXml($did, $xml, $base_did)
     {
-        $sql = 'SELECT xml FROM '.$this->table.' WHERE '
-            ." item_field_detail_id<>$did AND item_field_detail_id<>$base_did"
-            .' AND xml='.Xoonips_Utils::convertSQLStr($xml);
+        $sql  = 'SELECT `xml` FROM `'.$this->table.'` ';
+        $sql .= 'WHERE `item_field_detail_id`<>'.intval($did).' AND `item_field_detail_id`<>'.intval($base_did);
+        $sql .= ' AND `xml`='.Xoonips_Utils::convertSQLStr($xml);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -731,9 +732,9 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
      */
     public function existViewtype($detailId, $viewtypeId, $base_did)
     {
-        $sql = 'SELECT view_type_id FROM '.$this->table.' WHERE '
-            ." item_field_detail_id<>$detailId AND item_field_detail_id<>$base_did"
-            ." AND view_type_id=$viewtypeId";
+        $sql  = 'SELECT `view_type_id` FROM `'.$this->table.'` WHERE ';
+        $sql .= ' `item_field_detail_id`<>'.intval($detailId).' AND `item_field_detail_id`<>'.intval($base_did);
+        $sql .= ' AND `view_type_id`='.intval($viewtypeId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -831,10 +832,13 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
             .' a.nondisplay as a_nondisplay, b.nondisplay as b_nondisplay, '
             .' a.weight as a_weight, b.weight as b_weight, b.item_field_detail_id as b_item_field_detail_id ';
         if ($type_flg) {
-            $sql .= " FROM $this->table a LEFT JOIN $this->table b ON a.update_id=b.item_field_detail_id WHERE a.item_field_detail_id=$detailId";
+            $sql .= ' FROM `'.$this->table.'` `a` LEFT JOIN `'.$this->table.'` `b`';
+            $sql .= ' ON `a`.`update_id`=`b`.`item_field_detail_id`';
+            $sql .= ' WHERE `a`.`item_field_detail_id`='.intval($detailId);
         } else {
-            $sql .= ', b.update_id as b_update_id'
-                    ." FROM $this->table a LEFT JOIN $this->table b ON a.item_field_detail_id=b.update_id WHERE a.item_field_detail_id=$detailId";
+            $sql .= ', b.update_id as b_update_id';
+            $sql .= ' FROM `'.$this->table.'` `a` LEFT JOIN `'.$this->table.'` `b` ON `a`.`item_field_detail_id`=`b`.`update_id`';
+            $sql .= ' WHERE `a`.`item_field_detail_id`='.intval($detailId);
         }
         $result = $this->execute($sql);
         if (!$result) {
@@ -861,7 +865,7 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
                 return false;
             }
 
-            $sql = "UPDATE $this->table SET released=1 WHERE item_field_detail_id=$detail_id";
+            $sql = 'UPDATE `'.$this->table.'` SET `released`=1 WHERE `item_field_detail_id`='.intval($detail_id);
         } else {
             $sql = "UPDATE $this->table t1, $this->table t2 SET "
             .' t1.table_name = t2.table_name '
@@ -881,7 +885,7 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
             .', t1.scope_search = t2.scope_search '
             .', t1.nondisplay = t2.nondisplay '
             .', t1.released = 1 ';
-            $sql .= " WHERE t1.item_field_detail_id=t2.update_id AND t2.item_field_detail_id=$detail_id";
+            $sql .= ' WHERE `t1`.`item_field_detail_id`=`t2`.`update_id` AND `t2`.`item_field_detail_id`='.intval($detail_id);
         }
         $result = $this->execute($sql);
         if (!$result) {
@@ -901,8 +905,8 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
     public function getDetailByXml($xml)
     {
         $ret = [];
-        $sql = 'SELECT * FROM '.$this->table
-        .' WHERE xml='.Xoonips_Utils::convertSQLStr($xml).' AND update_id IS NULL';
+        $sql  = 'SELECT * FROM `'.$this->table.'`';
+        $sql .= ' WHERE `xml`='.Xoonips_Utils::convertSQLStr($xml).' AND `update_id` IS NULL';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -933,7 +937,6 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
         $sql .= $this->table.'.name, ';
         $sql .= $this->table.'.xml, ';
         $sql .= $viewTable.'.name, ';
-        //$sql .= $this->table . ".data_type_id, ";
         $sql .= $dataTable.'.name, ';
         $sql .= $this->table.'.data_length, ';
         $sql .= $this->table.'.data_decimal_places, ';
@@ -948,11 +951,11 @@ class Xoonips_ItemFieldDetailBean extends Xoonips_BeanBase
         $sql .= $viewTable.', ';
         $sql .= $dataTable.' ';
 
-        $sql .= 'WHERE '.$this->table.'.item_field_detail_id='.$this->grouplinktable.'.item_field_detail_id ';
-        $sql .= 'AND '.$groupTable.'.group_id='.$this->grouplinktable.'.group_id ';
-        $sql .= 'AND '.$this->table.'.view_type_id='.$viewTable.'.view_type_id ';
-        $sql .= 'AND '.$this->table.'.data_type_id='.$dataTable.'.data_type_id ';
-        $sql .= 'AND '.$this->grouplinktable.'.group_id='.$group_id;
+        $sql .= ' WHERE `'.$this->table.'`.`item_field_detail_id`=`'.$this->grouplinktable.'`.`item_field_detail_id` ';
+        $sql .= ' AND `'.$groupTable.'`.`group_id`=`'.$this->grouplinktable.'`.`group_id` ';
+        $sql .= ' AND `'.$this->table.'`.`view_type_id`=`'.$viewTable.'`.`view_type_id` ';
+        $sql .= ' AND `'.$this->table.'`.`data_type_id`=`'.$dataTable.'`.`data_type_id` ';
+        $sql .= ' AND `'.$this->grouplinktable.'`.`group_id`='.intval($group_id);
         $result = $this->execute($sql);
         if (!$result) {
             return false;

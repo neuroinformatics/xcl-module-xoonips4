@@ -24,11 +24,11 @@ class Xoonips_OaipmhSchemaBean extends Xoonips_BeanBase
     public function getSchemaList($metadataPrefix = null)
     {
         $ret = [];
-        $sql = 'SELECT * FROM '.$this->table;
+        $sql = 'SELECT * FROM `'.$this->table.'`';
         if (!is_null($metadataPrefix)) {
-            $sql = $sql." WHERE metadata_prefix='$metadataPrefix' ORDER BY weight";
+            $sql .= ' WHERE `metadata_prefix`='.Xoonips_Utils::convertSQLStr($metadataPrefix).' ORDER BY `weight`';
         } else {
-            $sql = $sql.' ORDER BY metadata_prefix,weight';
+            $sql .= ' ORDER BY `metadata_prefix`,`weight`';
         }
         $result = $this->execute($sql);
         if (!$result) {
@@ -50,7 +50,7 @@ class Xoonips_OaipmhSchemaBean extends Xoonips_BeanBase
     public function getPrefixList()
     {
         $ret = [];
-        $sql = 'SELECT DISTINCT metadata_prefix FROM '.$this->table.' ORDER BY metadata_prefix';
+        $sql = 'SELECT DISTINCT `metadata_prefix` FROM `'.$this->table.'` ORDER BY `metadata_prefix`';
 
         $result = $this->execute($sql);
         if (!$result) {
@@ -68,9 +68,9 @@ class Xoonips_OaipmhSchemaBean extends Xoonips_BeanBase
     {
         $ret = [];
         $valueSetTable = $this->prefix($this->modulePrefix('oaipmh_schema_value_set'));
-        $sql = "SELECT * FROM $valueSetTable WHERE schema_id IN (";
-        $sql = $sql.'SELECT schema_id FROM '.$this->table;
-        $sql = $sql." WHERE metadata_prefix='$metadataPrefix')";
+        $sql  = 'SELECT * FROM `'.$valueSetTable.'` WHERE `schema_id` IN (';
+        $sql .= ' SELECT `schema_id` FROM `'.$this->table.'`';
+        $sql .= ' WHERE `metadata_prefix`='.Xoonips_Utils::convertSQLStr($metadataPrefix).')';
 
         $result = $this->execute($sql);
         if (!$result) {
@@ -87,10 +87,10 @@ class Xoonips_OaipmhSchemaBean extends Xoonips_BeanBase
     public function convertValueset($schema_id1, $schema_id2, $seq_id)
     {
         $valueSetTable = $this->prefix($this->modulePrefix('oaipmh_schema_value_set'));
-        $sql = "SELECT seq_id FROM $valueSetTable";
-        $sql = $sql." WHERE schema_id=$schema_id2 AND value=(SELECT value FROM";
-        $sql = $sql." $valueSetTable WHERE schema_id=$schema_id1";
-        $sql = $sql." AND seq_id = $seq_id)";
+        $sql  = 'SELECT `seq_id` FROM `'.$valueSetTable.'`';
+        $sql .= ' WHERE `schema_id`='.intval($schema_id2).' AND `value`=(SELECT `value`';
+        $sql .= ' FROM `'.$valueSetTable.'` WHERE `schema_id`='.intval($schema_id1);
+        $sql .= ' AND `seq_id`='.intval($seq_id);
         $result = $this->execute($sql);
         if ($result && $row = $this->fetchArray($result)) {
             return $row['seq_id'];
@@ -109,7 +109,7 @@ class Xoonips_OaipmhSchemaBean extends Xoonips_BeanBase
      */
     public function insert($oaipmh, &$insertId)
     {
-        $sql = 'INSERT INTO '.$this->table.' (metadata_prefix,name,min_occurences,max_occurences,weight)';
+        $sql  = 'INSERT INTO `'.$this->table.'` (`metadata_prefix`,`name`,`min_occurences`,`max_occurences`,`weight`)';
         $sql .= ' VALUES ('.Xoonips_Utils::convertSQLStr($oaipmh['metadata_prefix']);
         $sql .= ','.Xoonips_Utils::convertSQLStr($oaipmh['name']);
         $sql .= ','.Xoonips_Utils::convertSQLNum($oaipmh['min_occurences']);
@@ -135,8 +135,8 @@ class Xoonips_OaipmhSchemaBean extends Xoonips_BeanBase
     public function insertValue($valueSet, &$insertId)
     {
         $valueSetTable = $this->prefix($this->modulePrefix('oaipmh_schema_value_set'));
-        $sql = 'INSERT INTO '.$valueSetTable.' (schema_id,value)';
-        $sql .= ' VALUES ('.Xoonips_Utils::convertSQLNum($valueSet['schema_id']);
+        $sql  = 'INSERT INTO `'.$valueSetTable.'` (`schema_id`,`value`)';
+        $sql .= ' VALUES ('.intval($valueSet['schema_id']);
         $sql .= ','.Xoonips_Utils::convertSQLStr($valueSet['value']).')';
         $result = $this->execute($sql);
         if (!$result) {
@@ -157,10 +157,10 @@ class Xoonips_OaipmhSchemaBean extends Xoonips_BeanBase
     public function insertLink($valueLink)
     {
         $valueLinkTable = $this->prefix($this->modulePrefix('oaipmh_schema_link'));
-        $sql = 'INSERT INTO '.$valueLinkTable.' (schema_id1,schema_id2,number)';
-        $sql .= ' VALUES ('.Xoonips_Utils::convertSQLNum($valueLink['schema_id1']);
-        $sql .= ','.Xoonips_Utils::convertSQLNum($valueLink['schema_id2']);
-        $sql .= ','.Xoonips_Utils::convertSQLNum($valueLink['number']).')';
+        $sql  = 'INSERT INTO `'.$valueLinkTable.'` (`schema_id1`,`schema_id2`,`number`)';
+        $sql .= ' VALUES ('.intval($valueLink['schema_id1']);
+        $sql .= ','.intval($valueLink['schema_id2']);
+        $sql .= ','.intval($valueLink['number']).')';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
