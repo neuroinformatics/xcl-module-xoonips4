@@ -207,7 +207,7 @@ class Xoonips_EditIndexAction extends Xoonips_ActionBase
         $index = [
             'index_id' => 0,
             'parent_index_id' => $parentIndexId,
-            'uid' => $parentIndexId['uid'],
+            'uid' => $parentIndex['uid'],
             'group_id' => $parentIndex['group_id'],
             'open_level' => $parentIndex['open_level'],
             'title' => trim($request->getParameter('title')),
