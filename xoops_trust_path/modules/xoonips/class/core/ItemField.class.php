@@ -85,14 +85,17 @@ class Xoonips_ItemField extends Xoonips_Field
 
     public function getList()
     {
+        $itemFieldValueSetHandler = Functions::getXoonipsHandler('ItemFieldValueSetObject', $this->dirname);
+        $criteria = new Criteria('select_name', $this->listId);
+        $criteria->setSort('weight');
         $ret = [];
-        global $xoopsDB;
-        $sql = 'select title_id, title from '.$xoopsDB->prefix($this->dirname.'_item_field_value_set').
-        " where select_name='".$this->listId."' order by weight";
-        $result = $xoopsDB->queryF($sql);
-        while ($row = $xoopsDB->fetchArray($result)) {
-            $ret[$row['title_id']] = $row['title'];
+        if (!$res = $itemFieldValueSetHandler->open($criteria)) {
+            return $ret;
         }
+        while ($obj = $itemFieldValueSetHandler->getNext($res)) {
+            $ret[$obj->get('title_id')] = $obj->get('title');
+        }
+        $itemFieldValueSetHandler->close($res);
 
         return $ret;
     }
