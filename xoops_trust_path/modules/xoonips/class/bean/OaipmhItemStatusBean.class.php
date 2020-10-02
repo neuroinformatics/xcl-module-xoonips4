@@ -23,7 +23,7 @@ class Xoonips_OaipmhItemStatusBean extends Xoonips_BeanBase
      */
     public function insert($itemId)
     {
-        $sql  = 'INSERT INTO `'.$this->table.'` (`item_id`, `timestamp`, `created_timestamp`, `is_deleted`)';
+        $sql = 'INSERT INTO `'.$this->table.'` (`item_id`, `timestamp`, `created_timestamp`, `is_deleted`)';
         $sql .= ' VALUES ('.intval($itemId).', '.time().', '.time().', 0)';
         $result = $this->execute($sql);
         if (!$result) {
@@ -39,7 +39,7 @@ class Xoonips_OaipmhItemStatusBean extends Xoonips_BeanBase
         $tblLink = $this->prefix($this->modulePrefix('index_item_link'));
         $tblGroup = $this->prefix('groups');
         $time = time();
-        $sql  = 'INSERT INTO `'.$this->table.'` (`item_id`, `timestamp`, `created_timestamp`, `is_deleted`) ';
+        $sql = 'INSERT INTO `'.$this->table.'` (`item_id`, `timestamp`, `created_timestamp`, `is_deleted`) ';
         $sql .= ' SELECT DISTINCT `b`.`item_id`, '.$time.', '.$time.', 0 FROM `'.$tblIndex.'` `a`, `'.$tblLink.'` `b` ';
         $sql .= ' WHERE `a`.`groupid`='.intval($groupId).' AND `a`.`open_level`='.XOONIPS_OL_GROUP_ONLY;
         $sql .= ' AND `a`.`index_id`=`b`.`index_id` AND `b`.`certify_state`>='.XOONIPS_CERTIFIED;
@@ -66,7 +66,7 @@ class Xoonips_OaipmhItemStatusBean extends Xoonips_BeanBase
         $tblLink = $this->prefix($this->modulePrefix('index_item_link'));
         $tblGroup = $this->prefix('groups');
         $tblTemp = $this->table.'_tmp';
-        $sql1  = 'CREATE TEMPORARY TABLE `'.$tblTemp.'`';
+        $sql1 = 'CREATE TEMPORARY TABLE `'.$tblTemp.'`';
         $sql1 .= ' SELECT `b`.`item_id` FROM `'.$tblIndex.'` `a`, `'.$tblLink.'` `b`';
         $sql1 .= ' WHERE `a`.`groupid`='.$groupId.' AND `a`.`open_level`='.XOONIPS_OL_GROUP_ONLY;
         $sql1 .= ' AND `a`.`index_id`=`b`.`index_id` AND `b`.`certify_state`>='.XOONIPS_CERTIFIED;
@@ -83,7 +83,7 @@ class Xoonips_OaipmhItemStatusBean extends Xoonips_BeanBase
         if (!$result) {
             return false;
         }
-        $sql2  = 'UPDATE `'.$this->table.'` SET `timestamp`='.time().', `is_deleted`=0, `modified_timestamp`='.time();
+        $sql2 = 'UPDATE `'.$this->table.'` SET `timestamp`='.time().', `is_deleted`=0, `modified_timestamp`='.time();
         $sql2 .= ' WHERE `item_id` IN ( SELECT `item_id` FROM `'.$tblTemp.'`)';
         $result = $this->execute($sql2);
         if (!$result) {
@@ -102,7 +102,7 @@ class Xoonips_OaipmhItemStatusBean extends Xoonips_BeanBase
      */
     public function delete($itemId)
     {
-        $sql  = 'UPDATE `'.$this->table.'` SET `timestamp`='.time().', `deleted_timestamp`='.time();
+        $sql = 'UPDATE `'.$this->table.'` SET `timestamp`='.time().', `deleted_timestamp`='.time();
         $sql .= ', `is_deleted`=1, `modified_timestamp`='.time().' WHERE `item_id`='.intval($itemId);
         $result = $this->execute($sql);
         if (!$result) {
@@ -118,7 +118,7 @@ class Xoonips_OaipmhItemStatusBean extends Xoonips_BeanBase
         $tblLink = $this->prefix($this->modulePrefix('index_item_link'));
         $tblGroup = $this->prefix('groups');
         $time = time();
-        $sql  = 'UPDATE `'.$this->table.'` SET `timestamp`='.time().', `deleted_timestamp`='.time();
+        $sql = 'UPDATE `'.$this->table.'` SET `timestamp`='.time().', `deleted_timestamp`='.time();
         $sql .= ', `is_deleted`=1, `modified_timestamp`='.time().' WHERE `item_id` IN ';
         $sql .= ' ( SELECT `b`.`item_id` FROM `'.$tblIndex.'` `a`, `'.$tblLink.'` `b`';
         $sql .= ' WHERE `a`.`groupid`='.intval($groupId).' AND `a`.`open_level`='.XOONIPS_OL_GROUP_ONLY;
@@ -172,7 +172,7 @@ class Xoonips_OaipmhItemStatusBean extends Xoonips_BeanBase
      */
     public function update($itemId)
     {
-        $sql  = 'UPDATE `'.$this->table.'` SET `timestamp`='.time().', `is_deleted`=0, ';
+        $sql = 'UPDATE `'.$this->table.'` SET `timestamp`='.time().', `is_deleted`=0, ';
         $sql .= ' `deleted_timestamp`=NULL, `modified_timestamp`='.time().' WHERE `item_id`='.intval($itemId);
         $result = $this->execute($sql);
         if (!$result) {
@@ -304,9 +304,11 @@ class Xoonips_OaipmhItemStatusBean extends Xoonips_BeanBase
                     return false;
                 }
                 $imploded_ids = '';
-                for ($i = 0 ; $i < count($child_xids); $i++){
+                for ($i = 0; $i < count($child_xids); ++$i) {
                     $imploded_ids .= intval($child_xids[$i]);
-                    if($i < count($child_xids)-1) $imploded_ids .= ',';
+                    if ($i < count($child_xids) - 1) {
+                        $imploded_ids .= ',';
+                    }
                 }
                 $where .= ' `link`.`index_id` IN ('.$imploded_ids.') AND ';
                 $sql_from .= ' LEFT JOIN '.$this->prefix($this->modulePrefix('index_item_link')).' AS link on basic.item_id=link.item_id '

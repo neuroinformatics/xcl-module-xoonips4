@@ -93,7 +93,7 @@ class Xoonips_ViewTypeBean extends Xoonips_BeanBase
      */
     public function insert($viewtype, &$insertId)
     {
-        $sql  = 'INSERT INTO `'.$this->table.'` (`preselect`,`multi`,`name`,`module`)';
+        $sql = 'INSERT INTO `'.$this->table.'` (`preselect`,`multi`,`name`,`module`)';
         $sql .= ' VALUES('.intval($viewtype['preselect']).','.intval($viewtype['multi']);
         $sql .= ','.Xoonips_Utils::convertSQLStr($viewtype['name']).','.Xoonips_Utils::convertSQLStr($viewtype['module']).')';
         $result = $this->execute($sql);

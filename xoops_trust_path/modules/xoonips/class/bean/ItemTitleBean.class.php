@@ -107,7 +107,7 @@ class Xoonips_ItemTitleBean extends Xoonips_BeanBase
      */
     public function insertTitle($item_id, $item_field_detail_id, $title, $title_id)
     {
-        $sql  = 'INSERT INTO `'.$this->table.'` (`item_id`,`item_field_detail_id`,`title`,`title_id`)';
+        $sql = 'INSERT INTO `'.$this->table.'` (`item_id`,`item_field_detail_id`,`title`,`title_id`)';
         $sql .= ' VALUES(';
         $sql .= Xoonips_Utils::convertSQLNum($item_id);
         $sql .= ','.Xoonips_Utils::convertSQLNum($item_field_detail_id);
@@ -134,7 +134,7 @@ class Xoonips_ItemTitleBean extends Xoonips_BeanBase
      */
     public function updateTitle($item_id, $item_field_detail_id, $title, $title_id)
     {
-        $sql  = 'UPDATE `'.$this->table.'` SET `title`='.Xoonips_Utils::convertSQLStr($title);
+        $sql = 'UPDATE `'.$this->table.'` SET `title`='.Xoonips_Utils::convertSQLStr($title);
         $sql .= ' WHERE `item_id`='.intval($item_id).' AND `item_field_detail_id`='.intval($item_field_detail_id);
         $sql .= ' AND `title_id`='.intval($title_id);
         $result = $this->execute($sql);

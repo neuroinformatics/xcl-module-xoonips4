@@ -92,7 +92,7 @@ class Xoonips_ItemExtendBean extends Xoonips_BeanBase
     {
         $group_id = ($group_id) ? $group_id : 0;
         $table = $this->prefix($tableName);
-        $sql  = 'INSERT INTO `'.$table.'`';
+        $sql = 'INSERT INTO `'.$table.'`';
         $sql .= ' (`item_id`, `group_id`, `value`, `occurrence_number`) VALUES (';
         $sql .= intval($id).', '.intval($group_id).', '.$value.', '.intval($number).')';
         $result = $this->execute($sql);
@@ -107,7 +107,7 @@ class Xoonips_ItemExtendBean extends Xoonips_BeanBase
     {
         $group_id = ($group_id) ? $group_id : 0;
         $table = $this->prefix($tableName);
-        $sql  = 'INSERT INTO `'.$table.'` (`item_id`, `group_id`, `occurrence_number`)';
+        $sql = 'INSERT INTO `'.$table.'` (`item_id`, `group_id`, `occurrence_number`)';
         $sql .= ' VALUES ('.intval($id).', '.intval($group_id).', '.intval($number).')';
         $result = $this->execute($sql);
         if (!$result) {
@@ -152,7 +152,7 @@ class Xoonips_ItemExtendBean extends Xoonips_BeanBase
     public function updateVal($item_id, $tableName, $value, $occurrence_number, $group_id = 0)
     {
         $table = $this->prefix($tableName);
-        $sql  = 'UPDATE  `' .$table. '` SET `value`='.$value;
+        $sql = 'UPDATE  `'.$table.'` SET `value`='.$value;
         $sql .= ' WHERE `item_id`='.intval($item_id).' AND `group_id`='.intval($group_id).' AND `occurrence_number`='.intval($occurrence_number);
         $result = $this->execute($sql);
         if (!$result) {

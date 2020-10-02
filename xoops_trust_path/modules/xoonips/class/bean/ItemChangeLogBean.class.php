@@ -66,7 +66,7 @@ class Xoonips_ItemChangeLogBean extends Xoonips_BeanBase
      */
     public function insert($changelog)
     {
-        $sql  = 'INSERT INTO `'.$this->table.'` (`uid`,`item_id`,`log_date`,`log`)';
+        $sql = 'INSERT INTO `'.$this->table.'` (`uid`,`item_id`,`log_date`,`log`)';
         $sql .= ' VALUES('.intval($changelog['uid']).', '.intval($changelog['item_id']);
         $sql .= ', '.intval($changelog['log_date']).', '.Xoonips_Utils::convertSQLStr($changelog['log']).')';
         $result = $this->execute($sql);

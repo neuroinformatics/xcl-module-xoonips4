@@ -96,7 +96,7 @@ class Xoonips_EventLogBean extends Xoonips_BeanBase
     private function insert($obj)
     {
         $ret = true;
-        $sql  = 'INSERT INTO `'.$this->table.'` (`event_type_id`,`timestamp`,`exec_uid`,`remote_host`,';
+        $sql = 'INSERT INTO `'.$this->table.'` (`event_type_id`,`timestamp`,`exec_uid`,`remote_host`,';
         $sql .= '`index_id`,`item_id`,`file_id`,`uid`,`groupid`,`search_keyword`,`additional_info`) ';
 
         $sql .= ' VALUES(';

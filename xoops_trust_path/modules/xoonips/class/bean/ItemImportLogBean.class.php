@@ -124,7 +124,7 @@ class Xoonips_ItemImportLogBean extends Xoonips_BeanBase
      */
     public function insertLink($id, $item_id)
     {
-        $sql  = 'INSERT INTO `'.$this->linktable.'` (`item_import_log_id`,`item_id`) VALUES';
+        $sql = 'INSERT INTO `'.$this->linktable.'` (`item_import_log_id`,`item_id`) VALUES';
         $sql .= '('.Xoonips_Utils::convertSQLNum($id).','.Xoonips_Utils::convertSQLNum($item_id).')';
         $result = $this->execute($sql);
         if (!$result) {

@@ -37,7 +37,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     {
         $ret = [];
 
-        $sql = 'SELECT `a`.* FROM `' .$this->table. '` `a`';
+        $sql = 'SELECT `a`.* FROM `'.$this->table.'` `a`';
         $sql = $sql.' WHERE `a`.`open_level`='.XOONIPS_OL_PUBLIC.' AND `a`.`parent_index_id`='.XOONIPS_IID_ROOT;
 
         $result = $this->execute($sql);
@@ -66,7 +66,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
 
         $tblGroup = $this->prefix('groups');
 
-        $sql = 'SELECT `a`.* FROM `' .$this->table. '` `a` LEFT JOIN `' .$tblGroup. '` `b` ON(`a`.`groupid`=' .b.groupid. ')';
+        $sql = 'SELECT `a`.* FROM `'.$this->table.'` `a` LEFT JOIN `'.$tblGroup.'` `b` ON(`a`.`groupid`=`b`.`groupid`)';
         $sql = $sql.' WHERE `a`.`open_level`='.XOONIPS_OL_GROUP_ONLY.' AND (`b`.`activate`='.Xoonips_Enum::GRP_PUBLIC;
         $sql = $sql.' OR `b`.`activate`='.Xoonips_Enum::GRP_CLOSE_REQUIRED.') AND `a`.`parent_index_id`='.XOONIPS_IID_ROOT;
         $sql = $sql.' ORDER BY `a`.`index_id`';
@@ -96,10 +96,10 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
         $ret = [];
         $tblGroupUser = $this->prefix('groups_users_link');
         $tblGroup = $this->prefix('groups');
-        $sql = 'SELECT `a`.* FROM `' .$this->table. '` `a`';
+        $sql = 'SELECT `a`.* FROM `'.$this->table.'` `a`';
         $sql = $sql.' WHERE `a`.`open_level`='.XOONIPS_OL_GROUP_ONLY.' AND `a`.`parent_index_id`='.XOONIPS_IID_ROOT.' AND EXISTS';
-        $sql = $sql.' (SELECT `b`.`linkid` FROM `' .$tblGroupUser. '` `b`, `' .$tblGroup. '` `c`';
-        $sql = $sql.' WHERE `b`.`uid`=' .intval($uid). ' AND `b`.`activate`<>'.Xoonips_Enum::GRP_US_JOIN_REQUIRED;
+        $sql = $sql.' (SELECT `b`.`linkid` FROM `'.$tblGroupUser.'` `b`, `'.$tblGroup.'` `c`';
+        $sql = $sql.' WHERE `b`.`uid`='.intval($uid).' AND `b`.`activate`<>'.Xoonips_Enum::GRP_US_JOIN_REQUIRED;
         $sql = $sql.' AND `b`.`groupid`=`c`.`groupid` AND `c`.`activate`<>';
         $sql = $sql.Xoonips_Enum::GRP_NOT_CERTIFIED.' AND `b`.`groupid`=`a`.`groupid`)';
         $sql = $sql.' ORDER BY `a`.`index_id`';
@@ -129,9 +129,9 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
         $ret = [];
         $tblGroupUser = $this->prefix('groups_users_link');
         $tblGroup = $this->prefix('groups');
-        $sql = 'SELECT `a`.* FROM `' .$this->table. '` `a`';
+        $sql = 'SELECT `a`.* FROM `'.$this->table.'` `a`';
         $sql = $sql.' WHERE `a`.`open_level`='.XOONIPS_OL_GROUP_ONLY.' AND `a`.`parent_index_id`='.XOONIPS_IID_ROOT.' AND EXISTS';
-        $sql = $sql.' (SELECT `b`.`linkid` FROM `' .$tblGroupUser. '` `b`, `' .$tblGroup. '` `c`';
+        $sql = $sql.' (SELECT `b`.`linkid` FROM `'.$tblGroupUser.'` `b`, `'.$tblGroup.'` `c`';
         $sql = $sql.' WHERE `b`.`uid` IN('.implode(',', $uids).') AND `b`.`activate`<>';
         $sql = $sql.Xoonips_Enum::GRP_US_JOIN_REQUIRED.' AND `b`.`groupid`=`c`.`groupid` AND `c`.`activate`<>';
         $sql = $sql.Xoonips_Enum::GRP_NOT_CERTIFIED.' AND `b`.`groupid`=`a`.`groupid`)';
@@ -161,8 +161,8 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     {
         $ret = [];
 
-        $sql = 'SELECT `a`.* FROM `' .$this->table. '` `a`';
-        $sql = $sql.' WHERE `a`.`uid`=' .intval($uid). ' AND `a`.`open_level`='.XOONIPS_OL_PRIVATE.' AND `a`.`parent_index_id`='.XOONIPS_IID_ROOT;
+        $sql = 'SELECT `a`.* FROM `'.$this->table.'` `a`';
+        $sql = $sql.' WHERE `a`.`uid`='.intval($uid).' AND `a`.`open_level`='.XOONIPS_OL_PRIVATE.' AND `a`.`parent_index_id`='.XOONIPS_IID_ROOT;
 
         $result = $this->execute($sql);
         if (!$result) {
@@ -188,7 +188,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     {
         $ret = [];
 
-        $sql = 'SELECT `a`.* FROM `' .$this->table. '` `a`';
+        $sql = 'SELECT `a`.* FROM `'.$this->table.'` `a`';
         $sql = $sql.' WHERE `a`.`uid` IN('.implode(',', $uids);
         $sql = $sql.') AND `a`.`open_level`='.XOONIPS_OL_PRIVATE.' AND `a`.`parent_index_id`='.XOONIPS_IID_ROOT;
 
@@ -249,7 +249,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     {
         $ret = [];
 
-        $sql = 'SELECT `a`.* FROM `' .$this->table. '` a';
+        $sql = 'SELECT `a`.* FROM `'.$this->table.'` a';
         $sql = $sql.' WHERE `a`.`open_level`='.XOONIPS_OL_PUBLIC.' AND `a`.`index_id`<>'.XOONIPS_IID_ROOT;
         $sql = $sql.' ORDER BY `a`.`index_id`';
 
@@ -278,7 +278,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
         $ret = [];
         $tblGroup = $this->prefix('groups');
 
-        $sql = 'SELECT `a`.* FROM `' .$this->table. '` `a` LEFT JOIN `' .$tblGroup. '` `b` ON(`a`.`groupid`=`b`.`groupid`)';
+        $sql = 'SELECT `a`.* FROM `'.$this->table.'` `a` LEFT JOIN `'.$tblGroup.'` `b` ON(`a`.`groupid`=`b`.`groupid`)';
         $sql = $sql.' WHERE `a`.`open_level`='.XOONIPS_OL_GROUP_ONLY.' AND (`b`.`activate`='.Xoonips_Enum::GRP_PUBLIC;
         $sql = $sql.' OR `b`.`activate`='.Xoonips_Enum::GRP_CLOSE_REQUIRED.')';
         $sql = $sql.' ORDER BY `a`.`index_id`';
@@ -309,10 +309,10 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
         $tblGroupUser = $this->prefix('groups_users_link');
         $tblGroup = $this->prefix('groups');
 
-        $sql = 'SELECT `a`.* FROM `' .$this->table. '` `a`';
+        $sql = 'SELECT `a`.* FROM `'.$this->table.'` `a`';
         $sql = $sql.' WHERE `a`.`open_level`='.XOONIPS_OL_GROUP_ONLY.' AND EXISTS';
-        $sql = $sql.' (SELECT `b`.`linkid` FROM `' .$tblGroupUser. '` `b`, `' .$tblGroup. '` `c`';
-        $sql = $sql.' WHERE `b`.`uid`=' .intval($uid). ' AND `b`.`activate`<>'.Xoonips_Enum::GRP_US_JOIN_REQUIRED;
+        $sql = $sql.' (SELECT `b`.`linkid` FROM `'.$tblGroupUser.'` `b`, `'.$tblGroup.'` `c`';
+        $sql = $sql.' WHERE `b`.`uid`='.intval($uid).' AND `b`.`activate`<>'.Xoonips_Enum::GRP_US_JOIN_REQUIRED;
         $sql = $sql.' AND `b`.`groupid`=`c`.`groupid` AND `c`.`activate`<>';
         $sql = $sql.Xoonips_Enum::GRP_NOT_CERTIFIED.' AND `b`.`groupid`=`a`.`groupid`)';
         $sql = $sql.' ORDER BY `a`.`index_id`';
@@ -340,8 +340,8 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     public function getPrivateIndexes($uid)
     {
         $ret = [];
-        $sql = 'SELECT `a`.* FROM `' .$this->table. '` `a`';
-        $sql = $sql.' WHERE `a`.`uid`=' .intval($uid). ' AND `a`.`open_level`='.XOONIPS_OL_PRIVATE;
+        $sql = 'SELECT `a`.* FROM `'.$this->table.'` `a`';
+        $sql = $sql.' WHERE `a`.`uid`='.intval($uid).' AND `a`.`open_level`='.XOONIPS_OL_PRIVATE;
         $sql = $sql.' ORDER BY `a`.`index_id`';
 
         $result = $this->execute($sql);
@@ -390,8 +390,8 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
         if (false == $force && isset(self::$index_cache[$indexId])) {
             return self::$index_cache[$indexId];
         }
-        $sql = 'SELECT `a`.* FROM `' .$this->table. '` `a`';
-        $sql = $sql.' WHERE `a`.`index_id`=' .intval($indexId);
+        $sql = 'SELECT `a`.* FROM `'.$this->table.'` `a`';
+        $sql = $sql.' WHERE `a`.`index_id`='.intval($indexId);
 
         $result = $this->execute($sql);
         if (!$result) {
@@ -440,8 +440,8 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     public function getChildIndexes($indexId)
     {
         $ret = [];
-        $sql = 'SELECT `a`.* FROM `' .$this->table. '` `a`';
-        $sql = $sql.' WHERE `a`.`parent_index_id`=' .intval($indexId). ' ORDER BY `weight`';
+        $sql = 'SELECT `a`.* FROM `'.$this->table.'` `a`';
+        $sql = $sql.' WHERE `a`.`parent_index_id`='.intval($indexId).' ORDER BY `weight`';
 
         $result = $this->execute($sql);
         if (!$result) {
@@ -467,7 +467,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     {
         $ret = true;
         $weight = $this->getMaxWeight($index['parent_index_id']) + 1;
-        $sql = 'INSERT INTO `' .$this->table. '` (`parent_index_id`,`uid`,`groupid`,`open_level`,`weight`,`title`,`last_update_date`,`creation_date`)';
+        $sql = 'INSERT INTO `'.$this->table.'` (`parent_index_id`,`uid`,`groupid`,`open_level`,`weight`,`title`,`last_update_date`,`creation_date`)';
         $sql = $sql.' VALUES('.intval($index['parent_index_id']).','.Xoonips_Utils::convertSQLNum($index['uid']).','.Xoonips_Utils::convertSQLNum($index['groupid']).','.intval($index['open_level']);
         $sql = $sql.','.intval($weight).','.Xoonips_Utils::convertSQLStr($index['title']).','.time().','.time().')';
         $result = $this->execute($sql);
@@ -488,7 +488,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     private function getMaxWeight($parentIndexId)
     {
         $ret = 0;
-        $sql = 'SELECT MAX(`weight`) as `weight` FROM `' .$this->table. '` WHERE `parent_index_id`=' .intval($parentIndexId);
+        $sql = 'SELECT MAX(`weight`) as `weight` FROM `'.$this->table.'` WHERE `parent_index_id`='.intval($parentIndexId);
         $result = $this->execute($sql);
         if (!$result) {
             return $ret;
@@ -513,7 +513,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     public function deleteIndex($indexIds)
     {
         $ret = true;
-        $sql = 'DELETE FROM `' .$this->table. '` WHERE `index_id` IN ('.implode(',', $indexIds).')';
+        $sql = 'DELETE FROM `'.$this->table.'` WHERE `index_id` IN ('.implode(',', $indexIds).')';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -533,7 +533,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     {
         $ret = true;
         $tblIndexItem = $this->prefix($this->modulePrefix('index_item_link'));
-        $sql = 'DELETE FROM `' .$tblIndexItem. '` WHERE `index_id` IN ('.implode(',', $indexIds).')';
+        $sql = 'DELETE FROM `'.$tblIndexItem.'` WHERE `index_id` IN ('.implode(',', $indexIds).')';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -552,7 +552,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     public function updateIndex($index)
     {
         $ret = true;
-        $sql = 'UPDATE `' .$this->table. '` set `title`='.Xoonips_Utils::convertSQLStr($index['title']);
+        $sql = 'UPDATE `'.$this->table.'` set `title`='.Xoonips_Utils::convertSQLStr($index['title']);
         $sql = $sql.',`last_update_date`='.time();
         $sql = $sql.' WHERE `index_id`='.intval($index['index_id']);
         $result = $this->execute($sql);
@@ -573,7 +573,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     public function updateIndexDetailed($index)
     {
         $ret = true;
-        $sql = 'UPDATE `' .$this->table. '` set `title` = '.Xoonips_Utils::convertSQLStr($index['title']);
+        $sql = 'UPDATE `'.$this->table.'` set `title` = '.Xoonips_Utils::convertSQLStr($index['title']);
         $sql = $sql.', `detailed_title` = '.Xoonips_Utils::convertSQLStr($index['detailed_title']);
         $sql = $sql.', `icon` = '.Xoonips_Utils::convertSQLStr($index['icon']);
         $sql = $sql.', `mime_type` = '.Xoonips_Utils::convertSQLStr($index['mime_type']);
@@ -598,8 +598,8 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     public function countIndexes($indexId)
     {
         $ret = 0;
-        $sql = 'SELECT `index_id` FROM `' .$this->table. '`';
-        $sql = $sql.' WHERE `parent_index_id`=' .intval($indexId);
+        $sql = 'SELECT `index_id` FROM `'.$this->table.'`';
+        $sql = $sql.' WHERE `parent_index_id`='.intval($indexId);
 
         $result = $this->execute($sql);
         if ($this->getRowsNum($result) > 0) {
@@ -665,8 +665,8 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     public function getAllChildIndexes($indexId)
     {
         $ret = [];
-        $sql = 'SELECT * FROM `' .$this->table. '`';
-        $sql = $sql.' WHERE `parent_index_id`=' .intval($indexId);
+        $sql = 'SELECT * FROM `'.$this->table.'`';
+        $sql = $sql.' WHERE `parent_index_id`='.intval($indexId);
 
         $result = $this->execute($sql);
         if (!$result) {
@@ -696,7 +696,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     {
         $ret = [];
         $tblIndexItem = $this->prefix($this->modulePrefix('index_item_link'));
-        $sql = 'SELECT `item_id` FROM `' .$tblIndexItem. '`';
+        $sql = 'SELECT `item_id` FROM `'.$tblIndexItem.'`';
         $sql = $sql.' WHERE `index_id` IN ('.implode(',', $indexIds).')';
 
         $result = $this->execute($sql);
@@ -723,8 +723,8 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     {
         $ret = false;
         $tblIndexItem = $this->prefix($this->modulePrefix('index_item_link'));
-        $sql = 'SELECT `item_id` FROM `' .$tblIndexItem. '`';
-        $sql = $sql.' WHERE `index_id`=' .intval($indexId). ' AND `item_id`=' .intval($itemId);
+        $sql = 'SELECT `item_id` FROM `'.$tblIndexItem.'`';
+        $sql = $sql.' WHERE `index_id`='.intval($indexId).' AND `item_id`='.intval($itemId);
 
         if (($result = $this->execute($sql)) && $this->getRowsNum($result) > 0) {
             $ret = true;
@@ -753,7 +753,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     {
         $ret = true;
         $tblIndexItem = $this->prefix($this->modulePrefix('index_item_link'));
-        $sql = 'INSERT INTO `' .$tblIndexItem. '` (`index_id`,`item_id`,`certify_state`)';
+        $sql = 'INSERT INTO `'.$tblIndexItem.'` (`index_id`,`item_id`,`certify_state`)';
         $sql = $sql.' VALUES('.intval($indexId).','.intval($itemId).','.XOONIPS_NOT_CERTIFIED.')';
         $result = $this->execute($sql);
         if (!$result) {
@@ -800,7 +800,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     public function updateWeight($indexId, $weight)
     {
         $ret = true;
-        $sql = 'UPDATE `' .$this->table. '` set `weight`='.intval($weight);
+        $sql = 'UPDATE `'.$this->table.'` set `weight`='.intval($weight);
         $sql = $sql.',`last_update_date`='.time();
         $sql = $sql.' WHERE `index_id`='.intval($indexId);
         $result = $this->execute($sql);
@@ -828,7 +828,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
         }
         // dir level+1 when start
         ++$level;
-        $sql  = 'SELECT `index_id`,`parent_index_id`,`title,open_level` FROM `'.$this->table.'`';
+        $sql = 'SELECT `index_id`,`parent_index_id`,`title,open_level` FROM `'.$this->table.'`';
         $sql .= ' WHERE `index_id`='.intval($rootIndexId);
 
         $result = $this->execute($sql);
@@ -844,8 +844,8 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
             $ret[] = $row;
         }
 
-        $sql = 'SELECT `index_id` FROM `' .$this->table. '`';
-        $sql = $sql.' WHERE `parent_index_id`=' .intval($rootIndexId);
+        $sql = 'SELECT `index_id` FROM `'.$this->table.'`';
+        $sql = $sql.' WHERE `parent_index_id`='.intval($rootIndexId);
 
         $result = $this->execute($sql);
         if (!$result) {
@@ -880,8 +880,8 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
         foreach ($childs as $value) {
             $indexIds = $indexIds.','.$value['index_id'];
         }
-        $sql = 'SELECT `item_id` FROM `' .$tblIndexItem. '`';
-        $sql = $sql.' WHERE `index_id` IN (' .$indexIds. ') AND (`certify_state`=';
+        $sql = 'SELECT `item_id` FROM `'.$tblIndexItem.'`';
+        $sql = $sql.' WHERE `index_id` IN ('.$indexIds.') AND (`certify_state`=';
         $sql = $sql.XOONIPS_CERTIFY_REQUIRED.' OR `certify_state`='.XOONIPS_WITHDRAW_REQUIRED.')';
 
         if (($result = $this->execute($sql)) && $this->getRowsNum($result) > 0) {
@@ -922,7 +922,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     public function moveto($indexId, $moveto)
     {
         $weight = $this->getMaxWeight($moveto) + 1;
-        $sql = 'UPDATE `' .$this->table. '` set `parent_index_id`='.intval($moveto);
+        $sql = 'UPDATE `'.$this->table.'` set `parent_index_id`='.intval($moveto);
         $sql = $sql.',`weight`='.intval($weight);
         $sql = $sql.',`last_update_date`='.time();
         $sql = $sql.' WHERE `index_id`='.intval($indexId);
@@ -965,11 +965,11 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     public function getItemlistLinkIndex($uid)
     {
         $ret = '';
-        $sql = 'SELECT `index_id` FROM `' .$this->table. '` WHERE `parent_index_id`='.XOONIPS_IID_ROOT;
+        $sql = 'SELECT `index_id` FROM `'.$this->table.'` WHERE `parent_index_id`='.XOONIPS_IID_ROOT;
         if (XOONIPS_UID_GUEST == $uid) {
             $sql .= ' AND `open_level`='.XOONIPS_OL_PUBLIC;
         } else {
-            $sql .= ' AND `open_level`='.XOONIPS_OL_PRIVATE.' AND `uid`=' .intval($uid);
+            $sql .= ' AND `open_level`='.XOONIPS_OL_PRIVATE.' AND `uid`='.intval($uid);
         }
         $result = $this->execute($sql);
         if (!$result) {
@@ -993,7 +993,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     public function deleteGroupIndex($groupid)
     {
         $ret = true;
-        $sql = 'DELETE FROM `' .$this->table. '` WHERE `groupid`=' .intval($groupid). ' AND `open_level`='.XOONIPS_OL_GROUP_ONLY;
+        $sql = 'DELETE FROM `'.$this->table.'` WHERE `groupid`='.intval($groupid).' AND `open_level`='.XOONIPS_OL_GROUP_ONLY;
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -1012,7 +1012,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     public function deleteIndexByGid($groupid)
     {
         $ret = true;
-        $sql = 'DELETE FROM `' .$this->table. '` WHERE `groupid`=' .intval($groupid);
+        $sql = 'DELETE FROM `'.$this->table.'` WHERE `groupid`='.intval($groupid);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -1030,7 +1030,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
      */
     public function deleteIndexByUid($uid)
     {
-        $sql = 'DELETE FROM `' .$this->table. '` WHERE `uid`=' .intval($uid);
+        $sql = 'DELETE FROM `'.$this->table.'` WHERE `uid`='.intval($uid);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -1049,7 +1049,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     public function countGroupIndexes($groupId)
     {
         $ret = 0;
-        $sql = 'SELECT COUNT(`a`.`index_id`) AS `count` FROM `' .$this->table. '` `a` WHERE `a`.`groupid`=' .intval($groupId). ' AND `a`.`open_level`='.XOONIPS_OL_GROUP_ONLY;
+        $sql = 'SELECT COUNT(`a`.`index_id`) AS `count` FROM `'.$this->table.'` `a` WHERE `a`.`groupid`='.intval($groupId).' AND `a`.`open_level`='.XOONIPS_OL_GROUP_ONLY;
         $result = $this->execute($sql);
         if (!$result) {
             return 0;
@@ -1074,7 +1074,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     public function countUserIndexes($uid)
     {
         $ret = 0;
-        $sql = 'SELECT COUNT(`a`.`index_id`) AS `count` FROM `' .$this->table. '` `a` WHERE `a`.`uid`=' .intval($uid). ' AND `a`.`open_level`='.XOONIPS_OL_PRIVATE;
+        $sql = 'SELECT COUNT(`a`.`index_id`) AS `count` FROM `'.$this->table.'` `a` WHERE `a`.`uid`='.intval($uid).' AND `a`.`open_level`='.XOONIPS_OL_PRIVATE;
         $result = $this->execute($sql);
         if (!$result) {
             return 0;
@@ -1100,7 +1100,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     {
         $ret = true;
         $weight = $this->getWeight($index['parent_index_id']) + 1;
-        $sql = 'INSERT INTO `' .$this->table. '` (`parent_index_id`,`groupid,open_level`,`weight`,`title`,`last_update_date`,`creation_date`)';
+        $sql = 'INSERT INTO `'.$this->table.'` (`parent_index_id`,`groupid,open_level`,`weight`,`title`,`last_update_date`,`creation_date`)';
         $sql = $sql.' VALUES('.intval($index['parent_index_id']).','.Xoonips_Utils::convertSQLNum($index['groupid']).','.intval($index['open_level']);
         $sql = $sql.','.intval($weight).','.Xoonips_Utils::convertSQLStr($index['title']).','.time().','.time().')';
         $result = $this->execute($sql);
@@ -1122,8 +1122,8 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     private function getWeight($parentIndexId)
     {
         $ret = 0;
-        $sql = 'SELECT MAX(`weight`) as `weight` FROM `' .$this->table. '`';
-        $sql = $sql.' WHERE `open_level`<>'.XOONIPS_OL_PRIVATE.' AND `parent_index_id`=' .intval($parentIndexId);
+        $sql = 'SELECT MAX(`weight`) as `weight` FROM `'.$this->table.'`';
+        $sql = $sql.' WHERE `open_level`<>'.XOONIPS_OL_PRIVATE.' AND `parent_index_id`='.intval($parentIndexId);
         $result = $this->execute($sql);
         if (!$result) {
             return $ret;
@@ -1150,8 +1150,8 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
         $ret = [];
         $tblIndexItem = $this->prefix($this->modulePrefix('index_item_link'));
         $sql = 'SELECT `t1`.`index_id`, `t1`.`certify_state`, `t2`.`open_level`, `t2`.`title`, `t2`.`parent_index_id`, `t2`.`uid` '
-            .' FROM `' .$tblIndexItem. '` `t1`, `' .$this->table. '` `t2` WHERE `t1`.`index_id`=`t2`.`index_id` '
-            .' AND `t1`.`item_id`=' .intval($itemId). ' AND `t1`.`index_id` IN('.implode(',', $indexIds).') ORDER BY `t2`.`open_level`';
+            .' FROM `'.$tblIndexItem.'` `t1`, `'.$this->table.'` `t2` WHERE `t1`.`index_id`=`t2`.`index_id` '
+            .' AND `t1`.`item_id`='.intval($itemId).' AND `t1`.`index_id` IN('.implode(',', $indexIds).') ORDER BY `t2`.`open_level`';
         $result = $this->execute($sql);
         if (!$result) {
             return $ret;
@@ -1174,8 +1174,8 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     public function getIndexesByCheckedIndex($indexIds)
     {
         $ret = [];
-        $sql = 'SELECT DISTINCT `index_id`, `open_level`, `title`, `parent_index_id`, `uid` FROM `' .$this->table. '`'
-            .' WHERE `index_id` IN (' .$indexIds. ') ORDER BY `open_level`';
+        $sql = 'SELECT DISTINCT `index_id`, `open_level`, `title`, `parent_index_id`, `uid` FROM `'.$this->table.'`'
+            .' WHERE `index_id` IN ('.$indexIds.') ORDER BY `open_level`';
         $result = $this->execute($sql);
         if (!$result) {
             return $ret;
@@ -1198,7 +1198,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     public function updateRootGroupIndex($index)
     {
         $ret = true;
-        $sql = 'UPDATE `' .$this->table. '` set `title`='.Xoonips_Utils::convertSQLStr($index['title']);
+        $sql = 'UPDATE `'.$this->table.'` set `title`='.Xoonips_Utils::convertSQLStr($index['title']);
         $sql = $sql.',`last_update_date`='.time();
         $sql = $sql.' WHERE `groupid`='.intval($index['groupid']);
         $sql = $sql.' AND `open_level`='.intval($index['open_level']);
@@ -1302,7 +1302,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
         $usersBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
         $user = $usersBean->getUserBasicInfo($uid);
         $weight = 16777215 - $this->countPrivateIndex();
-        $sql = 'INSERT INTO  `' .$this->table. '` (`parent_index_id`,`uid,open_level`,`weight`,`title`,`last_update_date`,`creation_date`)';
+        $sql = 'INSERT INTO  `'.$this->table.'` (`parent_index_id`,`uid,open_level`,`weight`,`title`,`last_update_date`,`creation_date`)';
         $sql = $sql.' VALUES(1,'.Xoonips_Utils::convertSQLNum($user['uid']);
         $sql = $sql.','.XOONIPS_OL_PRIVATE.','.intval($weight).','.Xoonips_Utils::convertSQLStr($user['uname']).','.time().','.time().')';
         $result = $this->execute($sql);
@@ -1324,7 +1324,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     private function countPrivateIndex()
     {
         $ret = 0;
-        $sql = 'SELECT count(`index_id`) FROM `' .$this->table. '` WHERE `open_level`=';
+        $sql = 'SELECT count(`index_id`) FROM `'.$this->table.'` WHERE `open_level`=';
         $sql = $sql.XOONIPS_OL_PRIVATE.' AND `parent_index_id`='.XOONIPS_IID_ROOT;
         $result = $this->execute($sql);
         if (!$result) {
@@ -1760,7 +1760,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     public function getIndexAll()
     {
         $ret = [];
-        $sql = 'SELECT * FROM `' .$this->table. '`';
+        $sql = 'SELECT * FROM `'.$this->table.'`';
 
         $result = $this->execute($sql);
         if (!$result) {
@@ -1873,7 +1873,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     private function insertIndex2($index)
     {
         $weight = $this->getMaxWeight($index['parent_index_id']) + 1;
-        $sql = 'INSERT INTO `' .$this->table. '` (`parent_index_id`,`uid`,`groupid`,`open_level`,`weight`,`title`,`last_update_date`,`creation_date`)';
+        $sql = 'INSERT INTO `'.$this->table.'` (`parent_index_id`,`uid`,`groupid`,`open_level`,`weight`,`title`,`last_update_date`,`creation_date`)';
         $sql = $sql.' VALUES('.intval($index['parent_index_id']).','.Xoonips_Utils::convertSQLNum($index['uid']).','.Xoonips_Utils::convertSQLNum($index['groupid']).','.intval($index['open_level']);
         $sql = $sql.','.intval($weight).','.Xoonips_Utils::convertSQLStr($index['title']).','.time().','.time().')';
         $result = $this->execute($sql);
@@ -1895,7 +1895,7 @@ class Xoonips_IndexBean extends Xoonips_BeanBase
     private function getChildsIndex($parent, $title)
     {
         $ret = [];
-        $sql = 'SELECT `a`.* FROM `' .$this->table. '` `a`';
+        $sql = 'SELECT `a`.* FROM `'.$this->table.'` `a`';
         if (is_numeric($parent['uid'])) {
             $sql = $sql.' WHERE `a`.`uid`='.intval($parent['uid']);
         } else {

@@ -77,7 +77,7 @@ class Xoonips_GroupsBean extends Xoonips_BeanBase
     public function insert($group)
     {
         $ret = true;
-        $sql  = 'INSERT INTO `'.$this->table.'` (`activate`,`name`,`description`,`icon`,`mime_type`,`is_public`,';
+        $sql = 'INSERT INTO `'.$this->table.'` (`activate`,`name`,`description`,`icon`,`mime_type`,`is_public`,';
         $sql .= '`can_join`,`is_hidden`,`member_accept`,`item_accept`,`item_number_limit`,`index_number_limit`,`item_storage_limit`,`group_type`)';
         $sql .= ' VALUES ('.intval($group['activate']).','.Xoonips_Utils::convertSQLStr($group['name']).',';
         $sql .= Xoonips_Utils::convertSQLStr($group['description']);
@@ -125,7 +125,7 @@ class Xoonips_GroupsBean extends Xoonips_BeanBase
     public function update($group)
     {
         $ret = true;
-        $sql  = 'UPDATE `'.$this->table.'` SET `activate`='.intval($group['activate']).',`name`='.Xoonips_Utils::convertSQLStr($group['name']);
+        $sql = 'UPDATE `'.$this->table.'` SET `activate`='.intval($group['activate']).',`name`='.Xoonips_Utils::convertSQLStr($group['name']);
         $sql .= ',`description`='.Xoonips_Utils::convertSQLStr($group['description']).',`icon`='.Xoonips_Utils::convertSQLStr($group['icon']);
         $sql .= ',`mime_type`='.Xoonips_Utils::convertSQLStr($group['mime_type']).',`is_public`='.intval($group['is_public']);
         $sql .= ',`can_join`='.intval($group['can_join']).',`is_hidden`='.intval($group['is_hidden']);
@@ -153,7 +153,7 @@ class Xoonips_GroupsBean extends Xoonips_BeanBase
     {
         $ret = [];
 
-        $sql  = 'SELECT `a`.`groupid` FROM `'.$this->linkTable.'` `a`,`'.$this->table.'` `b`';
+        $sql = 'SELECT `a`.`groupid` FROM `'.$this->linkTable.'` `a`,`'.$this->table.'` `b`';
         $sql .= ' WHERE `a`.`groupid`=`b`.`groupid` AND `a`.`uid`='.intval($uid).' AND `a`.`is_admin`='.Xoonips_Enum::GRP_ADMINISTRATOR;
         $sql .= ' AND `b`.`activate`<>'.Xoonips_Enum::GRP_NOT_CERTIFIED.' AND `a`.`activate`<>'.Xoonips_Enum::GRP_US_JOIN_REQUIRED;
         $result = $this->execute($sql);
@@ -179,7 +179,7 @@ class Xoonips_GroupsBean extends Xoonips_BeanBase
     {
         $ret = [];
 
-        $sql  = 'SELECT `groupid` FROM `'.$this->linkTable.'` `a`,`'.$this->table.'` `b`';
+        $sql = 'SELECT `groupid` FROM `'.$this->linkTable.'` `a`,`'.$this->table.'` `b`';
         $sql .= ' WHERE `a`.`groupid`=`b`.`groupid` AND `a`.`uid`='.intval($uid);
         $sql .= ' AND `b`.`activate`<>'.Xoonips_Enum::GRP_NOT_CERTIFIED.' AND `a`.`activate`<>'.Xoonips_Enum::GRP_US_JOIN_REQUIRED;
         $result = $this->execute($sql);
@@ -220,7 +220,7 @@ class Xoonips_GroupsBean extends Xoonips_BeanBase
     public function isPublic($groupId)
     {
         $ret = false;
-        $sql  = 'SELECT `groupid` FROM `'.$this->table.'` WHERE `groupid`='.intval($groupId);
+        $sql = 'SELECT `groupid` FROM `'.$this->table.'` WHERE `groupid`='.intval($groupId);
         $sql .= ' AND (`activate`='.Xoonips_Enum::GRP_PUBLIC.' OR `activate`='.Xoonips_Enum::GRP_CLOSE_REQUIRED.')';
         if (($result = $this->execute($sql)) && $this->getRowsNum($result) > 0) {
             $ret = true;
@@ -287,7 +287,7 @@ class Xoonips_GroupsBean extends Xoonips_BeanBase
     public function getAllGroups($activate)
     {
         $ret = [];
-        $sql  = 'SELECT `groupid`,`name` FROM `'.$this->table.'` WHERE';
+        $sql = 'SELECT `groupid`,`name` FROM `'.$this->table.'` WHERE';
         $sql .= ' `activate`>='.intval($activate).' OR `group_type`<>'.Xoonips_Utils::convertSQLStr(Xoonips_Enum::GROUP_TYPE).' ORDER BY `name`';
         $result = $this->execute($sql);
         if (!$result) {
@@ -310,7 +310,7 @@ class Xoonips_GroupsBean extends Xoonips_BeanBase
      */
     public function groupsCertify($groupId)
     {
-        $sql  = 'UPDATE `'.$this->table.'` SET `activate`='.Xoonips_Enum::GRP_CERTIFIED;
+        $sql = 'UPDATE `'.$this->table.'` SET `activate`='.Xoonips_Enum::GRP_CERTIFIED;
         $sql .= ' WHERE `groupid`='.intval($groupId);
         $result = $this->execute($sql);
         if (!$result) {
@@ -330,7 +330,7 @@ class Xoonips_GroupsBean extends Xoonips_BeanBase
     public function groupsDeleteRequest($groupId)
     {
         $ret = true;
-        $sql  = 'UPDATE `'.$this->table.'` SET `activate`='.Xoonips_Enum::GRP_DELETE_REQUIRED;
+        $sql = 'UPDATE `'.$this->table.'` SET `activate`='.Xoonips_Enum::GRP_DELETE_REQUIRED;
         $sql .= ' WHERE `groupid`='.intval($groupId);
         $result = $this->execute($sql);
         if (!$result) {
@@ -349,7 +349,7 @@ class Xoonips_GroupsBean extends Xoonips_BeanBase
      */
     public function groupsOpen($groupId)
     {
-        $sql  = 'UPDATE `'.$this->table.'` SET `activate`='.Xoonips_Enum::GRP_PUBLIC.',`is_public`=1';
+        $sql = 'UPDATE `'.$this->table.'` SET `activate`='.Xoonips_Enum::GRP_PUBLIC.',`is_public`=1';
         $sql .= ' WHERE `groupid`='.intval($groupId);
         $result = $this->execute($sql);
         if (!$result) {
@@ -368,7 +368,7 @@ class Xoonips_GroupsBean extends Xoonips_BeanBase
      */
     public function groupsClose($groupId)
     {
-        $sql  = 'UPDATE `'.$this->table.'` SET `activate`='.Xoonips_Enum::GRP_CERTIFIED.',`is_public`=0';
+        $sql = 'UPDATE `'.$this->table.'` SET `activate`='.Xoonips_Enum::GRP_CERTIFIED.',`is_public`=0';
         $sql .= ' WHERE `groupid`='.intval($groupId);
         $result = $this->execute($sql);
         if (!$result) {
@@ -407,7 +407,7 @@ class Xoonips_GroupsBean extends Xoonips_BeanBase
     public function updateGroupIndex($groupId, $indexId)
     {
         $ret = true;
-        $sql  = 'UPDATE `'.$this->table.'` SET `index_id`='.intval($indexId);
+        $sql = 'UPDATE `'.$this->table.'` SET `index_id`='.intval($indexId);
         $sql .= ' WHERE `groupid`='.intval($groupId);
         $result = $this->execute($sql);
         if (!$result) {

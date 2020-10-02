@@ -26,7 +26,7 @@ class Xoonips_OaipmhSchemaItemtypeLinkBean extends Xoonips_BeanBase
     {
         $ret = [];
         $schemaTable = $this->prefix($this->modulePrefix('oaipmh_schema'));
-        $sql  = 'SELECT `a`.* FROM `'.$this->table.'` `a` WHERE `a`.`item_type_id`='.intval($itemType).' AND `a`.`schema_id` IN ';
+        $sql = 'SELECT `a`.* FROM `'.$this->table.'` `a` WHERE `a`.`item_type_id`='.intval($itemType).' AND `a`.`schema_id` IN ';
         $sql .= ' (SELECT `schema_id` FROM `'.$schemaTable.'` `b` WHERE `metadata_prefix`='.Xoonips_Utils::convertSQLStr($metadataPrefix).')';
         $sql .= ' ORDER BY `a`.`schema_id`';
         $result = $this->execute($sql);
@@ -75,7 +75,7 @@ class Xoonips_OaipmhSchemaItemtypeLinkBean extends Xoonips_BeanBase
     public function insert($link)
     {
         $ret = true;
-        $sql  = 'INSERT INTO `'.$this->table.'` (`schema_id`,`item_type_id`,`group_id`,`item_field_detail_id`,`value`) ';
+        $sql = 'INSERT INTO `'.$this->table.'` (`schema_id`,`item_type_id`,`group_id`,`item_field_detail_id`,`value`) ';
         $sql .= ' VALUES ('.intval($link['schema_id']).', '.intval($link['item_type_id']);
         $sql .= ', '.Xoonips_Utils::convertSQLStr($link['group_id']).', '.Xoonips_Utils::convertSQLStr($link['item_field_detail_id']).', '.Xoonips_Utils::convertSQLStr($link['value']).')';
         $result = $this->execute($sql);
@@ -101,7 +101,7 @@ class Xoonips_OaipmhSchemaItemtypeLinkBean extends Xoonips_BeanBase
     public function autoCreate($itemType)
     {
         $schemaLinkTable = $this->prefix($this->modulePrefix('oaipmh_schema_link'));
-        $sql  = 'SELECT `a`.`schema_id1`, `a`.`schema_id2`, `a`.`number`, `b`.`item_field_detail_id`, `b`.`value`, `group_id` ';
+        $sql = 'SELECT `a`.`schema_id1`, `a`.`schema_id2`, `a`.`number`, `b`.`item_field_detail_id`, `b`.`value`, `group_id` ';
         $sql .= ' FROM `'.$schemaLinkTable.'` `a`, `'.$this->table.'` `b` ';
         $sql .= ' WHERE `a`.`schema_id1`=`b`.`schema_id` AND `b`.`item_type_id`='.intval($itemType);
         $sql .= ' ORDER BY `a`.`schema_id2`, `a`.`number`';
@@ -171,7 +171,7 @@ class Xoonips_OaipmhSchemaItemtypeLinkBean extends Xoonips_BeanBase
     public function getExportItemTypeOaipmh($item_type_id)
     {
         $schemaTable = $this->prefix($this->modulePrefix('oaipmh_schema'));
-        $sql  = 'SELECT `'.$schemaTable.'`.`metadata_prefix`, `'.$schemaTable.'`.`name`, ';
+        $sql = 'SELECT `'.$schemaTable.'`.`metadata_prefix`, `'.$schemaTable.'`.`name`, ';
         $sql .= '`'.$this->table.'`.`group_id`, `'.$this->table.'`.`item_field_detail_id`, ';
         $sql .= '`'.$this->table.'`.`value` ';
         $sql .= ' FROM `'.$this->table.'`, `'.$schemaTable.'` ';

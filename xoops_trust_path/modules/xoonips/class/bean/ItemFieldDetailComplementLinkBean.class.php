@@ -24,7 +24,7 @@ class Xoonips_ItemFieldDetailComplementLinkBean extends Xoonips_BeanBase
      */
     public function getItemTypeDetail($itemTypeId, $baseDetailId)
     {
-        $sql = 'SELECT * FROM `' .$this->table. '` WHERE `item_type_id`=' .intval($itemTypeId). ' AND `base_item_field_detail_id`=' .intval($baseDetailId);
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `item_type_id`='.intval($itemTypeId).' AND `base_item_field_detail_id`='.intval($baseDetailId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -47,7 +47,7 @@ class Xoonips_ItemFieldDetailComplementLinkBean extends Xoonips_BeanBase
      */
     public function getFieldDetailComplementByItemtypeId($itemTypeId)
     {
-        $sql = 'SELECT * FROM `' .$this->table. '` WHERE `item_type_id`=' .intval($itemTypeId). ' ORDER BY `seq_id`';
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `item_type_id`='.intval($itemTypeId).' ORDER BY `seq_id`';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -70,7 +70,7 @@ class Xoonips_ItemFieldDetailComplementLinkBean extends Xoonips_BeanBase
      */
     public function insert($info)
     {
-        $sql = 'INSERT INTO `' .$this->table. '` (`released`, `complement_id`, `item_type_id`, `base_item_field_detail_id`, `complement_detail_id`, `item_field_detail_id`, `update_id`, `group_id`, `base_group_id`)';
+        $sql = 'INSERT INTO `'.$this->table.'` (`released`, `complement_id`, `item_type_id`, `base_item_field_detail_id`, `complement_detail_id`, `item_field_detail_id`, `update_id`, `group_id`, `base_group_id`)';
         $info['group_id'] = ($info['group_id'] > 0) ? $info['group_id'] : 0;
         $sql .= ' VALUES ('.Xoonips_Utils::convertSQLNum($info['released']).','
             .Xoonips_Utils::convertSQLNum($info['complement_id']).','
@@ -100,12 +100,12 @@ class Xoonips_ItemFieldDetailComplementLinkBean extends Xoonips_BeanBase
     public function updateNewDetailRelation($base_itemtypeid, $copy_itemtypeid)
     {
         $dt = $this->prefix($this->modulePrefix('item_field_detail'));
-        $sql = 'UPDATE `' .$this->table. '` `t1` SET '
+        $sql = 'UPDATE `'.$this->table.'` `t1` SET '
             .' `t1`.`released` = 1 '
-            .', `t1`.`base_item_field_detail_id` = (SELECT if (`update_id` IS NULL, `item_field_detail_id`, `update_id`) as `detail_id` FROM `' .$dt. '` WHERE `item_field_detail_id`=`t1`.`base_item_field_detail_id`) '
-            .', `t1`.`item_field_detail_id`  = (SELECT if ({update_id` IS NULL, `item_field_detail_id`, `update_id`) as `detail_id` FROM `' .$dt. '` WHERE `item_field_detail_id`=`t1`.`item_field_detail_id` ) '
-            .', `t1`.`item_type_id` = ' .intval($base_itemtypeid);
-        $sql .= ' WHERE `t1`.`item_type_id`= ' .intval($copy_itemtypeid). ' AND `t1`.`released`=0 AND `t1`.`update_id` IS NULL';
+            .', `t1`.`base_item_field_detail_id` = (SELECT if (`update_id` IS NULL, `item_field_detail_id`, `update_id`) as `detail_id` FROM `'.$dt.'` WHERE `item_field_detail_id`=`t1`.`base_item_field_detail_id`) '
+            .', `t1`.`item_field_detail_id`  = (SELECT if ({update_id` IS NULL, `item_field_detail_id`, `update_id`) as `detail_id` FROM `'.$dt.'` WHERE `item_field_detail_id`=`t1`.`item_field_detail_id` ) '
+            .', `t1`.`item_type_id` = '.intval($base_itemtypeid);
+        $sql .= ' WHERE `t1`.`item_type_id`= '.intval($copy_itemtypeid).' AND `t1`.`released`=0 AND `t1`.`update_id` IS NULL';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -124,10 +124,10 @@ class Xoonips_ItemFieldDetailComplementLinkBean extends Xoonips_BeanBase
     public function updateCopyToBaseDetailRelation($itemtypeId)
     {
         $dt = $this->prefix($this->modulePrefix('item_field_detail'));
-        $sql = 'UPDATE `' .$this->table. '` `t1`, `' .$this->table. '` `t2` SET '
+        $sql = 'UPDATE `'.$this->table.'` `t1`, `'.$this->table.'` `t2` SET '
             .' `t1`.`item_field_detail_id` = `t2`.`item_field_detail_id` ';
 
-        $sql .= ' WHERE `t1`.`seq_id`=`t2`.`update_id` AND `t2`.`item_type_id`=' .intval($itemtypeId);
+        $sql .= ' WHERE `t1`.`seq_id`=`t2`.`update_id` AND `t2`.`item_type_id`='.intval($itemtypeId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -139,9 +139,9 @@ class Xoonips_ItemFieldDetailComplementLinkBean extends Xoonips_BeanBase
     public function deleteDetailLink($itemtypeid, $complementid, $baseid, $groupid = 0)
     {
         // delete item_field_detail_complement_link
-        $sql = 'DELETE FROM `' .$this->table. '` where `item_type_id`=' .intval($itemtypeid).
-            ' AND `complement_id`=' .intval($complementid). ' AND `base_item_field_detail_id`=' .intval($baseid).
-            ' AND `group_id`=' .intval($groupid);
+        $sql = 'DELETE FROM `'.$this->table.'` where `item_type_id`='.intval($itemtypeid).
+            ' AND `complement_id`='.intval($complementid).' AND `base_item_field_detail_id`='.intval($baseid).
+            ' AND `group_id`='.intval($groupid);
 
         $result = $this->execute($sql);
         if (!$result) {
@@ -153,8 +153,8 @@ class Xoonips_ItemFieldDetailComplementLinkBean extends Xoonips_BeanBase
 
     public function insertDetailLink($itemtypeid, $complementid, $baseid, $comDetailId, $itemFieldDetailId, $groupId = 0)
     {
-        $sql = 'INSERT INTO `' .$this->table. '` (`complement_id`,`item_type_id`,`base_item_field_detail_id`,`complement_detail_id`,`item_field_detail_id`,`group_id`)'
-            .' VALUES (' .intval($complementid). ',' .intval($itemtypeid). ',' .intval($baseid). ',' .intval($comDetailId). ',' .intval($itemFieldDetailId). ',' .intval($groupId). ')';
+        $sql = 'INSERT INTO `'.$this->table.'` (`complement_id`,`item_type_id`,`base_item_field_detail_id`,`complement_detail_id`,`item_field_detail_id`,`group_id`)'
+            .' VALUES ('.intval($complementid).','.intval($itemtypeid).','.intval($baseid).','.intval($comDetailId).','.intval($itemFieldDetailId).','.intval($groupId).')';
 
         $result = $this->execute($sql);
         if (!$result) {
@@ -173,7 +173,7 @@ class Xoonips_ItemFieldDetailComplementLinkBean extends Xoonips_BeanBase
      */
     public function deleteCopyItemtypeDetailRelation($itemtypeId)
     {
-        $sql = 'DELETE FROM `' .$this->table. '` WHERE `item_type_id`=' .intval($itemtypeId). ' AND `update_id` IS NOT NULL';
+        $sql = 'DELETE FROM `'.$this->table.'` WHERE `item_type_id`='.intval($itemtypeId).' AND `update_id` IS NOT NULL';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -191,7 +191,7 @@ class Xoonips_ItemFieldDetailComplementLinkBean extends Xoonips_BeanBase
      */
     public function deleteByBothDetailId($detailId)
     {
-        $sql = 'DELETE FROM `' .$this->table. '` WHERE `base_item_field_detail_id`=' .intval($detailId). ' OR `item_field_detail_id`=' .intval($detailId);
+        $sql = 'DELETE FROM `'.$this->table.'` WHERE `base_item_field_detail_id`='.intval($detailId).' OR `item_field_detail_id`='.intval($detailId);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -209,7 +209,7 @@ class Xoonips_ItemFieldDetailComplementLinkBean extends Xoonips_BeanBase
      */
     public function deleteByItemtypeId($itemtypeid)
     {
-        $sql = 'DELETE FROM `' .$this->table. '` WHERE `item_type_id`=' .intval($itemtypeid);
+        $sql = 'DELETE FROM `'.$this->table.'` WHERE `item_type_id`='.intval($itemtypeid);
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -330,7 +330,7 @@ class Xoonips_ItemFieldDetailComplementLinkBean extends Xoonips_BeanBase
      */
     public function getFieldDetailComplementByItemfieldId($itemfieldId)
     {
-        $sql = 'SELECT * FROM `' .$this->table. '` WHERE `item_field_detail_id`=' .intval($itemfieldId). ' ORDER BY `seq_id`';
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `item_field_detail_id`='.intval($itemfieldId).' ORDER BY `seq_id`';
         $result = $this->execute($sql);
         if (!$result) {
             return false;
@@ -357,7 +357,7 @@ class Xoonips_ItemFieldDetailComplementLinkBean extends Xoonips_BeanBase
         if ($info['update_id'] > 0) {
             $up_sql = ',`update_id`='.Xoonips_Utils::convertSQLNum($info['update_id']);
         }
-        $sql = 'UPDATE `' .$this->table. '` SET'
+        $sql = 'UPDATE `'.$this->table.'` SET'
         .' `released`='.Xoonips_Utils::convertSQLNum($info['released'])
         .',`complement_id`='.Xoonips_Utils::convertSQLNum($info['complement_id'])
         .',`item_type_id`='.Xoonips_Utils::convertSQLNum($info['item_type_id'])
