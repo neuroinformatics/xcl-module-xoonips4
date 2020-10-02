@@ -24,9 +24,9 @@ class Xoonips_ViewTypeKeyword extends Xoonips_ViewTypeText
             $tableData[$columnName] = &$columnData;
         }
 
-        $vas = explode(',', $value);
-        foreach ($vas as $va) {
-            $columnData[] = trim($va);
+        $keywords = explode(',', $value);
+        foreach ($keywords as $keyword) {
+            $columnData[] = Xoonips_Utils::convertSQLStr(trim($keyword));
         }
     }
 

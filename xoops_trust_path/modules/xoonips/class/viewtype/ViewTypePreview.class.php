@@ -194,7 +194,7 @@ class Xoonips_ViewTypePreview extends Xoonips_ViewType
             $tableData[$columnName] = &$columnData;
         }
         $columnData[0] = $field->getDataType()->convertSQLStr($value);
-        $columnData[1] = '';
+        $columnData[1] = $field->getId();
     }
 
     public function doSearch($field, &$data, &$sqlStrings, $groupLoopId, $scopeSearchFlg, $isExact)

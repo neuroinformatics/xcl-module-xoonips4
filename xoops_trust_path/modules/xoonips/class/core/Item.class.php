@@ -112,9 +112,11 @@ class Xoonips_Item
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_REGISTRY, Xoonips_Enum::USER_TYPE_USER);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = ['name' => $groupName,
+                $fieldGroup[] = [
+                    'name' => $groupName,
                     'isMust' => $group->isMust(Xoonips_Enum::OP_TYPE_REGISTRY, Xoonips_Enum::USER_TYPE_USER),
-                    'view' => $group->getRegistryView($cnt), ];
+                    'view' => $group->getRegistryView($cnt),
+                ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'input');
@@ -130,9 +132,11 @@ class Xoonips_Item
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_REGISTRY, Xoonips_Enum::USER_TYPE_USER);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = ['name' => $groupName,
+                $fieldGroup[] = [
+                    'name' => $groupName,
                     'isMust' => $group->isMust(Xoonips_Enum::OP_TYPE_REGISTRY, Xoonips_Enum::USER_TYPE_USER),
-                    'view' => $group->getRegistryViewWithData($this->data, $cnt), ];
+                    'view' => $group->getRegistryViewWithData($this->data, $cnt),
+                ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'input');
@@ -161,8 +165,10 @@ class Xoonips_Item
             $cnt = $group->countDisplayField($op, Xoonips_Enum::USER_TYPE_USER);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = ['name' => $groupName,
-                    'view' => $group->getConfirmView($this->data, $cnt, $op), ];
+                $fieldGroup[] = [
+                    'name' => $groupName,
+                    'view' => $group->getConfirmView($this->data, $cnt, $op),
+                ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'detail');
@@ -179,9 +185,11 @@ class Xoonips_Item
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_EDIT, Xoonips_Enum::USER_TYPE_USER);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = ['name' => $groupName,
+                $fieldGroup[] = [
+                    'name' => $groupName,
                     'isMust' => $group->isMust(Xoonips_Enum::OP_TYPE_EDIT, Xoonips_Enum::USER_TYPE_USER),
-                    'view' => $group->getEditView($data, $cnt), ];
+                    'view' => $group->getEditView($data, $cnt),
+                ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'input');
@@ -197,9 +205,11 @@ class Xoonips_Item
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_EDIT, Xoonips_Enum::USER_TYPE_USER);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = ['name' => $groupName,
+                $fieldGroup[] = [
+                    'name' => $groupName,
                     'isMust' => $group->isMust(Xoonips_Enum::OP_TYPE_EDIT, Xoonips_Enum::USER_TYPE_USER),
-                    'view' => $group->getEditViewWithData($this->data, $cnt), ];
+                    'view' => $group->getEditViewWithData($this->data, $cnt),
+                ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'input');
@@ -216,8 +226,10 @@ class Xoonips_Item
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_DETAIL, Xoonips_Enum::USER_TYPE_USER);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = ['name' => $groupName,
-                    'view' => $group->getDetailView($data, $cnt, Xoonips_Enum::USER_TYPE_USER, $display), ];
+                $fieldGroup[] = [
+                    'name' => $groupName,
+                    'view' => $group->getDetailView($data, $cnt, Xoonips_Enum::USER_TYPE_USER, $display),
+                ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'detail');
@@ -234,9 +246,11 @@ class Xoonips_Item
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_ITEMUSERSEDIT, Xoonips_Enum::USER_TYPE_USER);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = ['name' => $groupName,
+                $fieldGroup[] = [
+                    'name' => $groupName,
                     'isMust' => $group->isItemOwnersMust(),
-                    'view' => $group->getItemOwnersEditView($data, $cnt), ];
+                    'view' => $group->getItemOwnersEditView($data, $cnt),
+                ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'input');
@@ -252,9 +266,11 @@ class Xoonips_Item
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_ITEMUSERSEDIT, Xoonips_Enum::USER_TYPE_USER);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = ['name' => $groupName,
+                $fieldGroup[] = [
+                    'name' => $groupName,
                     'isMust' => $group->isItemOwnersMust(),
-                    'view' => $group->getItemOwnersEditViewWithData($this->data, $cnt), ];
+                    'view' => $group->getItemOwnersEditViewWithData($this->data, $cnt),
+                ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'input');
@@ -270,8 +286,10 @@ class Xoonips_Item
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_SEARCH, Xoonips_Enum::USER_TYPE_USER);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = ['name' => $groupName,
-                    'view' => $group->getSearchView($cnt, Xoonips_Enum::USER_TYPE_USER, $this->itemtypeId), ];
+                $fieldGroup[] = [
+                    'name' => $groupName,
+                    'view' => $group->getSearchView($cnt, Xoonips_Enum::USER_TYPE_USER, $this->itemtypeId),
+                ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'detail');
@@ -287,8 +305,10 @@ class Xoonips_Item
             $cnt = $group->countDisplayField(Xoonips_Enum::OP_TYPE_SIMPLESEARCH, Xoonips_Enum::USER_TYPE_USER);
             if ($cnt > 0) {
                 $groupName = $group->getName();
-                $fieldGroup[] = ['name' => $groupName,
-                    'view' => $group->getSimpleSearchView($this->data, $cnt, $this->itemtypeId), ];
+                $fieldGroup[] = [
+                    'name' => $groupName,
+                    'view' => $group->getSimpleSearchView($this->data, $cnt, $this->itemtypeId),
+                ];
             }
         }
         $this->xoopsTpl->assign('viewType', 'simpleSearch');
@@ -317,7 +337,7 @@ class Xoonips_Item
     // do register
     public function doSave(&$messages, $log)
     {
-        $itemId = '';
+        $itemId = 0;
         $sqlStrings = [];
         foreach ($this->fieldGroups as $fieldGroup) {
             $cnt = $fieldGroup->countDisplayField(Xoonips_Enum::OP_TYPE_REGISTRY, Xoonips_Enum::USER_TYPE_USER);
@@ -327,42 +347,33 @@ class Xoonips_Item
         }
 
         // insert xoonips_item
-        if (isset($sqlStrings[$this->dirname.'_item'])) {
-            if (!$this->saveXoonipsItem($sqlStrings, $itemId)) {
-                return false;
-            }
+        if (!$this->insertXoonipsItem($sqlStrings, $itemId)) {
+            return false;
         }
 
         // insert xoonips_item_users_link
-        if (isset($sqlStrings[$this->dirname.'_item_users_link'])) {
-            if (!$this->saveXoonipsItemUsers($sqlStrings, $itemId, $log)) {
-                return false;
-            }
-            // insert item users root private index
-            if (!$this->saveItemUsersPrivateIndex($sqlStrings, $itemId)) {
-                return false;
-            }
+        if (!$this->insertXoonipsItemUsers($sqlStrings, $itemId, $log)) {
+            return false;
+        }
+
+        // insert item users root private index
+        if (!$this->saveItemUsersPrivateIndex($sqlStrings, $itemId)) {
+            return false;
         }
 
         // insert xoonips_item_title
-        if (isset($sqlStrings[$this->dirname.'_item_title'])) {
-            if (!$this->saveXoonipsItemTitle($sqlStrings, $itemId)) {
-                return false;
-            }
+        if (!$this->updateXoonipsItemTitle($sqlStrings, $itemId)) {
+            return false;
         }
 
         // insert xoonips_item_keyword
-        if (isset($sqlStrings[$this->dirname.'_item_keyword'])) {
-            if (!$this->saveXoonipsItemKeyword($sqlStrings, $itemId)) {
-                return false;
-            }
+        if (!$this->updateXoonipsItemKeyword($sqlStrings, $itemId)) {
+            return false;
         }
 
         // insert xoonips_item_file
-        if (isset($sqlStrings[$this->dirname.'_item_file'])) {
-            if (!$this->saveXoonipsItemFile($sqlStrings, $itemId)) {
-                return false;
-            }
+        if (!$this->updateXoonipsItemFile($sqlStrings, $itemId)) {
+            return false;
         }
 
         // insert xoonips_index_item_link
@@ -373,10 +384,8 @@ class Xoonips_Item
         }
 
         // insert xoonips_item_related_to
-        if (isset($sqlStrings[$this->dirname.'_item_related_to'])) {
-            if (!$this->saveXoonipsItemRelatedTo($sqlStrings, $itemId)) {
-                return false;
-            }
+        if (!$this->updateXoonipsItemRelatedTo($sqlStrings, $itemId)) {
+            return false;
         }
 
         // insert xoonips_item_extend
@@ -415,10 +424,8 @@ class Xoonips_Item
         }
 
         // update xoonips_item
-        if (isset($sqlStrings[$this->dirname.'_item'])) {
-            if (!$this->editXoonipsItem($sqlStrings, $itemId)) {
-                return false;
-            }
+        if (!$this->updateXoonipsItem($sqlStrings, $itemId)) {
+            return false;
         }
 
         // update xoonips_item_users_link
@@ -439,24 +446,18 @@ class Xoonips_Item
         }
 
         // update xoonips_item_title
-        if (isset($sqlStrings[$this->dirname.'_item_title'])) {
-            if (!$this->saveXoonipsItemTitle($sqlStrings, $itemId)) {
-                return false;
-            }
+        if (!$this->updateXoonipsItemTitle($sqlStrings, $itemId)) {
+            return false;
         }
 
         // update xoonips_item_keyword
-        if (isset($sqlStrings[$this->dirname.'_item_keyword'])) {
-            if (!$this->saveXoonipsItemKeyword($sqlStrings, $itemId)) {
-                return false;
-            }
+        if (!$this->updateXoonipsItemKeyword($sqlStrings, $itemId)) {
+            return false;
         }
 
         // update xoonips_item_file
-        if (isset($sqlStrings[$this->dirname.'_item_file'])) {
-            if (!$this->saveXoonipsItemFile($sqlStrings, $itemId)) {
-                return false;
-            }
+        if (!$this->updateXoonipsItemFile($sqlStrings, $itemId)) {
+            return false;
         }
 
         // update xoonips_index_item_link
@@ -485,10 +486,8 @@ class Xoonips_Item
         }
 
         // update xoonips_item_related_to
-        if (isset($sqlStrings[$this->dirname.'_item_related_to'])) {
-            if (!$this->saveXoonipsItemRelatedTo($sqlStrings, $itemId)) {
-                return false;
-            }
+        if (!$this->updateXoonipsItemRelatedTo($sqlStrings, $itemId)) {
+            return false;
         }
 
         // update xoonips_item_extend
@@ -532,7 +531,7 @@ class Xoonips_Item
             }
         }
         if (!$usersLinkBean->delete($itemId)) {
-            $message = 'delete '.$this - dirname.'_item_users_link error!';
+            $message = 'delete '.$this->dirname.'_item_users_link error!';
 
             return false;
         }
@@ -631,74 +630,81 @@ class Xoonips_Item
         $searchTextTable = $xoopsDB->prefix($this->dirname.'_search_text');
 
         if (Xoonips_Enum::OP_TYPE_SEARCH == $search_type) {
-            $detailSql = "SELECT t1.item_id FROM $basicTable t1";
+            $detailSql = sprintf('SELECT `t1`.`item_id` FROM `%s` `t1`', $basicTable);
             $index = 2;
             foreach ($sqlStrings as $tableNm => $strings) {
                 $tableName = $xoopsDB->prefix($tableNm);
                 $subtn = 't'.$index;
                 if ($tableNm == $this->dirname.'_item' || $tableNm == $this->dirname.'_item_title' || $tableNm == $this->dirname.'_item_keyword') {
                     if (0 == count($strings)) {
-                        $detailSql .= " INNER JOIN $tableName $subtn ON t1.item_id=$subtn.item_id AND t1.item_type_id=$itemtypeId";
+                        $detailSql .= sprintf(' INNER JOIN `%s` `%s` ON `t1`.`item_id`=`%s`.`item_id` AND `t1`.`item_type_id`=%u', $tableName, $subtn, $subtn, $itemtypeId);
                     } else {
                         foreach ($strings as $string) {
                             ++$index;
                             $subtn = 't'.$index;
-                            $detailSql .= " INNER JOIN $tableName $subtn ON t1.item_id=$subtn.item_id AND t1.item_type_id=$itemtypeId AND ".mb_ereg_replace('\\x22t1\\x22', "$subtn", $string);
+                            $detailSql .= sprintf(' INNER JOIN `%s` `%s` ON `t1`.`item_id`=`%s`.`item_id` AND `t1`.`item_type_id`=%u AND %s', $tableName, $subtn, $subtn, $itemtypeId, mb_ereg_replace('@@@PREFIX@@@', $subtn, $string));
                         }
                     }
                 } elseif ($tableNm == $this->dirname.'_item_file') {
                     if (0 == count($strings)) {
-                        $detailSql .= " INNER JOIN $tableName $subtn ON t1.item_id=$subtn.item_id AND t1.item_type_id=$itemtypeId AND $subtn.sess_id IS NULL";
+                        $detailSql .= sprintf(' INNER JOIN `%s` `%s` ON `t1`.`item_id`=`%s`.`item_id` AND `t1`.`item_type_id`=%u AND `%s`.`sess_id` IS NULL', $tableName, $subtn, $subtn, $itemtypeId, $subtn);
                     } else {
                         foreach ($strings as $string) {
                             ++$index;
                             $subtn = 't'.$index;
                             $subtnfile = $subtn.'file';
-                            $detailSql .= " INNER JOIN ( SELECT $subtn.item_id FROM $tableName $subtn LEFT JOIN $searchTextTable $subtnfile ON $subtn.file_id=$subtnfile.file_id ".
-                            " WHERE $subtn.sess_id IS NULL AND ".mb_ereg_replace('\\x22t1\\x22', "$subtn", $string).") $subtn ON t1.item_type_id=$itemtypeId AND t1.item_id=$subtn.item_id";
+                            $detailSql .= ' INNER JOIN'
+                                .sprintf(' (SELECT `%s`.`item_id` FROM `%s` `%s`', $subtn, $tableName, $subtn)
+                                .sprintf('   LEFT JOIN `%s` `%s` ON `%s`.`file_id`=`%s`.`file_id`', $searchTextTable, $subtnfile, $subtn, $subtnfile)
+                                .sprintf('   WHERE `%s`.`sess_id` IS NULL AND %s', $subtn, mb_ereg_replace('@@@PREFIX@@@', $subtn, $string))
+                                .sprintf(' ) `%s` ON `t1`.`item_type_id`=%u AND `t1`.`item_id`=`%s`.`item_id`', $subtn, $itemtypeId, $subtn);
                         }
                     }
                 } elseif ($tableNm == $this->dirname.'_item_users_link') {
                     if (0 == count($strings)) {
-                        $detailSql .= " INNER JOIN $tableName $subtn ON t1.item_id=$subtn.item_id AND t1.item_type_id=$itemtypeId";
+                        $detailSql .= sprintf(' INNER JOIN `%s` `%s` ON `t1`.`item_id`=`%s`.`item_id` AND `t1`.`item_type_id`=%u', $tableName, $subtn, $subtn, $itemtypeId);
                     } else {
                         foreach ($strings as $string) {
                             ++$index;
                             $subtn = 't'.$index;
                             $string = Xoonips_Utils::convertSQLStrLike($string);
                             $subtnuser = $subtn.'user';
-                            $detailSql .= " INNER JOIN ( SELECT $subtn.item_id FROM $tableName $subtn LEFT JOIN $userTable $subtnuser ON $subtn.uid=$subtnuser.uid WHERE t1.item_type_id=$itemtypeId".
-                            ' AND '.mb_ereg_replace('\\x22t1\\x22', "$subtnuser", $string).") $subtn ON t1.item_id=$subtn.item_id";
+                            $detailSql .= ' INNER JOIN'
+                                .sprintf(' (SELECT `%s`.`item_id` FROM `%s` `%s`', $subtn, $tableName, $subtn)
+                                .sprintf('   LEFT JOIN `%s` `%s` ON `%s`.`uid`=`%s`.`uid`', $userTable, $subtnuser, $subtn, $subtnuser)
+                                .sprintf('   WHERE `t1`.`item_type_id`=%u AND %s', $itemtypeId, mb_ereg_replace('@@@PREFIX@@@', $subtnuser, $string))
+                                .sprintf(' ) `%s` ON `t1`.`item_id`=`%s`.`item_id', $subtn, $subtn);
                         }
                     }
                 } elseif ($tableNm == $this->dirname.'_item_changelog') {
                     if (0 == count($strings)) {
-                        $detailSql .= " INNER JOIN $tableName $subtn ON t1.item_id=$subtn.item_id AND t1.item_type_id=$itemtypeId";
+                        $detailSql .= sprintf(' INNER JOIN `%s` `%s` ON `t1`.`item_id`=`%s`.`item_id` AND `t1`.`item_type_id`=%u', $tableName, $subtn, $subtn, $itemtypeId);
                     } else {
                         foreach ($strings as $string) {
                             ++$index;
                             $subtn = 't'.$index;
-                            $detailSql .= " INNER JOIN $tableName $subtn ON t1.item_id=$subtn.item_id AND t1.item_type_id=$itemtypeId AND $subtn.$string";
+                            // TODO: check
+                            $detailSql .= sprintf(' INNER JOIN `%s` `%s` ON `t1`.`item_id`=`%s`.`item_id` AND `t1`.`item_type_id`=%u AND `%s`.%s', $tableName, $subtn, $subtn, $itemtypeId, $subtn, $string);
                         }
                     }
                 } elseif ($tableNm == $this->dirname.'_item_related_to') {
                     if (0 == count($strings)) {
-                        $detailSql .= " INNER JOIN $tableName $subtn ON t1.item_id=$subtn.item_id AND t1.item_type_id=$itemtypeId";
+                        $detailSql .= sprintf(' INNER JOIN `%s` `%s` ON `t1`.`item_id`=`%s`.`item_id` AND `t1`.`item_type_id`=%u', $tableName, $subtn, $subtn, $itemtypeId);
                     } else {
                         foreach ($strings as $string) {
                             ++$index;
                             $subtn = 't'.$index;
-                            $detailSql .= " INNER JOIN $tableName $subtn ON t1.item_id=$subtn.item_id AND t1.item_type_id=$itemtypeId AND ".mb_ereg_replace('\\x22t1\\x22', "$subtn", $string);
+                            $detailSql .= sprintf(' INNER JOIN `%s` `%s` ON `t1`.`item_id`=`%s`.`item_id` AND `t1`.`item_type_id`=%u AND %s', $tableName, $subtn, $subtn, $itemtypeId, mb_ereg_replace('@@@PREFIX@@@', $subtn, $string));
                         }
                     }
                 } elseif (0 == strncmp($tableNm, $this->dirname.'_item_extend', strlen($this->dirname) + 12)) {
                     if (0 == count($strings)) {
-                        $detailSql .= " INNER JOIN $tableName $subtn ON t1.item_id=$subtn.item_id AND t1.item_type_id=$itemtypeId";
+                        $detailSql .= sprintf(' INNER JOIN `%s` `%s` ON `t1`.`item_id`=`%s`.`item_id` AND `t1`.`item_type_id`=%u', $tableName, $subtn, $subtn, $itemtypeId);
                     } else {
                         foreach ($strings as $string) {
                             ++$index;
                             $subtn = 't'.$index;
-                            $detailSql .= " INNER JOIN $tableName $subtn ON t1.item_id=$subtn.item_id AND t1.item_type_id=$itemtypeId AND ".mb_ereg_replace('\\x22t1\\x22', "$subtn", $string);
+                            $detailSql .= sprintf(' INNER JOIN `%s` `%s` ON `t1`.`item_id`=`%s`.`item_id` AND `t1`.`item_type_id`=%u AND %s', $tableName, $subtn, $subtn, $itemtypeId, mb_ereg_replace('@@@PREFIX@@@', $subtn, $string));
                         }
                     }
                 }
@@ -715,49 +721,51 @@ class Xoonips_Item
                 if ($tableNm == $this->dirname.'_item' || $tableNm == $this->dirname.'_item_title' || $tableNm == $this->dirname.'_item_keyword') {
                     if (0 == count($strings)) {
                         if ($tableNm == $this->dirname.'_item') {
-                            $detailSqlArr[] = "SELECT $subtn.item_id FROM $tableName $subtn WHERE $subtn.item_type_id=$itemtypeId";
+                            $detailSqlArr[] = sprintf('SELECT `%s`.`item_id` FROM `%s` `%s` WHERE `%s`.`item_type_id`=%u', $subtn, $tableName, $subtn, $subtn, $itemtypeId);
                         } else {
-                            $detailSqlArr[] = "SELECT $subtn.item_id FROM $tableName $subtn";
+                            $detailSqlArr[] = sprintf('SELECT `%s`.`item_id` FROM `%s` `%s`', $subtn, $tableName, $subtn);
                         }
                     } else {
                         foreach ($strings as $string) {
                             ++$index;
                             $subtn = 't'.$index;
-                            $detailSqlArr[] = "SELECT $subtn.item_id FROM $tableName $subtn WHERE ".mb_ereg_replace('\\x22t1\\x22', "$subtn", $string);
+                            $detailSqlArr[] = sprintf('SELECT `%s`.`item_id` FROM `%s` `%s` WHERE %s', $subtn, $tableName, $subtn, mb_ereg_replace('@@@PREFIX@@@', $subtn, $string));
                         }
                     }
                 } elseif ($tableNm == $this->dirname.'_item_file') {
                     if (0 == count($strings)) {
-                        $detailSqlArr[] = "SELECT $subtn.item_id FROM $tableName $subtn WHERE $subtn.sess_id IS NULL";
+                        $detailSqlArr[] = sprintf('SELECT `%s`.`item_id` FROM `%s` `%s` WHERE `%s`.`sess_id` IS NULL', $subtn, $tableName, $subtn, $subtn);
                     } else {
                         foreach ($strings as $string) {
                             ++$index;
                             $subtn = 't'.$index;
                             $subtnfile = $subtn.'file';
-                            $detailSqlArr[] = "SELECT $subtn.item_id FROM $tableName $subtn LEFT JOIN $searchTextTable $subtnfile ON $subtn.file_id=$subtnfile.file_id".
-                            " WHERE $subtn.sess_id IS NULL AND ".mb_ereg_replace('\\x22t1\\x22', "$subtn", $string);
+                            $detailSqlArr[] = sprintf('SELECT `%s`.`item_id` FROM `%s` `%s`', $subtn, $tableName, $subtn)
+                                .sprintf(' LEFT JOIN `%s` `%s` ON `%s`.`file_id`=`%s`.`file_id`', $searchTextTable, $subtnfile, $subtn, $subtnfile)
+                                .sprintf(' WHERE `%s`.`sess_id` IS NULL AND %s', $subtn, mb_ereg_replace('@@@PREFIX@@@', $subtn, $string));
                         }
                     }
                 } elseif ($tableNm == $this->dirname.'_item_users_link') {
                     if (0 == count($strings)) {
-                        $detailSqlArr[] = "SELECT $subtn.item_id FROM $tableName $subtn";
+                        $detailSqlArr[] = sprintf('SELECT `%s`.`item_id` FROM `%s` `%s`', $subtn, $tableName, $subtn);
                     } else {
                         foreach ($strings as $string) {
                             ++$index;
                             $subtn = 't'.$index;
                             $subtnuser = $subtn.'user';
-                            $detailSqlArr[] = "SELECT $subtn.item_id FROM $tableName $subtn LEFT JOIN $userTable $subtnuser ON $subtn.uid=$subtnuser.uid".
-                            ' WHERE '.mb_ereg_replace('\\x22t1\\x22', "$subtnuser", $string);
+                            $detailSqlArr[] = sprintf('SELECT `%s`.`item_id` FROM `%s` `%s`', $subtn, $tableName, $subtn)
+                            .sprintf('   LEFT JOIN `%s` `%s` ON `%s`.`uid`=`%s`.`uid`', $userTable, $subtnuser, $subtn, $subtnuser)
+                            .sprintf('   WHERE %s', mb_ereg_replace('@@@PREFIX@@@', $subtnuser, $string));
                         }
                     }
                 } elseif ($tableNm == $this->dirname.'_item_changelog') {
                     if (0 == count($strings)) {
-                        $detailSqlArr[] = "SELECT $subtn.item_id FROM $tableName $subtn";
+                        $detailSqlArr[] = sprintf('SELECT `%s`.`item_id` FROM `%s` `%s`', $subtn, $tableName, $subtn);
                     } else {
                         foreach ($strings as $string) {
                             ++$index;
                             $subtn = 't'.$index;
-                            $detailSqlArr[] = "SELECT $subtn.item_id FROM $tableName $subtn WHERE ".mb_ereg_replace('\\x22t1\x22', "$subtn", $string);
+                            $detailSqlArr[] = sprintf('SELECT `%s`.`item_id` FROM `%s` `%s` WHERE %s', $subtn, $tableName, $subtn, mb_ereg_replace('@@@PREFIX@@@', $subtn, $string));
                         }
                     }
                 } elseif ($tableNm == $this->dirname.'_item_related_to') {
@@ -766,22 +774,22 @@ class Xoonips_Item
                     }
 
                     if (0 == count($strings)) {
-                        $detailSqlArr[] = "SELECT $subtn.item_id FROM $tableName $subtn";
+                        $detailSqlArr[] = sprintf('SELECT `%s`.`item_id` FROM `%s` `%s`', $subtn, $tableName, $subtn);
                     } else {
                         foreach ($strings as $string) {
                             ++$index;
                             $subtn = 't'.$index;
-                            $detailSqlArr[] = "SELECT $subtn.item_id as item_id FROM $tableName $subtn WHERE ".mb_ereg_replace('\\x22t1\\x22', "$subtn", $string);
+                            $detailSqlArr[] = sprintf('SELECT `%s`.`item_id` FROM `%s` `%s` WHERE %s', $subtn, $tableName, $subtn, mb_ereg_replace('@@@PREFIX@@@', $subtn, $string));
                         }
                     }
                 } elseif (0 == strncmp($tableNm, $this->dirname.'_item_extend', strlen($this->dirname) + 12)) {
                     if (0 == count($strings)) {
-                        $detailSqlArr[] = "SELECT $subtn.item_id FROM $tableName $subtn";
+                        $detailSqlArr[] = sprintf('SELECT `%s`.`item_id` FROM `%s` `%s`', $subtn, $tableName, $subtn);
                     } else {
                         foreach ($strings as $string) {
                             ++$index;
                             $subtn = 't'.$index;
-                            $detailSqlArr[] = "SELECT $subtn.item_id FROM $tableName $subtn WHERE ".mb_ereg_replace('\\x22t1\\x22', "$subtn", $string);
+                            $detailSqlArr[] = sprintf('SELECT `%s`.`item_id` FROM `%s` `%s` WHERE %s', $subtn, $tableName, $subtn, mb_ereg_replace('@@@PREFIX@@@', $subtn, $string));
                         }
                     }
                 }
@@ -789,9 +797,9 @@ class Xoonips_Item
             $searchSqlStr = implode(' UNION ALL ', $detailSqlArr);
 
             if (0 == $itemtypeId) {
-                $detailSql = "SELECT bscTbl.item_id FROM $basicTable bscTbl INNER JOIN ( $searchSqlStr ) AS tempTbl ON bscTbl.item_id=tempTbl.item_id";
+                $detailSql = sprintf('SELECT `bscTbl`.`item_id` FROM `%s` `bscTbl` INNER JOIN (%s) AS `tempTbl` ON `bscTbl`.`item_id`=`tempTbl`.`item_id`', $basicTable, $searchSqlStr);
             } else {
-                $detailSql = "SELECT bscTbl.item_id FROM $basicTable bscTbl INNER JOIN ( $searchSqlStr ) AS tempTbl ON bscTbl.item_id=tempTbl.item_id AND bscTbl.item_type_id=$itemtypeId ";
+                $detailSql = sprintf('SELECT `bscTbl`.`item_id` FROM `%s` `bscTbl` INNER JOIN (%s) AS `tempTbl` ON `bscTbl`.`item_id`=`tempTbl`.`item_id` AND `bscTbl`.`item_type_id`=%u', $basicTable, $searchSqlStr, $itemtypeId);
             }
 
             return $detailSql;
@@ -886,8 +894,12 @@ class Xoonips_Item
     {
         global $xoopsUser;
         $logBean = Xoonips_BeanFactory::getBean('ItemChangeLogBean', $this->dirname, $this->trustDirname);
-        $changelog = ['uid' => $xoopsUser->getVar('uid'), 'item_id' => $itemId,
-            'log_date' => time(), 'log' => sprintf(_MD_XOONIPS_ITEM_CHANGE_LOG_AUTOFILL_TEXT, $logs), ];
+        $changelog = [
+            'uid' => $xoopsUser->getVar('uid'),
+            'item_id' => $itemId,
+            'log_date' => time(),
+            'log' => sprintf(_MD_XOONIPS_ITEM_CHANGE_LOG_AUTOFILL_TEXT, $logs),
+        ];
         if (!$logBean->insert($changelog)) {
             return false;
         }
@@ -913,8 +925,7 @@ class Xoonips_Item
                     $groupId = $ids[0];
                     $detailId = $ids[2];
                     $viewType = $this->fields[$detailId]->getViewType();
-                    if ($viewType->getId() == $createDataView
-                        || $viewType->getId() == $lastUpdateDataView) {
+                    if ($viewType->getId() == $createDataView || $viewType->getId() == $lastUpdateDataView) {
                         continue;
                     }
 
@@ -1023,81 +1034,102 @@ class Xoonips_Item
         }
     }
 
-    // xoonips_item
-    private function saveXoonipsItem($sqlStrings, &$itemId)
+    /**
+     * insert data into `item` table.
+     *
+     * @param array $sqlStrings
+     * @param int   &$itemId
+     *
+     * @return bool
+     */
+    private function insertXoonipsItem(array $sqlStrings, int &$itemId): bool
     {
         global $xoopsDB;
-        $strings = $sqlStrings[$this->dirname.'_item'];
-        $columns = '';
-        $values = '';
-        foreach ($strings as $column => $v) {
-            $columns = $columns.$column.',';
-            $values = $values.$v[0].',';
-        }
-        $sysDate = time();
-        $columns = $columns.'item_type_id, last_update_date, creation_date';
-        $values = $values."$this->itemtypeId, $sysDate, $sysDate";
-        $table = $xoopsDB->prefix($this->dirname.'_item');
-        $sql = "insert into $table ($columns) values ($values)";
-        if (!$xoopsDB->queryF($sql)) {
+        $name = $this->dirname.'_item';
+        if (!isset($sqlStrings[$name])) {
             return false;
-        } else {
-            $itemId = $xoopsDB->getInsertId();
+        }
+        $now = time();
+        $data = array_map(function ($value) { return $value[0]; }, $sqlStrings[$name]);
+        $data += [
+            'item_type_id' => $this->itemtypeId,
+            'last_update_date' => $now,
+            'creation_date' => $now,
+        ];
+        $table = $xoopsDB->prefix($name);
+        $keys = implode(', ', array_map(function ($key) {return '`'.$key.'`'; }, array_keys($data)));
+        $values = implode(', ', $data);
+        $sql = sprintf('INSERT INTO `%s` (%s) VALUES (%s)', $table, $keys, $values);
+        if (!$xoopsDB->query($sql)) {
+            return false;
+        }
+        $itemId = $xoopsDB->getInsertId();
+
+        return true;
+    }
+
+    /**
+     * update `item` table.
+     *
+     * @param array $sqlStrings
+     * @param int   $itemId
+     *
+     * @return bool
+     */
+    private function updateXoonipsItem(array $sqlStrings, int $itemId): bool
+    {
+        global $xoopsDB;
+        $name = $this->dirname.'_item';
+        $now = time();
+        $data = [];
+        if (isset($sqlStrings[$name]) && isset($sqlStrings[$name]['doi']) && isset($sqlStrings[$name]['doi'][0])) {
+            // this table can only update 'doi' field value
+            $data['doi'] = $sqlStrings[$name]['doi'][0];
+        }
+        $data['last_update_date'] = $now;
+        $table = $xoopsDB->prefix($name);
+        $set = [];
+        foreach ($data as $key => $value) {
+            $set[] = '`'.$key.'`='.$value;
+        }
+        $sql = sprintf('UPDATE `%s` SET %s WHERE `item_id`=%u', $table, implode(', ', $set), $itemId);
+        if (!$xoopsDB->query($sql)) {
+            return false;
         }
 
         return true;
     }
 
-    private function editXoonipsItem($sqlStrings, $itemId)
+    /**
+     * insert data `item_users_link` table.
+     *
+     * @param array                $sqlStrings
+     * @param int                  $itemId
+     * @param Xoonips_EventLogBean $log
+     *
+     * @return bool
+     */
+    private function insertXoonipsItemUsers(array $sqlStrings, int $itemId, Xoonips_EventLogBean $log): bool
     {
         global $xoopsDB;
-        $strings = $sqlStrings[$this->dirname.'_item'];
-        $columns = '';
-        $values = '';
-        foreach ($strings as $column => $v) {
-            if ('doi' == $column) {
-                $setkey = $column.'='.$v[0].', ';
-            }
-        }
-        $sysDate = time();
-        $setkey .= "last_update_date=$sysDate";
-        $table = $xoopsDB->prefix($this->dirname.'_item');
-        $sql = "update $table set $setkey where item_id=$itemId";
-        if (!$xoopsDB->queryF($sql)) {
+        $name = $this->dirname.'_item_users_link';
+        $uids = $this->getUidsFromSqlStrings($sqlStrings);
+        if (empty($uids)) {
             return false;
         }
-
-        return true;
-    }
-
-    // xoonips_item_users_link
-    private function saveXoonipsItemUsers($sqlStrings, $itemId, $log)
-    {
-        global $xoopsDB;
-        $strings = $sqlStrings[$this->dirname.'_item_users_link'];
-        $table = $xoopsDB->prefix($this->dirname.'_item_users_link');
-        $delSql = "delete from $table where item_id=$itemId";
-        if (!$xoopsDB->queryF($delSql)) {
-            return false;
-        }
-        $usersBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
-
-        foreach ($strings as $column => $values) {
-            $columns = 'item_id, uid, weight';
-            $loop = 1;
-            foreach ($values as $v) {
-                $sql = "insert into $table ($columns) values ($itemId, $v, $loop)";
-                if (!$xoopsDB->queryF($sql)) {
-                    return false;
-                }
-                // add post
-                if (!$usersBean->addPost($v)) {
-                    return false;
-                }
-                //$log = Xoonips_BeanFactory::getBean('EventLogBean', $this->dirname, $this->trustDirname);
-                $log->recordAddItemUserEvent($itemId, $v);
-                ++$loop;
+        $table = $xoopsDB->prefix($name);
+        $usersBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
+        $weight = 1;
+        foreach ($uids as $uid) {
+            $sql = sprintf('INSERT INTO `%s` (`item_id`, `uid`, `weight`) VALUES (%u, %u, %u)', $table, $itemId, $uid, $weight++);
+            if (!$xoopsDB->query($sql)) {
+                return false;
             }
+            // add post
+            if (!$usersBean->addPost($uid)) {
+                return false;
+            }
+            $log->recordAddItemUserEvent($itemId, $uid);
         }
 
         return true;
@@ -1125,17 +1157,22 @@ class Xoonips_Item
         return true;
     }
 
-    private function getUidsFromSqlStrings($sqlStrings)
+    /**
+     * get user ids from sql strings.
+     *
+     * @param array $sqlString
+     *
+     * @return array
+     */
+    private function getUidsFromSqlStrings(array $sqlStrings): array
     {
-        $strings = $sqlStrings[$this->dirname.'_item_users_link'];
-        $selectUids = [];
-        foreach ($strings as $column => $values) {
-            foreach ($values as $v) {
-                $selectUids[] = $v;
-            }
+        $uids = [];
+        $name = $this->dirname.'_item_users_link';
+        if (!isset($sqlStrings[$name]) || !isset($sqlStrings[$name]['uid']) || empty($sqlStrings[$name]['uid'])) {
+            return $uids;
         }
 
-        return $selectUids;
+        return $uids = $sqlStrings[$name]['uid'];
     }
 
     // update xoonips_item_users_link
@@ -1352,123 +1389,173 @@ class Xoonips_Item
         return true;
     }
 
-    // xoonips_item_related_to
-    private function saveXoonipsItemRelatedTo($sqlStrings, $itemId)
+    /**
+     * update `item_related_to` table.
+     *
+     * @param array $sqlStrings
+     * @param int   $itemId
+     *
+     * @return bool
+     */
+    private function updateXoonipsItemRelatedTo(array $sqlStrings, int $itemId): bool
     {
         global $xoopsDB;
-        $strings = $sqlStrings[$this->dirname.'_item_related_to'];
-        $table = $xoopsDB->prefix($this->dirname.'_item_related_to');
-        $delSql = "delete from $table where item_id=$itemId";
-        if (!$xoopsDB->queryF($delSql)) {
+        $name = $this->dirname.'_item_related_to';
+        $table = $xoopsDB->prefix($name);
+        // delete existsing related_to items at once
+        $sql = sprintf('DELETE FROM `%s` WHERE `item_id`=%u', $table, $itemId);
+        if (!$xoopsDB->query($sql)) {
             return false;
         }
-        foreach ($strings as $column => $values) {
-            $columns = 'item_id, child_item_id';
-            foreach ($values as $v) {
-                $sql = "insert into $table ($columns) values ($itemId, $v)";
-                if (!$xoopsDB->queryF($sql)) {
-                    return false;
-                }
-            }
+
+        if (!isset($sqlStrings[$name])) {
+            return true;
         }
-
-        return true;
-    }
-
-    // xoonips_item_title
-    private function saveXoonipsItemTitle($sqlStrings, $itemId)
-    {
-        global $xoopsDB;
-        $strings = $sqlStrings[$this->dirname.'_item_title'];
-        $table = $xoopsDB->prefix($this->dirname.'_item_title');
-        $delSql = "delete from $table where item_id=$itemId";
-        if (!$xoopsDB->queryF($delSql)) {
+        if (!isset($sqlStrings[$name]['child_item_id']) || !is_array($sqlStrings[$name]['child_item_id'])) {
             return false;
         }
-        $loop = 1;
-        foreach ($strings as $column => $v) {
-            $columns = 'item_field_detail_id, title_id, title, item_id';
-            $title = $v[0];
-            if ('' != trim($title) && "''" != trim($title)) {
-                $values = "$column, $loop, $title, $itemId";
-                $sql = "insert into $table ($columns) values ($values)";
-                if (!$xoopsDB->queryF($sql)) {
-                    return false;
-                }
-                ++$loop;
-            }
-        }
-
-        return true;
-    }
-
-    // xoonips_item_keyword
-    private function saveXoonipsItemKeyword($sqlStrings, $itemId)
-    {
-        global $xoopsDB;
-        $strings = $sqlStrings[$this->dirname.'_item_keyword'];
-        $table = $xoopsDB->prefix($this->dirname.'_item_keyword');
-        $delSql = "delete from $table where item_id=$itemId";
-        if (!$xoopsDB->queryF($delSql)) {
-            return false;
-        }
-        foreach ($strings as $column => $values) {
-            $columns = 'item_id, keyword_id, keyword';
-            $loop = 1;
-            foreach ($values as $v) {
-                if ('' != trim($v) && "''" != trim($v)) {
-                    $sql = sprintf('insert into %s (%s) values (%u, %u, %s)', $table, $columns, $itemId, $loop, Xoonips_Utils::convertSQLStr($v));
-                    if (!$xoopsDB->queryF($sql)) {
-                        return false;
-                    }
-                    ++$loop;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    // xoonips_item_file
-    private function saveXoonipsItemFile($sqlStrings, $itemId)
-    {
-        global $xoopsDB;
-        $strings = $sqlStrings[$this->dirname.'_item_file'];
-        $table = $xoopsDB->prefix($this->dirname.'_item_file');
-        $files = [];
-        $group = [];
-        $loop = 1;
-        $temp = '';
-        foreach ($strings as $column => $v) {
-            if (empty($column) || 'caption' == $column) {
-                continue;
-            }
-
-            $fileBean = Xoonips_BeanFactory::getBean('ItemFileBean', $this->dirname, $this->trustDirname);
-            $file_info = $fileBean->getFile($column);
-            $group_id = $file_info['group_id'];
-            if (!in_array($group_id, $group)) {
-                $group[] = $group_id;
-                $loop = 1;
-            }
-
-            $files[] = $column;
-            $caption = empty($v[0]) ? null : $v[0];
-            if ($temp != $v[1]) {
-                $loop = 1;
-            }
-
-            $timestamp = time();
-            $sql = "update $table set item_id=$itemId,sess_id=NULL,caption=$caption,timestamp=$timestamp,occurrence_number=$loop where file_id=$column";
-            if (!$xoopsDB->queryF($sql)) {
+        $childItemIds = $sqlStrings[$name]['child_item_id'];
+        foreach ($childItemIds as $childItemId) {
+            $sql = sprintf('INSERT INTO `%s` (`item_id`, `child_item_id`) VALUES (%u, %u)', $table, $itemId, $childItemId);
+            if (!$xoopsDB->query($sql)) {
                 return false;
             }
-            $temp = $v[1];
-            ++$loop;
         }
-        if (count($files) > 0) {
-            $delFileSql = "delete from $table where file_id not in (".implode(',', $files).") and item_id=$itemId";
-            if (!$xoopsDB->query($delFileSql)) {
+
+        return true;
+    }
+
+    /**
+     * update `item_title` table.
+     *
+     * @param array $sqlStrings
+     * @param int   $itemId
+     *
+     * @return bool
+     */
+    private function updateXoonipsItemTitle(array $sqlStrings, int $itemId): bool
+    {
+        global $xoopsDB;
+        $name = $this->dirname.'_item_title';
+        $table = $xoopsDB->prefix($name);
+        // delete existsing title at once
+        $sql = sprintf('DELETE FROM `%s` WHERE `item_id`=%u', $table, $itemId);
+        if (!$xoopsDB->query($sql)) {
+            return false;
+        }
+
+        if (!isset($sqlStrings[$name])) {
+            return true;
+        }
+        if (!is_array($sqlStrings[$name])) {
+            return false;
+        }
+        $data = $sqlStrings[$name];
+        foreach ($data as $itemFieldDetailId => $titles) {
+            $titleId = 1;
+            foreach ($titles as $title) {
+                if ('\'\'' != $title) {
+                    $sql = sprintf('INSERT INTO `%s` (`item_id`, `item_field_detail_id`, `title_id`, `title`) VALUES (%u, %u, %u, %s)', $table, $itemId, $itemFieldDetailId, $titleId++, $title);
+                    if (!$xoopsDB->query($sql)) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * update `item_keyword` table.
+     *
+     * @param array $sqlStrings
+     * @param int   $itemId
+     *
+     * @return bool
+     */
+    private function updateXoonipsItemKeyword(array $sqlStrings, int $itemId): bool
+    {
+        global $xoopsDB;
+        $name = $this->dirname.'_item_keyword';
+        $table = $xoopsDB->prefix($name);
+        // delete existsing title at once
+        $sql = sprintf('DELETE FROM `%s` WHERE `item_id`=%u', $table, $itemId);
+        if (!$xoopsDB->query($sql)) {
+            return false;
+        }
+        if (!isset($sqlStrings[$name]) || !isset($sqlStrings[$name]['keyword'])) {
+            return true;
+        }
+        if (!is_array($sqlStrings[$name]['keyword'])) {
+            return false;
+        }
+        $data = $sqlStrings[$name]['keyword'];
+        $keywordId = 1;
+        foreach ($data as $keyword) {
+            if ('\'\'' != $keyword) {
+                $sql = sprintf('INSERT INTO `%s` (`item_id`, `keyword_id`, `keyword`) VALUES (%u, %u, %s)', $table, $itemId, $keywordId++, $keyword);
+                if (!$xoopsDB->query($sql)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * update `item_file` table.
+     *
+     * @param array $sqlStrings
+     * @param int   $itemId
+     *
+     * @return bool
+     */
+    private function updateXoonipsItemFile(array $sqlStrings, int $itemId): bool
+    {
+        global $xoopsDB;
+        $name = $this->dirname.'_item_file';
+        $table = $xoopsDB->prefix($name);
+        $data = $sqlStrings[$this->dirname.'_item_file'];
+        if (!isset($sqlStrings[$name])) {
+            return true;
+        }
+        $fileIds = [];
+        $groupIds = [];
+        $occurrenceNumber = 1;
+        $prevItemFieldDetailId = 0;
+        $fileBean = Xoonips_BeanFactory::getBean('ItemFileBean', $this->dirname, $this->trustDirname);
+        $timestamp = time();
+        foreach ($data as $fileId => $values) {
+            if (empty($fileId) || 'caption' == $fileId) {
+                // empty $fileId means not uploaded file field
+                // $fileId == 'caption' means additional caption field, but caption field is already merged into value of $fieldId
+                continue;
+            }
+            list($caption, $itemFieldDetailId) = $values;
+            $fileInfo = $fileBean->getFile($fileId);
+            $groupId = $fileInfo['group_id'];
+            if (!in_array($groupId, $groupIds)) {
+                $groupIds[] = $groupId;
+                $occurrenceNumber = 1;
+            }
+
+            $fileIds[] = $fileId;
+            if ($prevItemFieldDetailId != $itemFieldDetailId) {
+                $occurrenceNumber = 1;
+            }
+
+            $sql = sprintf('UPDATE `%s` SET `item_id`=%u, `sess_id`=NULL, `caption`=%s, `timestamp`=%u, `occurrence_number`=%u WHERE `file_id`=%u', $table, $itemId, $caption, $timestamp, $occurrenceNumber, $fileId);
+            if (!$xoopsDB->query($sql)) {
+                return false;
+            }
+            $prevItemFieldDetailId = $itemFieldDetailId;
+            ++$occurrenceNumber;
+        }
+        if (count($fileIds) > 0) {
+            $sql = sprintf('DELETE FROM `%s` WHERE `file_id` NOT IN (%s) and item_id=%u', $table, implode(', ', $fileIds), $itemId);
+            if (!$xoopsDB->query($sql)) {
                 return false;
             }
         }

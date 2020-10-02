@@ -39,7 +39,8 @@ class Xoonips_ViewTypeTitle extends Xoonips_ViewTypeText
             $tableData = &$sqlStrings[$tableName];
             $cnt = count($tableData);
             if ($cnt > $oldCnt) {
-                $tableData[$cnt - 1] .= ' AND `t1`.`item_field_detail_id`='.intval($field->getId());
+                // @@@PREFIX@@@ will replaced with proper prefix in Xoonips_Item::doSearch()
+                $tableData[$cnt - 1] .= ' AND `@@@PREFIX@@@`.`item_field_detail_id`='.intval($field->getId());
             }
         }
     }

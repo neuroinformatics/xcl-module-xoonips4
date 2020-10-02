@@ -452,11 +452,12 @@ abstract class Xoonips_ViewType
 
         if ('' != $value) {
             if (1 == $field->getScopeSearch() && $scopeSearchFlg) {
+                // @@@PREFIX@@@ will replaced with proper prefix in Xoonips_Item::doSearch()
                 if ('' != $value[0]) {
-                    $tableData[] = '`t1`.`'.$columnName.'`>='.$field->getDataType()->convertSQLStr($value[0]);
+                    $tableData[] = '`@@@PREFIX@@@`.`'.$columnName.'`>='.$field->getDataType()->convertSQLStr($value[0]);
                 }
                 if ('' != $value[1]) {
-                    $tableData[] = '`t1`.`'.$columnName.'`<='.$field->getDataType()->convertSQLStr($value[1]);
+                    $tableData[] = '`@@@PREFIX@@@`.`'.$columnName.'`<='.$field->getDataType()->convertSQLStr($value[1]);
                 }
                 // scope search
             } else {

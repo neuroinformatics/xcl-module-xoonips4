@@ -163,8 +163,8 @@ class Xoonips_Search
     {
         if ($isExact) {
             $v = $dataType->convertSQLStr($query);
-
-            return '(`t1`.`'.$field.'`=\''.$v.'\')';
+            // @@@PREFIX@@@ will replaced with proper prefix in Xoonips_Item::doSearch()
+            return '(`@@@PREFIX@@@`.`'.$field.'`=\''.$v.'\')';
         }
         $search_query = new Xoonips_Search_Query($query);
         if ($search_query->parse()) {
@@ -431,15 +431,16 @@ class Xoonips_Search_Query_Element extends Xoonips_Search_Query_Element_Base
      */
     public function render($field, $dataType)
     {
+        // @@@PREFIX@@@ will replaced with proper prefix in Xoonips_Item::doSearch()
         switch (true) {
         case $dataType->isLikeSearch():
-            $ret = ' (`t1`.`'.$field.'` LIKE \'%'.$dataType->convertSQLStrLike($this->value).'%\') ';
+            $ret = ' (`@@@PREFIX@@@`.`'.$field.'` LIKE \'%'.$dataType->convertSQLStrLike($this->value).'%\') ';
             break;
         case $dataType->isNumericSearch():
-            $ret = ' (`t1`.`'.$field.'`=\''.$dataType->convertSQLNum($this->value).'\') ';
+            $ret = ' (`@@@PREFIX@@@`.`'.$field.'`=\''.$dataType->convertSQLNum($this->value).'\') ';
             break;
         default:
-            $ret = ' (`t1`.`'.$field.'`=\''.$dataType->convertSQLStr($this->value).'\') ';
+            $ret = ' (`@@@PREFIX@@@`.`'.$field.'`=\''.$dataType->convertSQLStr($this->value).'\') ';
             break;
         }
 
