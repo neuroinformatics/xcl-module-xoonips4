@@ -112,7 +112,6 @@ class Xoonips_ItemFieldManager
         $sqlResult = $xoopsDB->queryF($sql);
         $fieldGroupFlg = false;
         $fieldGroupId = '';
-        $fieldsKey = 0;
 
         while ($row = $xoopsDB->fetchArray($sqlResult)) {
             $id = $row['item_field_detail_id'];
@@ -146,7 +145,6 @@ class Xoonips_ItemFieldManager
             }
             if (!$fieldGroupFlg) {
                 $fields = [];
-                $fieldsKey = 1;
             }
             $fieldGroupId = $groupId;
             $field->setXmlTag($xmlTag);
@@ -167,7 +165,7 @@ class Xoonips_ItemFieldManager
             $field->setTrustDirname($this->trustDirname);
             $field->setXoopsTpl($this->xoopsTpl);
             $field->setTemplate();
-            $fields[$fieldsKey] = $field;
+            $fields[$id] = $field;
             $this->fields[] = $field;
             $this->fieldGroups[$groupId]->setFields($fields);
             ++$fieldsKey;

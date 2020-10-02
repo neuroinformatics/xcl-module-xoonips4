@@ -906,14 +906,13 @@ class Xoonips_Item
         $createUserView = $viewTypeBean->selectByName('create user');
         $indexView = $viewTypeBean->selectByName('index');
         // search updated & added item
-        $fields_cnt = 0;
         foreach ($newData as $key => $value) {
             if (isset($key)) {
                 $ids = explode(Xoonips_Enum::ITEM_ID_SEPARATOR, $key);
                 if (3 == count($ids)) {
                     $groupId = $ids[0];
                     $detailId = $ids[2];
-                    $viewType = $this->fields[$fields_cnt]->getViewType();
+                    $viewType = $this->fields[$detailId]->getViewType();
                     if ($viewType->getId() == $createDataView
                         || $viewType->getId() == $lastUpdateDataView) {
                         continue;
@@ -933,12 +932,11 @@ class Xoonips_Item
                         }
                         // updated item
                     } elseif ($value != $oldData[$key]) {
-                        $logs["$groupId:$fields_cnt"] = $this->getGroupAndDetailName($fields_cnt);
+                        $logs["$groupId:$detailId"] = $this->getGroupAndDetailName($detailId);
                         if ($viewType->getId() != $createUserView && $viewType->getId() != $indexView) {
                             $edited = true;
                         }
                     }
-                    ++$fields_cnt;
                 }
             }
         }
@@ -974,14 +972,12 @@ class Xoonips_Item
     {
         $oldData = $this->getItemInformation($itemId);
         // search updated & added item
-        $fields_cnt = 0;
         foreach ($newData as $key => $value) {
             if (isset($key)) {
                 $ids = explode(Xoonips_Enum::ITEM_ID_SEPARATOR, $key);
                 if (3 == count($ids)) {
                     $detailId = $ids[2];
-                    $viewType = $this->fields[$fields_cnt]->getViewType();
-                    ++$fields_cnt;
+                    $viewType = $this->fields[$detailId]->getViewType();
                     if (!$viewType->isIndex()) {
                         // added item
                         if (!isset($oldData[$key])) {
