@@ -164,14 +164,15 @@ class Xoonips_Search
         if ($isExact) {
             $v = $dataType->convertSQLStr($query);
 
-            return '("t1"'.$field.'=\''.$v.'\')';
+            return '(`t1`.`'.$field.'`=\''.$v.'\')';
         }
         $search_query = new Xoonips_Search_Query($query);
         if ($search_query->parse()) {
             $sql = $search_query->stack->render($field, $dataType);
         } else {
-            $sql = "('1' = '0')";
-        } // TODO: Is this reasonable?
+            // force unmatched query
+            $sql = '(0)';
+        }
 
         return $sql;
     }
@@ -190,8 +191,9 @@ class Xoonips_Search
         if ($search_query->parse()) {
             $sql = $search_query->stack->renderFulltext($field);
         } else {
-            $sql = "('1' = '0')";
-        } // TODO: Is this reasonable?
+            // force unmatched query
+            $sql = '(0)';
+        }
 
         return $sql;
     }
@@ -431,13 +433,13 @@ class Xoonips_Search_Query_Element extends Xoonips_Search_Query_Element_Base
     {
         switch (true) {
         case $dataType->isLikeSearch():
-            $ret = ' ("t1".'.$field." LIKE '%".$dataType->convertSQLStrLike($this->value)."%') ";
+            $ret = ' (`t1`.`'.$field.'` LIKE \'%'.$dataType->convertSQLStrLike($this->value).'%\') ';
             break;
         case $dataType->isNumericSearch():
-            $ret = ' ("t1".'.$field."='".$dataType->convertSQLNum($this->value)."') ";
+            $ret = ' (`t1`.`'.$field.'`=\''.$dataType->convertSQLNum($this->value).'\') ';
             break;
         default:
-            $ret = ' ("t1".'.$field."='".$dataType->convertSQLStr($this->value)."') ";
+            $ret = ' (`t1`.`'.$field.'`=\''.$dataType->convertSQLStr($this->value).'\') ';
             break;
         }
 
