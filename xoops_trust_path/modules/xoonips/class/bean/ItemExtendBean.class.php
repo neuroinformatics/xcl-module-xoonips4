@@ -103,20 +103,6 @@ class Xoonips_ItemExtendBean extends Xoonips_BeanBase
         return true;
     }
 
-    public function insert2($id, $tableName, $number = 1, $group_id = 0)
-    {
-        $group_id = ($group_id) ? $group_id : 0;
-        $table = $this->prefix($tableName);
-        $sql = 'INSERT INTO `'.$table.'` (`item_id`, `group_id`, `occurrence_number`)';
-        $sql .= ' VALUES ('.intval($id).', '.intval($group_id).', '.intval($number).')';
-        $result = $this->execute($sql);
-        if (!$result) {
-            return false;
-        }
-
-        return true;
-    }
-
     /**
      * get Item Extend Table.
      *
