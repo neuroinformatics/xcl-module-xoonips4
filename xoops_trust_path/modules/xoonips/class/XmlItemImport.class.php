@@ -1021,13 +1021,12 @@ abstract class XmlItemImportUpdate_Base
      * This mainly use REST API.
      *
      * @param string $fname
-     * @param int    $uid_chk
      * @param array  $index_chk
      * @param bool   $transact_flg
      *
      * @return int 200 or 206:Success,other return code:Fail
      */
-    public function xml_import_by_file($fname, $uid_chk = null, $index_chk = null, $transact_flg = true, $defaultIndex = '')
+    public function xml_import_by_file($fname, $index_chk = null, $transact_flg = true, $defaultIndex = '')
     {
         try {
             libxml_use_internal_errors(true);

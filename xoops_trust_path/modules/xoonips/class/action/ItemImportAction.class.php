@@ -306,8 +306,7 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
                         $line_chk = trim($line);
 
                         // omit index tag
-                        if ('self' == $index_select &&
-                        (preg_match('/^<C:index*/', $line_chk) || preg_match('/^<\/C:index*/', $line_chk))) {
+                        if ('self' == $index_select && (preg_match('/^<C:index*/', $line_chk) || preg_match('/^<\/C:index*/', $line_chk))) {
                             continue;
                         }
                         fwrite($tfp, $line);
@@ -325,7 +324,7 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
 
             // import item
             $xmlimport->set_tmp_file_array($items[$itemid]['tmpfiles']);
-            $ret = $xmlimport->xml_import_by_file($items[$itemid]['xml'], $uid, $my_indexes, false, $defaultIndex);
+            $ret = $xmlimport->xml_import_by_file($items[$itemid]['xml'], $my_indexes, false, $defaultIndex);
 
             FileUtils::emptyDirectory($tmpdir1);
 
@@ -344,40 +343,49 @@ class Xoonips_ItemImportAction extends Xoonips_ActionBase
                 $import['log'] .= "[Import Item No.${num}] Result : Error (Message : ".$items[$itemid]['err_msg'].' ['.$items[$itemid]['err_line']."])\n";
 
                 break;
-            } elseif ($new_id > 0 && 'self' == $index_select) {
-                $index_bean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
-                $privateIndex = $index_bean->getPrivateIndex($uid);
-                $hasPrivate = false;
-                $new_indexes = '';
-                foreach ($req_indexes as $index) {
-                    if (empty($hasPrivate)) {
-                        $root_index = $index_bean->getRootIndex($index);
-                        if ($root_index['index_id'] == $privateIndex['index_id']) {
-                            $hasPrivate = true;
+            } elseif ($new_id > 0) {
+                if ('self' == $index_select) {
+                    $index_bean = Xoonips_BeanFactory::getBean('IndexBean', $this->dirname, $this->trustDirname);
+                    $privateIndex = $index_bean->getPrivateIndex($uid);
+                    $hasPrivate = false;
+                    $new_indexes = '';
+                    foreach ($req_indexes as $index) {
+                        if (empty($hasPrivate)) {
+                            $root_index = $index_bean->getRootIndex($index);
+                            if ($root_index['index_id'] == $privateIndex['index_id']) {
+                                $hasPrivate = true;
+                            }
                         }
+                        $new_indexes .= (0 == strlen($new_indexes)) ? $index : ','.$index;
+                        // Import Log
+                        $import['log'] .= "[Import Item No.${num}] Index ID : $index]\n";
                     }
-                    $new_indexes .= (0 == strlen($new_indexes)) ? $index : ','.$index;
-                    // Import Log
-                    $import['log'] .= "[Import Item No.${num}] Index ID : $index]\n";
-                }
 
-                $linkBean = Xoonips_BeanFactory::getBean('IndexItemLinkBean', $this->dirname, $this->trustDirname);
-                $linkBean->delete($new_id);
+                    $linkBean = Xoonips_BeanFactory::getBean('IndexItemLinkBean', $this->dirname, $this->trustDirname);
+                    $linkBean->delete($new_id);
 
-                if (empty($hasPrivate)) {
-                    $indexes_org = explode('/', $defaultIndex);
-                    $indexes_slice = array_slice($indexes_org, 2);
-                    $index_id = $index_bean->getIndexID($indexes_slice, $privateIndex, 0, 0, 0);
-                    $new_indexes .= ','.$index_id;
-                }
+                    if (empty($hasPrivate)) {
+                        $indexes_org = explode('/', $defaultIndex);
+                        $indexes_slice = array_slice($indexes_org, 2);
+                        $index_id = $index_bean->getIndexID($indexes_slice, $privateIndex, 0, 0, 0);
+                        $new_indexes .= ','.$index_id;
+                    }
 
-                if (!$this->forceEditIndex($new_id, $new_indexes)) {
-                    $transaction->rollback();
-                    // Import Log
-                    $import['log'] .= "[Import Item No.${num}] Result : Error (Code : 400)\n";
-                    $import['log'] .= "[Import Item No.${num}] Result : Error (Message : Couldn't register index.)\n";
-                    $err_chk = true;
-                    break;
+                    if (!$this->forceEditIndex($new_id, $new_indexes)) {
+                        $transaction->rollback();
+                        // Import Log
+                        $import['log'] .= "[Import Item No.${num}] Result : Error (Code : 400)\n";
+                        $import['log'] .= "[Import Item No.${num}] Result : Error (Message : Couldn't register index.)\n";
+                        $err_chk = true;
+                        break;
+                    }
+                } else {
+                    $itemBean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);
+                    if ($itemBean->canView($new_id, XOONIPS_UID_GUEST)) {
+                        // register OaipmhItemStatus
+                        $itemStatusBean = Xoonips_BeanFactory::getBean('OaipmhItemStatusBean', $this->dirname, $this->trustDirname);
+                        $itemStatusBean->updateItemStatus($new_id);
+                    }
                 }
             }
 
