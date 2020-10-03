@@ -62,16 +62,16 @@ class Xoonips_ItemFieldManager
 
         $sql_type = '';
         if ($itemtype_id > 0) {
-            $sql_type = "and lt.item_type_id=$itemtype_id";
+            $sql_type = ' AND `lt`.`item_type_id`='.intval($itemtype_id);
         }
 
-        $sql = 'select g.group_id,g.preselect,lt.released,lt.item_type_id,g.name,g.xml,lt.weight'
-        .',g.occurrence,g.update_id'
-        .' from '.$xoopsDB->prefix($this->dirname.'_item_field_group').' g'
-        .' left join '.$xoopsDB->prefix($this->dirname.'_item_type_field_group_link').' lt'
-        ." on g.group_id=lt.group_id where lt.released=1 $sql_type"
-        .' order by lt.weight, g.group_id';
-        $sqlResult = $xoopsDB->queryF($sql);
+        $sql = 'SELECT `g`.`group_id`, `g`.`preselect`, `lt`.`released`, `lt`.`item_type_id`, `g`.`name`, `g`.`xml`, `lt`.`weight`'
+            .', `g`.`occurrence`, `g`.`update_id`'
+            .' FROM `'.$xoopsDB->prefix($this->dirname.'_item_field_group').'` `g`'
+            .' INNER JOIN `'.$xoopsDB->prefix($this->dirname.'_item_type_field_group_link').'` `lt` ON `g`.`group_id`=`lt`.`group_id`'
+            .' WHERE `lt`.`released`=1'.$sql_type
+            .' ORDER BY `lt`.`weight`, `g`.`group_id`';
+        $sqlResult = $xoopsDB->query($sql);
 
         while ($row = $xoopsDB->fetchArray($sqlResult)) {
             $fieldGroup = new Xoonips_ItemFieldGroup($row['group_id']);
@@ -96,20 +96,19 @@ class Xoonips_ItemFieldManager
 
         $sql_type = '';
         if ($itemtype_id > 0) {
-            $sql_type = "and lt.item_type_id=$itemtype_id";
+            $sql_type = ' AND `lt`.`item_type_id`='.intval($itemtype_id);
         }
 
-        $sql = 'select d.item_field_detail_id,d.preselect,lg.released,d.table_name,d.column_name'
-        .',lt.item_type_id,lg.group_id,lt.weight,d.name,d.xml,d.view_type_id,d.data_type_id'
-        .',d.data_length,d.data_decimal_places,d.default_value,d.list,d.essential,d.detail_display'
-        .',d.detail_target,d.scope_search,d.nondisplay,d.update_id'
-        .' from '.$xoopsDB->prefix($this->dirname.'_item_field_detail').' d'
-        .' left join '.$xoopsDB->prefix($this->dirname.'_item_field_group_field_detail_link').' lg'
-        .' on d.item_field_detail_id=lg.item_field_detail_id'
-        .' left join '.$xoopsDB->prefix($this->dirname.'_item_type_field_group_link').' lt'
-        .' on lg.group_id=lt.group_id where lg.released=1 and lt.released=1 and d.nondisplay=0'
-        ." $sql_type order by lt.weight, lg.weight, lg.group_id, d.item_field_detail_id";
-        $sqlResult = $xoopsDB->queryF($sql);
+        $sql = 'SELECT `d`.`item_field_detail_id`, `d`.`preselect`, `lg`.`released`, `d`.`table_name`,`d`.`column_name`'
+            .', `lt`.`item_type_id`, `lg`.`group_id`, `lt`.`weight`, `d`.`name`, `d`.`xml`, `d`.`view_type_id`, `d`.`data_type_id`'
+            .', `d`.`data_length`, `d`.`data_decimal_places`, `d`.`default_value`, `d`.`list`, `d`.`essential`, `d`.`detail_display`'
+            .', `d`.`detail_target`, `d`.`scope_search`, `d`.`nondisplay`, `d`.`update_id`'
+            .' FROM `'.$xoopsDB->prefix($this->dirname.'_item_field_detail').'` `d`'
+            .' INNER JOIN `'.$xoopsDB->prefix($this->dirname.'_item_field_group_field_detail_link').'` `lg` ON `d`.`item_field_detail_id`=`lg`.`item_field_detail_id`'
+            .' INNER JOIN `'.$xoopsDB->prefix($this->dirname.'_item_type_field_group_link').'` `lt` ON `lg`.`group_id`=`lt`.`group_id`'
+            .' WHERE `lg`.`released`=1 and `lt`.`released`=1 AND `d`.`nondisplay`=0'.$sql_type
+            .' ORDER BY `lt`.`weight`, `lg`.`weight`, `lg`.`group_id`, `d`.`item_field_detail_id`';
+        $sqlResult = $xoopsDB->query($sql);
         $fieldGroupFlg = false;
         $fieldGroupId = '';
 
