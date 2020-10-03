@@ -117,7 +117,7 @@ class Xoonips_ItemChangeLogBean extends Xoonips_BeanBase
             $fragment .= 'log='.Xoonips_Utils::convertSQLStr($changelog['log']);
         }
 
-        $sql = 'UPDATE `'.$this->table.'` SET '.${fragment}.' WHERE `log_id`='.intval($changelog['log_id']);
+        $sql = 'UPDATE `'.$this->table.'` SET '.$fragment.' WHERE `log_id`='.intval($changelog['log_id']);
 
         $result = $this->execute($sql);
         if (!$result) {

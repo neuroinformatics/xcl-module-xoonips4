@@ -33,7 +33,7 @@ function hiddenClick(value) {
 }
 </script>
 <h3><{$smarty.const._MD_XOONIPS_LANG_GROUP_REGISTER}></h3>
-<{$errors|xoops_escape}>
+<{$errors}>
 <form id="<{$dirname}>_groupRegisterForm" name="<{$dirname}>_groupRegisterForm" action="user.php?op=groupRegister" method="post" enctype="multipart/form-data">
 <{$token_ticket}>
 <input type="hidden" id="<{$dirname}>_op" name="action" value="register" />

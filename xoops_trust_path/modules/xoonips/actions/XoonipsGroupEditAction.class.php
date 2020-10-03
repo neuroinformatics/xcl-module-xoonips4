@@ -123,7 +123,7 @@ class Xoonips_GroupEditAction extends Xoonips_UserActionBase
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname, $this->trustDirname);
 
         // get hidden parameter
-        $uids = intval($request->getParameter('uid'));
+        $uids = $request->getParameter('uid');
         $gname = $request->getParameter('gname');
         $groupId = intval($request->getParameter('groupid'));
         $warning = $request->getParameter('warning');

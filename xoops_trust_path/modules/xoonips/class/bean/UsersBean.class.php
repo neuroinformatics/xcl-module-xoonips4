@@ -134,7 +134,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
     {
         $ret = false;
         $sql = 'SELECT * FROM `'.$this->linkTable.'` WHERE `groupid`='.intval($groupId)
-            .' AND `uid`='.intval(${uid}).' AND `is_admin`='.Xoonips_Enum::GRP_ADMINISTRATOR
+            .' AND `uid`='.intval($uid).' AND `is_admin`='.Xoonips_Enum::GRP_ADMINISTRATOR
             .' AND `activate`<>'.Xoonips_Enum::GRP_US_JOIN_REQUIRED;
         if (($result = $this->execute($sql))
             && $this->getRowsNum($result) > 0) {
@@ -160,7 +160,7 @@ class Xoonips_UsersBean extends Xoonips_BeanBase
         $ret = false;
         $sql = 'SELECT * FROM `'.$this->linkTable.'`'
             .' WHERE `groupid`='.intval($groupId)
-            .' AND `uid`='.intval(${uid}).' AND `is_admin`='.Xoonips_Enum::GRP_USER
+            .' AND `uid`='.intval($uid).' AND `is_admin`='.Xoonips_Enum::GRP_USER
             .' AND `activate`<>'.Xoonips_Enum::GRP_US_JOIN_REQUIRED;
         if (($result = $this->execute($sql))
             && $this->getRowsNum($result) > 0) {
