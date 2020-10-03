@@ -168,7 +168,7 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
         // identifier exist check
         $parsed = $this->parseIdentifier($this->convertIdentifierFormat($args['identifier']));
         if (false !== $parsed) {
-            $identifiers = $this->itemStatusBean->getOpenItem4Oaipmh(0, 0, null, $parsed['item_id'], 1, $this->repositoryDeletionTrack);
+            $identifiers = $this->itemStatusBean->getOpenItem4Oaipmh(0, 0, null, $parsed['item_id'], 1, $this->repositoryDeletionTrack, null);
         }
         if (!$parsed || !$identifiers || 0 == count($identifiers)) {
             return $this->error('idDoesNotExist', 'it maps to no known item');
@@ -290,7 +290,7 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
         if (isset($args['identifier'])) {
             $parsed = $this->parseIdentifier($this->convertIdentifierFormat($args['identifier']));
             if (false !== $parsed) {
-                $identifiers = $this->itemStatusBean->getOpenItem4Oaipmh(0, 0, null, $parsed['item_id'], 1, $this->repositoryDeletionTrack);
+                $identifiers = $this->itemStatusBean->getOpenItem4Oaipmh(0, 0, null, $parsed['item_id'], 1, $this->repositoryDeletionTrack, null);
             }
             if (!$parsed || !$identifiers || 0 == count($identifiers)) {
                 return $this->error('idDoesNotExist', 'it maps to no known item');
@@ -556,7 +556,7 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
                     $error = $this->error('badResumptionToken', '');
                 } elseif (isset($result['publish_date'])) {
                     //expire resumptionToken if repository is modified after resumptionToken has published
-                    $identifiers = $this->itemStatusBean->getOpenItem4Oaipmh((int) $result['publish_date'], 0, null, 0, 1, $this->repositoryDeletionTrack);
+                    $identifiers = $this->itemStatusBean->getOpenItem4Oaipmh((int) $result['publish_date'], 0, null, 0, 1, $this->repositoryDeletionTrack, null);
                     if ($identifiers && count($identifiers) > 0) {
                         $this->deleteResumptionToken($resumptionToken);
                         $error = $this->error('badResumptionToken', 'repository has been modified');
@@ -625,8 +625,11 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
             if (!is_null($args['set'])) {
                 $set = $args['set'];
             }
+            if (!is_null($args['setSpec'])) {
+              $setSpec = $args['setSpec'];
+            }
         }
-        $identifiers = $this->itemStatusBean->getOpenItem4Oaipmh((int) $from, (int) $until, $set, 0, 0, $this->repositoryDeletionTrack);
+        $identifiers = $this->itemStatusBean->getOpenItem4Oaipmh((int) $from, (int) $until, $set, 0, 0, $this->repositoryDeletionTrack, $setSpec);
         if (!$identifiers || 0 == count($identifiers)) {
             $error = $this->error('noRecordsMatch', '');
         }

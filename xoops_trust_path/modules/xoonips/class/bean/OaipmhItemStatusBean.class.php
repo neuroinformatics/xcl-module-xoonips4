@@ -273,7 +273,7 @@ class Xoonips_OaipmhItemStatusBean extends Xoonips_BeanBase
         return true;
     }
 
-    public function getOpenItem4Oaipmh($from, $until, $set, $startIID, $limit, $deletion_track)
+    public function getOpenItem4Oaipmh($from, $until, $set, $startIID, $limit, $deletion_track, $setSpec)
     {
         $ret = [];
         $itemTable = $this->prefix($this->modulePrefix('item'));
@@ -315,10 +315,32 @@ class Xoonips_OaipmhItemStatusBean extends Xoonips_BeanBase
                        .' LEFT JOIN '.$this->prefix($this->modulePrefix('index')).' AS idx on link.index_id=idx.index_id ';
             }
         }
-        $sql = 'SELECT distinct stat.item_id, item.item_type_id, item.doi, itemtype.name as item_type_name, itemtype.name as item_type_display, stat.is_deleted FROM '
+        if($setSpec){
+          preg_match_all('/\d+/',$setSpec, $m);
+          if(count($m) > 0){
+            $m = $m[0];
+            if(count($m) > 0){
+              $linkTable = $this->prefix($this->modulePrefix('index_item_link'));
+              $indexTable = $this->prefix($this->modulePrefix('index'));
+              $where .= ' EXISTS(SELECT 1 FROM '
+                .'`' .$linkTable. '` as `link` '
+                . ' INNER JOIN `'.$indexTable.'` as `idx1` '
+                . '  ON `link`.`index_id` = `idx1`.`index_id` '
+                . ' AND `idx1`.`index_id` = '.$m[count($m)-1].' ';
+              for($i = 1;$i < count($m);$i++){
+                $where .= ' INNER JOIN `'.$indexTable.'` as `idx'.($i+1).'` '
+                  . '  ON `idx'.($i+1).'`.`index_id` = `idx'.$i.'`.`parent_index_id` '
+                  . ' AND `idx'.($i+1).'`.`index_id` = '.$m[count($m)-($i+1)].' ';
+              }
+              $where .= ' WHERE `item`.`item_id` = `link`.`item_id`) AND ';
+            }
+          }
+        }
+      
+        $sql = 'SELECT distinct `stat`.`item_id`, `item`.`item_type_id`, `item`.`doi`, `itemtype`.`name` as `item_type_name`, `itemtype`.`name` as `item_type_display`, `stat`.`is_deleted` FROM '
             .$sql_from
-            .' WHERE item.item_id=stat.item_id AND '
-            .' item.item_type_id=itemtype.item_type_id AND '
+            .' WHERE `item`.`item_id`=`stat`.`item_id` AND '
+            .' `item`.`item_type_id`=`itemtype`.`item_type_id` AND '
             .$where;
         if (0 != $from) {
             $sql .= intval($from).'<=`stat`.`timestamp` AND ';
