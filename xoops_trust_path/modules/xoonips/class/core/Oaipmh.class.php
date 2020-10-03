@@ -634,7 +634,7 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
         $cursor = 0;
         if (isset($last_item_id)) {
             foreach ($identifiers as $key => $value) {
-                if ($last_item_id == $value['item_id']) {
+                if ($last_item_id == intval($value['item_id'])) {
                     $cursor = $key + 1;
                 }
             }
@@ -667,11 +667,11 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
             } else {
                 $lines[] = '<header>';
             }
-            $item = $this->itemBean->getItemBasicInfo($identifier['item_id']);
+            $item = $this->itemBean->getItemBasicInfo(intval($identifier['item_id']));
             if ($item && '' != $item['doi'] && !empty($this->repositoryId)) {
                 $id = "$this->repositoryId:".XOONIPS_CONFIG_DOI_FIELD_PARAM_NAME.'/'.$item['doi'];
             } else {
-                $id = $this->repositoryId.'/'.$identifier['item_type_id'].'.'.$identifier['item_id'];
+                $id = $this->repositoryId.'/'.intval($identifier['item_type_id']).'.'.intval($identifier['item_id']);
             }
             $lines[] = "<identifier>$id</identifier>";
             $datestamp = max($status[0]['created_timestamp'], $status[0]['modified_timestamp'], $status[0]['deleted_timestamp']);
@@ -758,9 +758,8 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
     private function deleteResumptionToken($resumptionToken)
     {
         global $xoopsDB;
-        (method_exists('MyTextSanitizer', 'sGetInstance') and $myts = &MyTextSanitizer::sGetInstance()) || $myts = &MyTextSanitizer::getInstance();
         $table = $xoopsDB->prefix($this->dirname.'_oaipmh_resumption_token');
-        $sql = "DELETE FROM $table WHERE resumption_token=\"".$myts->stripSlashesGPC($resumptionToken).'"';
+        $sql = "DELETE FROM $table WHERE resumption_token=\"".$xoopsDB->quoteString($resumptionToken).'"';
         $result = $xoopsDB->queryF($sql);
     }
 
@@ -790,10 +789,9 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
         if (null == $publish_date) {
             $publish_date = time();
         }
-            (method_exists('MyTextSanitizer', 'sGetInstance') and $myts = &MyTextSanitizer::sGetInstance()) || $myts = &MyTextSanitizer::getInstance();
         $table = $xoopsDB->prefix($this->dirname.'_oaipmh_resumption_token');
-        $sql = "INSERT INTO $table VALUES ('".$myts->addSlashes($resumption_token)
-            ."', '$metadata_prefix', '$verb', '".$myts->addSlashes(serialize($args))
+        $sql = "INSERT INTO $table VALUES ('".$xoopsDB->quoteString($resumption_token)
+            ."', '$metadata_prefix', '$verb', '".$xoopsDB->quoteString(serialize($args))
             ."', $last_item_id, ".$this->limit_row.", $publish_date, $expire_date )";
 
         return $xoopsDB->queryF($sql);
@@ -807,9 +805,8 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
     private function getResumptionToken($resumption_token)
     {
         global $xoopsDB;
-        (method_exists('MyTextSanitizer', 'sGetInstance') and $myts = &MyTextSanitizer::sGetInstance()) || $myts = &MyTextSanitizer::getInstance();
         $table = $xoopsDB->prefix($this->dirname.'_oaipmh_resumption_token');
-        $sql = "SELECT resumption_token, metadata_prefix, args, last_item_id, publish_date, expire_date, verb FROM ${table} WHERE resumption_token=\"".$myts->stripSlashesGPC($resumption_token).'"';
+        $sql = "SELECT resumption_token, metadata_prefix, args, last_item_id, publish_date, expire_date, verb FROM ${table} WHERE resumption_token=\"".$xoopsDB->quoteString($resumption_token).'"';
         $result = $xoopsDB->query($sql);
         $ret = $xoopsDB->fetchArray($result);
         $ret['args'] = unserialize($ret['args']);
