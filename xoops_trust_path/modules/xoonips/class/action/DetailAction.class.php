@@ -130,6 +130,8 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
         $result = $bean->getItemBasicInfo($itemId);
         $itemtypeId = $result['item_type_id'];
         $itemtype = new Xoonips_Item($itemtypeId, $this->dirname, $this->trustDirname);
+
+        $viewData = [];
         $viewData['detailView'] = $itemtype->getDetailView($itemId);
 
         $itembean = Xoonips_BeanFactory::getBean('ItemVirtualBean', $this->dirname, $this->trustDirname);

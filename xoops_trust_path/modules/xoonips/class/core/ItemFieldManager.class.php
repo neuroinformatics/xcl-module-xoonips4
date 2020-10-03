@@ -166,7 +166,7 @@ class Xoonips_ItemFieldManager
             $field->setXoopsTpl($this->xoopsTpl);
             $field->setTemplate();
             $fields[$id] = $field;
-            $this->fields[$id] = $field;
+            $this->fields[] = $field;
             $this->fieldGroups[$groupId]->setFields($fields);
             ++$fieldsKey;
         }
