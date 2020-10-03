@@ -169,14 +169,20 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
      * can view item.
      *
      * @param int $item_id
-     *                     int $uid
+     * @param int $uid
      *
-     * @return bool:true-can,false-can not
+     * @return bool
      */
-    public function canView($item_id, $uid)
+    public function canView($itemId, $uid)
     {
+        $itemHandler = Functions::getXoonipsHandler('ItemObject', $this->dirname);
+        if (null === $itemHandler->get($itemId)) {
+            // item not exists
+            return false;
+        }
         $iul_handler = Functions::getXoonipsHandler('ItemUsersLink', $this->dirname);
-        if ($iul_handler->isOwner($item_id, $uid)) {
+
+        if ($iul_handler->isOwner($itemId, $uid)) {
             return true;
         }
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
@@ -186,7 +192,7 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
         if ($userBean->isModerator($uid)) {
             return true;
         }
-        $linkInfos = $linkBean->getIndexItemLinkInfo($item_id);
+        $linkInfos = $linkBean->getIndexItemLinkInfo($itemId);
         if ($linkInfos) {
             foreach ($linkInfos as $linkInfo) {
                 $index = $indexBean->getIndex($linkInfo['index_id']);
@@ -1263,12 +1269,19 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
     /**
      * can item edit.
      *
-     * @param int $itemId, int $uid
+     * @param int $itemId
+     * @param int $uid
      *
-     * @return bool : true/false
+     * @return bool
      */
     public function canItemEdit($itemId, $uid)
     {
+        $itemHandler = Functions::getXoonipsHandler('ItemObject', $this->dirname);
+        if (null === $itemHandler->get($itemId)) {
+            // item not exists
+            return false;
+        }
+
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
         $isModerator = $userBean->isModerator($uid);
         $itemUsersBean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $this->dirname, $this->trustDirname);
@@ -1296,12 +1309,19 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
     /**
      * can item users edit.
      *
-     * @param int $itemId, int $uid
+     * @param int $itemId
+     * @param int $uid
      *
-     * @return bool : true/false
+     * @return bool
      */
     public function canItemUsersEdit($itemId, $uid)
     {
+        $itemHandler = Functions::getXoonipsHandler('ItemObject', $this->dirname);
+        if (null === $itemHandler->get($itemId)) {
+            // item not exists
+            return false;
+        }
+
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
         $isModerator = $userBean->isModerator($uid);
         $itemUsersBean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $this->dirname, $this->trustDirname);
@@ -1329,12 +1349,19 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
     /**
      * can item index edit.
      *
-     * @param int $itemId, int $uid
+     * @param int $itemId
+     * @param int $uid
      *
-     * @return bool : true/false
+     * @return bool
      */
     public function canItemIndexEdit($itemId, $uid)
     {
+        $itemHandler = Functions::getXoonipsHandler('ItemObject', $this->dirname);
+        if (null === $itemHandler->get($itemId)) {
+            // item not exists
+            return false;
+        }
+
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
         $isModerator = $userBean->isModerator($uid);
         $itemUsersBean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $this->dirname, $this->trustDirname);
@@ -1372,12 +1399,19 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
     /**
      * can item delete.
      *
-     * @param int $itemId, int $uid
+     * @param int $itemId
+     * @param int $uid
      *
-     * @return bool : true/false
+     * @return bool
      */
     public function canItemDelete($itemId, $uid)
     {
+        $itemHandler = Functions::getXoonipsHandler('ItemObject', $this->dirname);
+        if (null === $itemHandler->get($itemId)) {
+            // item not exists
+            return false;
+        }
+
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
         $isModerator = $userBean->isModerator($uid);
         $itemUsersBean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $this->dirname, $this->trustDirname);
@@ -1399,12 +1433,19 @@ class Xoonips_ItemVirtualBean extends Xoonips_BeanBase
     /**
      * can item export.
      *
-     * @param int $itemId, int $uid
+     * @param int $itemId
+     * @param int $uid
      *
-     * @return bool : true/false
+     * @return bool
      */
     public function canItemExport($itemId, $uid)
     {
+        $itemHandler = Functions::getXoonipsHandler('ItemObject', $this->dirname);
+        if (null === $itemHandler->get($itemId)) {
+            // item not exists
+            return false;
+        }
+
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
         $isModerator = $userBean->isModerator($uid);
         $itemUsersBean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $this->dirname, $this->trustDirname);
