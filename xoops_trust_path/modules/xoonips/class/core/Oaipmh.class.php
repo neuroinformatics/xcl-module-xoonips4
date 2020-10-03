@@ -626,7 +626,7 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
                 $set = $args['set'];
             }
             if (!is_null($args['setSpec'])) {
-              $setSpec = $args['setSpec'];
+                $setSpec = $args['setSpec'];
             }
         }
         $identifiers = $this->itemStatusBean->getOpenItem4Oaipmh((int) $from, (int) $until, $set, 0, 0, $this->repositoryDeletionTrack, $setSpec);
