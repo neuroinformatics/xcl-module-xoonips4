@@ -95,8 +95,7 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
     protected function doExport(&$request, &$response)
     {
         // get requests
-        $items = [];
-        $items[] = intval($request->getParameter('item_id'));
+        $itemId = intval($request->getParameter('item_id'));
 
         // access check
         $uid = XoopsUtils::getUid();
@@ -106,6 +105,8 @@ class Xoonips_DetailAction extends Xoonips_ActionBase
         }
 
         // do export
+        $items = [];
+        $items[] = $itemId;
         $xmlexport = new XmlItemExport();
         $xmlexport->export_zip($items);
     }
