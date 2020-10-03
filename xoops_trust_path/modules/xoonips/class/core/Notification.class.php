@@ -87,7 +87,7 @@ class Xoonips_Notification extends XoopsNotificationHandler
         if (!empty($user_list)) {
             $user_criteria = new CriteriaCompo();
             foreach ($user_list as $user) {
-                $user_criteria->add(new Criteria('not_uid', $user), 'OR');
+                $user_criteria->add(new Criteria('not_uid', intval($user)), 'OR');
             }
             $criteria->add($user_criteria);
             $notifications = &$this->getObjects($criteria);
@@ -166,7 +166,7 @@ class Xoonips_Notification extends XoopsNotificationHandler
     private function getItemTags($item_id)
     {
         $itemBasicBean = Xoonips_BeanFactory::getBean('ItemBean', $this->dirname, $this->trustDirname);
-        $item_basic = $itemBasicBean->getItemBasicInfo($item_id);
+        $item_basic = $itemBasicBean->getItemBasicInfo(intval($item_id));
         if (false === $item_basic) {
             return false;
         }
@@ -178,7 +178,7 @@ class Xoonips_Notification extends XoopsNotificationHandler
         }
 
         $itemTitleBean = Xoonips_BeanFactory::getBean('ItemTitleBean', $this->dirname, $this->trustDirname);
-        $titles = $itemTitleBean->getItemTitleInfo($item_id);
+        $titles = $itemTitleBean->getItemTitleInfo(intval($item_id));
         if (false === $titles) {
             return false;
         }
@@ -186,7 +186,7 @@ class Xoonips_Notification extends XoopsNotificationHandler
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
 
         $itemUsersBean = Xoonips_BeanFactory::getBean('ItemUsersLinkBean', $this->dirname, $this->trustDirname);
-        $itemUsersInfo = $itemUsersBean->getItemUsersInfo($item_id);
+        $itemUsersInfo = $itemUsersBean->getItemUsersInfo(intval($item_id));
         if (false === $itemUsersInfo) {
             return false;
         }
@@ -202,7 +202,7 @@ class Xoonips_Notification extends XoopsNotificationHandler
         }
 
         $keywordBean = Xoonips_BeanFactory::getBean('ItemKeywordBean', $this->dirname, $this->trustDirname);
-        $keywords = $keywordBean->getKeywords($item_id);
+        $keywords = $keywordBean->getKeywords(intval($item_id));
         if (false === $keywords) {
             return false;
         }
@@ -222,7 +222,7 @@ class Xoonips_Notification extends XoopsNotificationHandler
             'ITEM_DESCRIPTION' => '',
         ];
         $tags['ITEM_DETAIL_URL'] = XOOPS_URL.'/modules/'.$this->dirname
-            .'/detail.php?item_id='.$item_id;
+            .'/detail.php?item_id='.intval($item_id);
 
         // set the default handler
 
@@ -276,10 +276,10 @@ class Xoonips_Notification extends XoopsNotificationHandler
 
     private function itemCertify($item_id, $index_id, $sendToUsers, $subject, $template_name, $comment = '')
     {
-        $tags = $this->getItemTags($item_id);
-        $tags['INDEX_PATH'] = $this->getIndexPathString($index_id);
+        $tags = $this->getItemTags(intval($item_id));
+        $tags['INDEX_PATH'] = $this->getIndexPathString(intval($index_id));
         $tags['ITEM_CERTIFY_URL'] = XOOPS_URL.'/modules/'.Xoonips_Workflow::getDirname();
-        $tags['COMMENT'] = $comment;
+        $tags['COMMENT'] = $this->db->quoteString($comment);
         $this->triggerEvent2('common', 0, 'item',
         $subject, $template_name, $tags, $sendToUsers);
     }
@@ -351,10 +351,10 @@ class Xoonips_Notification extends XoopsNotificationHandler
     // item group certify notification
     private function groupItemCertify($item_id, $index_id, $group_id, $sendToUsers, $subject, $template_name, $comment = '')
     {
-        $tags = $this->getItemTags($item_id);
+        $tags = $this->getItemTags(intval($item_id));
         $tags['INDEX'] = $this->getIndexPathString($index_id);
         $tags['CERTIFY_URL'] = XOOPS_URL.'/modules/'.Xoonips_Workflow::getDirname();
-        $tags['COMMENT'] = $comment;
+        $tags['COMMENT'] = $this->db->quoteString($comment);
 
         $this->triggerEvent2('common', 0, 'item',
         $subject, $template_name, $tags, $sendToUsers);
@@ -419,7 +419,7 @@ class Xoonips_Notification extends XoopsNotificationHandler
     // item group withdraw rejected notification
     public function groupItemWithdrawalRejected($item_id, $index_id, $group_id, $sendToUsers, $comment)
     {
-        $tags = $this->getItemTags($item_id);
+        $tags = $this->getItemTags(intval($item_id));
         $this->groupItemCertify($item_id, $index_id, $group_id, $sendToUsers,
             _MD_XOONIPS_GROUP_ITEM_WITHDRAWAL_REJECTED_NOTIFYSBJ,
             'group_item_withdrawal_rejected_notify', $comment);
@@ -427,7 +427,7 @@ class Xoonips_Notification extends XoopsNotificationHandler
 
     private function userItemUser($item_id, $userNames, $sendToUsers, $subject, $template_name)
     {
-        $tags = $this->getItemTags($item_id);
+        $tags = $this->getItemTags(intval($item_id));
         $tags['USER_NAME'] = $userNames;
         $userBean = Xoonips_BeanFactory::getBean('UsersBean', $this->dirname);
         if (isset($_SESSION['xoopsUserId'])) {
