@@ -234,9 +234,7 @@ class Xoonips_Metadata
                 $c = '$metadata['.(int) ($matches[1][$key] - 1).']';
                 $convertString = str_replace($value, $c, $convertString);
             }
-            $convertString = $convertString.';';
-            //FIXME XSS
-            eval(" \$ret = $convertString");
+            eval('$ret = '.$convertString.';');
         }
 
         if (null == $ret) {
