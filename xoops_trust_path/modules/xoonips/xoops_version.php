@@ -5,7 +5,7 @@ require_once __DIR__.'/include/common.inc.php';
 Xoonips_Utils::loadModinfoMessage('xoonips');
 
 $modversion['name'] = _MI_XOONIPS_NAME;
-$modversion['version'] = 4.30;
+$modversion['version'] = 4.31;
 $modversion['description'] = _MI_XOONIPS_DESC;
 $modversion['credits'] = 'The XooNIps Project (https://xoonips.osdn.jp/)';
 $modversion['author'] = 'XooNIps developers';
