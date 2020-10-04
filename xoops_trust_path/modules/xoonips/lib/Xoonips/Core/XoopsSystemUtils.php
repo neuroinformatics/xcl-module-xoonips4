@@ -25,9 +25,9 @@ class XoopsSystemUtils
      *
      * @return bool false if failure
      */
-    public static function fixGroupPermissions()
+    public static function fixGroupPermissions(): bool
     {
-        $db = &\XoopsDatabaseFactory::getDatabaseConnection();
+        $db = \XoopsDatabaseFactory::getDatabaseConnection();
         // get invalid group ids
         $table = $db->prefix('group_permission');
         $table2 = $db->prefix('groups');
@@ -58,9 +58,9 @@ class XoopsSystemUtils
      *
      * @return bool false if failure
      */
-    public static function fixModuleConfigs()
+    public static function fixModuleConfigs(): bool
     {
-        $db = &\XoopsDatabaseFactory::getDatabaseConnection();
+        $db = \XoopsDatabaseFactory::getDatabaseConnection();
         // get invalid module ids
         $table = $db->prefix('config');
         $table2 = $db->prefix('modules');
@@ -75,9 +75,9 @@ class XoopsSystemUtils
         }
         $db->freeRecordSet($result);
         // remove all invalid config entries
-        $configHandler = &xoops_gethandler('config');
+        $configHandler = xoops_gethandler('config');
         foreach ($mids as $mid) {
-            $configs = &$configHandler->getConfigs(new \Criteria('conf_modid', $mid));
+            $configs = $configHandler->getConfigs(new \Criteria('conf_modid', $mid));
             foreach ($configs as $config) {
                 if (false === $configHandler->deleteConfig($config)) {
                     return false;
@@ -96,7 +96,7 @@ class XoopsSystemUtils
      *
      * @return bool
      */
-    public static function setModuleAdminRights($mid, $gids)
+    public static function setModuleAdminRights(int $mid, array $gids): bool
     {
         return self::_setRights('module_admin', $mid, $gids);
     }
@@ -109,7 +109,7 @@ class XoopsSystemUtils
      *
      * @return bool
      */
-    public static function setModuleReadRights($mid, $gids)
+    public static function setModuleReadRights(int $mid, array $gids): bool
     {
         return self::_setRights('module_read', $mid, $gids);
     }
@@ -122,7 +122,7 @@ class XoopsSystemUtils
      *
      * @return bool
      */
-    public static function setBlockReadRights($bid, $gids)
+    public static function setBlockReadRights(int $bid, array $gids): bool
     {
         return self::_setRights('block_read', $bid, $gids);
     }
@@ -133,17 +133,17 @@ class XoopsSystemUtils
      * @param string $dirname
      * @param string $show_func
      *
-     * @return int
+     * @return ?int
      */
-    public static function getBlockId($dirname, $show_func)
+    public static function getBlockId(string $dirname, string $show_func): ?int
     {
-        $ret = false;
-        $db = &\XoopsDatabaseFactory::getDatabaseConnection();
+        $ret = null;
+        $db = \XoopsDatabaseFactory::getDatabaseConnection();
         $table = $db->prefix('newblocks');
         $sql = sprintf('SELECT bid FROM `%s` WHERE `dirname`=%s AND `show_func`=%s', $table, $db->quoteString($dirname), $db->quoteString($show_func));
         if ($res = $db->query($sql)) {
             if ($row = $db->fetchArray($res)) {
-                $ret = intval($row['bid']);
+                $ret = (int) $row['bid'];
             }
             $db->freeRecordSet($res);
         }
@@ -172,7 +172,7 @@ class XoopsSystemUtils
      *
      * @return bool
      */
-    public static function setBlockInfo($bid, $side, $weight, $pages)
+    public static function setBlockInfo(int $bid, int $side, int $weight, array $pages): bool
     {
         if (false === self::_setBlockPosition($bid, $side, $weight)) {
             return false;
@@ -193,17 +193,17 @@ class XoopsSystemUtils
      *
      * @return bool
      */
-    public static function setStartupPageModule($dirname)
+    public static function setStartupPageModule(string $dirname): bool
     {
         if (empty($dirname)) {
             // top page
             $dirname = '--';
         }
-        $configHandler = &xoops_gethandler('config');
+        $configHandler = xoops_gethandler('config');
         $criteria = new \CriteriaCompo(new \Criteria('conf_modid', 0));
         $criteria->add(new \Criteria('conf_catid', XOOPS_CONF));
         $criteria->add(new \Criteria('conf_name', 'startpage'));
-        $configObjs = &$configHandler->getConfigs($criteria);
+        $configObjs = $configHandler->getConfigs($criteria);
         if (1 != count($configObjs)) {
             return false;
         }
@@ -220,11 +220,11 @@ class XoopsSystemUtils
      * @param string $category
      * @param string $event
      *
-     * @return bool false if failure
+     * @return bool
      */
-    public static function enableNotification($mid, $category, $event)
+    public static function enableNotification(int $mid, string $category, string $event): bool
     {
-        $configHandler = &xoops_gethandler('config');
+        $configHandler = xoops_gethandler('config');
         $criteria = new \CriteriaCompo();
         $criteria->add(new \Criteria('conf_name', 'notification_events'));
         $criteria->add(new \Criteria('conf_modid', $mid));
@@ -239,7 +239,7 @@ class XoopsSystemUtils
             if (!in_array($optionValue, $optionValues)) {
                 $optionValues[] = $optionValue;
                 $configItem->setConfValueForInput($optionValues);
-                $configItemHandler = &xoops_gethandler('config_item');
+                $configItemHandler = xoops_gethandler('config_item');
                 $configItemHandler->insert($configItem);
             }
         }
@@ -255,11 +255,11 @@ class XoopsSystemUtils
      * @param string $category
      * @param string $event
      *
-     * @return bool false if failure
+     * @return bool
      */
-    public static function subscribeNotification($mid, $uid, $category, $event)
+    public static function subscribeNotification(int $mid, int $uid, string $category, string $event): bool
     {
-        $notificationHandler = &xoops_gethandler('notification');
+        $notificationHandler = xoops_gethandler('notification');
         $notificationHandler->subscribe($category, 0, $event, null, $mid, $uid);
 
         return true;
@@ -282,12 +282,12 @@ class XoopsSystemUtils
      *
      * @return bool
      */
-    private static function _setBlockPosition($bid, $side, $weight)
+    private static function _setBlockPosition(int $bid, int $side, int $weight): bool
     {
         $visible = ($side < 0) ? 0 : 1;
         $side = (0 == $visible) ? 0 : $side;
-        $blockHandler = &xoops_gethandler('block');
-        $blockObj = &$blockHandler->get($bid);
+        $blockHandler = xoops_gethandler('block');
+        $blockObj = $blockHandler->get($bid);
         if (!is_object($blockObj)) {
             return false;
         }
@@ -311,7 +311,7 @@ class XoopsSystemUtils
      *
      * @return bool
      */
-    private static function _setBlockShowPages($bid, $pages)
+    private static function _setBlockShowPages(int $bid, array $pages): bool
     {
         $db = &\XoopsDatabaseFactory::getDatabaseConnection();
         if (in_array(self::BLOCK_PAGE_ALL, $pages)) {
@@ -356,11 +356,11 @@ class XoopsSystemUtils
      *
      * @return bool
      */
-    private static function _setRights($name, $iid, $gids)
+    private static function _setRights(string $name, int $iid, array $gids): bool
     {
-        $gpermHandler = &xoops_gethandler('groupperm');
-        $memberHandler = &xoops_gethandler('member');
-        $groupNames = &$memberHandler->getGroupList();
+        $gpermHandler = xoops_gethandler('groupperm');
+        $memberHandler = xoops_gethandler('member');
+        $groupNames = $memberHandler->getGroupList();
         $allGids = array_keys($groupNames);
         $delGids = array_diff($allGids, $gids);
         foreach ($gids as $gid) {

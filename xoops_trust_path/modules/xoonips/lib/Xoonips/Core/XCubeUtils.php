@@ -15,7 +15,7 @@ class XCubeUtils
      *
      * @return string
      */
-    public static function formatString($message, $params)
+    public static function formatString(string $message, array $params): string
     {
         $vars = $params;
         if (is_array($params)) {

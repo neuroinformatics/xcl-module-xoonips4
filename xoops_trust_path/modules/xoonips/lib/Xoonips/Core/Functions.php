@@ -12,7 +12,7 @@ class Functions
      *
      * @return string
      */
-    public static function getTrustDirname()
+    public static function getTrustDirname(): string
     {
         static $trustDirname = false;
         if (false === $trustDirname) {
@@ -28,9 +28,9 @@ class Functions
      * @param string $name
      * @param string $dirname
      *
-     * @return Handler\AbstractHandler
+     * @return ?object
      */
-    public static function getXoonipsHandler($name, $dirname)
+    public static function getXoonipsHandler(string $name, string $dirname): ?object
     {
         return XoopsUtils::getModuleHandler($name, $dirname, self::getTrustDirname());
     }
@@ -41,9 +41,9 @@ class Functions
      * @param string $dirname
      * @param string $name
      *
-     * @return string
+     * @return ?string
      */
-    public static function getXoonipsConfig($dirname, $name)
+    public static function getXoonipsConfig(string $dirname, string $name): ?string
     {
         $cHandler = self::getXoonipsHandler('ConfigObject', $dirname);
 
@@ -59,7 +59,7 @@ class Functions
      *
      * @return bool
      */
-    public static function setXoonipsConfig($dirname, $name, $value)
+    public static function setXoonipsConfig(string $dirname, string $name, string $value): bool
     {
         $cHandler = self::getXoonipsHandler('ConfigObject', $dirname);
 
@@ -73,7 +73,7 @@ class Functions
      *
      * @return string
      **/
-    public static function getItemListUrl($dirname)
+    public static function getItemListUrl(string $dirname): string
     {
         $url = null;
         if ('on' == self::getXoonipsConfig($dirname, 'url_compatible')) {

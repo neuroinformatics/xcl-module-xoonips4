@@ -28,26 +28,25 @@ class XoopsUtils
      *
      * @param string $dirname
      *
-     * @return string
+     * @return ?string
      */
-    public static function getTrustDirnameByDirname($dirname)
+    public static function getTrustDirnameByDirname(string $dirname): ?string
     {
         static $cache = [];
         if (array_key_exists($dirname, $cache)) {
             return $cache[$dirname];
         }
-        $handler = &xoops_gethandler('module');
-        $module = &$handler->getByDirname($dirname);
-        if (is_object($module)) {
-            $ret = $module->get('trust_dirname');
-            if (false !== $ret) {
-                $cache[$dirname] = $ret;
-
-                return $ret;
+        $cache[$dirname] = null;
+        $moduleHandler = xoops_gethandler('module');
+        $moduleObj = $moduleHandler->getByDirname($dirname);
+        if (is_object($moduleObj)) {
+            $trustDirname = trim((string) $moduleObj->get('trust_dirname'));
+            if ('' !== $trustDirname) {
+                $cache[$dirname] = $trustDirname;
             }
         }
 
-        return null;
+        return $cache[$dirname];
     }
 
     /**
@@ -57,19 +56,25 @@ class XoopsUtils
      *
      * @return array
      */
-    public static function getDirnameListByTrustDirname($trustDirname)
+    public static function getDirnameListByTrustDirname(string $trustDirname): array
     {
+        static $cache = [];
+        if (array_key_exists($trustDirname, $cache)) {
+            return $cache[$trustDirname];
+        }
+        $cache[$trustDirname] = [];
         $ret = [];
         $criteria = new \CriteriaCompo();
         $criteria->add(new \Criteria('isactive', 0, '>'));
         $criteria->add(new \Criteria('trust_dirname', $trustDirname));
         $criteria->addSort('weight', 'ASC');
         $criteria->addSort('mid', 'ASC');
-        $handler = &xoops_gethandler('module');
-        $objs = &$handler->getObjects($criteria);
-        foreach ($objs as $obj) {
-            $ret[] = $obj->get('dirname');
+        $moduleHandler = xoops_gethandler('module');
+        $moduleObjs = $moduleHandler->getObjects($criteria);
+        foreach ($moduleObjs as $moduleObj) {
+            $ret[] = $moduleObj->get('dirname');
         }
+        $cache[$trustDirname] = $ret;
 
         return $ret;
     }
@@ -77,32 +82,36 @@ class XoopsUtils
     /**
      * get module handler.
      *
-     * @param string $name
-     * @param string $dirname
-     * @param string $trustDirname
+     * @param string  $name
+     * @param string  $dirname
+     * @param ?string $trustDirname
      *
-     * @return Handler\AbstractHandler &
+     * @return ?object
      */
-    public static function &getModuleHandler($name, $dirname, $trustDirname = null)
+    public static function getModuleHandler(string $name, string $dirname, ?string $trustDirname = null): ?object
     {
         static $cache = [];
         $key = $dirname.':'.$name;
-        if (!array_key_exists($key, $cache)) {
-            $db = &\XoopsDatabaseFactory::getDatabaseConnection();
-            if (is_null($trustDirname)) {
-                $trustDirname = self::getTrustDirnameByDirname($dirname);
+        if (array_key_exists($key, $cache)) {
+            return $cache[$key];
+        }
+        $cache[$key] = null;
+        if (null === $trustDirname) {
+            $trustDirname = self::getTrustDirnameByDirname($dirname);
+        }
+        if (null !== $trustDirname) {
+            $className = ucfirst($trustDirname).'\\Handler\\'.ucfirst($name).'Handler';
+            if (!class_exists($className)) {
+                $className = ucfirst($trustDirname).'_'.ucfirst($name).'Handler';
+                $fpath = XOOPS_TRUST_PATH.'/modules/'.$trustDirname.'/class/handler/'.ucfirst($name).'.class.php';
+                require_once $fpath;
             }
-            if (isset($trustDirname)) {
-                $className = ucfirst($trustDirname).'\\Handler\\'.ucfirst($name).'Handler';
-                if (!class_exists($className)) {
-                    $fpath = XOOPS_TRUST_PATH.'/modules/'.$trustDirname.'/class/handler/'.ucfirst($name).'.class.php';
-                    require_once $fpath;
-                    $className = ucfirst($trustDirname).'_'.ucfirst($name).'Handler';
-                }
+            if (class_exists($className)) {
+                $db = \XoopsDatabaseFactory::getDatabaseConnection();
                 $cache[$key] = new $className($db, $dirname);
-            } else {
-                $cache[$key] = &xoops_getmodulehandler($name, $dirname);
             }
+        } else {
+            $cache[$key] = xoops_getmodulehandler($name, $dirname);
         }
 
         return $cache[$key];
@@ -113,26 +122,28 @@ class XoopsUtils
      *
      * @param string $key
      *
-     * @return string
+     * @return ?string
      */
-    public static function getEnv($key)
+    public static function getEnv(string $key): ?string
     {
-        return @getenv($key);
+        $ret = @getenv($key);
+
+        return false !== $ret ? $ret : null;
     }
 
     /**
      * get xoops config.
      *
      * @param string $key
-     * @param string $catId
+     * @param int    $catId
      *
      * @return mixed
      */
-    public static function getXoopsConfig($key, $catId = XOOPS_CONF)
+    public static function getXoopsConfig(string $key, int $catId = XOOPS_CONF)
     {
         $cat = 'xoops:'.$catId;
         if (!array_key_exists($cat, self::$mConfigs)) {
-            $configHandler = &xoops_gethandler('config');
+            $configHandler = xoops_gethandler('config');
             self::$mConfigs[$cat] = $configHandler->getConfigsByCat($catId);
             if (defined('XOOPS_CUBE_LEGACY')) {
                 switch ($catId) {
@@ -155,7 +166,7 @@ class XoopsUtils
                         self::$mConfigs[$dirname] = $configHandler->getConfigsByDirname($dirname);
                     }
                     foreach (array_keys(self::$mConfigs[$dirname]) as $mKey) {
-                        if (!isset(self::$mConfigs[$cat][$mKey])) {
+                        if (!array_key_exists($mKey, self::$mConfigs[$cat])) {
                             self::$mConfigs[$cat][$mKey] = self::$mConfigs[$dirname][$mKey];
                         }
                     }
@@ -175,10 +186,10 @@ class XoopsUtils
      *
      * @return mixed
      */
-    public static function getModuleConfig($dirname, $key)
+    public static function getModuleConfig(string $dirname, string $key)
     {
         if (!array_key_exists($dirname, self::$mConfigs)) {
-            $configHandler = &xoops_gethandler('config');
+            $configHandler = xoops_gethandler('config');
             self::$mConfigs[$dirname] = $configHandler->getConfigsByDirname($dirname);
         }
         if (is_null(self::$mConfigs[$dirname])) {
@@ -198,12 +209,15 @@ class XoopsUtils
      *
      * @return bool
      */
-    public static function setModuleConfig($dirname, $key, $value)
+    public static function setModuleConfig(string $dirname, string $key, $value): bool
     {
-        $configHandler = &xoops_gethandler('config');
-        $moduleHandler = &xoops_gethandler('module');
-        $moduleObj = &$moduleHandler->getByDirname($dirname);
-        $mid = $moduleObj->get('mid');
+        $configHandler = xoops_gethandler('config');
+        $moduleHandler = xoops_gethandler('module');
+        $moduleObj = $moduleHandler->getByDirname($dirname);
+        if (!is_object($moduleObj)) {
+            return false;
+        }
+        $mid = (int) $moduleObj->get('mid');
         $criteria = new \CriteriaCompo();
         $criteria->add(new \Criteria('conf_modid', $mid));
         $criteria->add(new \Criteria('conf_name', $key));
@@ -233,74 +247,20 @@ class XoopsUtils
      *
      * @return string
      **/
-    public static function formatPagetitle($moduleName, $pageTitle, $action)
+    public static function formatPagetitle(string $moduleName, string $pageTitle, string $action): string
     {
         $format = self::getModuleConfig('legacyRender', 'pagetitle');
-        if (is_null($format)) {
+        if (null === $format) {
             $format = '{modulename} {action} [pagetitle]:[/pagetitle] {pagetitle}';
         }
         $search = ['{modulename}', '{pagetitle}', '{action}'];
         $replace = [$moduleName, $pageTitle, $action];
         $ret = str_replace($search, $replace, $format);
-        $ret = preg_replace('/\[modulename\](.*)\[\/modulename\]/U', (empty($moduleName) ? '' : '$1'), $ret);
-        $ret = preg_replace('/\[pagetitle\](.*)\[\/pagetitle\]/U', (empty($pageTitle) ? '' : '$1'), $ret);
-        $ret = preg_replace('/\[action\](.*)\[\/action\]/U', (empty($action) ? '' : '$1'), $ret);
+        $ret = preg_replace('/\[modulename\](.*)\[\/modulename\]/U', ('' === $moduleName ? '' : '$1'), $ret);
+        $ret = preg_replace('/\[pagetitle\](.*)\[\/pagetitle\]/U', ('' === $pageTitle ? '' : '$1'), $ret);
+        $ret = preg_replace('/\[action\](.*)\[\/action\]/U', ('' === $action ? '' : '$1'), $ret);
 
         return $ret;
-    }
-
-    /**
-     * render uri.
-     *
-     * @param string $dirname
-     * @param string $dataname
-     * @param int    $dataId
-     * @param string $action
-     * @param string $query
-     *
-     * @return string
-     **/
-    public static function renderUri($dirname, $dataname = null, $dataId = 0, $action = null, $query = null)
-    {
-        $uri = null;
-        if (true == self::getXoopsConfig('cool_uri')) {
-            if (isset($dataname)) {
-                if ($dataId > 0) {
-                    if (isset($action)) {
-                        $uri = sprintf('/%s/%s/%d/%s', $dirname, $dataname, $dataId, $action);
-                    } else {
-                        $uri = sprintf('/%s/%s/%d', $dirname, $dataname, $dataId);
-                    }
-                } else {
-                    if (isset($action)) {
-                        $uri = sprintf('/%s/%s/%s', $dirname, $dataname, $action);
-                    } else {
-                        $uri = sprintf('/%s/%s', $dirname, $dataname);
-                    }
-                }
-            } else {
-                if ($dataId > 0) {
-                    if (isset($action)) {
-                        die();
-                    } else {
-                        $uri = sprintf('/%s/%d', $dirname, $dataId);
-                    }
-                } else {
-                    if (isset($action)) {
-                        die();
-                    } else {
-                        $uri = '/'.$dirname;
-                    }
-                }
-            }
-            $uri = (isset($query)) ? XOOPS_URL.$uri.'?'.$query : XOOPS_URL.$uri;
-        } else {
-            $trustDirname = self::getTrustDirnameByDirname($dirname);
-            \XCube_DelegateUtils::call('Module.'.$trustDirname.'.Global.Event.GetNormalUri', new \XCube_Ref($uri), $dirname, $dataname, $dataId, $action, $query);
-            $uri = XOOPS_MODULE_URL.$uri;
-        }
-
-        return $uri;
     }
 
     /**
@@ -308,17 +268,17 @@ class XoopsUtils
      *
      * @param string $dirname
      *
-     * @return float version
+     * @return ?int version
      */
-    public static function getModuleVersion($dirname)
+    public static function getModuleVersion(string $dirname): ?int
     {
-        $moduleHandler = &xoops_gethandler('module');
-        $moduleObj = &$moduleHandler->getByDirname($dirname);
+        $moduleHandler = xoops_gethandler('module');
+        $moduleObj = $moduleHandler->getByDirname($dirname);
         if (!is_object($moduleObj)) {
-            return false;
+            return null;
         }
 
-        return $moduleObj->get('version');
+        return (int) $moduleObj->get('version');
     }
 
     /**
@@ -326,11 +286,11 @@ class XoopsUtils
      *
      * @return int user id
      */
-    public static function getUid()
+    public static function getUid(): int
     {
         global $xoopsUser;
 
-        return is_object($xoopsUser) ? intval($xoopsUser->get('uid')) : self::UID_GUEST;
+        return is_object($xoopsUser) ? (int) $xoopsUser->get('uid') : self::UID_GUEST;
     }
 
     /**
@@ -338,17 +298,19 @@ class XoopsUtils
      *
      * @param int $uid
      *
-     * @return string | null
+     * @return ?string
      */
-    public static function getUserName($uid)
+    public static function getUserName(int $uid): ?string
     {
         $name = null;
-        \XCube_DelegateUtils::call('Legacy_User.GetUserName', new \XCube_Ref($name), $uid);
-        if (!$name) {
-            $handler = &xoops_gethandler('member');
-            $user = &$handler->getUser(intval($uid));
-            if ($user) {
-                $name = $user->get('uname');
+        if (defined('XOOPS_CUBE_LEGACY')) {
+            \XCube_DelegateUtils::call('Legacy_User.GetUserName', new \XCube_Ref($name), $uid);
+        }
+        if (null === $name) {
+            $memberHandler = xoops_gethandler('member');
+            $userObj = $memberHandler->getUser($uid);
+            if (is_object($userObj)) {
+                $name = $userObj->get('uname');
             }
         }
 
@@ -358,15 +320,14 @@ class XoopsUtils
     /**
      * check whether user exists.
      *
-     * @param int    $userId
-     * @param string $dirname
+     * @param int $uid
      *
      * @return bool
      */
-    public static function userExists($userId)
+    public static function userExists(int $uid): bool
     {
-        $memberHandler = &xoops_gethandler('member');
-        $userObj = &$memberHandler->getUser($userId);
+        $memberHandler = xoops_gethandler('member');
+        $userObj = $memberHandler->getUser($uid);
 
         return is_object($userObj);
     }
@@ -379,7 +340,7 @@ class XoopsUtils
      *
      * @return bool
      */
-    public static function isAdmin($uid, $dirname)
+    public static function isAdmin(int $uid, string $dirname): bool
     {
         return self::isSiteAdmin($uid) || self::isModuleAdmin($uid, $dirname);
     }
@@ -391,14 +352,14 @@ class XoopsUtils
      *
      * @return bool
      */
-    public static function isSiteAdmin($uid)
+    public static function isSiteAdmin(int $uid): bool
     {
-        if (self::UID_GUEST == $uid) {
+        if (self::UID_GUEST === $uid) {
             return false;
         }
         if (!array_key_exists($uid, self::$mGroupIds)) {
-            $memberHandler = &xoops_gethandler('member');
-            self::$mGroupIds[$uid] = $memberHandler->getGroupsByUser($uid, false);
+            $memberHandler = xoops_gethandler('member');
+            self::$mGroupIds[$uid] = array_map('intval', $memberHandler->getGroupsByUser($uid, false));
         }
 
         return in_array(XOOPS_GROUP_ADMIN, self::$mGroupIds[$uid]);
@@ -412,22 +373,22 @@ class XoopsUtils
      *
      * @return bool
      */
-    public static function isModuleAdmin($uid, $dirname)
+    public static function isModuleAdmin(int $uid, string $dirname): bool
     {
         if (self::UID_GUEST == $uid) {
             return false;
         }
-        $moduleHandler = &xoops_gethandler('module');
-        $moduleObj = &$moduleHandler->getByDirname($dirname);
+        $moduleHandler = xoops_gethandler('module');
+        $moduleObj = $moduleHandler->getByDirname($dirname);
         if (!is_object($moduleObj)) {
             return false;
         }
-        $mid = $moduleObj->get('mid');
+        $mid = (int) $moduleObj->get('mid');
         if (!array_key_exists($uid, self::$mGroupIds)) {
-            $memberHandler = &xoops_gethandler('member');
-            self::$mGroupIds[$uid] = $memberHandler->getGroupsByUser($uid, false);
+            $memberHandler = xoops_gethandler('member');
+            self::$mGroupIds[$uid] = array_map('intval', $memberHandler->getGroupsByUser($uid, false));
         }
-        $gpermHandler = &xoops_gethandler('groupperm');
+        $gpermHandler = xoops_gethandler('groupperm');
 
         return $gpermHandler->checkRight('module_admin', $mid, self::$mGroupIds[$uid], 1, true);
     }

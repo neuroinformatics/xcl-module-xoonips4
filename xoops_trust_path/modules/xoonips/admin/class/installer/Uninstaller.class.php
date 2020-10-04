@@ -25,7 +25,7 @@ class Xoonips_Uninstaller extends ModuleUninstaller
     protected function onUninstallDropExtendTables()
     {
         $dirname = $this->mXoopsModule->get('dirname');
-        $db = &\XoopsDatabaseFactory::getDatabaseConnection();
+        $db = \XoopsDatabaseFactory::getDatabaseConnection();
         $sql = 'SHOW TABLES LIKE \''.$db->prefix($dirname.'_item_extend').'%\'';
         $res = $db->query($sql);
         $tables = [];
@@ -87,7 +87,7 @@ class Xoonips_Uninstaller extends ModuleUninstaller
         foreach ($blocks as $dirname => $perms) {
             foreach ($perms as $show_func => $perm) {
                 $bid = XoopsSystemUtils::getBlockId($dirname, $show_func);
-                if (false !== $bid) {
+                if (null !== $bid) {
                     XoopsSystemUtils::setBlockInfo($bid, $perm['side'], $perm['weight'], $perm['pages']);
                     XoopsSystemUtils::setBlockReadRights($bid, $perm['gids']);
                 }

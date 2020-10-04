@@ -74,7 +74,7 @@ class Xoonips_Installer extends ModuleInstaller
         foreach ($blocks as $block) {
             list($dirname, $show_func) = $block;
             $bid = XoopsSystemUtils::getBlockId($dirname, $show_func);
-            if (false !== $bid) {
+            if (null !== $bid) {
                 XoopsSystemUtils::setBlockInfo($bid, XoopsSystemUtils::BLOCK_SIDE_HIDE, false, false);
             }
         }
@@ -857,7 +857,7 @@ SQL;
     {
         $this->mLog->addReport('Setup Additional Users Information.');
         $dirname = $this->mXoopsModule->get('dirname');
-        $memberHandler = &xoops_gethandler('member');
+        $memberHandler = xoops_gethandler('member');
         $numUsers = $memberHandler->getUserCount();
         $limit = 100;
         for ($start = 0; $start < $numUsers; $start += $limit) {
@@ -888,7 +888,7 @@ SQL;
         $mid = $this->mXoopsModule->get('mid');
         $dirname = $this->mXoopsModule->get('dirname');
         $notification = $this->mXoopsModule->getInfo('notification');
-        $memberHandler = &xoops_gethandler('member');
+        $memberHandler = xoops_gethandler('member');
         $numUsers = $memberHandler->getUserCount();
         $limit = 100;
         foreach ($notification['event'] as $event) {
@@ -951,7 +951,7 @@ SQL;
     private function _pickupUser($userObj, $dirname)
     {
         $uid = $userObj->get('uid');
-        $memberHandler = &xoops_gethandler('member');
+        $memberHandler = xoops_gethandler('member');
         if ($userObj->get('level') <= Xoonips_Enum::USER_NOT_CERTIFIED) {
             $userObj->set('level', Xoonips_Enum::USER_CERTIFIED);
             if (!$memberHandler->insertUser($userObj)) {

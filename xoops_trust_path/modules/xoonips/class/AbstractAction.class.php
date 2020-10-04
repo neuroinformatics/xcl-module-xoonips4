@@ -45,7 +45,7 @@ abstract class Xoonips_AbstractAction
      */
     protected function _getActionName()
     {
-        return null;
+        return '';
     }
 
     /**
@@ -55,7 +55,7 @@ abstract class Xoonips_AbstractAction
      */
     protected function _getPagetitle()
     {
-        return null;
+        return '';
     }
 
     /**
