@@ -11,11 +11,11 @@ class XCubeUtils
      * format string.
      *
      * @param string $message
-     * @param array  $params
+     * @param mixed  $params
      *
      * @return string
      */
-    public static function formatString(string $message, array $params): string
+    public static function formatString(string $message, $params): string
     {
         $vars = $params;
         if (is_array($params)) {

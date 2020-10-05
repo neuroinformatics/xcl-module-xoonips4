@@ -75,13 +75,11 @@ class Functions
      **/
     public static function getItemListUrl(string $dirname): string
     {
-        $url = null;
-        if ('on' == self::getXoonipsConfig($dirname, 'url_compatible')) {
-            $url = XOONIPS_ITEM_LIST_COMPATIBLE;
-        } elseif ('off' == self::getXoonipsConfig($dirname, 'url_compatible')) {
-            $url = XOONIPS_ITEM_LIST;
+        $compat3 = self::getXoonipsConfig($dirname, 'url_compatible');
+        if ('on' == $compat3) {
+            return XOONIPS_ITEM_LIST_COMPATIBLE;
         }
 
-        return $url;
+        return XOONIPS_ITEM_LIST;
     }
 }
