@@ -546,8 +546,7 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
             }
             $metadataPrefix = $args['metadataPrefix'];
         } elseif (isset($args['resumptionToken'])) {
-            if (isset($args['metadataPrefix']) || isset($args['set'])
-                || isset($args['from']) || isset($args['until'])) {
+            if (isset($args['metadataPrefix']) || isset($args['set']) || isset($args['from']) || isset($args['until'])) {
                 $error = $this->error('badArgument', '');
             } else {
                 $result = $this->getResumptionToken($args['resumptionToken']);
@@ -737,14 +736,15 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
     {
         // set or expire resumption token
         $resumptionToken_xml = '';
+        $now = time();
         if ($cnt > $cursor + $this->limit_row) {
             $resumptionToken = uniqid(session_id());
-            $expire = gmdate("Y-m-d\TH:i:s\Z", time() + $this->expire_term);
-            $this->setResumptionToken($resumptionToken, $metadataPrefix, $args['verb'], $args, $last_item_id, time() + $this->expire_term, time());
+            $expire = gmdate("Y-m-d\TH:i:s\Z", $now + $this->expire_term);
+            $this->setResumptionToken($resumptionToken, $metadataPrefix, $args['verb'], $args, $last_item_id, $now);
             $resumptionToken_xml = "<resumptionToken expirationDate=\"$expire\" completeListSize=\"$cnt\" cursor=\"$cursor\">$resumptionToken</resumptionToken>\n";
         } elseif ($args['resumptionToken']) {
             $result = $this->getResumptionToken($args['resumptionToken']);
-            if ($result['expire_date'] < time()) {
+            if ($result['expire_date'] < $now) {
                 $this->deleteResumptionToken($args['resumptionToken']);
             }
             $resumptionToken_xml = "<resumptionToken completeListSize=\"$cnt\" cursor=\"$cursor\"/>\n";
@@ -760,18 +760,19 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
      */
     private function deleteResumptionToken($resumptionToken)
     {
-        global $xoopsDB;
-        $table = $xoopsDB->prefix($this->dirname.'_oaipmh_resumption_token');
-        $sql = "DELETE FROM $table WHERE resumption_token=\"".$xoopsDB->quoteString($resumptionToken).'"';
-        $result = $xoopsDB->queryF($sql);
+        $ortHandler = Functions::getXoonipsHandler('OaipmhResumptionTokenObject', $this->dirname);
+        $criteria = new Criteria('resumption_token', $resumptionToken);
+        $ortHandler->deleteAll($criteria, true);
     }
 
+    /**
+     * delete expired resumptionToken.
+     */
     private function expireResumptionToken()
     {
-        global $xoopsDB;
-        $table = $xoopsDB->prefix($this->dirname.'_oaipmh_resumption_token');
-        $sql = "DELETE FROM $table WHERE expire_date < UNIX_TIMESTAMP( NOW() )";
-        $result = $xoopsDB->queryF($sql);
+        $ortHandler = Functions::getXoonipsHandler('OaipmhResumptionTokenObject', $this->dirname);
+        $criteria = new Criteria('expire_date', time(), '<');
+        $ortHandler->deleteAll($criteria, true);
     }
 
     /**
@@ -782,22 +783,24 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
      * @param string $verb
      * @param string $args
      * @param string $last_item_id
-     * @param int    $expire_date
      * @param int    $publish_date
+     *
+     * @return bool
      */
-    private function setResumptionToken($resumption_token, $metadata_prefix, $verb, $args, $last_item_id, $expire_date, $publish_date = null)
+    private function setResumptionToken($resumption_token, $metadata_prefix, $verb, $args, $last_item_id, $publish_date)
     {
-        global $xoopsDB;
+        $ortHandler = Functions::getXoonipsHandler('OaipmhResumptionTokenObject', $this->dirname);
+        $ortObj = $ortHandler->create();
+        $ortObj->set('resumption_token', $resumption_token);
+        $ortObj->set('metadata_prefix', $metadata_prefix);
+        $ortObj->set('verb', $verb);
+        $ortObj->set('args', json_encode($args));
+        $ortObj->set('last_item_id', $last_item_id);
+        $ortObj->set('limit_row', $this->limit_row);
+        $ortObj->set('publish_date', $publish_date);
+        $ortObj->set('expire_date', $publish_date + $this->expire_term);
 
-        if (null == $publish_date) {
-            $publish_date = time();
-        }
-        $table = $xoopsDB->prefix($this->dirname.'_oaipmh_resumption_token');
-        $sql = "INSERT INTO $table VALUES ('".$xoopsDB->quoteString($resumption_token)
-            ."', '$metadata_prefix', '$verb', '".$xoopsDB->quoteString(serialize($args))
-            ."', $last_item_id, ".$this->limit_row.", $publish_date, $expire_date )";
-
-        return $xoopsDB->queryF($sql);
+        return $ortHandler->insert($ortObj, true);
     }
 
     /**
@@ -808,11 +811,10 @@ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
     private function getResumptionToken($resumption_token)
     {
         global $xoopsDB;
-        $table = $xoopsDB->prefix($this->dirname.'_oaipmh_resumption_token');
-        $sql = "SELECT resumption_token, metadata_prefix, args, last_item_id, publish_date, expire_date, verb FROM ${table} WHERE resumption_token=\"".$xoopsDB->quoteString($resumption_token).'"';
-        $result = $xoopsDB->query($sql);
-        $ret = $xoopsDB->fetchArray($result);
-        $ret['args'] = unserialize($ret['args']);
+        $ortHandler = Functions::getXoonipsHandler('OaipmhResumptionTokenObject', $this->dirname);
+        $ortObj = $ortHandler->get($resumption_token);
+        $ret = $ortObj->getArray();
+        $ret['args'] = json_decode($ret['args'], true);
 
         return $ret;
     }
